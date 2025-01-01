@@ -1,0 +1,36 @@
+.box_header{
+    display: grid;
+    grid-template-columns: 200px 3fr 100px; 
+    align-items: center;
+    padding: 2rem;
+    border: 1px solid green;
+}
+
+.box_logo_now_bi {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+        font-size: 2rem;
+        color: var(--texto-primario);
+    }
+
+    p span {
+        font-weight: var(--bold);
+        color: var(--cor-primaria);
+    }
+}
+
+.box_nome_header{
+    display: flex;
+    text-align: left;
+    font-size: 1.6rem;
+}
+
+.box_menu_header{
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+    border-radius: 50%;
+}

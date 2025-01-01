@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../contexts/useAuth'
 import { Link } from 'react-router-dom'
@@ -43,6 +43,7 @@ export const Login = () => {
             navigate("/")
 
         } catch (error) {
+            console.log(error)
             return null
         }
 
@@ -55,7 +56,7 @@ export const Login = () => {
             <div className={styles.box_form}>
 
                 <div className={styles.box_header_form}>
-                    <div className={styles.logo}>
+                    <div className={styles.box_logo_now_bi}>
                         <img src={iconeLogo} />
                         <p>now<span>BI</span></p>
                     </div>

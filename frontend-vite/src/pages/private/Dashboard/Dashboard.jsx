@@ -1,7 +1,11 @@
-import React from 'react'
+import { Layout } from '../../../layout/layout';
 
 export const Dashboard = () => {
     return (
-        <div>Dashboard</div>
-    )
-}
+        <Layout>
+            <div>
+                <h1>Dashboard</h1>
+            </div>
+        </Layout>
+    );
+};

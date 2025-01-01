@@ -34,6 +34,7 @@ export async function LoginRequest(email, password) {
 
     } catch (error) {
         // Se der erro retorna null
+        console.log(error)
         return null
     }
 }
@@ -47,6 +48,7 @@ export async function SignUpRequest(name, email, cpf_cnpj, password) {
         return request.data
 
     } catch (error) {
+        console.log(error)
         return null
     }
 
