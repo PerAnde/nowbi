@@ -1,9 +1,9 @@
 .layout {
     display: grid;
-    grid-template-columns: minmax(100px, 300px) 1fr;
-    grid-template-rows: 10rem 1fr 10rem;
+    grid-template-columns: minmax(100px, 280px) 1fr;
+    grid-template-rows: 8rem 1fr 8rem;
     grid-template-areas:
-        "nav header"
+        "header header"
         "nav section"
         "nav footer";
 }
