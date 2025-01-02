@@ -14,7 +14,8 @@
     max-width: 550px;
     display: flex;
     flex-direction: column;
-    background-color: var(--branco);
+    background-color: var(--cor-componente);
+    box-shadow: var(--box-shadow-componente);
     padding: 4rem;
     border-radius: 1rem;
 

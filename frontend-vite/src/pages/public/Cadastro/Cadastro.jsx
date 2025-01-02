@@ -61,7 +61,7 @@ export const Cadastro = () => {
             <div className={styles.box_form}>
 
                 <div className={styles.box_header_form}>
-                    <div className={styles.logo}>
+                    <div className={styles.box_logo_now_bi}>
                         <img src={iconeLogo} />
                         <p>now<span>BI</span></p>
                     </div>

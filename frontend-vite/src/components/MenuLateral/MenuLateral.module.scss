@@ -1,0 +1,15 @@
+.box_logo_now_bi {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+        font-size: 2rem;
+        color: var(--texto-primario);
+    }
+
+    p span {
+        font-weight: var(--bold);
+        color: var(--cor-primaria);
+    }
+}

@@ -1,0 +1,29 @@
+.layout {
+    display: grid;
+    grid-template-columns: minmax(100px, 300px) 1fr;
+    grid-template-rows: 10rem 1fr 10rem;
+    grid-template-areas:
+        "nav header"
+        "nav section"
+        "nav footer";
+}
+
+.header {
+    grid-area: header;
+    border: 1px solid black;
+}
+
+.nav {
+    grid-area: nav;
+    border: 1px solid red;
+}
+
+.section {
+    grid-area: section;
+    border: 1px solid green;
+}
+
+.footer {
+    grid-area: footer;
+    border: 1px solid blue;
+}

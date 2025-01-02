@@ -3,14 +3,16 @@ import axios from 'axios'
 import { getUsuarioLocalStorage } from '../contexts/util'
 
 const getToken = () => {
+
     const usuario = getUsuarioLocalStorage()
     return usuario && usuario.token ? usuario.token : null
+
 }
 
 // Exportando url na const api
 export const api = axios.create({
     // Url base do backend
-    baseURL: "http://192.168.1.8:3333"
+    baseURL: "http://192.168.1.12:3333"
 })
 
 // Toda vez que for feita uma requisicao passa por aqui

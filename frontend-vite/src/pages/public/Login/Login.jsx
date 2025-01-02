@@ -83,7 +83,7 @@ export const Login = () => {
                         <PiIcons.PiStarDuotone className={styles.icon} />
                         <div>
                             <p>Não tem uma conta?</p>
-                            <p><span>Teste por 7 dias grátis!</span></p>
+                            <p><span>Teste grátis por 7 dias!</span></p>
                         </div>
                     </div>
 
