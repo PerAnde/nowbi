@@ -96,7 +96,7 @@ export const Cadastro = () => {
                     <Button type="submit">Cadastrar</Button>
                 </form>
 
-                <Link to="/login" className={styles.box_link}>
+                <Link to="/" className={styles.box_link}>
 
                     <div className={styles.link}>
                         <PiIcons.PiSignInDuotone className={styles.icon} />

@@ -39,20 +39,26 @@
 
     .box_logo_now_bi {
         display: flex;
+        grid-area: nav;
         align-items: center;
         gap: 1rem;
-        margin-bottom: 1.5rem;
+        font-weight: var(--bold);
+        margin: 1rem 0 2rem 1rem;
 
         p {
             font-size: 2rem;
-            color: var(--texto-primario);
+            color: var(--cinza-escuro);
         }
 
         p span {
-            font-weight: var(--bold);
             color: var(--cor-primaria);
         }
+
+        img {
+            width: 25px;
+        }
     }
+
 
     h2 {
         color: var(--cor-primaria);
@@ -65,7 +71,7 @@
 }
 
 // Form Cadastro
-.box_dados_cadastro{
+.box_dados_cadastro {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
@@ -75,7 +81,7 @@ button {
     padding: 1.6rem;
     cursor: pointer;
     border: none;
-    background-color: var(--cor-primaria);
+    background-color: var(--button-cor-secundaria);
     color: var(--branco);
     border-radius: 5px;
     transition: 0.5s;
@@ -83,7 +89,7 @@ button {
 }
 
 button:hover {
-    background-color: var(--button-cor-primaria-hover);
+    background-color: var(--button-cor-secundaria-hover);
 }
 
 .box_link {
@@ -117,17 +123,17 @@ button:hover {
     font-size: 2rem;
 }
 
-@media screen and (max-width: 550px){
+@media screen and (max-width: 550px) {
     .box_form {
         padding: 3rem;
     }
 
-    .box_dados_cadastro{
+    .box_dados_cadastro {
         grid-template-columns: 1fr;
     }
 }
 
-@media screen and (max-width: 375px){
+@media screen and (max-width: 375px) {
     .icon:nth-child(1) {
         display: none;
     }

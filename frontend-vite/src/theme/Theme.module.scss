@@ -1,0 +1,73 @@
+.boxBtnTheme{
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.darkModeLabel {
+    position: relative;
+    width: 80px;
+    height: 42px;
+    display: block;
+    background: var(--background);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-right: -1rem;
+}
+
+.darkModeLabel:after {
+    content: "";
+    width: 38px;
+    height: 38px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background-color: var(--cor-componente);
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.darkModeInput {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.darkModeInput:checked+.darkModeLabel {
+    box-shadow: inset 0 0 4px var(--background);
+}
+
+.darkModeInput:checked+.darkModeLabel:after {
+    left: 78px;
+    transform: translateX(-100%);
+    background-color: var(--cor-componente);
+}
+
+.darkModeLabel svg {
+    position: absolute;
+    width: 20px;
+    top: 12px;
+    margin-left: 6px;
+    z-index: 100;
+}
+
+.darkModeLabel svg.light {
+    left: 5px;
+    fill: var(--cor-primaria);
+    transition: 0.3s;
+}
+
+.darkModeLabel svg.dark {
+    left: 43px;
+    fill: rgba(0, 0, 0, .8);
+    transition: 0.3s;
+}
+
+.darkModeInput:checked+.darkModeLabel svg.light {
+    fill: rgba(255, 255, 255, .5);
+}
+
+.darkModeInput:checked+.darkModeLabel svg.dark {
+    fill: var(--cor-primaria);
+}

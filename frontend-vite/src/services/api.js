@@ -1,6 +1,6 @@
 // Importando axios
 import axios from 'axios'
-import { getUsuarioLocalStorage } from '../contexts/util'
+import { getUsuarioLocalStorage, logout } from '../contexts/util'
 
 const getToken = () => {
 
@@ -12,7 +12,7 @@ const getToken = () => {
 // Exportando url na const api
 export const api = axios.create({
     // Url base do backend
-    baseURL: "http://192.168.1.8:3333"
+    baseURL: "http://192.168.1.12:3333"
 })
 
 // Toda vez que for feita uma requisicao passa por aqui
@@ -30,3 +30,18 @@ api.interceptors.request.use(
         return Promise.reject(error)
     }
 )
+
+// Interceptador de respostas
+api.interceptors.response.use(
+    (response) => {
+        return response; // Retorna a resposta normalmente se não houver erro
+    },
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            // Token expirado ou não autorizado
+            logout(); // Remove os dados do usuário do localStorage
+            window.location.href = '/'; // Redireciona para a página de login
+        }
+        return Promise.reject(error);
+    }
+);

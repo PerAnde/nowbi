@@ -7,22 +7,22 @@ interface AuthRequest {
     password: string;
 }
 
-class AuthUserService {
+class AuthUsuarioService {
     async execute({ email, password }: AuthRequest) {
 
         // Verificar se o email existe
-        const user = await prismaClient.user.findFirst({
+        const usuario = await prismaClient.usuario.findFirst({
             where: {
                 email: email
             }
         })
 
-        if (!user) {
+        if (!usuario) {
             throw new Error("Usuário ou senha inválidos!")
         }
 
         // Verificar se a senha esta correta
-        const validaSenha = await compare(password, user.password)
+        const validaSenha = await compare(password, usuario.password)
 
         // Se a senha nao bate
         if (!validaSenha) {
@@ -32,23 +32,23 @@ class AuthUserService {
         // Gerar token e devolver dados
         const token = sign(
             {
-                name: user.name,
-                email: user.email,
+                name: usuario.name,
+                email: usuario.email,
             },
             process.env.JWT_SECRET,
             {
-                subject: user.id,
-                expiresIn: '5m'
+                subject: usuario.id,
+                expiresIn: '1h'
             }
         )
 
         return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
+            id: usuario.id,
+            name: usuario.name,
+            email: usuario.email,
             token: token
         }
     }
 }
 
-export { AuthUserService }
+export { AuthUsuarioService }

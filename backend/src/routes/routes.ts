@@ -5,13 +5,13 @@ import multer from 'multer';
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 
 // Controllers Usuario
-import { CreateUserController } from '../controllers/user/CreateUserController';
-import { AuthUserController } from '../controllers/user/AuthUserController';
-import { DetailUserController } from '../controllers/user/DetailUserController';
+import { CreateUsuarioController } from '../controllers/usuario/CreateUsuarioController';
+import { AuthUsuarioController } from '../controllers/usuario/AuthUsuarioController';
+import { DetailUsuarioController } from '../controllers/usuario/DetailUsuarioController';
 
-// Controllers Clientes
-import { CreateClientController } from '../controllers/clients/CreateClientController';
-import { ListClientController } from '../controllers/clients/ListClientController';
+// Controllers Empresas
+import { CreateEmpresaController } from '../controllers/empresas/CreateEmpresaController';
+import { ListEmpresaController } from '../controllers/empresas/ListEmpresaController';
 
 import uploadConfig from '../config/multer'
 
@@ -20,12 +20,12 @@ const router = Router();
 const upload = multer(uploadConfig.upload("./images"));
 
 // Rotas Usuario
-router.post('/register', new CreateUserController().handle)
-router.post('/login', new AuthUserController().handle)
-router.get('/user', isAuthenticated, new DetailUserController().handle)
+router.post('/register', new CreateUsuarioController().handle)
+router.post('/login', new AuthUsuarioController().handle)
+router.get('/user', isAuthenticated, new DetailUsuarioController().handle)
 
 // Rotas Cliente
-router.post('/clients', isAuthenticated, upload.single('file'), new CreateClientController().handle)
-router.get('/clients', isAuthenticated, new ListClientController().handle)
+router.post('/empresas', isAuthenticated, upload.single('file'), new CreateEmpresaController().handle)
+router.get('/empresas', isAuthenticated, new ListEmpresaController().handle)
 
 export { router };

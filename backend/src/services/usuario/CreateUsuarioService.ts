@@ -2,15 +2,15 @@ import prismaClient from "../../prisma";
 
 import { hash } from "bcryptjs";
 
-interface UserRequest {
+interface UsuarioRequest {
     name: string;
     email: string;
     cpf_cnpj: string;
     password: string;
 }
 
-class CreateUserService {
-    async execute({ name, email, cpf_cnpj, password }: UserRequest) {
+class CreateUsuarioService {
+    async execute({ name, email, cpf_cnpj, password }: UsuarioRequest) {
 
         // Verificar se enviou um email
         if (!email) {
@@ -18,7 +18,7 @@ class CreateUserService {
         }
 
         // Verificar se o email ja esta cadastrado
-        const emailJaExiste = await prismaClient.user.findFirst({
+        const emailJaExiste = await prismaClient.usuario.findFirst({
             where: {
                 email: email
             }
@@ -137,7 +137,7 @@ class CreateUserService {
         }
 
         // Verificar se o cpf ou cnpj ja esta cadastrado
-        const cpfCnpjJaExiste = await prismaClient.user.findFirst({
+        const cpfCnpjJaExiste = await prismaClient.usuario.findFirst({
             where: {
                 cpf_cnpj: cpfCnpjNumerico
             }
@@ -150,7 +150,7 @@ class CreateUserService {
 
         const senhaCriptografada = await hash(password, 10)
 
-        const user = await prismaClient.user.create({
+        const usuario = await prismaClient.usuario.create({
             data: {
                 name: name,
                 email: email,
@@ -164,8 +164,8 @@ class CreateUserService {
             }
         })
 
-        return user
+        return usuario
     }
 }
 
-export { CreateUserService }
+export { CreateUsuarioService }

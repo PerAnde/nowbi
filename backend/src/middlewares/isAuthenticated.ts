@@ -26,7 +26,7 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
         ) as Payload;
 
         // Recuperar o id do token e colocar na variavel user_id dentro do req
-        req.user_id = sub;
+        req.usuario_id = sub;
 
         return next();
 

@@ -40,7 +40,7 @@ export const Login = () => {
         try {
 
             await auth.autenticacao(email, password)
-            navigate("/")
+            navigate("/dashboard")
 
         } catch (error) {
             console.log(error)

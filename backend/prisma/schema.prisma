@@ -14,7 +14,7 @@ datasource db {
 }
 
 // Model Usuario
-model User {
+model Usuario {
     id       String @id @default(uuid())
     name     String
     email    String @unique
@@ -24,24 +24,24 @@ model User {
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
 
-    clients Client[]
+    empresas Empresa[]
 
-    @@map("users")
+    @@map("usuarios")
 }
 
 // Model Cliente
-model Client {
-    id          String  @id @default(uuid())
-    name        String
-    logo_client String?
+model Empresa {
+    id           String  @id @default(uuid())
+    name         String
+    logo_empresa String?
 
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
 
-    user_id String
-    user    User   @relation(fields: [user_id], references: [id])
+    usuario_id String
+    usuario    Usuario @relation(fields: [usuario_id], references: [id])
 
-    @@map("clients")
+    @@map("empresas")
 }
 
 // Criar uma migrate npx prisma migrate dev

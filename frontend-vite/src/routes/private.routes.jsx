@@ -15,7 +15,7 @@ export const PrivateRoutes = ({ children }) => {
         if (!auth.token) {
 
             // Se nao existir token dentro do Auth redireciona para /login
-            return navigate("/login")
+            return navigate("/")
 
         }
 
