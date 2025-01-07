@@ -8,8 +8,6 @@ export const Layout = ({ children }) => {
 
     const [menuLateralAberto, setMenuLateralAberto] = useState(false)
 
-    console.log(menuLateralAberto)
-
     return (
         <main className={styles.layout}>
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './MenuLateral.module.scss';
 import * as PiIcons from 'react-icons/pi';
-import iconeLogo from '../../assets/images/icone-logo.png';
+import iconeLogo from '../../assets/images/icone-logo-black.png';
 
 export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
 

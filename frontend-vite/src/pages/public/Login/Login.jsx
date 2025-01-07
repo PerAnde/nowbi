@@ -14,7 +14,7 @@ import styles from '../Auth.module.scss'
 import * as PiIcons from "react-icons/pi";
 
 // Imagens
-import iconeLogo from '../../../assets/images/icone-logo.svg'
+import iconeLogo from '../../../assets/images/icone-logo-black.png'
 
 export const Login = () => {
 
