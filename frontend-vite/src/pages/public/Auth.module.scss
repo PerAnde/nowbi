@@ -25,9 +25,25 @@
         gap: 1rem;
     }
 
+    .input_erro{
+        border: 1px solid var(--vermelho-claro);
+    }
+
     form label p {
         color: var(--texto-primario);
         margin-bottom: .5rem;
+    }
+
+    span.preencher_campos{
+        font-size: 1.4rem;
+        color: var(--vermelho-claro);
+    }
+
+    span.usuario_senha_invalido{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--vermelho-claro);
     }
 }
 
@@ -91,6 +107,12 @@ button {
 
 button:hover {
     background-color: var(--button-cor-secundaria-hover);
+}
+
+.btn_loading{
+    background-color: var(--button-disable);
+    color: var(--texto-secundario);
+    font-size: 1.8rem;
 }
 
 .box_link {

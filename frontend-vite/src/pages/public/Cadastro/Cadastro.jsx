@@ -33,13 +33,7 @@ export const Cadastro = () => {
     async function handleSubmit(e) {
         e.preventDefault()
 
-        if (name === "" || email === "" || password === "") {
-            alert("Preencha todos os campos!")
-            return;
-        }
-
         if (password != passwordMatch) {
-            alert("As senhas não coincidem!")
             return;
         }
 

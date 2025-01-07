@@ -70,7 +70,7 @@ export const Header = ({ setMenuLateralAberto }) => {
         <div className={styles.box_header}>
 
             <div className={styles.btn_menu_lateral}>
-                <PiIcons.PiCaretDoubleRightBold onClick={() => setMenuLateralAberto((prev) => !prev)}/>
+                <PiIcons.PiCaretDoubleRightDuotone onClick={() => setMenuLateralAberto((prev) => !prev)}/>
             </div>
 
             <div className={styles.btn_minha_conta_header} ref={menuMinhaContaRef}>

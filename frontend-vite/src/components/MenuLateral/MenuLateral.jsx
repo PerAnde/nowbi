@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './MenuLateral.module.scss';
 import * as PiIcons from 'react-icons/pi';
-import iconeLogo from '../../assets/images/icone-logo-black.png';
+import iconeLogo from '../../assets/images/icone-logo.png';
 
 export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
 
@@ -40,15 +40,31 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                 </div>
 
                 <div className={styles.menu_lateral}>
-                    <Link to='/dashboard' className={`${styles.btn_menu} ${location.pathname === '/dashboard' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                        <PiIcons.PiAlignLeftDuotone className={styles.icon} /> Dashboard
-                    </Link>
-                    <Link to='/novaempresa' className={`${styles.btn_menu} ${location.pathname === '/novaempresa' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                        <PiIcons.PiPlusBold className={styles.icon} /> Nova Empresa
-                    </Link>
-                    <Link to='/empresas' className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                        <PiIcons.PiBuildingOfficeDuotone className={styles.icon} /> Empresas
-                    </Link>
+                    <div className={styles.links_menu}>
+                        <p>Visão Geral</p>
+                        <Link to='/dashboard' className={`${styles.btn_menu} ${location.pathname === '/dashboard' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiAlignLeftDuotone className={styles.icon} /> Dashboard
+                        </Link>
+                        <Link to='/novaempresa' className={`${styles.btn_menu} ${location.pathname === '/novaempresa' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiPlusBold className={styles.icon} /> Nova Empresa
+                        </Link>
+                        <Link to='/empresas' className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiBuildingOfficeDuotone className={styles.icon} /> Empresas
+                        </Link>
+                        <p>Conta</p>
+                        <Link to='/minhaconta' className={`${styles.btn_menu} ${location.pathname === '/minhaconta' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiUserDuotone className={styles.icon} /> Minha conta
+                        </Link>
+                        <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiCurrencyDollarDuotone className={styles.icon} /> Financeiro
+                        </Link>
+                    </div>
+
+                    <div className={styles.box_mensagem_menu_lateral}>
+                        <p>Período experimental</p>
+                        <span><PiIcons.PiFlagDuotone /> 7 Dias</span>
+                        <Link className={styles.btn_ativar_conta}>Ativar conta</Link>
+                    </div>
                 </div>
             </div>
 
