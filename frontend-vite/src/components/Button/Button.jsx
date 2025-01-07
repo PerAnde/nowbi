@@ -2,10 +2,10 @@ import React from 'react'
 
 export const Button = ({ loading, children, ...rest }) => {
     return (
-        <button disabled={loading} {...rest}>
+        <button className={`button ${loading ? 'btn_loading' : ''}`} disabled={loading} {...rest}>
 
             {loading ? (
-                <span>Aguarde...</span>
+                <span>Carregando...</span>
             ) : (
                 <span>{children}</span>
             )}

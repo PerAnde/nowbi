@@ -34,7 +34,7 @@
     --cor-componente-principal: #141a21;
     --cor-componente-principal-85: rgba(20, 26, 33, .85);
 
-    --cor-componente-secundario: #e8ebef;
+    --cor-componente-secundario: rgb(232, 235, 239);
 
     --border-input: #e8ebef;
     --placeholder: #e8ebef;
@@ -55,7 +55,7 @@
     --button-cor-secundaria-hover: #26323d;
     --button-amarelo: #e4630e;
     --button-amarelo-hover: #d15b0d;
-    --button-disable: #d4d4d4;
+    --button-disabled: #d4d4d4;
 
     --border-radius-componente: 1.5rem;
     --border-radius-button: .8rem;
@@ -139,4 +139,23 @@ input {
 input::placeholder {
     font-family: "Public Sans", serif;
     color: var(--texto-secundario);
+}
+
+button {
+    padding: 1.6rem;
+    cursor: pointer;
+    border: none;
+    background-color: var(--button-cor-secundaria);
+    color: var(--branco);
+    border-radius: 5px;
+    transition: 0.5s;
+    margin: 1rem 0 2rem 0;
+}
+
+button:hover {
+    background-color: var(--button-cor-secundaria-hover);
+}
+
+button.btn_loading{
+    color: var(red);
 }

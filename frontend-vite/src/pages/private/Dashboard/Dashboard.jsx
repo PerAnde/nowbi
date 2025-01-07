@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { api } from '../../../services/api';
 import { Link } from 'react-router-dom';
 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
+
 import { Layout } from '../../../layout/layout';
 
 import styles from './Dashboard.module.scss'
@@ -28,14 +31,6 @@ export const Dashboard = () => {
         fetchUsuarioData();
     }, []);
 
-    if (loading) {
-        return (
-            <div>
-                <p>Carregando...</p>  {/* Exibe uma mensagem de carregamento */}
-            </div>
-        );
-    }
-
     return (
         <Layout>
             <div className={styles.box_dashboard}>
@@ -47,7 +42,8 @@ export const Dashboard = () => {
                         <div className={styles.degrade}></div>
 
                         <div className={styles.texto_bem_vindo}>
-                            <h1>Bem vindo de volta 👋 <br></br>{usuario.name}</h1>
+                            <h1>Bem vindo de volta 👋 <br />
+                                {loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</h1>
                             <p>Acompanhe e gerencie seus BIs agora mesmo!</p>
 
                             <Link to="/empresas" className={styles.btn_cor_primaria}>Ver Empresas</Link>

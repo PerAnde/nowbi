@@ -33,7 +33,7 @@ export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     // // Funcao para logar
     async function handleSubmit(e) {
@@ -57,6 +57,7 @@ export const Login = () => {
 
             await auth.autenticacao(email, password)
             navigate("/dashboard")
+            setLoading(false)
 
         } catch (error) {
             setUsuarioSenhaIncorreto(true)
@@ -107,12 +108,8 @@ export const Login = () => {
                         ''
                     )}
 
-                    {loading ? (
-                        <Button type="submit" disabled="disabled" className={styles.btn_loading}><PiIcons.PiSpinnerGapBold /></Button>
-                    ) : (
+                    <Button type="submit" loading={loading}>Entrar</Button>
 
-                        <Button type="submit">Entrar</Button>
-                    )}
                 </form>
 
                 <Link to="/cadastro" className={styles.box_link}>

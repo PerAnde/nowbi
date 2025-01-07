@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { logout } from '../../contexts/util';
 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
+
 import styles from './Header.module.scss';
 
 import * as PiIcons from 'react-icons/pi';
@@ -58,14 +61,6 @@ export const Header = ({ setMenuLateralAberto }) => {
         fetchUsuarioData();
     }, []);
 
-    if (loading) {
-        return (
-            <div>
-                <p>Carregando...</p>  {/* Exibe uma mensagem de carregamento */}
-            </div>
-        );
-    }
-
     return (
         <div className={styles.box_header}>
 
@@ -91,8 +86,8 @@ export const Header = ({ setMenuLateralAberto }) => {
 
                         <img src={imgPerfil} className={styles.img_perfil_minha_conta} />
 
-                        <p className={styles.nome_usuario}>{usuario.name}</p>
-                        <p className={styles.email_usuario}>{usuario.email}</p>
+                        <p className={styles.nome_usuario}>{loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</p>
+                        <p className={styles.email_usuario}>{loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.email}</p>
                         <div className={styles.box_menu_minha_conta}>
                             <Link to='/minhaconta' className={`${styles.btn_menu} ${location.pathname === '/minhaconta' ? styles.ativo : ''}`}><PiIcons.PiUserDuotone className={styles.icon} /> Minha Conta</Link>
                             <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollarDuotone  className={styles.icon} /> Financeiro</Link>
