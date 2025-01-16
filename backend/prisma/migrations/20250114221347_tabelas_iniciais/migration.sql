@@ -17,6 +17,7 @@ CREATE TABLE `usuarios` (
 CREATE TABLE `empresas` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `cnpj_empresa` VARCHAR(191) NULL,
     `logo_empresa` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

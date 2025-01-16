@@ -7,6 +7,7 @@
     height: 100vh;
     font-size: 1.6rem;
     padding: 0 2rem;
+    background-color: #f4f6f8;
 }
 
 .box_form {
@@ -14,36 +15,43 @@
     max-width: 550px;
     display: flex;
     flex-direction: column;
-    background-color: var(--cor-componente);
-    box-shadow: var(--box-shadow-componente);
+    background-color: #ffffff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .1);
     padding: 4rem;
     border-radius: 1rem;
 
     form {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
     }
 
     .input_erro{
-        border: 1px solid var(--vermelho-claro);
+        border: 1px solid #ff6e6e;
     }
 
     form label p {
-        color: var(--texto-primario);
+        color: #121926;
         margin-bottom: .5rem;
+    }
+
+    form label input{
+        border: 1px solid #e8ebef;
+        background-color: #ffffff;
+        color: #121926;
     }
 
     span.preencher_campos{
         font-size: 1.4rem;
-        color: var(--vermelho-claro);
+        color: #ff6e6e;
     }
 
     span.usuario_senha_invalido{
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--vermelho-claro);
+        color: #ff6e6e;
     }
 }
 
@@ -64,11 +72,11 @@
 
         p {
             font-size: 2rem;
-            color: var(--cinza-escuro);
+            color: #1c252e;
         }
 
         p span {
-            color: var(--cor-primaria);
+            color: #008aee;
         }
 
         img {
@@ -78,11 +86,11 @@
 
 
     h2 {
-        color: var(--cor-primaria);
+        color: #008aee;
     }
 
     p {
-        color: var(--texto-secundario);
+        color: #949eac;
         font-size: 1.4rem;
     }
 }
@@ -94,24 +102,19 @@
     gap: 1.5rem;
 }
 
-.btn_loading{
-    background-color: var(--button-disable);
-    color: var(--texto-secundario);
-    font-size: 1.8rem;
-}
-
 .box_link {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
-    border: 1px solid var(--border-input);
+    border: 1px solid #e8ebef;
+    color: #121926;
     border-radius: 5px;
     transition: 0.5s;
 }
 
 .box_link:hover {
-    background-color: var(--border-input);
+    background-color: #e8ebef;
 }
 
 .link {
@@ -122,12 +125,12 @@
 }
 
 .link p span {
-    color: var(--cor-primaria);
+    color: #008aee;
     font-weight: var(--medium);
 }
 
 .icon {
-    color: var(--cor-primaria);
+    color: #008aee;
     font-size: 2rem;
 }
 

@@ -1,0 +1,105 @@
+.box_empresas{
+    grid-column: 1/5;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.box_componente{
+    width: 100%;
+    display: flex;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    gap: 2rem;
+    padding: 3rem;
+}
+
+.box_img_logo_empresa{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    background-color: var(--background);
+    border-radius: var(--border-radius-componente);
+    overflow: hidden;
+}
+
+.box_img_logo_empresa img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.box_infos_empresa{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nome_empresa{
+    margin-bottom: 1.5rem;
+}
+
+.nome_empresa h3{
+    margin-bottom: .5rem;
+}
+
+.nome_empresa p.info_cnpj{
+    color: var(--texto-secundario);
+    font-size: 1.3rem;
+}
+
+.box_btns_empresa{
+    display: flex;
+    gap: 1.5rem;
+
+    a.btn_link{
+        padding: 1.2rem;
+        border-radius: var(--border-radius-button);
+        transition: .3s;
+        font-size: 1.4rem;
+    }
+
+    a.btn_link.btn_link_cor_primaria{
+        background-color: var(--button-cor-primaria);
+        color: var(--branco);
+    }
+
+    a.btn_link.btn_link_cor_primaria:hover{
+        background-color: var(--button-cor-primaria-hover);
+        transition: .3s;
+    }
+
+    a.btn_link.btn_link_editar{
+        background-color: var(--background);
+    }
+}
+
+@media screen and (max-width: 1525px){
+    .box_empresas{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 1050px){
+    .box_empresas{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 520px){
+    .box_componente{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .box_img_logo_empresa{
+        width: 100%;
+    }
+
+    .box_btns_empresa{
+        justify-content: center;
+    }
+}

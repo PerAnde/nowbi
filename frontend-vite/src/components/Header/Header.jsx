@@ -10,7 +10,7 @@ import styles from './Header.module.scss';
 
 import * as PiIcons from 'react-icons/pi';
 
-import imgPerfil from '../../assets/images/avatar-25.webp';
+import imgPerfil from '../../assets/images/avatar-25.jpg';
 
 import { Theme } from '../../theme/Theme';
 
@@ -65,16 +65,18 @@ export const Header = ({ setMenuLateralAberto }) => {
         <div className={styles.box_header}>
 
             <div className={styles.btn_menu_lateral}>
-                <PiIcons.PiCaretDoubleRightDuotone onClick={() => setMenuLateralAberto((prev) => !prev)}/>
+                <PiIcons.PiCaretDoubleRightDuotone onClick={() => setMenuLateralAberto((prev) => !prev)} />
             </div>
 
             <div className={styles.btn_minha_conta_header} ref={menuMinhaContaRef}>
 
-                <span className={styles.background_btn_minha_conta} onClick={() => setAbrirMenuMinhaConta(!abrirMenuMinhaConta)}>
-                    <img src={imgPerfil} className={styles.btn_minha_conta} />
-                </span>
+                <div className={styles.box_btns_header}>
+                    <span className={styles.background_btn_minha_conta} onClick={() => setAbrirMenuMinhaConta(!abrirMenuMinhaConta)}>
+                        <img src={imgPerfil} className={styles.btn_minha_conta} />
+                    </span>
+                </div>
 
-                <div className={`${styles.box_minha_conta} ${abrirMenuMinhaConta ? styles.ativo : styles.inativo}`}>
+                <div className={`${styles.box_menu_lateral_header} ${abrirMenuMinhaConta ? styles.ativo : styles.inativo}`}>
 
                     <div className={styles.box_infos_conta}>
 
@@ -90,7 +92,7 @@ export const Header = ({ setMenuLateralAberto }) => {
                         <p className={styles.email_usuario}>{loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.email}</p>
                         <div className={styles.box_menu_minha_conta}>
                             <Link to='/minhaconta' className={`${styles.btn_menu} ${location.pathname === '/minhaconta' ? styles.ativo : ''}`}><PiIcons.PiUserDuotone className={styles.icon} /> Minha Conta</Link>
-                            <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollarDuotone  className={styles.icon} /> Financeiro</Link>
+                            <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollarDuotone className={styles.icon} /> Financeiro</Link>
                         </div>
 
                     </div>

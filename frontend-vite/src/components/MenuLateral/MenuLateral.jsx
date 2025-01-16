@@ -58,11 +58,15 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiCurrencyDollarDuotone className={styles.icon} /> Financeiro
                         </Link>
+                        <p>Suporte</p>
+                        <Link to='/suporte' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiQuestionDuotone className={styles.icon} /> Ajuda
+                        </Link>
                     </div>
 
                     <div className={styles.box_mensagem_menu_lateral}>
                         <p>Período experimental</p>
-                        <span><PiIcons.PiFlagDuotone /> 7 Dias</span>
+                        <span>7 dias restantes</span>
                         <Link className={styles.btn_ativar_conta}>Ativar conta</Link>
                     </div>
                 </div>

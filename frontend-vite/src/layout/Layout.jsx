@@ -3,6 +3,7 @@ import { Header } from "../components/Header/Header"
 import { MenuLateral } from "../components/MenuLateral/MenuLateral"
 
 import styles from './Layout.module.scss'
+import { Footer } from "../components/Footer/Footer"
 
 export const Layout = ({ children }) => {
 
@@ -28,11 +29,17 @@ export const Layout = ({ children }) => {
             </nav>
 
             <section className={styles.section}>
+                {menuLateralAberto ? (
+                    <div className={styles.menuLateralAberto}></div>
+                ) : (
+                    ''
+                )}
+
                 {children}
             </section>
 
             <footer className={styles.footer}>
-                <p>Footer do sistema</p>
+                <Footer />
             </footer>
 
         </main>

@@ -12,6 +12,7 @@ import { DetailUsuarioController } from '../controllers/usuario/DetailUsuarioCon
 // Controllers Empresas
 import { CreateEmpresaController } from '../controllers/empresas/CreateEmpresaController';
 import { ListEmpresaController } from '../controllers/empresas/ListEmpresaController';
+import { UpdateEmpresaController } from '../controllers/empresas/UpdateEmpresaController';
 
 import uploadConfig from '../config/multer'
 
@@ -27,5 +28,6 @@ router.get('/user', isAuthenticated, new DetailUsuarioController().handle)
 // Rotas Cliente
 router.post('/empresas', isAuthenticated, upload.single('file'), new CreateEmpresaController().handle)
 router.get('/empresas', isAuthenticated, new ListEmpresaController().handle)
+router.put('/empresas/:id', isAuthenticated, upload.single('file'), new UpdateEmpresaController().handle)
 
 export { router };

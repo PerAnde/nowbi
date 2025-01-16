@@ -40,7 +40,7 @@ export const Cadastro = () => {
         try {
 
             await auth.signUp(name, email, cpf_cnpj, password)
-            navigate("/login")
+            navigate("/")
 
         } catch (error) {
             console.log("erro ao cadastrar", error)

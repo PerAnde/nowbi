@@ -12,11 +12,75 @@
     cursor: pointer;
 }
 
+.box_menu_lateral_header {
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    background-color: var(--cor-componente);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--box-shadow-menu);
+    z-index: 999;
+}
+
+.box_menu_lateral_header.ativo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    transition: 0.3s ease;
+}
+
+.box_menu_lateral_header.inativo {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(350px);
+    transition: 0.3s ease;
+}
+
+.box_menu_lateral_header.box_notificacoes{
+    width: 400px;
+}
+
 .btn_minha_conta_header {
     display: flex;
     justify-content: flex-end;
 }
 
+.box_btns_header{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.box_btn_notificacoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.9rem;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.box_btn_notificacoes:hover{
+    background-color: var(--cor-componente);
+    transition: .3s;
+}
+
+// Notificacoes
+
+
+
+// Minha conta
 .background_btn_minha_conta {
     position: relative;
     width: 44px;
@@ -44,38 +108,6 @@
     cursor: pointer;
 }
 
-.box_minha_conta {
-    position: fixed;
-    width: 300px;
-    height: 100%;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: var(--cor-componente-90);
-    backdrop-filter: blur(15px);
-    box-shadow: var(--box-shadow-menu);
-    z-index: 999;
-}
-
-.box_minha_conta.ativo {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-    transition: 0.3s ease;
-}
-
-.box_minha_conta.inativo {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(350px);
-    transition: 0.3s ease;
-}
-
 .box_infos_conta,
 .box_menu_minha_conta,
 .box_footer_conta {
@@ -83,21 +115,35 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    padding: 0 0.75rem;
+}
+
+.box_footer_conta{
+    padding: 0 1.5rem;
 }
 
 .box_menu_minha_conta{
     gap: .4rem;
-    margin-bottom: 15rem;
 }
 
 .box_infos_conta{
     overflow: auto;
 }
 
+.box_infos_conta::-webkit-scrollbar-thumb{
+    background-color: var(--scroll-menu-minha-conta);
+}
+
 .box_btn_fechar {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     margin-bottom: 2rem;
+
+    h2{
+        margin-left: .8rem;
+    }
 
     span {
         width: 40px;
@@ -161,13 +207,6 @@
     font-size: 2rem;
 }
 
-.box_footer_conta{
-    position: absolute;
-    padding: 0 1.5rem 1.5rem;
-    bottom: 0;
-    background-color: var(--cor-componente);
-}
-
 .btn_menu.btn_logout {
     background-color: var(--vermelho-10);
     color: var(--vermelho-claro);
@@ -193,7 +232,7 @@
     color: var(--texto-secundario);
 }
 
-@media screen and (max-width: 900px){
+@media screen and (max-width: 1260px){
     .box_header {
         justify-content: space-between;
     }

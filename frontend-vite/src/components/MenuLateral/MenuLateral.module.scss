@@ -18,7 +18,7 @@
 }
 
 .conteudo_menu_lateral::-webkit-scrollbar-thumb{
-    background-color: var(--hover-link-menu-lateral);
+    background-color: var(--scroll-menu-lateral);
 }
 
 .box_logo_now_bi {
@@ -68,16 +68,17 @@
     display: flex;
     flex-direction: column;
     bottom: 0;
-    background-color: var(--hover-link-menu-lateral);
+    background: var(--gradient-verde);
+    color: var(--branco);
     padding: 2rem;
-    border-radius: 1rem;
+    border-radius: var(--border-radius-componente);
     text-align: center;
 }
 
 .box_mensagem_menu_lateral p {
     font-size: 1.4rem;
     margin-bottom: .5rem;
-    color: var(--texto-secundario);
+
 }
 
 .box_mensagem_menu_lateral span {
@@ -87,21 +88,21 @@
     gap: 1rem;
     font-size: 2rem;
     font-weight: var(--bold);
-    color: var(--amarelo);
     margin-bottom: 2rem;
 }
 
 a.btn_ativar_conta {
     padding: 1.2rem;
-    background-color: var(--verde);
+    background-color: var(--amarelo);
     border-radius: var(--border-radius-button);
-    color: var(--branco);
+    color: var(--cinza-escuro);
+    font-weight: var(--bold);
     transition: .3s;
     font-size: 1.4rem;
 }
 
 a.btn_ativar_conta:hover {
-    background-color: var(--verde-hover);
+    background-color: var(--amarelo-hover);
 }
 
 .btn_menu {
@@ -128,7 +129,7 @@ a.btn_ativar_conta:hover {
     font-size: 2rem;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1260px) {
     .box_menu_lateral.ativo {
         position: fixed;
         top: 0;
