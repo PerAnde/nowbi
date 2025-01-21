@@ -54,7 +54,7 @@
 .links_menu {
     display: flex;
     flex-direction: column;
-    gap: .4rem;
+    gap: .3rem;
 }
 
 .links_menu p {
@@ -122,7 +122,6 @@ a.btn_ativar_conta:hover {
 .btn_menu.ativo {
     background-color: var(--cor-primaria-10);
     color: var(--cor-primaria-claro);
-    font-weight: var(--semi-bold);
 }
 
 .icon {

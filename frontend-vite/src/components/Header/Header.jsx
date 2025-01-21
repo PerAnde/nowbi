@@ -48,6 +48,10 @@ export const Header = ({ setMenuLateralAberto }) => {
     // Função para buscar os dados do usuário
     const fetchUsuarioData = async () => {
         try {
+
+            // Time para testar Skeletons
+            await new Promise(resolve => setTimeout(resolve, 10000))
+
             const response = await api.get('/user');  // Fazendo a requisição GET para /user
             setUsuario(response.data);  // Atualiza o estado com os dados do usuário
             setLoading(false);  // Define o carregamento como falso quando os dados são recebidos
@@ -88,10 +92,10 @@ export const Header = ({ setMenuLateralAberto }) => {
 
                         <img src={imgPerfil} className={styles.img_perfil_minha_conta} />
 
-                        <p className={styles.nome_usuario}>{loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</p>
-                        <p className={styles.email_usuario}>{loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.email}</p>
+                        <p className={styles.nome_usuario}>{loading ? <Skeleton width={180} height={23} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</p>
+                        <p className={styles.email_usuario}>{loading ? <Skeleton width={160} height={18} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.email}</p>
                         <div className={styles.box_menu_minha_conta}>
-                            <Link to='/minhaconta' className={`${styles.btn_menu} ${location.pathname === '/minhaconta' ? styles.ativo : ''}`}><PiIcons.PiUserDuotone className={styles.icon} /> Minha Conta</Link>
+                            <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`}><PiIcons.PiUserDuotone className={styles.icon} /> Minha Conta</Link>
                             <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollarDuotone className={styles.icon} /> Financeiro</Link>
                         </div>
 

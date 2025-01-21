@@ -1,3 +1,21 @@
+.box_menu_pagina{
+    grid-column: 1/5;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+}
+
+.link_menu_pagina:hover{
+    text-decoration: underline;
+}
+
+.link_menu_pagina_atual{
+    color: var(--texto-secundario);
+    cursor: default;
+}
+
 .form_cadastro_empresa{
     grid-column: 1/5;
     display: grid;
@@ -25,13 +43,13 @@
 .picture {
     width: 120px;
     height: 120px;
-    border-radius: var(--border-radius-componente);
-    background: var(--background);
+    border-radius: 50%;
+    background: var(--border-input);
     color: var(--texto-secundario);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed var(--cor-componente);
+    border: 1px dashed var(--cor-componente);
     cursor: pointer;
     overflow: hidden;
     transition: .5s;

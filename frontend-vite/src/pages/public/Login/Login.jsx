@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 // Importando componentes
 import { Input } from '../../../components/Input/Input'
-import { Button } from '../../../components/Button/Button'
+import { ButtonAuth } from '../../../components/ButtonAuth/ButtonAuth'
 
 // Estilos
 import styles from '../Auth.module.scss'
@@ -61,6 +61,7 @@ export const Login = () => {
 
         } catch (error) {
             setUsuarioSenhaIncorreto(true)
+            setLoading(false)
             return null
         }
 
@@ -108,7 +109,7 @@ export const Login = () => {
                         ''
                     )}
 
-                    <Button type="submit" loading={loading}>Entrar</Button>
+                    <ButtonAuth type="submit" loading={loading}>Entrar</ButtonAuth>
 
                 </form>
 

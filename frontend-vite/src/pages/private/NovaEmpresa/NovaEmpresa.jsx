@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { api } from '../../../services/api'
 
 import { Layout } from '../../../layout/Layout'
@@ -62,16 +63,25 @@ export const NovaEmpresa = () => {
             setName('');
             setCnpjEmpresa('');
             setFotoEmpresa(null); // Reseta a foto após o envio
+
         } catch (error) {
             console.error('Erro ao criar empresa:', error);
             alert('Ocorreu um erro ao criar a empresa.');
         }
+
+        na
     };
 
     return (
         <Layout>
             <div className="box_conteudo_paginas">
-                <h2>Cadastrar nova empresa</h2>
+                <h2>Nova empresa</h2>
+
+                <div className={styles.box_menu_pagina}>
+                    <Link to='/dashboard' className={styles.link_menu_pagina}>Dashboard</Link>
+                    <PiIcons.PiDotOutlineFill />
+                    <p className={styles.link_menu_pagina_atual}>Nova empresa</p>
+                </div>
 
                 <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
                     <div className={`${styles.box_componente} ${styles.box_img_cadastro}`}>
@@ -91,10 +101,10 @@ export const NovaEmpresa = () => {
 
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
                         <Input type="text" placeholder="Nome da empresa" value={name} onChange={(e) => setName(e.target.value)} />
-                        <Input type="text" placeholder="CNPJ (Opcional)" value={cnpjEmpresa} onChange={(e) => setCnpjEmpresa(e.target.value)}/>
+                        <Input type="text" placeholder="CNPJ (Opcional)" value={cnpjEmpresa} onChange={(e) => setCnpjEmpresa(e.target.value)} />
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit" className='button_principal_painel'>Cadastrar</Button>
+                            <Button type="submit">Cadastrar</Button>
                         </div>
                     </div>
                 </form>

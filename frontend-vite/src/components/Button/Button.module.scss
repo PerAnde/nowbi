@@ -1,0 +1,18 @@
+button.button_principal {
+    padding: 1.2rem;
+    cursor: pointer;
+    border: none;
+    background-color: var(--button-cor-secundaria);
+    color: var(--texto-primario-button);
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+button.button_principal:hover {
+    background-color: var(--button-cor-secundaria-hover);
+}
+
+button.button_principal.btn_loading{
+    background-color: var(--border-input);
+    color: var(--texto-secundario);
+}

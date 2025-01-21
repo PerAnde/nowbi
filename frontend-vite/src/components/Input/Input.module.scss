@@ -1,0 +1,35 @@
+input,
+input.input {
+    width: 100%;
+    outline: none;
+    padding: 1.8rem;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--cor-componente);
+    border: 1px solid var(--border-input);
+    color: var(--texto-primario);
+    transition: .3s;
+}
+
+input::placeholder,
+input.input::placeholder {
+    font-family: "Barlow", serif;
+    color: var(--texto-secundario);
+}
+
+input:focus,
+input:hover,
+input.input:focus,
+input.input:hover{
+    border: 1px solid var(--cor-primaria);
+    transition: .3s;
+}
+
+input:disabled{
+    background-color: var(--background);
+    cursor: not-allowed;
+}
+
+input:disabled:hover{
+    border: 1px solid var(--border-input);
+}

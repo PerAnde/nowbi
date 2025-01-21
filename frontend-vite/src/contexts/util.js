@@ -1,5 +1,4 @@
 // Importando api do backend
-import { useNavigate } from 'react-router-dom'
 import { api } from "../services/api"
 
 // Funcao para salvar dados do usuario no localStorage
@@ -27,10 +26,7 @@ export function getUsuarioLocalStorage() {
 export function logout() {
     localStorage.removeItem('token')
 
-    // // Chamando history para redirecionar para outra pagina
-    const navigate = useNavigate()
-
-    navigate("/")
+    window.location.replace('/');
 }
 
 // Criando e exportando funcao para fazer o login   
@@ -58,7 +54,7 @@ export async function SignUpRequest(name, email, cpf_cnpj, password) {
         return request.data
 
     } catch (error) {
-        console.log(error)
+        console.log(error.response.data.error)
         return null
     }
 

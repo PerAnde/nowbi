@@ -40,7 +40,7 @@ api.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             // Token expirado ou não autorizado
             logout(); // Remove os dados do usuário do localStorage
-            window.location.href = '/'; // Redireciona para a página de login
+            window.location.replace = '/'; // Redireciona para a página de login
         }
         return Promise.reject(error);
     }

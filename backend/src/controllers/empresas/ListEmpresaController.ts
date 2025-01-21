@@ -4,13 +4,13 @@ import { ListEmpresaService } from "../../services/empresas/ListEmpresaService";
 class ListEmpresaController {
     async handle(req: Request, res: Response) {
 
-        const { usuario_id } = req;
+        const { id } = req.params;
 
-        const listEmpresaService = new ListEmpresaService();
+        const listarEmpresaService = new ListEmpresaService();
 
-        const empresas = await listEmpresaService.execute(usuario_id);
+        const empresa = await listarEmpresaService.execute(id);
 
-        return res.json(empresas)
+        return res.json(empresa)
 
     }
 }

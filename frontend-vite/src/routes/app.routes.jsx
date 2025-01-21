@@ -10,10 +10,11 @@ import { Dashboard } from '../pages/private/Dashboard/Dashboard';
 
 import { NovaEmpresa } from '../pages/private/NovaEmpresa/NovaEmpresa';
 import { Empresas } from '../pages/private/Empresas/Empresas';
-import { Suporte } from '../pages/private/Suporte/Suporte';
+import { EditarEmpresa } from '../pages/private/EditarEmpresa/EditarEmpresa';
 
 import { MinhaConta } from '../pages/private/MinhaConta/MinhaConta';
 import { Financeiro } from '../pages/private/Financeiro/Financeiro';
+import { Suporte } from '../pages/private/Suporte/Suporte';
 
 import { NotFound } from '../pages/private/errors/NotFound';
 
@@ -24,10 +25,12 @@ export const AppRoutes = () => {
                 <Route path='/' element={<Login />} />
                 <Route path='/cadastro' element={<Cadastro />} />
 
+                <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
+
                 <Route path='/dashboard' element={<PrivateRoutes><Dashboard /></PrivateRoutes>} />
                 <Route path='/novaempresa' element={<PrivateRoutes><NovaEmpresa /></PrivateRoutes>} />
                 <Route path='/empresas' element={<PrivateRoutes><Empresas /></PrivateRoutes>} />
-                <Route path='/minhaconta' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
+                <Route path='/empresas/:id' element={<PrivateRoutes><EditarEmpresa /></PrivateRoutes>} />
                 <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} />
                 <Route path='/suporte' element={<PrivateRoutes><Suporte /></PrivateRoutes>} />
 

@@ -93,20 +93,22 @@ a.btn_fatura {
     justify-content: center;
     width: 100%;
     padding: 1.2rem;
-    background-color: var(--button-amarelo);
+    background-color: var(--background);
     border-radius: var(--border-radius-button);
-    color: var(--branco);
+    color: var(--texto-secundario);
     transition: .3s;
     font-size: 1.4rem;
     text-align: center;
 }
 
 a.btn_fatura:hover {
-    background-color: var(--button-amarelo-hover);
+    background-color: var(--hover-input);
+    color: var(--texto-primario);
 }
 
 a.btn_fatura.btn_pagar_fatura {
     background-color: var(--button-cor-primaria);
+    color: var(--branco);
 }
 
 a.btn_fatura.btn_pagar_fatura:hover {
@@ -118,7 +120,7 @@ a.btn_fatura.btn_pagar_fatura:hover {
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    padding: 3rem;
+    padding: 4rem 3rem;
     background-color: var(--cor-componente);
     box-shadow: var(--box-shadow-componente);
     border-radius: var(--border-radius-componente);
@@ -140,13 +142,13 @@ a.btn_fatura.btn_pagar_fatura:hover {
 }
 
 .box_info_dashboard.info_total_empresas{
-    border-right: 1px solid var(--cor-primaria);
+    border-right: 2px solid var(--cor-primaria);
 }
 .box_info_dashboard.info_total_bis{
-    border-right: 1px solid var(--laranja);
+    border-right: 2px solid var(--laranja);
 }
 .box_info_dashboard.info_total_movimentado{
-    border-right: 1px solid var(--verde);
+    border-right: 2px solid var(--verde);
 }
 
 .box_info_dashboard.info_total_empresas p{
@@ -171,6 +173,13 @@ a.btn_fatura.btn_pagar_fatura:hover {
     color: var(--verde);
 }
 
+@media screen and (max-width: 1520px){
+    .box_btn_fatura{
+        flex-direction: column;
+        gap: .5rem;
+    }
+}
+
 @media screen and (max-width: 1000px) {
     .box_img_dashboard {
         grid-column: 1/4;
@@ -180,11 +189,23 @@ a.btn_fatura.btn_pagar_fatura:hover {
         grid-column: 1/4;
     }
 
+    .box_btn_fatura{
+        flex-direction: row;
+        gap: 2rem;
+    }
+
     .infos_card span {
         font-size: 2.5rem;
     }
 
     .box_info_dashboard{
         grid-column: 1/4;
+    }
+}
+
+@media screen and (max-width: 420px){
+    .box_btn_fatura{
+        flex-direction: column;
+        gap: .5rem;
     }
 }

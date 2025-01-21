@@ -14,17 +14,23 @@ import * as PiIcons from 'react-icons/pi';
 export const Dashboard = () => {
 
     const [usuario, setUsuario] = useState(null);
-    const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
+    const [totalEmpresas, setTotalEmpresas] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Função para buscar os dados do usuário
     const fetchUsuarioData = async () => {
         try {
-            const response = await api.get('/user');  // Fazendo a requisição GET para /user
-            setUsuario(response.data);  // Atualiza o estado com os dados do usuário
-            setLoading(false);  // Define o carregamento como falso quando os dados são recebidos
+
+            // Time para testar Skeletons
+            await new Promise(resolve => setTimeout(resolve, 7000))
+
+            const response = await api.get('/user');
+            setUsuario(response.data);
+            setLoading(false);
+
         } catch (error) {
             console.error('Erro ao buscar dados do usuário:', error);
-            setLoading(false);  // Define o carregamento como falso em caso de erro
+            setLoading(false);
         }
 
     };
@@ -32,6 +38,19 @@ export const Dashboard = () => {
     useEffect(() => {
         fetchUsuarioData();
     }, []);
+
+    const buscarEmpresas = async () => {
+        try {
+            const response = await api.get('/empresas');
+            setTotalEmpresas(response.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        buscarEmpresas();
+    }, [])
 
     return (
         <Layout>
@@ -44,7 +63,7 @@ export const Dashboard = () => {
 
                     <div className={styles.texto_bem_vindo}>
                         <h1>Bem vindo de volta 👋 <br />
-                            {loading ? <Skeleton width={200} height={27} baseColor='rgb(232, 235, 239, .2)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</h1>
+                            {loading ? <Skeleton width={200} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</h1>
                         <p>Acompanhe e gerencie seus BIs agora mesmo!</p>
 
                         <Link to="/empresas" className={styles.btn_cor_primaria}>Ver Empresas</Link>
@@ -80,7 +99,7 @@ export const Dashboard = () => {
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_empresas}`}>
                     <div className={styles.infos_card}>
                         <p>Total de Empresas</p>
-                        <span>5</span>
+                        <span>{loading ? <Skeleton width={50} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : totalEmpresas ? totalEmpresas.length : 0}</span>
                     </div>
                     <div className={styles.icone_card}>
                         <PiIcons.PiBuildingOfficeDuotone />
@@ -98,12 +117,12 @@ export const Dashboard = () => {
                 </div>
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_movimentado}`}>
-                <div className={styles.infos_card}>
+                    <div className={styles.infos_card}>
                         <p>Total Movimentado</p>
                         <span>R$ 15.468,12</span>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiMoneyWavyDuotone />
+                        <PiIcons.PiCurrencyDollarDuotone  />
                     </div>
                 </div>
 

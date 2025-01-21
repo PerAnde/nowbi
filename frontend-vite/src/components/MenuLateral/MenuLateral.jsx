@@ -52,7 +52,7 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                             <PiIcons.PiBuildingOfficeDuotone className={styles.icon} /> Empresas
                         </Link>
                         <p>Conta</p>
-                        <Link to='/minhaconta' className={`${styles.btn_menu} ${location.pathname === '/minhaconta' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiUserDuotone className={styles.icon} /> Minha conta
                         </Link>
                         <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`} onClick={handleLinkClick} >
@@ -64,11 +64,11 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         </Link>
                     </div>
 
-                    <div className={styles.box_mensagem_menu_lateral}>
+                    {/* <div className={styles.box_mensagem_menu_lateral}>
                         <p>Período experimental</p>
                         <span>7 dias restantes</span>
                         <Link className={styles.btn_ativar_conta}>Ativar conta</Link>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

@@ -1,13 +1,17 @@
 import prismaClient from "../../prisma";
 
 class ListEmpresaService {
-    async execute(usuario_id: string) {
+    async execute(id: string) {
 
         const empresa = await prismaClient.empresa.findMany({
             where: {
-                usuario_id: usuario_id,
-            }
-        })
+                id: id,
+            },
+        });
+
+        if (!empresa) {
+            throw new Error("Empresa não encontrada!")
+        }
 
         return empresa;
 
