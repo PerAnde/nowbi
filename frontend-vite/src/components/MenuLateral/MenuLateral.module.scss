@@ -68,7 +68,7 @@
     display: flex;
     flex-direction: column;
     bottom: 0;
-    background: var(--gradient-verde);
+    background: var(--gradient-azul);
     color: var(--branco);
     padding: 2rem;
     border-radius: var(--border-radius-componente);
@@ -93,7 +93,7 @@
 
 a.btn_ativar_conta {
     padding: 1.2rem;
-    background-color: var(--amarelo);
+    background-color: var(--branco);
     border-radius: var(--border-radius-button);
     color: var(--cinza-escuro);
     font-weight: var(--bold);
@@ -102,7 +102,7 @@ a.btn_ativar_conta {
 }
 
 a.btn_ativar_conta:hover {
-    background-color: var(--amarelo-hover);
+    background-color: var(--hover-input);
 }
 
 .btn_menu {
@@ -120,7 +120,7 @@ a.btn_ativar_conta:hover {
 }
 
 .btn_menu.ativo {
-    background-color: var(--cor-primaria-10);
+    background-color: var(--cor-primaria-15);
     color: var(--cor-primaria-claro);
 }
 

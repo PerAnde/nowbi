@@ -8,9 +8,9 @@ import { Cadastro } from '../pages/public/Cadastro/Cadastro';
 
 import { Dashboard } from '../pages/private/Dashboard/Dashboard';
 
-import { NovaEmpresa } from '../pages/private/NovaEmpresa/NovaEmpresa';
 import { Empresas } from '../pages/private/Empresas/Empresas';
 import { EditarEmpresa } from '../pages/private/EditarEmpresa/EditarEmpresa';
+import { Categorias } from '../pages/private/Categorias/Categorias';
 
 import { MinhaConta } from '../pages/private/MinhaConta/MinhaConta';
 import { Financeiro } from '../pages/private/Financeiro/Financeiro';
@@ -26,11 +26,10 @@ export const AppRoutes = () => {
                 <Route path='/cadastro' element={<Cadastro />} />
 
                 <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
-
                 <Route path='/dashboard' element={<PrivateRoutes><Dashboard /></PrivateRoutes>} />
-                <Route path='/novaempresa' element={<PrivateRoutes><NovaEmpresa /></PrivateRoutes>} />
                 <Route path='/empresas' element={<PrivateRoutes><Empresas /></PrivateRoutes>} />
                 <Route path='/empresas/:id' element={<PrivateRoutes><EditarEmpresa /></PrivateRoutes>} />
+                <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
                 <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} />
                 <Route path='/suporte' element={<PrivateRoutes><Suporte /></PrivateRoutes>} />
 

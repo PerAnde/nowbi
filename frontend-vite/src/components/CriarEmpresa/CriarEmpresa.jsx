@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { api } from '../../../services/api'
+import { api } from '../../services/api'
 
-import { Layout } from '../../../layout/Layout'
-
-import { Input } from '../../../components/Input/Input'
-import { Button } from '../../../components/Button/Button'
+import { Input } from '../Input/Input'
+import { Button } from '../Button/Button'
 
 import * as PiIcons from 'react-icons/pi';
 
-import styles from './NovaEmpresa.module.scss'
+import styles from './CriarEmpresa.module.scss'
 
-export const NovaEmpresa = () => {
+export const CriarEmpresa = (props) => {
 
     // Preview da imagem enviada
     const [fotoEmpresa, setFotoEmpresa] = useState(null);
@@ -58,29 +55,23 @@ export const NovaEmpresa = () => {
 
             // Envia os dados usando a API
             await api.post('/empresas', formData)
-
-            alert('Empresa criada com sucesso!');
-            setName('');
-            setCnpjEmpresa('');
-            setFotoEmpresa(null); // Reseta a foto após o envio
+            props.setTrigger(false)
 
         } catch (error) {
             console.error('Erro ao criar empresa:', error);
             alert('Ocorreu um erro ao criar a empresa.');
         }
 
-        na
     };
 
-    return (
-        <Layout>
-            <div className="box_conteudo_paginas">
-                <h2>Nova empresa</h2>
+    return (props.trigger) ? (
 
-                <div className={styles.box_menu_pagina}>
-                    <Link to='/dashboard' className={styles.link_menu_pagina}>Dashboard</Link>
-                    <PiIcons.PiDotOutlineFill />
-                    <p className={styles.link_menu_pagina_atual}>Nova empresa</p>
+        <div className={styles.popup}>
+            <div className={styles.popupNovaEmpresa}>
+                <div className={styles.box_btn_fechar}>
+                    <span>
+                        <PiIcons.PiXBold className={styles.close} onClick={() => { props.setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName('') }} />
+                    </span>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
@@ -110,6 +101,7 @@ export const NovaEmpresa = () => {
                 </form>
 
             </div>
-        </Layout>
-    )
+        </div>
+
+    ) : "";
 }

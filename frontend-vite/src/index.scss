@@ -12,24 +12,27 @@
     // Cores
     --cor-primaria: #008aee;
     --cor-primaria-claro: #50b3fa;
-    --cor-primaria-10: rgba(0, 138, 238, .1);
+    --cor-primaria-15: rgba(0, 138, 238, .15);
 
     --background: #f4f6f8;
 
     --vermelho: #ff3030;
     --vermelho-claro: #ff6e6e;
-    --vermelho-10: rgba(255, 48, 48, .05);
+    --vermelho-15: rgba(255, 48, 48, .15);
     --vermelho-hover: #c02525;
     --branco: #ffffff;
     --cinza-escuro: #1c252e;
     --verde: #00b276;
+    --verde-15: rgba(0, 178, 118, .15);
     --verde-claro: #39e0a9;
     --verde-hover: #009b67;
     --amarelo: #ffab00;
+    --amarelo-15: rgba(255, 171, 0, .15);
     --amarelo-hover: #e49800;
     --laranja: #e4630e;
+    --laranja-15: rgba(228, 99, 14, .15);
 
-    --gradient-verde: linear-gradient(120deg, #007967, #00a66f);
+    --gradient-azul: linear-gradient(120deg, #0352ad, #078bec);
 
     --cor-componente: #ffffff;
 
@@ -58,6 +61,7 @@
     --button-cor-primaria: #008aee;
     --button-cor-primaria-hover: #007cd4;
     --button-cor-secundaria: #1c252e;
+    --button-cor-secundaria-10: rgba(28, 37, 46, .2);
     --button-cor-secundaria-hover: #26323d;
     --button-disabled: #d4d4d4;
 
@@ -69,6 +73,7 @@
 
     // Font Weigth
     --regular: 400;
+    --medium: 500;
     --semi-bold: 600;
     --bold: 700;
 
@@ -90,6 +95,7 @@
 
 
     --button-cor-secundaria: #ffffff;
+    --button-cor-secundaria-10: rgba(255, 255, 255, .2);
     --button-cor-secundaria-hover: #e8ebef;
 
     --texto-primario-button: #171e25;
@@ -150,6 +156,19 @@ h3 {
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.header-paginas {
+    grid-column: 1/5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.box-header{
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
 }
 

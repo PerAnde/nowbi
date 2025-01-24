@@ -43,24 +43,24 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                     <div className={styles.links_menu}>
                         <p>Visão Geral</p>
                         <Link to='/dashboard' className={`${styles.btn_menu} ${location.pathname === '/dashboard' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiAlignLeftDuotone className={styles.icon} /> Dashboard
-                        </Link>
-                        <Link to='/novaempresa' className={`${styles.btn_menu} ${location.pathname === '/novaempresa' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiPlusBold className={styles.icon} /> Nova Empresa
+                            <PiIcons.PiAlignLeft className={styles.icon} /> Dashboard
                         </Link>
                         <Link to='/empresas' className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiBuildingOfficeDuotone className={styles.icon} /> Empresas
+                            <PiIcons.PiBuildings  className={styles.icon} /> Empresas
+                        </Link>
+                        <Link to='/categorias' className={`${styles.btn_menu} ${location.pathname === '/categorias' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiListPlus  className={styles.icon} /> Categorias
                         </Link>
                         <p>Conta</p>
                         <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiUserDuotone className={styles.icon} /> Minha conta
+                            <PiIcons.PiUser className={styles.icon} /> Minha conta
                         </Link>
                         <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiCurrencyDollarDuotone className={styles.icon} /> Financeiro
+                            <PiIcons.PiCurrencyDollar className={styles.icon} /> Financeiro
                         </Link>
                         <p>Suporte</p>
                         <Link to='/suporte' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiQuestionDuotone className={styles.icon} /> Ajuda
+                            <PiIcons.PiQuestion className={styles.icon} /> Ajuda
                         </Link>
                     </div>
 

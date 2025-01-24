@@ -45,4 +45,35 @@ model Empresa {
     @@map("empresas")
 }
 
+model Categoria {
+    id   String        @id @default(uuid())
+    name String
+    tipo TipoCategoria
+
+    subcategorias SubCategoria[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now())
+
+    @@map("categorias")
+}
+
+model SubCategoria {
+    id   String @id @default(uuid())
+    name String
+
+    categoria_id String
+    categoria    Categoria @relation(fields: [categoria_id], references: [id])
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now())
+
+    @@map("sub_categorias")
+}
+
+enum TipoCategoria {
+    RECEITA
+    DESPESA
+}
+
 // Criar uma migrate npx prisma migrate dev

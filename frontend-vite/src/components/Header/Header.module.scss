@@ -8,7 +8,7 @@
 
 .btn_menu_lateral{
     display: none;
-    font-size: 2rem;
+    font-size: 2.5rem;
     cursor: pointer;
 }
 
@@ -76,10 +76,6 @@
     transition: .3s;
 }
 
-// Notificacoes
-
-
-
 // Minha conta
 .background_btn_minha_conta {
     position: relative;
@@ -140,11 +136,7 @@
     justify-content: space-between;
     width: 100%;
     margin-bottom: 2rem;
-
-    h2{
-        margin-left: .8rem;
-    }
-
+    
     span {
         width: 40px;
         height: 40px;
@@ -198,7 +190,7 @@
 }
 
 .btn_menu.ativo {
-    background-color: var(--cor-primaria-10);
+    background-color: var(--cor-primaria-15);
     color: var(--cor-primaria-claro);
 }
 
@@ -207,7 +199,7 @@
 }
 
 .btn_menu.btn_logout {
-    background-color: var(--vermelho-10);
+    background-color: var(--vermelho-15);
     color: var(--vermelho-claro);
     transition: .3s;
 }

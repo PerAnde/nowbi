@@ -33,8 +33,8 @@ export const Theme = () => {
         <div className={styles.boxBtnTheme}>
             <input className={styles.darkModeInput} type="checkbox" id="darkmode-toggle" onChange={toggleTheme} defaultChecked={selectedTheme === "dark"} />
             <label className={styles.darkModeLabel} htmlFor="darkmode-toggle">
-                <PiIcons.PiSunDuotone className={styles.light} />
-                <PiIcons.PiMoonDuotone className={styles.dark} />
+                <PiIcons.PiSun className={styles.light} />
+                <PiIcons.PiMoon className={styles.dark} />
             </label>
         </div>
     );

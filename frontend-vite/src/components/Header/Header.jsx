@@ -9,6 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 import styles from './Header.module.scss';
 
 import * as PiIcons from 'react-icons/pi';
+import { CgMenuLeft } from "react-icons/cg";
 
 import imgPerfil from '../../assets/images/avatar-25.jpg';
 
@@ -69,7 +70,7 @@ export const Header = ({ setMenuLateralAberto }) => {
         <div className={styles.box_header}>
 
             <div className={styles.btn_menu_lateral}>
-                <PiIcons.PiCaretDoubleRightDuotone onClick={() => setMenuLateralAberto((prev) => !prev)} />
+                <CgMenuLeft  onClick={() => setMenuLateralAberto((prev) => !prev)} />
             </div>
 
             <div className={styles.btn_minha_conta_header} ref={menuMinhaContaRef}>
@@ -95,8 +96,8 @@ export const Header = ({ setMenuLateralAberto }) => {
                         <p className={styles.nome_usuario}>{loading ? <Skeleton width={180} height={23} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</p>
                         <p className={styles.email_usuario}>{loading ? <Skeleton width={160} height={18} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.email}</p>
                         <div className={styles.box_menu_minha_conta}>
-                            <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`}><PiIcons.PiUserDuotone className={styles.icon} /> Minha Conta</Link>
-                            <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollarDuotone className={styles.icon} /> Financeiro</Link>
+                            <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`}><PiIcons.PiUser className={styles.icon} /> Minha Conta</Link>
+                            <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollar className={styles.icon} /> Financeiro</Link>
                         </div>
 
                     </div>
@@ -106,7 +107,7 @@ export const Header = ({ setMenuLateralAberto }) => {
                             <p>Tema</p>
                             <Theme />
                         </div>
-                        <Link className={`${styles.btn_menu} ${styles.btn_logout}`} onClick={logout}><PiIcons.PiSignInDuotone className={styles.icon} /> Sair</Link>
+                        <Link className={`${styles.btn_menu} ${styles.btn_logout}`} onClick={logout}><PiIcons.PiSignIn className={styles.icon} /> Sair</Link>
                     </div>
 
                 </div>

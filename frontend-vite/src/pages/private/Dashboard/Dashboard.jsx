@@ -98,31 +98,31 @@ export const Dashboard = () => {
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_empresas}`}>
                     <div className={styles.infos_card}>
-                        <p>Total de Empresas</p>
+                        <p>Empresas</p>
                         <span>{loading ? <Skeleton width={50} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : totalEmpresas ? totalEmpresas.length : 0}</span>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiBuildingOfficeDuotone />
+                        <PiIcons.PiBuildings />
                     </div>
                 </div>
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_bis}`}>
                     <div className={styles.infos_card}>
-                        <p>Total de BI's</p>
+                        <p>BI's</p>
                         <span>42</span>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiGaugeDuotone />
+                        <PiIcons.PiChartBar />
                     </div>
                 </div>
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_movimentado}`}>
                     <div className={styles.infos_card}>
-                        <p>Total Movimentado</p>
-                        <span>R$ 15.468,12</span>
+                        <p>BI's Concluídos</p>
+                        <span>14</span>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiCurrencyDollarDuotone  />
+                        <PiIcons.PiCheckFat />
                     </div>
                 </div>
 
