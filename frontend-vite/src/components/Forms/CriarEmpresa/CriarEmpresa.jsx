@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { api } from '../../services/api'
+import { api } from '../../../services/api'
 
-import { Input } from '../Input/Input'
-import { Button } from '../Button/Button'
+import { Input } from '../../Input/Input'
+import { Button } from '../../Button/Button'
 
 import * as PiIcons from 'react-icons/pi';
 
-import styles from './CriarEmpresa.module.scss'
+import styles from '../Forms.module.scss'
 
 export const CriarEmpresa = (props) => {
 
@@ -37,11 +37,6 @@ export const CriarEmpresa = (props) => {
             return;
         }
 
-        if (!fotoEmpresa) {
-            alert("Por favor, envie uma foto da empresa.");
-            return;
-        }
-
         try {
             const formData = new FormData();
             formData.append('name', name);
@@ -69,6 +64,7 @@ export const CriarEmpresa = (props) => {
         <div className={styles.popup}>
             <div className={styles.popupNovaEmpresa}>
                 <div className={styles.box_btn_fechar}>
+                    <h3>Nova empresa</h3>
                     <span>
                         <PiIcons.PiXBold className={styles.close} onClick={() => { props.setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName('') }} />
                     </span>

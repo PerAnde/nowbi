@@ -13,6 +13,7 @@ class ListCategoriasService {
                 id: true,
                 name: true,
                 tipo: true,
+                subcategorias: true,
             }
         })
 

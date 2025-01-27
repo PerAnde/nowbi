@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../../services/api';
-import { logout } from '../../contexts/util';
+import { api } from '../../../services/api';
+import { logout } from '../../../contexts/util';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -11,9 +11,9 @@ import styles from './Header.module.scss';
 import * as PiIcons from 'react-icons/pi';
 import { CgMenuLeft } from "react-icons/cg";
 
-import imgPerfil from '../../assets/images/avatar-25.jpg';
+import imgPerfil from '../../../assets/images/avatar-25.jpg';
 
-import { Theme } from '../../theme/Theme';
+import { Theme } from '../../../theme/Theme';
 
 export const Header = ({ setMenuLateralAberto }) => {
 

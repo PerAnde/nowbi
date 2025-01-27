@@ -35,6 +35,7 @@
     --gradient-azul: linear-gradient(120deg, #0352ad, #078bec);
 
     --cor-componente: #ffffff;
+    --cor-componente-secundario: #e8ebef;
 
     --cor-componente-principal: #141a21;
     --cor-componente-principal-85: rgba(20, 26, 33, .85);
@@ -83,6 +84,7 @@
     --background: #141a21;
 
     --cor-componente: #1c252e;
+    --cor-componente-secundario: #181f27;
 
     --cor-componente-principal: #1c252e;
 
@@ -92,7 +94,6 @@
     --scroll-menu-lateral: #293541;
 
     --scroll-menu-minha-conta: #293541;
-
 
     --button-cor-secundaria: #ffffff;
     --button-cor-secundaria-10: rgba(255, 255, 255, .2);
@@ -111,6 +112,7 @@
 html {
     font-size: 62.5%; // 1 rem = 10 pixels
     -webkit-font-smoothing: antialiased;
+    // overflow: hidden;
 }
 
 body {

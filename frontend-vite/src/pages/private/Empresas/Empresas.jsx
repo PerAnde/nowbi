@@ -6,7 +6,7 @@ import { api } from '../../../services/api'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
-import { CriarEmpresa } from '../../../components/CriarEmpresa/CriarEmpresa'
+import { CriarEmpresa } from '../../../components/Forms/CriarEmpresa/CriarEmpresa'
 
 import { Layout } from '../../../layout/Layout'
 
