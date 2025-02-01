@@ -22,7 +22,7 @@ export const Dashboard = () => {
         try {
 
             // Time para testar Skeletons
-            await new Promise(resolve => setTimeout(resolve, 7000))
+            // await new Promise(resolve => setTimeout(resolve, 7000))
 
             const response = await api.get('/user');
             setUsuario(response.data);
@@ -98,32 +98,35 @@ export const Dashboard = () => {
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_empresas}`}>
                     <div className={styles.infos_card}>
-                        <p>Empresas</p>
                         <span>{loading ? <Skeleton width={50} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : totalEmpresas ? totalEmpresas.length : 0}</span>
+                        <p>Empresas</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiBuildings />
+                        <PiIcons.PiBuildingDuotone  />
                     </div>
+                    <span className={styles.background_card}></span>
                 </div>
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_bis}`}>
                     <div className={styles.infos_card}>
-                        <p>BI's</p>
                         <span>42</span>
+                        <p>BI's</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiChartBar />
+                        <PiIcons.PiChartBarDuotone />
                     </div>
+                    <span className={styles.background_card}></span>
                 </div>
 
-                <div className={`${styles.box_info_dashboard} ${styles.info_total_movimentado}`}>
+                <div className={`${styles.box_info_dashboard} ${styles.info_total_concluido}`}>
                     <div className={styles.infos_card}>
-                        <p>BI's Concluídos</p>
                         <span>14</span>
+                        <p>BI's Concluídos</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiCheckFat />
+                        <PiIcons.PiCheckFatDuotone />
                     </div>
+                    <span className={styles.background_card}></span>
                 </div>
 
             </div>

@@ -20,6 +20,8 @@ import { DeleteEmpresaController } from '../controllers/empresas/DeleteEmpresaCo
 // Controllers Categorias
 import { CreateCategoriaController } from '../controllers/categorias/CreateCategoriaController';
 import { ListCategoriasController } from '../controllers/categorias/ListCategoriasController';
+import { UpdateCategoriaController } from '../controllers/categorias/UpdateCategoriaController';
+import { DeleteCategoriaController } from '../controllers/categorias/DeleteCategoriaController';
 
 // Controllers SubCategorias
 import { CreateSubCategoriaController } from '../controllers/subcategoria/CreateSubCategoriaController';
@@ -46,6 +48,8 @@ router.delete('/empresas/:id', isAuthenticated, new DeleteEmpresaController().ha
 // Rotas Categorias
 router.post('/categorias', isAuthenticated, new CreateCategoriaController().handle)
 router.get('/categorias', isAuthenticated, new ListCategoriasController().handle)
+router.put('/categorias/:id', isAuthenticated, new UpdateCategoriaController().handle)
+router.delete('/categorias/:id', isAuthenticated, new DeleteCategoriaController().handle)
 
 // Rotas SubCategorias
 router.post('/subcategorias', isAuthenticated, new CreateSubCategoriaController().handle)

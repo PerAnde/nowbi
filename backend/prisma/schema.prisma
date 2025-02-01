@@ -24,7 +24,8 @@ model Usuario {
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
 
-    empresas Empresa[]
+    empresas   Empresa[]
+    categorias Categoria[]
 
     @@map("usuarios")
 }
@@ -50,10 +51,13 @@ model Categoria {
     name String
     tipo TipoCategoria
 
-    subcategorias SubCategoria[]
-
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
+
+    subcategorias SubCategoria[]
+
+    usuario_id  String
+    usuario    Usuario @relation(fields: [usuario_id], references: [id])
 
     @@map("categorias")
 }

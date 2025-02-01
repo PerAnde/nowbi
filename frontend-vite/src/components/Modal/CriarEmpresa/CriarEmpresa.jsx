@@ -6,7 +6,7 @@ import { Button } from '../../Button/Button'
 
 import * as PiIcons from 'react-icons/pi';
 
-import styles from '../Forms.module.scss'
+import styles from '../Modal.module.scss'
 
 export const CriarEmpresa = (props) => {
 
@@ -62,7 +62,7 @@ export const CriarEmpresa = (props) => {
     return (props.trigger) ? (
 
         <div className={styles.popup}>
-            <div className={styles.popupNovaEmpresa}>
+            <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova empresa</h3>
                     <span>

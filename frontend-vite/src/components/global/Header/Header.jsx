@@ -51,7 +51,7 @@ export const Header = ({ setMenuLateralAberto }) => {
         try {
 
             // Time para testar Skeletons
-            await new Promise(resolve => setTimeout(resolve, 10000))
+            // await new Promise(resolve => setTimeout(resolve, 10000))
 
             const response = await api.get('/user');  // Fazendo a requisição GET para /user
             setUsuario(response.data);  // Atualiza o estado com os dados do usuário

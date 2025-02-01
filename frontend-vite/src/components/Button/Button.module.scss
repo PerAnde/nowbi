@@ -4,7 +4,7 @@ button.button_principal {
     border: none;
     background-color: var(--button-cor-secundaria);
     color: var(--texto-primario-button);
-    border-radius: 5px;
+    border-radius: var(--border-radius-button);
     transition: 0.5s;
 }
 

@@ -116,6 +116,7 @@ a.btn_fatura.btn_pagar_fatura:hover {
 }
 
 .box_info_dashboard {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -124,6 +125,12 @@ a.btn_fatura.btn_pagar_fatura:hover {
     background-color: var(--cor-componente);
     box-shadow: var(--box-shadow-componente);
     border-radius: var(--border-radius-componente);
+    overflow: hidden;
+}
+
+.infos_card {
+    display: flex;
+    flex-direction: column;
 }
 
 .infos_card span {
@@ -131,33 +138,19 @@ a.btn_fatura.btn_pagar_fatura:hover {
     font-size: 3rem;
 }
 
-.infos_card {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
 .icone_card {
     font-size: 3rem;
 }
 
-.box_info_dashboard.info_total_empresas{
-    border-right: 2px solid var(--cor-primaria);
-}
-.box_info_dashboard.info_total_bis{
-    border-right: 2px solid var(--laranja);
-}
-.box_info_dashboard.info_total_movimentado{
-    border-right: 2px solid var(--verde);
+.box_info_dashboard.info_total_empresas p {
+    color: var(--texto-secundario);
 }
 
-.box_info_dashboard.info_total_empresas p{
+.box_info_dashboard.info_total_bis p {
     color: var(--texto-secundario);
 }
-.box_info_dashboard.info_total_bis p{
-    color: var(--texto-secundario);
-}
-.box_info_dashboard.info_total_movimentado p{
+
+.box_info_dashboard.info_total_concluido p {
     color: var(--texto-secundario);
 }
 
@@ -169,12 +162,37 @@ a.btn_fatura.btn_pagar_fatura:hover {
     color: var(--laranja);
 }
 
-.box_info_dashboard.info_total_movimentado .icone_card {
+.box_info_dashboard.info_total_concluido .icone_card {
     color: var(--verde);
 }
 
-@media screen and (max-width: 1520px){
-    .box_btn_fatura{
+.box_info_dashboard span.background_card {
+    position: absolute;
+    top: -1.5rem;
+    right: -6rem;
+    width: 150px;
+    height: 150px;
+    border-radius: var(--border-radius-componente);
+    transform: rotate(35deg);
+}
+
+.box_info_dashboard.info_total_empresas span.background_card {
+    background-image: linear-gradient(60deg, var(--cor-primaria-15), var(--cor-componente));
+    border: 1px solid var(--cor-primaria-15);
+}
+
+.box_info_dashboard.info_total_bis span.background_card {
+    background-image: linear-gradient(60deg, var(--laranja-15), var(--cor-componente));
+    border: 1px solid var(--laranja-15);
+}
+
+.box_info_dashboard.info_total_concluido span.background_card {
+    background-image: linear-gradient(60deg, var(--verde-15), var(--cor-componente));
+    border: 1px solid var(--verde-15);
+}
+
+@media screen and (max-width: 1520px) {
+    .box_btn_fatura {
         flex-direction: column;
         gap: .5rem;
     }
@@ -189,7 +207,7 @@ a.btn_fatura.btn_pagar_fatura:hover {
         grid-column: 1/4;
     }
 
-    .box_btn_fatura{
+    .box_btn_fatura {
         flex-direction: row;
         gap: 2rem;
     }
@@ -198,13 +216,13 @@ a.btn_fatura.btn_pagar_fatura:hover {
         font-size: 2.5rem;
     }
 
-    .box_info_dashboard{
+    .box_info_dashboard {
         grid-column: 1/4;
     }
 }
 
-@media screen and (max-width: 420px){
-    .box_btn_fatura{
+@media screen and (max-width: 420px) {
+    .box_btn_fatura {
         flex-direction: column;
         gap: 1rem;
     }

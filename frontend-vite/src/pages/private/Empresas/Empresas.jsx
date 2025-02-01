@@ -6,7 +6,7 @@ import { api } from '../../../services/api'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
-import { CriarEmpresa } from '../../../components/Forms/CriarEmpresa/CriarEmpresa'
+import { CriarEmpresa } from '../../../components/Modal/CriarEmpresa/CriarEmpresa'
 
 import { Layout } from '../../../layout/Layout'
 
@@ -36,7 +36,7 @@ export const Empresas = () => {
         try {
 
             // Time para testar Skeletons
-            await new Promise(resolve => setTimeout(resolve, 2000))
+            // await new Promise(resolve => setTimeout(resolve, 2000))
 
             const response = await api.get("/empresas");
 
@@ -158,7 +158,7 @@ export const Empresas = () => {
                                 <PiIcons.PiListMagnifyingGlassDuotone />
                             </span>
                             <p>Nenhuma empresa cadastrada!<br></br>Clique no botão abaixo para cadastrar uma nova.</p>
-                            <Link to='/novaempresa' className={styles.btn_link_principal}><PiIcons.PiPlusBold /> Nova empresa</Link>
+                            <Link className={styles.btn_link_principal} onClick={() => setPopUpNovaEmpresa(true)}><PiIcons.PiPlusBold /> Nova empresa</Link>
                         </div>
                     )}
                 </div>

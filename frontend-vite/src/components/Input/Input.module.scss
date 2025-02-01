@@ -20,16 +20,31 @@ input.input::placeholder {
 input:focus,
 input:hover,
 input.input:focus,
-input.input:hover{
+input.input:hover {
     border: 1px solid var(--cor-primaria);
     transition: .3s;
 }
 
-input:disabled{
+input:disabled {
     background-color: var(--background);
     cursor: not-allowed;
 }
 
-input:disabled:hover{
+input:disabled:hover {
     border: 1px solid var(--border-input);
+}
+
+input[type="radio"] {
+    appearance: none;
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--texto-primario);
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked{
+    background-image: radial-gradient(var(--branco) 35%, var(--cor-primaria) 40%);
 }
