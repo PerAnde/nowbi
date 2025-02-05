@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { Header } from "../components/global/Header/Header"
 import { MenuLateral } from "../components/global/MenuLateral/MenuLateral"
+import { Footer } from "../components/global/Footer/Footer"
 
 import styles from './Layout.module.scss'
-import { Footer } from "../components/global/Footer/Footer"
 
 export const Layout = ({ children }) => {
 

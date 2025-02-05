@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../../../services/api';
+import { api } from '../../../api/api';
+import { buscarCategorias, excluirCategoria } from '../../../services/categorias';
 
 import { Layout } from '../../../layout/Layout';
 
 import { CriarCategoria } from '../../../components/Modal/CriarCategoria/CriarCategoria';
 import { EditarCategoria } from '../../../components/Modal/EditarCategoria/EditarCategoria';
+
+import { CriarSubCategoria } from '../../../components/Modal/CriarSubCategoria/CriarSubCategoria';
+import { EditarSubCategoria } from '../../../components/Modal/EditarSubCategoria/EditarSubCategoria';
+
 import { ModalConfirmacao } from '../../../components/Modal/Confirmacao/ModalConfirmacao';
 
 import * as PiIcons from 'react-icons/pi';
@@ -13,7 +18,8 @@ import styles from './Categorias.module.scss';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
-import { CriarSubCategoria } from '../../../components/Modal/CriarSubCategoria/CriarSubCategoria';
+import { toast } from 'sonner';
+
 
 export const Categorias = () => {
 
@@ -28,10 +34,13 @@ export const Categorias = () => {
     const [popUpEditarCategoria, setPopUpEditarCategoria] = useState(false);
 
     const [popUpCriarSubCategoria, setPopUpCriarSubCategoria] = useState(false);
+    const [popUpEditarSubCategoria, setPopUpEditarSubCategoria] = useState(false);
 
     // Estados para categorias
     const [modalConfirmacao, setModalConfirmacao] = useState(false)
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
+
+    const [subCategoriaSelecionada, setSubCategoriaSelecionada] = useState(null)
 
     const menuCategoriaRefs = useRef([]);
 
@@ -67,46 +76,42 @@ export const Categorias = () => {
         setMostrarSubCategorias((prev) => (prev === index ? null : index));
     };
 
-    const buscarCategorias = async () => {
-        try {
-
-            setLoading(true)
-
-            // Time para testar Skeletons
-            // await new Promise(resolve => setTimeout(resolve, 500))
-
-            const response = await api.get('/categorias', {
-                params: { tipo: filtroAtivo },
-            });
-            setCategorias(response.data);
-            setLoading(false)
-
-        } catch (error) {
-            console.error('Erro ao buscar categorias:', error);
-        }
-    };
-
+    // Buscar categorias
     useEffect(() => {
-        buscarCategorias();
-    }, [filtroAtivo]);
+        buscarCategorias(filtroAtivo, setCategorias, setLoading);
+    }, [filtroAtivo])
 
+    // Abrir modal de confirmacao
     const handleModalConfirmacao = (categoria) => {
         setCategoriaSelecionada(categoria);
         setModalConfirmacao(true);
     };
 
+    // Excluir categoria
     const handleConfirmarExclusao = async () => {
         if (!categoriaSelecionada) return;
-
-        try {
-
-            await api.delete(`/categorias/${categoriaSelecionada.id}`);
-            setModalConfirmacao(false)
-            buscarCategorias();
-        } catch (error) {
-            console.error(error)
-        }
+        await excluirCategoria(categoriaSelecionada.id, () => buscarCategorias(filtroAtivo, setCategorias, setLoading), setModalConfirmacao);
     }
+
+    // const handleModalConfirmacaoSubCategoria = (subcategoria) => {
+    //     setSubCategoriaSelecionada(subcategoria);
+    //     setModalConfirmacao(true);
+    // };
+
+    // Excluir subcategoria
+    // const handleConfirmarExclusaoSubCategoria = async () => {
+    //     if (!subCategoriaSelecionada) return;
+
+    //     try {
+
+    //         await api.delete(`/subcategorias/${subCategoriaSelecionada.id}`);
+    //         setModalConfirmacao(false)
+    //         toast.success("Subcategoria excluída com sucesso!")
+    //         buscarCategorias();
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
 
     return (
         <Layout>
@@ -142,7 +147,7 @@ export const Categorias = () => {
                             setFiltroAtivo('DESPESA')
                         }}>Despesas</Link>
                     </div>
-                    <div className={styles.btn_atualizar} onClick={buscarCategorias}>
+                    <div className={styles.btn_atualizar} onClick={() => buscarCategorias(filtroAtivo, setCategorias, setLoading)}>
                         <PiIcons.PiArrowsClockwiseBold />
                         <p>Atualizar</p>
                     </div>
@@ -210,8 +215,17 @@ export const Categorias = () => {
                                         {categoria.subcategorias.map((subcategoria) => (
                                             <div className={styles.dados_subcategoria} key={subcategoria.id}>
                                                 <p>{subcategoria.name}</p>
-                                                <p className={styles.btn_editar_subcategoria}><PiIcons.PiNotePencilBold /> Editar</p>
-                                                <p className={styles.btn_excluir_subcategoria}><PiIcons.PiTrashBold /> Excluir</p>
+                                                <Link className={styles.btn_editar_subcategoria}
+                                                    onClick={() => {
+                                                        setSubCategoriaSelecionada(subcategoria)
+                                                        setPopUpEditarSubCategoria(true)
+                                                    }}
+                                                ><PiIcons.PiNotePencilBold /> Editar</Link>
+                                                {/* <Link className={styles.btn_excluir_subcategoria}
+                                                    onClick={() => handleModalConfirmacaoSubCategoria({
+                                                        id: subcategoria.id, name: subcategoria.name
+                                                    })}
+                                                ><PiIcons.PiTrashBold /> Excluir</Link> */}
                                             </div>
                                         ))}
                                     </div>
@@ -245,6 +259,12 @@ export const Categorias = () => {
                 categoria={categoriaSelecionada}
             />
 
+            <EditarSubCategoria
+                trigger={popUpEditarSubCategoria}
+                setTrigger={setPopUpEditarSubCategoria}
+                subcategoria={subCategoriaSelecionada}
+            />
+
             <ModalConfirmacao
                 trigger={modalConfirmacao}
                 setTrigger={setModalConfirmacao}
@@ -253,6 +273,15 @@ export const Categorias = () => {
                 </>}
                 onConfirm={handleConfirmarExclusao}
             />
+
+            {/* <ModalConfirmacao
+                trigger={modalConfirmacao}
+                setTrigger={setModalConfirmacao}
+                mensagem={<>
+                    Tem certeza que deseja excluir essa subcategoria?
+                </>}
+                onConfirm={handleConfirmarExclusaoSubCategoria}
+            /> */}
         </Layout>
     );
 };

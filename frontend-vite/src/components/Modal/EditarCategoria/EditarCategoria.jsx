@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../../services/api';
+import { api } from '../../../api/api';
+import { toast } from 'sonner';
 
 import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
@@ -8,6 +9,7 @@ import * as PiIcons from 'react-icons/pi';
 import styles from '../Modal.module.scss';
 
 export const EditarCategoria = ({ trigger, setTrigger, categoria }) => {
+
     const [name, setName] = useState('');
     const [tipo, setTipo] = useState('');
 
@@ -23,12 +25,12 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria }) => {
         e.preventDefault();
 
         if (!name) {
-            alert('Por favor, preencha o nome da categoria.');
+            toast.warning("Preencha o nome da categoria!")
             return;
         }
 
         if (!tipo) {
-            alert('Por favor, selecione RECEITA ou DESPESA');
+            toast.warning("Selecione RECEITA ou DESPESA")
             return;
         }
 
@@ -36,12 +38,11 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria }) => {
             const data = { name, tipo };
 
             await api.put(`/categorias/${categoria.id}`, data); // Atualiza a categoria pelo ID
+            toast.success("Categoria atualizada com sucesso!")
 
-            alert('Categoria atualizada com sucesso!');
             setTrigger(false);
         } catch (error) {
-            console.error('Erro ao atualizar categoria:', error);
-            alert('Erro ao atualizar categoria.');
+            toast.error("Erro ao atualizar a categoria!")
         }
     };
 

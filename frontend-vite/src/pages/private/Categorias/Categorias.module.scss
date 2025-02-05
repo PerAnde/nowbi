@@ -236,7 +236,38 @@ a.btn_link_principal:hover {
 .dados_subcategoria {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;  
+
+    p{
+        margin-right: 1.5rem;
+    }
+    
+    a{
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-radius: var(--border-radius-button);
+        gap: 1rem;
+        transition: .3s;
+    }
+
+    a.btn_editar_subcategoria{
+        background-color: var(--background);
+        border-radius: var(--border-radius-button);
+    }
+
+    a.btn_editar_subcategoria:hover{
+        color: var(--texto-primario);
+    }
+
+    a.btn_excluir_subcategoria{
+        background-color: var(--vermelho-15);
+    }
+
+    a.btn_excluir_subcategoria:hover{
+        background-color: var(--vermelho);
+        color: var(--branco);
+    }
 }
 
 .btn_editar_subcategoria{

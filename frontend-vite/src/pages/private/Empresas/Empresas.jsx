@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom'
-import { api } from '../../../services/api'
+import { api } from '../../../api/api';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -139,8 +139,6 @@ export const Empresas = () => {
                                     </div>
 
                                 </div>
-
-                                <hr />
 
                                 <div className={styles.box_btns_empresa}>
                                     <Link className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>

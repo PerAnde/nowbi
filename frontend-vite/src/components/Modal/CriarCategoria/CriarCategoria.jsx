@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { api } from '../../../services/api'
+import { api } from '../../../api/api'
 
 import { Input } from '../../Input/Input'
 import { Button } from '../../Button/Button'
@@ -7,24 +7,23 @@ import { Button } from '../../Button/Button'
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../Modal.module.scss'
+import { toast } from 'sonner';
 
 export const CriarCategoria = (props) => {
 
     const [name, setName] = useState("");
     const [tipo, setTipo] = useState("");
 
-    console.log(name, tipo)
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!name) {
-            alert("Por favor, preencha o nome da categoria.");
+            toast.warning("Preencha o nome da categoria!")
             return;
         }
 
         if (!tipo) {
-            alert("Por favor, selecione RECEITA ou DESPESA");
+            toast.warning("Por favor, selecione RECEITA ou DESPESA")
             return;
         }
 
@@ -38,12 +37,12 @@ export const CriarCategoria = (props) => {
             await api.post('/categorias', data)
             setName('')
             setTipo('')
+            toast.success("Categoria cadastrada com sucesso!")
             props.setTrigger(false)
 
 
         } catch (error) {
-            console.error('Erro ao criar categoria:', error);
-            alert('Erro ao criar categoria.');
+            toast.error("Erro ao criar categoria, tente novamente mais tarde!")
         }
 
     };

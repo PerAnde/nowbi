@@ -1,5 +1,6 @@
 // Importando api do backend
-import { api } from "../services/api"
+import { api } from "../api/api"
+import { toast } from "sonner"
 
 // Funcao para salvar dados do usuario no localStorage
 export function setUsuarioLocalStorage(token) {
@@ -40,7 +41,7 @@ export async function LoginRequest(email, password) {
 
     } catch (error) {
         // Se der erro retorna null
-        console.log(error)
+        toast.error(error.response.data.error)
         return null
     }
 }
@@ -50,12 +51,12 @@ export async function SignUpRequest(name, email, cpf_cnpj, password) {
     try {
 
         const request = await api.post('register', { name, email, cpf_cnpj, password })
-
+        toast.success("Conta criada com sucesso, seja bem vindo!")
         return request.data
 
     } catch (error) {
-        console.log(error.response.data.error)
-        return null
+        toast.error(error.response.data.error)
+        throw new Error(error.response.data.error)
     }
 
 }

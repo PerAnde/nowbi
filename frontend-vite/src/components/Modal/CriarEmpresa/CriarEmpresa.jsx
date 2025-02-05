@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { api } from '../../../services/api'
+import { api } from '../../../api/api'
 
 import { Input } from '../../Input/Input'
 import { Button } from '../../Button/Button'
@@ -7,6 +7,7 @@ import { Button } from '../../Button/Button'
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../Modal.module.scss'
+import { toast } from 'sonner';
 
 export const CriarEmpresa = (props) => {
 
@@ -33,7 +34,7 @@ export const CriarEmpresa = (props) => {
         e.preventDefault();
 
         if (!name) {
-            alert("Por favor, preencha o nome da empresa.");
+            toast.warning("Preencha o nome da empresa!")
             return;
         }
 
@@ -50,11 +51,11 @@ export const CriarEmpresa = (props) => {
 
             // Envia os dados usando a API
             await api.post('/empresas', formData)
+            toast.success("Empresa criada com sucesso!")
             props.setTrigger(false)
 
         } catch (error) {
-            console.error('Erro ao criar empresa:', error);
-            alert('Ocorreu um erro ao criar a empresa.');
+            toast.error('Erro ao criar a empresa!')
         }
 
     };

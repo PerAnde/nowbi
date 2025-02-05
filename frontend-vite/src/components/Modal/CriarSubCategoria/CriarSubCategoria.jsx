@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../../services/api';
+import { api } from '../../../api/api';
+import { toast } from 'sonner';
 
 import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
@@ -23,12 +24,12 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria }) => {
         e.preventDefault();
 
         if (!name) {
-            alert('Por favor, preencha o nome da subcategoria.');
+            toast.warning("Preencha o nome da subcategoria!");
             return;
         }
 
         if (!categoriaId) {
-            alert('Erro: ID da categoria não encontrado.');
+            toast.warning("ID da categoria não encontrado!");
             return;
         }
 
@@ -39,13 +40,13 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria }) => {
             };
 
             await api.post('/subcategorias', data);
+            toast.success("Subcategoria criada com sucesso!")
 
             setName('');
             setTrigger(false);
 
         } catch (error) {
-            console.error('Erro ao criar subcategoria:', error);
-            alert('Erro ao criar subcategoria.');
+            toast.error("Erro ao criar subcategoria!")
         }
     };
 

@@ -15,6 +15,7 @@ import * as PiIcons from "react-icons/pi";
 
 // Imagens
 import iconeLogo from '../../../assets/images/icone-logo-black.png'
+import { toast } from 'sonner'
 
 export const Login = () => {
 
@@ -22,7 +23,6 @@ export const Login = () => {
     const auth = useAuth()
 
     // Dados incorretos
-    const [usuarioSenhaIncorreto, setUsuarioSenhaIncorreto] = useState(false)
     const [campoEmailObrigatorio, setCampoEmailObrigatorio] = useState(false)
     const [campoPasswordObrigatorio, setCampoPasswordObrigatorio] = useState(false)
 
@@ -48,6 +48,7 @@ export const Login = () => {
 
         // Impede a continuação se algum campo estiver inválido
         if (!isEmailValid || !isPasswordValid) {
+            toast.warning("Preencha todos os campos para continuar!")
             return;
         }
 
@@ -60,7 +61,7 @@ export const Login = () => {
             setLoading(false)
 
         } catch (error) {
-            setUsuarioSenhaIncorreto(true)
+            toast.error("Usuário ou senha inválido!")
             setLoading(false)
             return null
         }
@@ -102,12 +103,6 @@ export const Login = () => {
                             ''
                         )}
                     </label>
-
-                    {usuarioSenhaIncorreto ? (
-                        <span className={styles.usuario_senha_invalido}>Usuário ou senha inválido!</span>
-                    ) : (
-                        ''
-                    )}
 
                     <ButtonAuth type="submit" loading={loading}>Entrar</ButtonAuth>
 

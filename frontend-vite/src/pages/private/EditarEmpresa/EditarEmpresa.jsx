@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { api } from '../../../services/api'
+import { api } from '../../../api/api';
 import { Layout } from '../../../layout/Layout'
 
 import styles from './EditarEmpresa.module.scss'

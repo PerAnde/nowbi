@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { api } from '../../../services/api'
+import { api } from '../../../api/api';
 
 import { Layout } from '../../../layout/Layout'
 

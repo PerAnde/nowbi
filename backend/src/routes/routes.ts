@@ -25,6 +25,8 @@ import { DeleteCategoriaController } from '../controllers/categorias/DeleteCateg
 
 // Controllers SubCategorias
 import { CreateSubCategoriaController } from '../controllers/subcategoria/CreateSubCategoriaController';
+import { UpdateSubCategoriaController } from '../controllers/subcategoria/UpdateSubCategoriaController';
+import { DeleteSubCategoriaController } from '../controllers/subcategoria/DeleteSubCategoriaController';
 
 import uploadConfig from '../config/multer'
 
@@ -53,5 +55,7 @@ router.delete('/categorias/:id', isAuthenticated, new DeleteCategoriaController(
 
 // Rotas SubCategorias
 router.post('/subcategorias', isAuthenticated, new CreateSubCategoriaController().handle)
+router.put('/subcategorias/:id', isAuthenticated, new UpdateSubCategoriaController().handle)
+router.delete('/subcategorias/:id', isAuthenticated, new DeleteSubCategoriaController().handle)
 
 export { router };

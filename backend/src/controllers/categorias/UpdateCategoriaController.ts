@@ -11,13 +11,13 @@ class UpdateCategoriaController {
         const updateCategoriaService = new UpdateCategoriaService();
 
         try {
-            const empresa = await updateCategoriaService.execute({
+            const categoria = await updateCategoriaService.execute({
                 id,
                 name,
                 tipo,
             });
 
-            return res.json(empresa);
+            return res.json(categoria);
         } catch (error) {
             return res.status(400).json({ error: error.message });
         }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../../../services/api';
+import { api } from '../../../api/api';
 import { logout } from '../../../contexts/util';
 
 import Skeleton from 'react-loading-skeleton';

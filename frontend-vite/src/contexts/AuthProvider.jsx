@@ -53,7 +53,10 @@ export const AuthProvider = ({ children }) => {
         try {
             const usuario = await SignUpRequest(name, email, cpf_cnpj, password);
             if (usuario) {
+
+                await autenticacao(email, password)
                 return true;
+                
             } else {
                 return false;
             }
