@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../../api/api';
+import { criarSubcategoria } from '../../../services/subcategorias';
 import { toast } from 'sonner';
 
 import { Input } from '../../Input/Input';
@@ -10,44 +10,30 @@ import * as PiIcons from 'react-icons/pi';
 import styles from '../Modal.module.scss';
 
 export const CriarSubCategoria = ({ trigger, setTrigger, categoria }) => {
+
     const [categoriaId, setCategoriaId] = useState('');
     const [name, setName] = useState('');
 
-    // Atualiza categoriaId quando a categoria mudar
+    // Pegando ID da categoria pai
     useEffect(() => {
         if (categoria?.id) {
             setCategoriaId(categoria.id);
         }
     }, [categoria]);
 
+
+    // Criar subcategoria
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name) {
-            toast.warning("Preencha o nome da subcategoria!");
-            return;
-        }
+        const success = await criarSubcategoria(name, categoriaId)
 
-        if (!categoriaId) {
-            toast.warning("ID da categoria não encontrado!");
-            return;
-        }
-
-        try {
-            const data = {
-                name: name,
-                categoria_id: categoriaId,
-            };
-
-            await api.post('/subcategorias', data);
-            toast.success("Subcategoria criada com sucesso!")
-
-            setName('');
+        if(success){
+            setName("");
+            setCategoriaId("");
             setTrigger(false);
-
-        } catch (error) {
-            toast.error("Erro ao criar subcategoria!")
         }
+
     };
 
     return trigger ? (
