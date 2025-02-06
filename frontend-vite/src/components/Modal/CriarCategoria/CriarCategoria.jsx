@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { api } from '../../../api/api'
+import { criarCategoria } from '../../../services/categorias';
 
 import { Input } from '../../Input/Input'
 import { Button } from '../../Button/Button'
@@ -7,9 +7,8 @@ import { Button } from '../../Button/Button'
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../Modal.module.scss'
-import { toast } from 'sonner';
 
-export const CriarCategoria = (props) => {
+export const CriarCategoria = ({ trigger, setTrigger }) => {
 
     const [name, setName] = useState("");
     const [tipo, setTipo] = useState("");
@@ -17,44 +16,22 @@ export const CriarCategoria = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name) {
-            toast.warning("Preencha o nome da categoria!")
-            return;
+        const success = await criarCategoria(name, tipo);
+        if (success) {
+            setName("");
+            setTipo("");
+            setTrigger(false);
         }
-
-        if (!tipo) {
-            toast.warning("Por favor, selecione RECEITA ou DESPESA")
-            return;
-        }
-
-        try {
-
-            const data = {
-                name: name,
-                tipo: tipo,
-            }
-
-            await api.post('/categorias', data)
-            setName('')
-            setTipo('')
-            toast.success("Categoria cadastrada com sucesso!")
-            props.setTrigger(false)
-
-
-        } catch (error) {
-            toast.error("Erro ao criar categoria, tente novamente mais tarde!")
-        }
-
     };
 
-    return (props.trigger) ? (
+    return trigger ? (
 
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova Categoria</h3>
-                    <span>
-                        <PiIcons.PiXBold className={styles.close} onClick={() => { props.setTrigger(false), setName(''), setTipo('') }} />
+                    <span onClick={() => setTrigger(false)}>
+                        <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 

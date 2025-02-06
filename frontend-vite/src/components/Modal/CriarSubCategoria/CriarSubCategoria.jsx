@@ -55,13 +55,12 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria }) => {
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova Subcategoria</h3>
-                    <span>
+                    <span onClick={() => {
+                        setTrigger(false);
+                        setName('');
+                    }}>
                         <PiIcons.PiXBold
                             className={styles.close}
-                            onClick={() => {
-                                setTrigger(false);
-                                setName('');
-                            }}
                         />
                     </span>
                 </div>

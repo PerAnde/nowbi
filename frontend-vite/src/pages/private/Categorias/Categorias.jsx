@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../../../api/api';
-import { buscarCategorias, excluirCategoria } from '../../../services/categorias';
-
 import { Layout } from '../../../layout/Layout';
+
+import { buscarCategorias, excluirCategoria, excluirSubcategoria } from '../../../services/categorias';
 
 import { CriarCategoria } from '../../../components/Modal/CriarCategoria/CriarCategoria';
 import { EditarCategoria } from '../../../components/Modal/EditarCategoria/EditarCategoria';
@@ -12,14 +11,13 @@ import { CriarSubCategoria } from '../../../components/Modal/CriarSubCategoria/C
 import { EditarSubCategoria } from '../../../components/Modal/EditarSubCategoria/EditarSubCategoria';
 
 import { ModalConfirmacao } from '../../../components/Modal/Confirmacao/ModalConfirmacao';
+import { ModalConfirmacaoSubcategoria } from '../../../components/Modal/ConfirmacaoSubcategoria/ModalConfirmacaoSubcategoria';
 
 import * as PiIcons from 'react-icons/pi';
 import styles from './Categorias.module.scss';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
-import { toast } from 'sonner';
-
 
 export const Categorias = () => {
 
@@ -38,6 +36,7 @@ export const Categorias = () => {
 
     // Estados para categorias
     const [modalConfirmacao, setModalConfirmacao] = useState(false)
+    const [modalConfirmacaoSubcategoria, setModalConfirmacaoSubcategoria] = useState(false)
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
 
     const [subCategoriaSelecionada, setSubCategoriaSelecionada] = useState(null)
@@ -81,6 +80,11 @@ export const Categorias = () => {
         buscarCategorias(filtroAtivo, setCategorias, setLoading);
     }, [filtroAtivo])
 
+    // Criar categoria
+    const criarCategoria = () => {
+        setPopUpNovaCategoria(true);
+    }
+
     // Abrir modal de confirmacao
     const handleModalConfirmacao = (categoria) => {
         setCategoriaSelecionada(categoria);
@@ -93,25 +97,16 @@ export const Categorias = () => {
         await excluirCategoria(categoriaSelecionada.id, () => buscarCategorias(filtroAtivo, setCategorias, setLoading), setModalConfirmacao);
     }
 
-    // const handleModalConfirmacaoSubCategoria = (subcategoria) => {
-    //     setSubCategoriaSelecionada(subcategoria);
-    //     setModalConfirmacao(true);
-    // };
+    const handleModalConfirmacaoSubCategoria = (subcategoria) => {
+        setSubCategoriaSelecionada(subcategoria);
+        setModalConfirmacaoSubcategoria(true);
+    };
 
     // Excluir subcategoria
-    // const handleConfirmarExclusaoSubCategoria = async () => {
-    //     if (!subCategoriaSelecionada) return;
-
-    //     try {
-
-    //         await api.delete(`/subcategorias/${subCategoriaSelecionada.id}`);
-    //         setModalConfirmacao(false)
-    //         toast.success("Subcategoria excluída com sucesso!")
-    //         buscarCategorias();
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
+    const handleConfirmarExclusaoSubCategoria = async () => {
+        if(!subCategoriaSelecionada) return;
+        await excluirSubcategoria(subCategoriaSelecionada.id, () => buscarCategorias(filtroAtivo, setCategorias, setLoading), setModalConfirmacaoSubcategoria);
+    }
 
     return (
         <Layout>
@@ -130,7 +125,7 @@ export const Categorias = () => {
 
                     {categorias.length > 0 ? (
                         <div className="box-header esquerdo">
-                            <Link className={styles.btn_link_principal} onClick={() => setPopUpNovaCategoria(true)} ><PiIcons.PiPlusBold /> Nova categoria</Link>
+                            <Link className={styles.btn_link_principal} onClick={() => criarCategoria()} ><PiIcons.PiPlusBold /> Nova categoria</Link>
                         </div>
                     ) : ('')}
 
@@ -221,11 +216,11 @@ export const Categorias = () => {
                                                         setPopUpEditarSubCategoria(true)
                                                     }}
                                                 ><PiIcons.PiNotePencilBold /> Editar</Link>
-                                                {/* <Link className={styles.btn_excluir_subcategoria}
+                                                <Link className={styles.btn_excluir_subcategoria}
                                                     onClick={() => handleModalConfirmacaoSubCategoria({
                                                         id: subcategoria.id, name: subcategoria.name
                                                     })}
-                                                ><PiIcons.PiTrashBold /> Excluir</Link> */}
+                                                ><PiIcons.PiTrashBold /> Excluir</Link>
                                             </div>
                                         ))}
                                     </div>
@@ -274,14 +269,14 @@ export const Categorias = () => {
                 onConfirm={handleConfirmarExclusao}
             />
 
-            {/* <ModalConfirmacao
-                trigger={modalConfirmacao}
-                setTrigger={setModalConfirmacao}
+            <ModalConfirmacaoSubcategoria
+                trigger={modalConfirmacaoSubcategoria}
+                setTrigger={setModalConfirmacaoSubcategoria}
                 mensagem={<>
                     Tem certeza que deseja excluir essa subcategoria?
                 </>}
                 onConfirm={handleConfirmarExclusaoSubCategoria}
-            /> */}
+            />
         </Layout>
     );
 };

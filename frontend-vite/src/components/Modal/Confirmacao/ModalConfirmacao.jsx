@@ -11,8 +11,8 @@ export const ModalConfirmacao = ({ trigger, setTrigger, mensagem, onConfirm }) =
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Confirmar exclusão</h3>
-                    <span>
-                        <PiIcons.PiXBold className={styles.close} onClick={() => setTrigger(false)} />
+                    <span onClick={() => setTrigger(false)}>
+                        <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 

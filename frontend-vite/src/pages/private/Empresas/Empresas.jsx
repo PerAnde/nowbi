@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { format } from 'date-fns';
 import { Link } from 'react-router-dom'
 import { api } from '../../../api/api';
+import { buscarEmpresas } from '../../../services/empresas';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -31,31 +31,9 @@ export const Empresas = () => {
         }
     }, [popUpNovaEmpresa]);
 
-    const buscarEmpreas = async () => {
-
-        try {
-
-            // Time para testar Skeletons
-            // await new Promise(resolve => setTimeout(resolve, 2000))
-
-            const response = await api.get("/empresas");
-
-            const dataCriacaoEmpresas = response.data.map(empresa => ({
-                ...empresa,
-                created_at: format(new Date(empresa.created_at), "dd MMM yyyy")
-            }))
-
-            setEmpresas(dataCriacaoEmpresas)
-            setLoading(false);
-
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
-
+    // Buscar empresas
     useEffect(() => {
-        buscarEmpreas()
+        buscarEmpresas(setEmpresas, setLoading)
     }, [])
 
     return (
@@ -105,8 +83,6 @@ export const Empresas = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                <hr />
 
                                 <div className={styles.box_btns_empresa}>
                                     <Skeleton width={100} height={35} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />

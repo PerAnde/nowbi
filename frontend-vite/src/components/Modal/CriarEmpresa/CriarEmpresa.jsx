@@ -66,8 +66,8 @@ export const CriarEmpresa = (props) => {
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova empresa</h3>
-                    <span>
-                        <PiIcons.PiXBold className={styles.close} onClick={() => { props.setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName('') }} />
+                    <span onClick={() => { props.setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName('') }}>
+                        <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
