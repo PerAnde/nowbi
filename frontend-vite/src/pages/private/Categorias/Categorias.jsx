@@ -199,7 +199,7 @@ export const Categorias = () => {
                                             <p>Editar</p>
                                         </Link>
                                         <hr />
-                                        <Link className={styles.btn_excluir} onClick={() => handleModalConfirmacao({ id: categoria.id, name: categoria.name })}>
+                                        <Link className={styles.btn_excluir} onClick={() => handleModalConfirmacao({ id: categoria.id })}>
                                             <PiIcons.PiTrashBold />
                                             <p>Excluir</p>
                                         </Link>
@@ -218,7 +218,7 @@ export const Categorias = () => {
                                                 ><PiIcons.PiNotePencilBold /> Editar</Link>
                                                 <Link className={styles.btn_excluir_subcategoria}
                                                     onClick={() => handleModalConfirmacaoSubCategoria({
-                                                        id: subcategoria.id, name: subcategoria.name
+                                                        id: subcategoria.id
                                                     })}
                                                 ><PiIcons.PiTrashBold /> Excluir</Link>
                                             </div>

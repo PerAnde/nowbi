@@ -24,3 +24,38 @@ export const buscarEmpresas = async (setEmpresas, setLoading) => {
     }
 
 }
+
+// Criar Empresa
+
+// Editar Empresa
+export const editarEmpresa = async (id, formData) => {
+    try {
+        await api.put(`/empresas/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        toast.success("Empresa atualizada com sucesso!");
+        return true;
+
+    } catch (error) {
+        toast.error("Ocorreu um erro ao atualizar a empresa.");
+        return false;
+    }
+};
+
+// Excluir Empresa
+export const excluirEmpresa = async (empresaId) => {
+
+    try{
+
+        await api.delete(`/empresas/${empresaId}`);
+        toast.success("Empresa excluída com sucesso!")
+
+    } catch (error){
+        toast.error("Erro ao excluir a empresa!")
+        console.error("Erro ao excluir a empresa!", error)
+    }
+
+}

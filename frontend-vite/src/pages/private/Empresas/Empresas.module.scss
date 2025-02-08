@@ -57,6 +57,13 @@ a.btn_link_principal:hover {
     padding: 3rem 0;
 }
 
+.box_header_empresa {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3rem;
+    margin-bottom: 2rem;
+}
+
 .box_img_logo_empresa {
     display: flex;
     align-items: center;
@@ -66,7 +73,6 @@ a.btn_link_principal:hover {
     background-color: var(--background);
     border-radius: var(--border-radius-componente);
     overflow: hidden;
-    margin: 0 3rem 2rem 3rem;
 }
 
 .box_img_logo_empresa img {
@@ -76,9 +82,83 @@ a.btn_link_principal:hover {
     object-position: center;
 }
 
-.box_infos_empresa {
+// Botao Opcoes Empresa
+.btn_opcoes_empresa {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn_opcoes_empresa span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.btn_opcoes_empresa span {
+    font-size: 2rem;
+}
+
+.btn_opcoes_empresa:hover span {
+    background-color: var(--background);
+}
+
+.box_opcoes_empresas {
+    width: 235px;
     display: flex;
     flex-direction: column;
+    position: absolute;
+    background-color: var(--cor-componente);
+    box-shadow: var(--box-shadow-menu);
+    border-radius: var(--border-radius-componente);
+    gap: .5rem;
+    right: 4rem;
+    padding: .5rem;
+    z-index: 997;
+
+    a {
+        display: flex;
+        align-items: center;
+        padding: 1.3rem;
+        gap: 1rem;
+        border-radius: var(--border-radius-button);
+    }
+
+    a.btn_excluir {
+        color: var(--vermelho);
+    }
+
+    a:hover {
+        background-color: var(--background);
+    }
+
+    hr {
+        border: 1px solid var(--border-input);
+    }
+}
+
+.box_opcoes_empresas.ativo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    transition: 0.3s ease;
+}
+
+.box_opcoes_empresas.inativo {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(40px);
+    transition: 0.3s ease;
+}
+
+// Infos empresa
+.box_infos_empresa {
+    display: flex;
     justify-content: space-between;
     margin: 0 3rem;
 }
@@ -101,6 +181,8 @@ a.btn_link_principal:hover {
         color: var(--cor-primaria);
     }
 }
+
+// ------
 
 .box_btns_empresa {
     display: flex;

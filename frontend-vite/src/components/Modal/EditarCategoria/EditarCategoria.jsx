@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../../api/api';
-import { toast } from 'sonner';
+import { editarSubcategoria } from '../../../services/subcategorias';
 
 import { Input } from '../../Input/Input';
 import { Button } from '../../Button/Button';
@@ -8,7 +7,7 @@ import { Button } from '../../Button/Button';
 import * as PiIcons from 'react-icons/pi';
 import styles from '../Modal.module.scss';
 
-export const EditarCategoria = ({ trigger, setTrigger, categoria }) => {
+export const EditarCategoria = ({ trigger, setTrigger, categoria}) => {
 
     const [name, setName] = useState('');
     const [tipo, setTipo] = useState('');
@@ -24,26 +23,14 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name) {
-            toast.warning("Preencha o nome da categoria!")
-            return;
-        }
+        const success = await editarSubcategoria(name, tipo, categoria, setTrigger);
 
-        if (!tipo) {
-            toast.warning("Selecione RECEITA ou DESPESA")
-            return;
-        }
-
-        try {
-            const data = { name, tipo };
-
-            await api.put(`/categorias/${categoria.id}`, data); // Atualiza a categoria pelo ID
-            toast.success("Categoria atualizada com sucesso!")
-
+        if (success) {
+            setName("");
+            setTipo("");
             setTrigger(false);
-        } catch (error) {
-            toast.error("Erro ao atualizar a categoria!")
         }
+
     };
 
     return trigger ? (

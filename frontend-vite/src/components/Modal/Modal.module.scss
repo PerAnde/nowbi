@@ -197,4 +197,14 @@ img.picture_image {
     color: var(--texto-secundario);
 }
 
+.box_confirmacao{
+    display: flex;
+}
+
+.checkbox_confirmar{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
 // Estilos Modal Confirmacao

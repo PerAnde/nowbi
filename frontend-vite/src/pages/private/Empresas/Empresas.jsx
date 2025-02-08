@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../../../api/api';
-import { buscarEmpresas } from '../../../services/empresas';
+import { buscarEmpresas, excluirEmpresa } from '../../../services/empresas';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
 import { CriarEmpresa } from '../../../components/Modal/CriarEmpresa/CriarEmpresa'
+import { EditarEmpresa } from '../../../components/Modal/Empresa/EditarEmpresa/EditarEmpresa'
+import { ExcluirEmpresa } from '../../../components/Modal/Empresa/ExcluirEmpresa/ExcluirEmpresa';
 
 import { Layout } from '../../../layout/Layout'
 
@@ -21,7 +23,15 @@ export const Empresas = () => {
     const [empresas, setEmpresas] = useState([])
     const [loading, setLoading] = useState(true);
 
+    const [menuAberto, setMenuAberto] = useState(null);
     const [popUpNovaEmpresa, setPopUpNovaEmpresa] = useState(false);
+
+    const [empresaSelecionada, setEmpresaSelecionada] = useState(null)
+
+    const [popUpEditarEmpresa, setPopUpEditarEmpresa] = useState(false)
+    const [popUpExcluirEmpresa, setPopUpExcluirEmpresa] = useState(false)
+
+    const menuEmpresaRef = useRef([]);
 
     useEffect(() => {
         if (popUpNovaEmpresa) {
@@ -30,6 +40,37 @@ export const Empresas = () => {
             document.body.style.overflow = 'auto'; // Restaura o scroll
         }
     }, [popUpNovaEmpresa]);
+
+    // Abrir menu empresa
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (
+                menuEmpresaRef.current[menuAberto] &&
+                !menuEmpresaRef.current[menuAberto].contains(event.target)
+            ) {
+                setMenuAberto(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, [menuAberto]);
+
+    const handleMenuClick = (index) => {
+        setMenuAberto((prev) => (prev === index ? null : index));
+    };
+
+    // Abrir modal de confirmacao
+    const abrirModalExcluirEmpresa = (empresa) => {
+        setEmpresaSelecionada(empresa);
+        setPopUpExcluirEmpresa(true);
+    };
+
+    const confirmarExclusao = async () => {
+        await excluirEmpresa(empresaSelecionada.id)
+    }
 
     // Buscar empresas
     useEffect(() => {
@@ -91,16 +132,41 @@ export const Empresas = () => {
                             </div>
                         ))
                     ) : empresas.length > 0 ? (
-                        empresas.map((empresa, id) => (
-                            <div key={id} className={styles.box_componente}>
-                                <div className={styles.box_img_logo_empresa}>
-                                    <img
-                                        src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : logoEmpresa1}
-                                        alt="Logo Empresa"
-                                    />
+                        empresas.map((empresa, index) => (
+                            <div key={empresa.id} className={styles.box_componente}>
+
+                                <div className={styles.box_header_empresa}>
+
+                                    <div className={styles.box_img_logo_empresa}>
+                                        <img
+                                            src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : logoEmpresa1}
+                                            alt="Logo Empresa"
+                                        />
+                                    </div>
+
+                                    <div className={styles.btn_opcoes_empresa} ref={(el) => (menuEmpresaRef.current[index] = el)}>
+                                        <span onClick={() => handleMenuClick(index)}>
+                                            <PiIcons.PiDotsThreeVerticalBold />
+                                        </span>
+                                        <div className={`${styles.box_opcoes_empresas} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
+                                            <Link onClick={() => {
+                                                setEmpresaSelecionada(empresa)
+                                                setPopUpEditarEmpresa(true)
+                                            }}>
+                                                <PiIcons.PiNotePencilBold />
+                                                <p>Editar</p>
+                                            </Link>
+                                            <Link className={styles.btn_excluir} onClick={() => abrirModalExcluirEmpresa({ id: empresa.id })}>
+                                                <PiIcons.PiTrashBold />
+                                                <p>Excluir</p>
+                                            </Link>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <div className={styles.box_infos_empresa}>
+
                                     <div className={styles.infos_empresa}>
                                         <div>
                                             <h3>{empresa.name}</h3>
@@ -120,9 +186,6 @@ export const Empresas = () => {
                                     <Link className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
                                         Gerenciar BI's
                                     </Link>
-                                    <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_editar}`}>
-                                        Editar
-                                    </Link>
                                 </div>
                             </div>
                         ))
@@ -139,6 +202,17 @@ export const Empresas = () => {
             </div>
 
             <CriarEmpresa trigger={popUpNovaEmpresa} setTrigger={setPopUpNovaEmpresa} />
+            <EditarEmpresa trigger={popUpEditarEmpresa} setTrigger={setPopUpEditarEmpresa} empresa={empresaSelecionada} />
+
+            <ExcluirEmpresa
+                trigger={popUpExcluirEmpresa}
+                setTrigger={setPopUpExcluirEmpresa}
+                mensagem={<>
+                    Todos os dados e <strong>BIs</strong> dessa empresa serão excluídos permanentemente!
+                </>}
+                onConfirm={confirmarExclusao}
+            />
+
         </Layout>
     )
 }
