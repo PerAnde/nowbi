@@ -183,7 +183,7 @@ export const Empresas = () => {
                                 </div>
 
                                 <div className={styles.box_btns_empresa}>
-                                    <Link className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
+                                    <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
                                         Gerenciar BI's
                                     </Link>
                                 </div>

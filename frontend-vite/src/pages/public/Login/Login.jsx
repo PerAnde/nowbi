@@ -61,7 +61,6 @@ export const Login = () => {
             setLoading(false)
 
         } catch (error) {
-            toast.error("Usuário ou senha inválido!")
             setLoading(false)
             return null
         }

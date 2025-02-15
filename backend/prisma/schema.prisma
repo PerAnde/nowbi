@@ -22,7 +22,7 @@ model Usuario {
     password String
 
     created_at DateTime @default(now())
-    updated_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     empresas   Empresa[]
     categorias Categoria[]
@@ -30,7 +30,7 @@ model Usuario {
     @@map("usuarios")
 }
 
-// Model Cliente
+// Model Empresa
 model Empresa {
     id           String  @id @default(uuid())
     name         String
@@ -38,30 +38,34 @@ model Empresa {
     logo_empresa String?
 
     created_at DateTime @default(now())
-    updated_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     usuario_id String
     usuario    Usuario @relation(fields: [usuario_id], references: [id])
 
+    bis BusinessIntelligence[]
+
     @@map("empresas")
 }
 
+// Model Categoria
 model Categoria {
     id   String        @id @default(uuid())
     name String
     tipo TipoCategoria
 
     created_at DateTime @default(now())
-    updated_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     subcategorias SubCategoria[]
 
-    usuario_id  String
+    usuario_id String
     usuario    Usuario @relation(fields: [usuario_id], references: [id])
 
     @@map("categorias")
 }
 
+// Model Subcategoria
 model SubCategoria {
     id   String @id @default(uuid())
     name String
@@ -70,11 +74,27 @@ model SubCategoria {
     categoria    Categoria @relation(fields: [categoria_id], references: [id])
 
     created_at DateTime @default(now())
-    updated_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     @@map("sub_categorias")
 }
 
+// Model BI (Business Intelligence)
+model BusinessIntelligence {
+    id  String @id @default(uuid())
+    mes String
+    ano String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    empresa_id String
+    empresa    Empresa @relation(fields: [empresa_id], references: [id])
+
+    @@map("business_intelligence")
+}
+
+// Model Tipo Categoria
 enum TipoCategoria {
     RECEITA
     DESPESA

@@ -87,7 +87,7 @@ a.btn_link_principal:hover {
     position: relative;
     display: flex;
     justify-content: center;
-    cursor: pointer;
+    margin-right: -.5rem;
 }
 
 .btn_opcoes_empresa span {
@@ -98,13 +98,14 @@ a.btn_link_principal:hover {
     height: 30px;
     border-radius: 50%;
     transition: .3s;
+    cursor: pointer;
 }
 
 .btn_opcoes_empresa span {
     font-size: 2rem;
 }
 
-.btn_opcoes_empresa:hover span {
+.btn_opcoes_empresa span:hover {
     background-color: var(--background);
 }
 

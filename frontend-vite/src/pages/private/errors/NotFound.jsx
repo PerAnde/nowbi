@@ -7,6 +7,9 @@ export const NotFound = () => {
     return (
         <div className={`${styles.cont_principal} ${styles.cont_error_active}`}>
 
+            <div className={styles.error_fundo}>
+                <span>404</span>
+            </div>
             <div></div>
             <div className={styles.cont_error}>
                 <h1>Oops...</h1>

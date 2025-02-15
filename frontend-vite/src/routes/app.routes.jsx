@@ -3,34 +3,45 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 // Layout privado
 import { PrivateRoutes } from './private.routes'
 
+// Rotas Publicas
 import { Login } from '../pages/public/Login/Login';
 import { Cadastro } from '../pages/public/Cadastro/Cadastro';
-
-import { Dashboard } from '../pages/private/Dashboard/Dashboard';
-
-import { Empresas } from '../pages/private/Empresas/Empresas';
-import { Categorias } from '../pages/private/Categorias/Categorias';
-
+// Rotas Privadas Usuario
 import { MinhaConta } from '../pages/private/MinhaConta/MinhaConta';
 import { Financeiro } from '../pages/private/Financeiro/Financeiro';
 import { Suporte } from '../pages/private/Suporte/Suporte';
-
+// Rotas Privadas Sistema
+import { Dashboard } from '../pages/private/Dashboard/Dashboard';
+import { Empresas } from '../pages/private/Empresas/Empresas';
+import { Categorias } from '../pages/private/Categorias/Categorias';
+import { Empresa } from '../pages/private/Empresa/Empresa';
+// Rotas Dashboard BI
+import { DashboardBi } from '../pages/private/pagesBi/DashboardBi/DashboardBi';
+// Rotas Erros
 import { NotFound } from '../pages/private/errors/NotFound';
 
 export const AppRoutes = () => {
     return (
         <Router>
             <Routes>
+                {/* Rotas Publicas */}
                 <Route path='/' element={<Login />} />
                 <Route path='/cadastro' element={<Cadastro />} />
-
+                {/* Rotas Privadas Usuario */}
                 <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
-                <Route path='/dashboard' element={<PrivateRoutes><Dashboard /></PrivateRoutes>} />
-                <Route path='/empresas' element={<PrivateRoutes><Empresas /></PrivateRoutes>} />
-                <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
                 <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} />
                 <Route path='/suporte' element={<PrivateRoutes><Suporte /></PrivateRoutes>} />
-
+                {/* Rotas Privadas Sistema */}
+                <Route path='/dashboard' element={<PrivateRoutes><Dashboard /></PrivateRoutes>} />
+                <Route path='/empresas' element={<PrivateRoutes><Empresas /></PrivateRoutes>} />
+                <Route path='/empresas/:id' element={<PrivateRoutes><Empresa /></PrivateRoutes>} />
+                <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
+                {/* Rotas Dashboard BI */}
+                <Route path='/dashboardbi' element={<DashboardBi />} />
+                <Route path='/entradasbi' element={<DashboardBi />} />
+                <Route path='/saidasbi' element={<DashboardBi />} />
+                <Route path='/detalhesbi' element={<DashboardBi />} />
+                {/* Rotas Erros */}
                 <Route path='/notfound' element={<PrivateRoutes><NotFound /></PrivateRoutes>} />
                 <Route path='*' element={<Navigate to="/notfound" />} />
             </Routes>

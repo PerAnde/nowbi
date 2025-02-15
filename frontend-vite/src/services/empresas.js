@@ -25,6 +25,29 @@ export const buscarEmpresas = async (setEmpresas, setLoading) => {
 
 }
 
+// Buscar Empresa
+export const buscarEmpresa = async (id, setEmpresa, setLoading, navigate) => {
+
+    try {
+
+        await new Promise(resolve => setTimeout(resolve, 2000))
+
+        const response = await api.get(`/empresas/${id}`);
+
+        if (response.data.length > 0) {
+            setEmpresa(response.data[0]);
+            setLoading(false)
+        } else {
+            setEmpresa(null)
+            navigate("/notfound");
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 // Criar Empresa
 
 // Editar Empresa
@@ -48,12 +71,12 @@ export const editarEmpresa = async (id, formData) => {
 // Excluir Empresa
 export const excluirEmpresa = async (empresaId) => {
 
-    try{
+    try {
 
         await api.delete(`/empresas/${empresaId}`);
         toast.success("Empresa excluída com sucesso!")
 
-    } catch (error){
+    } catch (error) {
         toast.error("Erro ao excluir a empresa!")
         console.error("Erro ao excluir a empresa!", error)
     }

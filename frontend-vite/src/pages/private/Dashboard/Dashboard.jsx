@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../../api/api';
 import { Link } from 'react-router-dom';
+import { buscarEmpresa } from '../../../services/empresas';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -52,6 +53,7 @@ export const Dashboard = () => {
         buscarEmpresas();
     }, [])
 
+
     return (
         <Layout>
             <div className='box_conteudo_paginas'>
@@ -102,7 +104,7 @@ export const Dashboard = () => {
                         <p>Empresas</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiBuildingDuotone  />
+                        <PiIcons.PiBuildingDuotone />
                     </div>
                     <span className={styles.background_card}></span>
                 </div>

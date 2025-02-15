@@ -28,6 +28,8 @@ import { CreateSubCategoriaController } from '../controllers/subcategoria/Create
 import { UpdateSubCategoriaController } from '../controllers/subcategoria/UpdateSubCategoriaController';
 import { DeleteSubCategoriaController } from '../controllers/subcategoria/DeleteSubCategoriaController';
 
+// Controllers BusinessIntelligence
+
 import uploadConfig from '../config/multer'
 
 const router = Router();
@@ -57,5 +59,7 @@ router.delete('/categorias/:id', isAuthenticated, new DeleteCategoriaController(
 router.post('/subcategorias', isAuthenticated, new CreateSubCategoriaController().handle)
 router.put('/subcategorias/:id', isAuthenticated, new UpdateSubCategoriaController().handle)
 router.delete('/subcategorias/:id', isAuthenticated, new DeleteSubCategoriaController().handle)
+
+// Rotas Business Intelligence
 
 export { router };

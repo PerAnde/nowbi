@@ -1,0 +1,78 @@
+.resumo_bi {
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+}
+
+.header_resumo {
+    margin-bottom: 2rem;
+}
+
+.header_resumo h3 {
+    color: var(--texto-secundario);
+    font-weight: var(--regular);
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
+
+.header_resumo span {
+    font-size: 3rem;
+    font-weight: var(--bold);
+}
+
+.box_infos_resumo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--background);
+    border-radius: var(--border-radius-componente);
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.box_dados {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: var(--border-radius-componente);
+    color: var(--texto-secundario);
+    cursor: pointer;
+}
+
+.box_dados.ativo {
+    background-color: var(--cor-componente);
+    color: var(--texto-primario);
+}
+
+.box_icone_dados{
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: 50%;
+    font-size: 2rem;
+}
+
+.box_icone_dados.icone_receita{
+    background-color: var(--verde-15);
+    color: var(--verde);
+}
+
+.box_icone_dados.icone_despesa{
+    background-color: var(--vermelho-15);
+    color: var(--vermelho);
+}
+
+.infos_dados p{
+    margin-bottom: .5rem;
+}
+
+.infos_dados span{
+    font-weight: var(--bold);
+    font-size: 2.5rem;
+}
+
+@media screen and (max-width: 600px){
+    .box_infos_resumo{
+        grid-template-columns: 1fr;
+    }
+}

@@ -5,10 +5,11 @@ class ListEmpresaController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
+        const { usuario_id } = req;
 
         const listarEmpresaService = new ListEmpresaService();
 
-        const empresa = await listarEmpresaService.execute(id);
+        const empresa = await listarEmpresaService.execute(id, usuario_id);
 
         return res.json(empresa)
 
