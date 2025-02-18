@@ -23,8 +23,15 @@ export const ExcluirEmpresa = ({ trigger, setTrigger, mensagem, onConfirm }) => 
                 <p className={styles.mensagem}>{mensagem}</p>
 
                 <div className={styles.box_confirmacao}>
-                    <label className={styles.checkbox_confirmar} htmlFor="confirmarExclusao" checked={confirmarCheckbox} onChange={(e) => setConfirmarCheckbox(e.target.checked)}>
-                        <Input type="checkbox" id="confirmarExclusao" />
+                    <label className={styles.checkbox_confirmar} htmlFor="confirmarExclusao">
+                        <Input
+                            type="checkbox"
+                            id="confirmarExclusao"
+                            checked={confirmarCheckbox}
+                            onChange={(e) => setConfirmarCheckbox(e.target.checked)}
+                            className={styles.input_checkbox}
+                        />
+                        <span className={styles.custom_checkbox}></span>
                         <p>Estou ciente</p>
                     </label>
                 </div>

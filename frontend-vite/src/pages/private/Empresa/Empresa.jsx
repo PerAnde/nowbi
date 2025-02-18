@@ -8,6 +8,8 @@ import { Layout } from '../../../layout/Layout'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
+import { CriarBi } from '../../../components/Modal/CriarBi/CriarBi';
+
 import * as PiIcons from 'react-icons/pi';
 
 import styles from './Empresa.module.scss'
@@ -19,11 +21,25 @@ export const Empresa = () => {
     const [empresa, setEmpresa] = useState({})
     const [loading, setLoading] = useState(true)
 
+    const [popUpNovBi, setPopUpNovBi] = useState(false)
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (popUpNovBi) {
+            document.body.style.overflow = 'hidden'; // Desativa o scroll
+        } else {
+            document.body.style.overflow = 'auto'; // Restaura o scroll
+        }
+    }, [popUpNovBi]);
 
     useEffect(() => {
         buscarEmpresa(id, setEmpresa, setLoading, navigate)
     }, [id])
+
+    const capitalizeFirstLetter = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
 
     return (
         <Layout>
@@ -31,7 +47,7 @@ export const Empresa = () => {
 
                 <div className="header-paginas">
 
-                    <div className="box-header direito">
+                    <div className="box-header esquerdo">
                         {loading ? (
                             <Skeleton width={200} height={25} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                         ) : (
@@ -53,28 +69,49 @@ export const Empresa = () => {
                         </div>
                     </div>
 
+                    {empresa?.bis?.length > 0 ? (
+                        <div className="box-header direito">
+                            <Link className={styles.btn_link_principal} onClick={() => setPopUpNovBi(true)}><PiIcons.PiPlusBold /> Novo Bi</Link>
+                        </div>
+                    ) : (
+                        ''
+                    )}
+
                 </div>
 
                 <div className={styles.box_bis}>
                     {loading ? (
                         Array.from({ length: 12 }).map((_, id) => (
-                            <div className={styles.box_componente}>
+                            <div key={id} className={styles.box_componente}>
                                 <Skeleton width={50} height={20} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                             </div>
                         ))
                     ) : empresa?.bis?.length > 0 ? (
                         empresa.bis.map((bi) => (
                             <div key={bi.id} className={styles.box_componente}>
-                                <p>{bi.mes} / {bi.ano}</p>
+                                <div className={styles.box_header_componente}>
+                                    <p><span><PiIcons.PiCalendarBlankBold /></span>{capitalizeFirstLetter(bi.mes)} / {bi.ano}</p>
+                                    <div className={styles.box_status_bi}>
+                                        <p>Em progresso</p>
+                                    </div>
+                                </div>
                             </div>
                         ))
                     ) : (
-                        <p>Nenhum BI Encontrado!</p>
+                        <div className={styles.box_sem_empresas}>
+                            <span>
+                                <PiIcons.PiListMagnifyingGlassDuotone />
+                            </span>
+                            <p>Nenhum BI cadastrado!<br></br>Clique no botão abaixo para cadastrar um novo BI.</p>
+                            <Link className={styles.btn_link_principal} onClick={() => setPopUpNovBi(true)}><PiIcons.PiPlusBold /> Novo Bi</Link>
+                        </div>
                     )}
 
                 </div>
 
             </div>
+
+            <CriarBi trigger={popUpNovBi} setTrigger={setPopUpNovBi} empresaId={id} />
 
         </Layout>
     )

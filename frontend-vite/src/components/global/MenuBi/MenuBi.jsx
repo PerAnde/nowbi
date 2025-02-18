@@ -10,7 +10,7 @@ export const MenuBi = () => {
         <div className={styles.menu_bi}>
             <div className={styles.links_menu}>
                 <Link to='/dashboardbi' className={`${styles.btn_menu} ${location.pathname === '/dashboardbi' ? styles.ativo : ''}`} >
-                    <PiIcons.PiAlignLeft className={styles.icon} /> Resumo
+                    <PiIcons.PiChartPieSlice  className={styles.icon} /> Resumo
                 </Link>
                 <Link to='/entradasbi' className={`${styles.btn_menu} ${location.pathname === '/entradasbi' ? styles.ativo : ''}`} >
                     <PiIcons.PiTrendUpBold className={styles.icon} /> Entradas

@@ -104,7 +104,7 @@ export const Categorias = () => {
 
     // Excluir subcategoria
     const handleConfirmarExclusaoSubCategoria = async () => {
-        if(!subCategoriaSelecionada) return;
+        if (!subCategoriaSelecionada) return;
         await excluirSubcategoria(subCategoriaSelecionada.id, () => buscarCategorias(filtroAtivo, setCategorias, setLoading), setModalConfirmacaoSubcategoria);
     }
 
@@ -112,7 +112,7 @@ export const Categorias = () => {
         <Layout>
             <div className="box_conteudo_paginas">
                 <div className="header-paginas">
-                    <div className="box-header direito">
+                    <div className="box-header esquerdo">
                         <h2>Categorias</h2>
                         <div className={styles.box_menu_pagina}>
                             <Link to="/dashboard" className={styles.link_menu_pagina}>
@@ -124,7 +124,7 @@ export const Categorias = () => {
                     </div>
 
                     {categorias.length > 0 ? (
-                        <div className="box-header esquerdo">
+                        <div className="box-header direito">
                             <Link className={styles.btn_link_principal} onClick={() => criarCategoria()} ><PiIcons.PiPlusBold /> Nova categoria</Link>
                         </div>
                     ) : ('')}
@@ -136,11 +136,17 @@ export const Categorias = () => {
                         <Link className={`${styles.filtro_receitas} ${filtroAtivo === 'RECEITA' ? styles.ativo : ''}`} onClick={() => {
                             setLoading(true)
                             setFiltroAtivo('RECEITA')
-                        }}>Receitas</Link>
+                        }}>
+                            <PiIcons.PiArrowUpRightBold />
+                            Receitas
+                        </Link>
                         <Link className={`${styles.filtro_despesas} ${filtroAtivo === 'DESPESA' ? styles.ativo : ''}`} onClick={() => {
                             setLoading(true)
                             setFiltroAtivo('DESPESA')
-                        }}>Despesas</Link>
+                        }}>
+                            <PiIcons.PiArrowDownRightBold />
+                            Despesas
+                        </Link>
                     </div>
                     <div className={styles.btn_atualizar} onClick={() => buscarCategorias(filtroAtivo, setCategorias, setLoading)}>
                         <PiIcons.PiArrowsClockwiseBold />

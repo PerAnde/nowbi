@@ -51,22 +51,74 @@ a.btn_link_principal:hover {
 .box_componente {
     width: 100%;
     display: flex;
-    flex-direction: column;
-    background-color: var(--cor-componente);
     border-radius: var(--border-radius-componente);
-    padding: 3rem;
+    border: 1px solid var(--border-input);
+    padding: 3rem 2rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.box_componente:hover{
+    background-color: var(--cor-componente);
+    box-shadow: var(--box-shadow-table);
+}
+
+.box_header_componente {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box_header_componente p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.box_header_componente p span{
+    display: flex;
+    align-items: center;
+    margin-top: .1rem;
+}
+
+.box_sem_empresas {
+    grid-column: 1/5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5rem 0;
+    color: var(--texto-secundario);
+
+    span {
+        font-size: 5rem;
+    }
+
+    p {
+        margin-bottom: 2.5rem;
+        text-align: center;
+    }
+}
+
+.box_status_bi {
+    font-size: 1.2rem;
+    padding: .7rem;
+    border-radius: var(--border-radius-button);
+    background-color: var(--laranja-15);
+    color: var(--laranja);
+    font-weight: var(--semi-bold);
 }
 
 @media screen and (max-width: 1000px) {
-    .box_empresas {
+    .box_bis {
         grid-template-columns: 1fr 1fr;
     }
 }
 
 @media screen and (max-width: 650px) {
-    .box_empresas {
+    .box_bis {
         grid-template-columns: 1fr;
     }
-
 
 }

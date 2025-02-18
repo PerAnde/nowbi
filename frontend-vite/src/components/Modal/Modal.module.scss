@@ -28,7 +28,7 @@
     padding: 2rem;
 }
 
-.box_btn_close{
+.box_btn_close {
     display: flex;
     justify-content: flex-end;
     padding: 2rem;
@@ -38,7 +38,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     span {
         width: 40px;
         height: 40px;
@@ -140,7 +140,7 @@ img.picture_image {
     gap: 1.5rem;
 }
 
-.btn_cancelar{
+.btn_cancelar {
     padding: 1.2rem;
     cursor: pointer;
     border: none;
@@ -150,12 +150,12 @@ img.picture_image {
     transition: 0.5s;
 }
 
-.box_inputs{
+.box_inputs {
     display: flex;
     gap: 1.6rem;
 }
 
-.box_input_radio{
+.box_input_radio {
     width: 100%;
     display: flex;
     align-items: center;
@@ -165,46 +165,77 @@ img.picture_image {
     border-radius: var(--border-radius-componente);
     cursor: pointer;
 
-    label{
+    label {
         width: 100%;
         display: flex;
         align-items: center;
         gap: 1rem;
         cursor: pointer;
 
-        span{
+        span {
             display: flex;
             font-size: 1.8rem;
         }
     }
 }
 
-.box_input_radio.input_receita{
+.box_input_radio.input_receita {
     color: var(--verde);
     border: 1px solid var(--verde);
     transition: .3s;
 }
 
-.box_input_radio.input_despesa{
+.box_input_radio.input_despesa {
     color: var(--vermelho);
     border: 1px solid var(--vermelho);
     transition: .3s;
 }
 
-.box_input_radio:not(:has(:checked)){
+.box_input_radio:not(:has(:checked)) {
     opacity: .6;
     border: 1px solid var(--border-input);
     color: var(--texto-secundario);
 }
 
-.box_confirmacao{
+.box_confirmacao {
     display: flex;
 }
 
-.checkbox_confirmar{
+.checkbox_confirmar {
+    display: flex;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+.input_checkbox {
+    display: none;
+}
+
+.custom_checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--texto-secundario);
+    border-radius: 4px;
     display: flex;
     align-items: center;
-    cursor: pointer;
+    justify-content: center;
+    transition: background 0.2s;
 }
 
-// Estilos Modal Confirmacao
+.input_checkbox:checked+.custom_checkbox {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+.input_checkbox:checked+.custom_checkbox::after {
+    content: '✔';
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.box_selects {
+    display: flex;
+    gap: 1.5rem;
+}

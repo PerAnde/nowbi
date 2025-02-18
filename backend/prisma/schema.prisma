@@ -81,9 +81,11 @@ model SubCategoria {
 
 // Model BI (Business Intelligence)
 model BusinessIntelligence {
-    id  String @id @default(uuid())
-    mes String
-    ano String
+    id       String  @id @default(uuid())
+    mes      String
+    ano      Int
+    status   Boolean @default(false)
+    rascunho Boolean @default(true)
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt

@@ -83,7 +83,7 @@ export const Empresas = () => {
 
                 <div className="header-paginas">
 
-                    <div className="box-header direito">
+                    <div className="box-header esquerdo">
                         <h2>Empresas</h2>
 
                         <div className={styles.box_menu_pagina}>
@@ -94,7 +94,7 @@ export const Empresas = () => {
                     </div>
 
                     {empresas.length > 0 ? (
-                        <div className="box-header esquerdo">
+                        <div className="box-header direito">
                             <Link className={styles.btn_link_principal} onClick={() => setPopUpNovaEmpresa(true)}><PiIcons.PiPlusBold /> Nova empresa</Link>
                         </div>
                     ) : (
@@ -107,8 +107,11 @@ export const Empresas = () => {
                     {loading ? (
                         Array.from({ length: 12 }).map((_, id) => (
                             <div key={id} className={styles.box_componente}>
-                                <div className={styles.box_img_logo_empresa}>
-                                    <Skeleton height={70} width={70} borderRadius={10} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+
+                                <div className={styles.box_header_empresa}>
+                                    <div className={styles.box_img_logo_empresa}>
+                                        <Skeleton height={70} width={70} borderRadius={10} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                    </div>
                                 </div>
 
                                 <div className={styles.box_infos_empresa}>
@@ -135,51 +138,54 @@ export const Empresas = () => {
                         empresas.map((empresa, index) => (
                             <div key={empresa.id} className={styles.box_componente}>
 
-                                <div className={styles.box_header_empresa}>
+                                <div>
+                                    <div className={styles.box_header_empresa}>
 
-                                    <div className={styles.box_img_logo_empresa}>
-                                        <img
-                                            src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : logoEmpresa1}
-                                            alt="Logo Empresa"
-                                        />
+                                        <div className={styles.box_img_logo_empresa}>
+                                            <img
+                                                src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : logoEmpresa1}
+                                                alt="Logo Empresa"
+                                            />
+                                        </div>
+
+                                        <div className={styles.btn_opcoes_empresa} ref={(el) => (menuEmpresaRef.current[index] = el)}>
+                                            <span onClick={() => handleMenuClick(index)}>
+                                                <PiIcons.PiDotsThreeVerticalBold />
+                                            </span>
+                                            <div className={`${styles.box_opcoes_empresas} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
+                                                <Link onClick={() => {
+                                                    setEmpresaSelecionada(empresa)
+                                                    setPopUpEditarEmpresa(true)
+                                                }}>
+                                                    <PiIcons.PiNotePencilBold />
+                                                    <p>Editar</p>
+                                                </Link>
+                                                <Link className={styles.btn_excluir} onClick={() => abrirModalExcluirEmpresa({ id: empresa.id })}>
+                                                    <PiIcons.PiTrashBold />
+                                                    <p>Excluir</p>
+                                                </Link>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <div className={styles.btn_opcoes_empresa} ref={(el) => (menuEmpresaRef.current[index] = el)}>
-                                        <span onClick={() => handleMenuClick(index)}>
-                                            <PiIcons.PiDotsThreeVerticalBold />
-                                        </span>
-                                        <div className={`${styles.box_opcoes_empresas} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
-                                            <Link onClick={() => {
-                                                setEmpresaSelecionada(empresa)
-                                                setPopUpEditarEmpresa(true)
-                                            }}>
-                                                <PiIcons.PiNotePencilBold />
-                                                <p>Editar</p>
-                                            </Link>
-                                            <Link className={styles.btn_excluir} onClick={() => abrirModalExcluirEmpresa({ id: empresa.id })}>
-                                                <PiIcons.PiTrashBold />
-                                                <p>Excluir</p>
-                                            </Link>
+                                    <div className={styles.box_infos_empresa}>
+
+                                        <div className={styles.infos_empresa}>
+                                            <div>
+                                                <h3>{empresa.name}</h3>
+                                            </div>
+                                            <div>
+                                                <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p>
+                                                <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
+                                            </div>
+                                            <div className={`${styles.info_total_bi} ${empresa.bis.length == 0 ? '' : styles.existe_bi}`}>
+                                                <PiIcons.PiChartPieSliceDuotone />
+                                                <p>{empresa.bis.length} BI's</p>
+                                            </div>
                                         </div>
+
                                     </div>
-
-                                </div>
-
-                                <div className={styles.box_infos_empresa}>
-
-                                    <div className={styles.infos_empresa}>
-                                        <div>
-                                            <h3>{empresa.name}</h3>
-                                        </div>
-                                        <div>
-                                            <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p>
-                                            <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
-                                        </div>
-                                        <div>
-                                            <p className={styles.info_total_bi}><PiIcons.PiChartBarDuotone />12 BI's</p>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                                 <div className={styles.box_btns_empresa}>

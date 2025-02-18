@@ -13,6 +13,12 @@ class DeleteEmpresaService {
             throw new Error("Empresa não encontrada!");
         }
 
+        await prismaClient.businessIntelligence.deleteMany({
+            where: {
+                empresa_id: id,
+            }
+        })
+
         // Remove a empresa
         await prismaClient.empresa.delete({
             where: {

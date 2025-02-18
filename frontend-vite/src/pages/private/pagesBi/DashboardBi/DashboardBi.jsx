@@ -20,7 +20,7 @@ export const DashboardBi = () => {
 
                     <div className={`${styles.box_dados} ${styles.box_receita} ${styles.ativo}`}>
                         <span className={`${styles.box_icone_dados} ${styles.icone_receita}`}>
-                            <PiIcons.PiArrowDownLeftBold />
+                            <PiIcons.PiArrowUpRightBold />
                         </span>
                         <div className={styles.infos_dados}>
                             <p>Receitas</p>
@@ -30,7 +30,7 @@ export const DashboardBi = () => {
 
                     <div className={`${styles.box_dados} ${styles.box_despesa}`}>
                         <span className={`${styles.box_icone_dados} ${styles.icone_despesa}`}>
-                            <PiIcons.PiArrowUpRightBold  />
+                            <PiIcons.PiArrowDownRightBold  />
                         </span>
                         <div className={styles.infos_dados}>
                             <p>Despesas</p>

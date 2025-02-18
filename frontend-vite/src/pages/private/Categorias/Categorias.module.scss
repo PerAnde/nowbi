@@ -61,22 +61,23 @@ a.btn_link_principal:hover {
     a.filtro_receitas,
     a.filtro_despesas {
         border-radius: var(--border-radius-componente);
-        border: 1px solid var(--background);
         padding: 1rem;
     }
 
     a.filtro_receitas.ativo {
         font-weight: var(--medium);
         color: var(--verde);
-        border-bottom: 1px solid var(--verde);
         transition: .3s;
     }
 
     a.filtro_despesas.ativo {
         font-weight: var(--medium);
         color: var(--vermelho);
-        border-bottom: 1px solid var(--vermelho);
         transition: .3s;
+    }
+
+    a.filtro_receitas span{
+        background-color: var(--verde);
     }
 
 }
@@ -127,14 +128,14 @@ a.btn_link_principal:hover {
     border-radius: var(--border-radius-componente);
     color: var(--texto-primario);
     transition: .3s;
-    padding: 2rem;
+    padding: 2.5rem;
     gap: 2rem;
 }
 
 .box_categoria:hover{
     color: var(--texto-primario);
     background-color: var(--cor-componente);
-    box-shadow: var(--box-shadow-componente);
+    box-shadow: var(--box-shadow-table);
 }
 
 .box_categoria.ativo {
