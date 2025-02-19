@@ -30,6 +30,7 @@ import { DeleteSubCategoriaController } from '../controllers/subcategoria/Delete
 
 // Controllers BusinessIntelligence
 import { CreateBiController } from '../controllers/bis/CreateBiController';
+import { ListBiController } from '../controllers/bis/ListBiController';
 
 import uploadConfig from '../config/multer'
 
@@ -63,5 +64,6 @@ router.delete('/subcategorias/:id', isAuthenticated, new DeleteSubCategoriaContr
 
 // Rotas Business Intelligence
 router.post('/bi/:id', isAuthenticated, new CreateBiController().handle)
+router.get('/bi/:id', isAuthenticated, new ListBiController().handle)
 
 export { router };

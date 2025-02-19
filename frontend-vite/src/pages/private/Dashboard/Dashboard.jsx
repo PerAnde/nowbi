@@ -16,6 +16,8 @@ export const Dashboard = () => {
 
     const [usuario, setUsuario] = useState(null);
     const [totalEmpresas, setTotalEmpresas] = useState(null);
+    const [totalBis, setTotalBis] = useState(0);
+    const [totalBisConcluidos, setTotalBisConcluidos] = useState(0)
     const [loading, setLoading] = useState(true);
 
     // Função para buscar os dados do usuário
@@ -44,6 +46,16 @@ export const Dashboard = () => {
         try {
             const response = await api.get('/empresas');
             setTotalEmpresas(response.data);
+
+            const total = response.data.reduce((acc, empresa) => acc + (empresa.bis?.length || 0), 0);
+            setTotalBis(total);
+
+            const totalAtivos = response.data.reduce(
+                (acc, empresa) => acc + (empresa.bis?.filter(bi => bi.status === true).length || 0),
+                0
+            );
+            setTotalBisConcluidos(totalAtivos);
+
         } catch (error) {
             console.log(error)
         }
@@ -111,7 +123,7 @@ export const Dashboard = () => {
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_bis}`}>
                     <div className={styles.infos_card}>
-                        <span>42</span>
+                        <span>{loading ? <Skeleton width={50} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : totalBis ? totalBis : 0}</span>
                         <p>BI's</p>
                     </div>
                     <div className={styles.icone_card}>
@@ -122,7 +134,7 @@ export const Dashboard = () => {
 
                 <div className={`${styles.box_info_dashboard} ${styles.info_total_concluido}`}>
                     <div className={styles.infos_card}>
-                        <span>14</span>
+                        <span>{loading ? <Skeleton width={50} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : totalBisConcluidos ? totalBisConcluidos : 0}</span>
                         <p>BI's Concluídos</p>
                     </div>
                     <div className={styles.icone_card}>

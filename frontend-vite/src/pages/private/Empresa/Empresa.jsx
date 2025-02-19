@@ -18,24 +18,31 @@ export const Empresa = () => {
 
     const { id } = useParams();
 
-    const [empresa, setEmpresa] = useState({})
-    const [loading, setLoading] = useState(true)
+    const [empresa, setEmpresa] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [filtro, setFiltro] = useState('todos');
 
-    const [popUpNovBi, setPopUpNovBi] = useState(false)
+    const [popUpNovBi, setPopUpNovBi] = useState(false);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (popUpNovBi) {
-            document.body.style.overflow = 'hidden'; // Desativa o scroll
+            document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'auto'; // Restaura o scroll
+            document.body.style.overflow = 'auto';
         }
     }, [popUpNovBi]);
 
     useEffect(() => {
         buscarEmpresa(id, setEmpresa, setLoading, navigate)
     }, [id])
+
+    const bisFiltrados = empresa?.bis?.filter(bi => {
+        if (filtro === 'em_progresso') return !bi.status;
+        if (filtro === 'concluido') return bi.status;
+        return true;
+    })
 
     const capitalizeFirstLetter = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -79,26 +86,46 @@ export const Empresa = () => {
 
                 </div>
 
+                <div className={styles.box_menu_categorias}>
+                    <div className={styles.filtro_pagina}>
+                        <Link className={`${styles.filtro_todos} ${filtro === 'todos' ? styles.ativo : ''}`} onClick={() => setFiltro('todos')}>
+                            <PiIcons.PiChartPieSlice />
+                            Todos
+                        </Link>
+                        <Link className={`${styles.filtro_em_progresso} ${filtro === 'em_progresso' ? styles.ativo : ''}`} onClick={() => setFiltro('em_progresso')}>
+                            <PiIcons.PiSpinnerGapBold />
+                            Em progresso
+                        </Link>
+                        <Link className={`${styles.filtro_concluido} ${filtro === 'concluido' ? styles.ativo : ''}`} onClick={() => setFiltro('concluido')}>
+                            <PiIcons.PiCheckBold />
+                            Concluído
+                        </Link>
+                    </div>
+                </div>
+
                 <div className={styles.box_bis}>
                     {loading ? (
-                        Array.from({ length: 12 }).map((_, id) => (
+                        Array.from({ length: 18 }).map((_, id) => (
                             <div key={id} className={styles.box_componente}>
-                                <Skeleton width={50} height={20} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
-                            </div>
-                        ))
-                    ) : empresa?.bis?.length > 0 ? (
-                        empresa.bis.map((bi) => (
-                            <div key={bi.id} className={styles.box_componente}>
                                 <div className={styles.box_header_componente}>
-                                    <p><span><PiIcons.PiCalendarBlankBold /></span>{capitalizeFirstLetter(bi.mes)} / {bi.ano}</p>
-                                    <div className={styles.box_status_bi}>
-                                        <p>Em progresso</p>
-                                    </div>
+                                    <Skeleton width={110} height={25} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                    <Skeleton width={80} height={25} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                                 </div>
                             </div>
                         ))
+                    ) : bisFiltrados.length > 0 ? (
+                        bisFiltrados.map((bi) => (
+                            <Link to={`/bi/${bi.id}`} key={bi.id} className={styles.box_componente}>
+                                <div className={styles.box_header_componente}>
+                                    <p><span><PiIcons.PiCalendarBlankBold /></span>{capitalizeFirstLetter(bi.mes)} / {bi.ano}</p>
+                                    <div className={`${styles.box_status_bi} ${bi.status ? styles.bi_concluido : styles.bi_em_progresso}`}>
+                                        <p>{bi.status ? "Concluído" : "Em progresso"}</p>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
                     ) : (
-                        <div className={styles.box_sem_empresas}>
+                        <div className={styles.box_sem_bi}>
                             <span>
                                 <PiIcons.PiListMagnifyingGlassDuotone />
                             </span>

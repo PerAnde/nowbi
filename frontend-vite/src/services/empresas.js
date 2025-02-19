@@ -30,7 +30,7 @@ export const buscarEmpresa = async (id, setEmpresa, setLoading, navigate) => {
 
     try {
 
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        // await new Promise(resolve => setTimeout(resolve, 2000))
 
         const response = await api.get(`/empresas/${id}`);
 

@@ -13,8 +13,9 @@ import { Suporte } from '../pages/private/Suporte/Suporte';
 // Rotas Privadas Sistema
 import { Dashboard } from '../pages/private/Dashboard/Dashboard';
 import { Empresas } from '../pages/private/Empresas/Empresas';
-import { Categorias } from '../pages/private/Categorias/Categorias';
 import { Empresa } from '../pages/private/Empresa/Empresa';
+import { Categorias } from '../pages/private/Categorias/Categorias';
+import { PageBi } from '../pages/private/PageBi/PageBi';
 // Rotas Dashboard BI
 import { DashboardBi } from '../pages/private/pagesBi/DashboardBi/DashboardBi';
 // Rotas Erros
@@ -36,6 +37,7 @@ export const AppRoutes = () => {
                 <Route path='/empresas' element={<PrivateRoutes><Empresas /></PrivateRoutes>} />
                 <Route path='/empresas/:id' element={<PrivateRoutes><Empresa /></PrivateRoutes>} />
                 <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
+                <Route path='/bi/:id' element={<PrivateRoutes><PageBi /></PrivateRoutes>} />
                 {/* Rotas Dashboard BI */}
                 <Route path='/dashboardbi' element={<DashboardBi />} />
                 <Route path='/entradasbi' element={<DashboardBi />} />

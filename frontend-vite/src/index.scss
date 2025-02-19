@@ -173,6 +173,11 @@ h3 {
     align-items: center;
 }
 
+.header-paginas h2{
+    display: flex;
+    gap: 2rem;
+}
+
 .box-header{
     display: flex;
     flex-direction: column;

@@ -30,3 +30,25 @@ export const criarBi = async (id, mes, ano) => {
         return false;
     }
 };
+
+export const buscarBi = async (id, setBi, setLoading, navigate) => {
+
+    try {
+
+        // await new Promise(resolve => setTimeout(resolve, 2000))
+
+        const response = await api.get(`/bi/${id}`);
+
+        if (response.data) {
+            setBi(response.data);
+            setLoading(false)
+        } else {
+            setBi(null)
+            navigate("/notfound");
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}

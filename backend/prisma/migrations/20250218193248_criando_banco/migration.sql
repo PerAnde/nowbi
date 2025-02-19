@@ -55,7 +55,6 @@ CREATE TABLE `business_intelligence` (
     `mes` VARCHAR(191) NOT NULL,
     `ano` INTEGER NOT NULL,
     `status` BOOLEAN NOT NULL DEFAULT false,
-    `rascunho` BOOLEAN NOT NULL DEFAULT true,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `empresa_id` VARCHAR(191) NOT NULL,

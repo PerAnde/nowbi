@@ -58,7 +58,7 @@ a.btn_link_principal:hover {
     transition: .3s;
 }
 
-.box_componente:hover{
+.box_componente:hover {
     background-color: var(--cor-componente);
     box-shadow: var(--box-shadow-table);
 }
@@ -70,20 +70,77 @@ a.btn_link_principal:hover {
     justify-content: space-between;
 }
 
-.box_header_componente p{
+.box_header_componente p {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: .5rem;
 }
 
-.box_header_componente p span{
+.box_header_componente p span {
     display: flex;
     align-items: center;
     margin-top: .1rem;
 }
 
-.box_sem_empresas {
+.box_menu_categorias {
+    grid-column: 1/5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filtro_pagina {
+    display: flex;
+    gap: 1rem;
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding-bottom: .8rem;
+        cursor: pointer;
+        color: var(--texto-secundario);
+    }
+
+    a span {
+        border-radius: var(--border-radius-button);
+        color: var(--branco);
+        padding: .5rem 1rem;
+    }
+
+    a.filtro_todos,
+    a.filtro_em_progresso,
+    a.filtro_concluido {
+        border-radius: var(--border-radius-componente);
+        padding: 1rem;
+    }
+
+    a.filtro_todos.ativo {
+        font-weight: var(--medium);
+        color: var(--cor-primaria);
+        transition: .3s;
+    }
+
+    a.filtro_em_progresso.ativo {
+        font-weight: var(--medium);
+        color: var(--laranja);
+        transition: .3s;
+    }
+
+    a.filtro_concluido.ativo {
+        font-weight: var(--medium);
+        color: var(--verde);
+        transition: .3s;
+    }
+
+    a.filtro_receitas span {
+        background-color: var(--verde);
+    }
+
+}
+
+.box_sem_bi {
     grid-column: 1/5;
     display: flex;
     flex-direction: column;
@@ -105,9 +162,16 @@ a.btn_link_principal:hover {
     font-size: 1.2rem;
     padding: .7rem;
     border-radius: var(--border-radius-button);
+    font-weight: var(--semi-bold);
+}
+
+.box_status_bi.bi_concluido{
+    background-color: var(--verde-15);
+    color: var(--verde);
+}
+.box_status_bi.bi_em_progresso{
     background-color: var(--laranja-15);
     color: var(--laranja);
-    font-weight: var(--semi-bold);
 }
 
 @media screen and (max-width: 1000px) {
