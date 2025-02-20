@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
     provider = "prisma-client-js"
 }
@@ -13,7 +7,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// Model Usuario
 model Usuario {
     id       String @id @default(uuid())
     name     String
@@ -21,51 +14,59 @@ model Usuario {
     cpf_cnpj String @unique
     password String
 
+    endereco      String? @db.VarChar(255)
+    numero        String? @db.VarChar(10)
+    bairro        String? @db.VarChar(100)
+    cidade        String? @db.VarChar(100)
+    codigo_cidade Int?
+    estado        String? @db.VarChar(2)
+    cep           String? @db.VarChar(10)
+    telefone      String? @db.VarChar(13)
+
+    categorias Categoria[]
+    empresas   Empresa[]
+
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-
-    empresas   Empresa[]
-    categorias Categoria[]
 
     @@map("usuarios")
 }
 
-// Model Empresa
 model Empresa {
     id           String  @id @default(uuid())
     name         String
     cnpj_empresa String?
     logo_empresa String?
 
+    usuario_id String
+    usuario Usuario                @relation(fields: [usuario_id], references: [id])
+
+    bis     BusinessIntelligence[]
+
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    usuario_id String
-    usuario    Usuario @relation(fields: [usuario_id], references: [id])
-
-    bis BusinessIntelligence[]
-
+    @@index([usuario_id], map: "empresas_usuario_id_fkey")
     @@map("empresas")
 }
 
-// Model Categoria
 model Categoria {
-    id   String        @id @default(uuid())
-    name String
-    tipo TipoCategoria
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-
-    subcategorias SubCategoria[]
+    id         String        @id @default(uuid())
+    name       String
+    tipo       TipoCategoria
 
     usuario_id String
     usuario    Usuario @relation(fields: [usuario_id], references: [id])
 
+    subcategorias SubCategoria[]
+
+    created_at DateTime      @default(now())
+    updated_at DateTime      @updatedAt
+
+    @@index([usuario_id], map: "categorias_usuario_id_fkey")
     @@map("categorias")
 }
 
-// Model Subcategoria
 model SubCategoria {
     id   String @id @default(uuid())
     name String
@@ -76,45 +77,27 @@ model SubCategoria {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
+    @@index([categoria_id], map: "sub_categorias_categoria_id_fkey")
     @@map("sub_categorias")
 }
 
-// Model BI (Business Intelligence)
 model BusinessIntelligence {
     id     String  @id @default(uuid())
     mes    String
     ano    Int
     status Boolean @default(false)
 
+    empresa_id String
+    empresa    Empresa @relation(fields: [empresa_id], references: [id])
+    
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    empresa_id String
-    empresa    Empresa @relation(fields: [empresa_id], references: [id])
-
-    lancamentos LancamentoBi[]
-
+    @@index([empresa_id], map: "business_intelligence_empresa_id_fkey")
     @@map("business_intelligence")
 }
 
-// Model Lancamento
-model LancamentoBi {
-    id    String @id @default(uuid())
-    valor String
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-
-    businessIntelligence_id String
-    businessIntelligence    BusinessIntelligence @relation(fields: [businessIntelligence_id], references: [id])
-
-    @@map("lancamentos_bi")
-}
-
-// Model Tipo Categoria
 enum TipoCategoria {
     RECEITA
     DESPESA
 }
-
-// Criar uma migrate npx prisma migrate dev
