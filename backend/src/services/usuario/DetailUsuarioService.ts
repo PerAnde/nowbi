@@ -11,6 +11,16 @@ class DetailUsuarioService {
                 id: true,
                 name: true,
                 email: true,
+                cpf_cnpj: true,
+                endereco: true,
+                numero: true,
+                bairro: true,
+                cidade: true,
+                ibge: true,
+                estado: true,
+                cep: true,
+                telefone: true,
+                img_usuario: true,
             }
         })
 

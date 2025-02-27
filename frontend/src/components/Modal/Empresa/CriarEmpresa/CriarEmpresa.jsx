@@ -29,6 +29,16 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
     const [name, setName] = useState("");
     const [cnpjEmpresa, setCnpjEmpresa] = useState("");
 
+    // Fomratar CNPJ
+    const formatarCnpj = (valor) => {
+        valor = valor.replace(/\D/g, "");
+        return valor
+            .replace(/^(\d{2})(\d)/, "$1.$2")
+            .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+            .replace(/\.(\d{3})(\d)/, ".$1/$2")
+            .replace(/(\d{4})(\d)/, "$1-$2");
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -77,7 +87,13 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
 
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
                         <Input type="text" placeholder="Nome da empresa" value={name} onChange={(e) => setName(e.target.value)} />
-                        <Input type="text" placeholder="CNPJ (Opcional)" value={cnpjEmpresa} onChange={(e) => setCnpjEmpresa(e.target.value)} />
+                        <Input
+                            type="text"
+                            placeholder="CNPJ (Opcional)"
+                            value={cnpjEmpresa}
+                            onChange={(e) => setCnpjEmpresa(formatarCnpj(e.target.value))}
+                            maxLength={18}
+                        />
 
                         <div className={styles.box_btn_button}>
                             <Button type="submit">Cadastrar</Button>

@@ -12,6 +12,10 @@ interface UsuarioRequest {
 class CreateUsuarioService {
     async execute({ name, email, cpf_cnpj, password }: UsuarioRequest) {
 
+        if(!name) {
+            throw new Error("Inserir o nome ou razão social!")
+        }
+
         // Verificar se enviou um email
         if (!email) {
             throw new Error("Email inválido!")

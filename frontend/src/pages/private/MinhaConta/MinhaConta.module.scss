@@ -1,4 +1,4 @@
-.box_menu_pagina{
+.box_menu_pagina {
     grid-column: 1/5;
     display: flex;
     gap: .5rem;
@@ -7,19 +7,19 @@
     font-size: 1.4rem;
 }
 
-.link_menu_pagina:hover{
+.link_menu_pagina:hover {
     text-decoration: underline;
 }
 
-.link_menu_pagina_atual{
+.link_menu_pagina_atual {
     color: var(--texto-secundario);
     cursor: default;
 }
 
-.form_cadastro_empresa{
+.form_cadastro_empresa {
     grid-column: 1/5;
     display: grid;
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 2fr 2fr;
     gap: 2rem;
 }
 
@@ -41,6 +41,7 @@
 }
 
 .picture {
+    position: relative;
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -83,7 +84,7 @@ img.picture_image {
     object-fit: fill;
 }
 
-.box_img_cadastro p {
+.infos_sobre_imagem {
     font-size: 1.3rem;
     color: var(--texto-secundario);
 }
@@ -94,11 +95,11 @@ img.picture_image {
     gap: 2rem;
 }
 
-.box_infos_cadastro hr{
+.box_infos_cadastro hr {
     border: 1px solid var(--background);
 }
 
-.box_inputs{
+.box_inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
@@ -109,18 +110,52 @@ img.picture_image {
     justify-content: flex-end;
 }
 
-@media screen and (max-width: 850px){
-    .box_inputs{
+.box_infos_plano {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.header_box_plano h2{
+    font-size: 6rem;
+    margin-top: -1rem;
+    color: var(--verde);
+}
+
+.box_btn_ativacao_upgrade{
+    display: flex;
+    justify-content: center;
+}
+
+a.btn_link_principal {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--texto-primario-button);
+    padding: 1.2rem;
+    border-radius: var(--border-radius-button);
+    background-color: var(--button-cor-primaria);
+    transition: .3s;
+    font-size: 1.4rem;
+}
+
+a.btn_link_principal:hover {
+    background-color: var(--button-cor-primaria-hover);
+}
+
+@media screen and (max-width: 850px) {
+    .form_cadastro_empresa {
+        grid-template-columns: 1fr;
+    }
+
+    .box_inputs {
         grid-template-columns: 1fr;
     }
 }
 
 @media screen and (max-width: 770px) {
-    .form_cadastro_empresa{
-        grid-template-columns: 1fr;
-    }
-
-    .box_btn_button button{
+    .box_btn_button button {
         width: 100%;
     }
 }

@@ -59,7 +59,7 @@ export const Empresa = () => {
 
                 <div className="header-paginas">
 
-                    <div className="box-header esquerdo">
+                    <div className="box-header">
                         {loading ? (
                             <Skeleton width={200} height={25} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                         ) : (
@@ -81,7 +81,7 @@ export const Empresa = () => {
                         </div>
                     </div>
 
-                    <div className="box-header direito">
+                    <div className="box-header">
                         <Link className={styles.btn_link_principal} onClick={() => setPopUpNovBi(true)}><PiIcons.PiPlusBold /> Novo Bi</Link>
                     </div>
 
@@ -127,10 +127,36 @@ export const Empresa = () => {
                         ))
                     ) : (
                         <div className={styles.box_sem_bi}>
-                            <span>
-                                <PiIcons.PiListMagnifyingGlassDuotone />
-                            </span>
-                            <p>Nenhum BI cadastrado!</p>
+                            {filtro === "todos" ? (
+                                <>
+                                    <span>
+                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                    </span>
+                                    <p>Nenhum BI cadastrado!</p>
+                                </>
+                            ) : (
+                                ''
+                            )}
+                            {filtro === "em_progresso" ? (
+                                <>
+                                    <span>
+                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                    </span>
+                                    <p>Nenhum BI em progresso!</p>
+                                </>
+                            ) : (
+                                ''
+                            )}
+                            {filtro === "concluido" ? (
+                                <>
+                                    <span>
+                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                    </span>
+                                    <p>Nenhum BI concluído!</p>
+                                </>
+                            ) : (
+                                ''
+                            )}
                         </div>
                     )}
 
@@ -138,7 +164,7 @@ export const Empresa = () => {
 
             </div>
 
-            <CriarBi trigger={popUpNovBi} setTrigger={setPopUpNovBi} empresaId={id} biCriado={atualizarBis}/>
+            <CriarBi trigger={popUpNovBi} setTrigger={setPopUpNovBi} empresaId={id} biCriado={atualizarBis} />
 
         </Layout>
     )

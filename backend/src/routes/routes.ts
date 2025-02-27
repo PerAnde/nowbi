@@ -31,6 +31,8 @@ import { DeleteSubCategoriaController } from '../controllers/subcategoria/Delete
 // Controllers BusinessIntelligence
 import { CreateBiController } from '../controllers/bis/CreateBiController';
 import { ListBiController } from '../controllers/bis/ListBiController';
+import { UpdateBiController } from '../controllers/bis/UpdateBiController';
+import { DeleteBiController } from '../controllers/bis/DeleteBiController';
 
 import uploadConfig from '../config/multer'
 
@@ -42,7 +44,7 @@ const upload = multer(uploadConfig.upload("./images"));
 router.post('/register', new CreateUsuarioController().handle)
 router.post('/login', new AuthUsuarioController().handle)
 router.get('/user', isAuthenticated, new DetailUsuarioController().handle)
-router.put('/user/:id', isAuthenticated, new UpdateUsuarioController().handle)
+router.put('/user/:id', isAuthenticated, upload.single('file'), new UpdateUsuarioController().handle)
 
 // Rotas Empresas
 router.post('/empresas', isAuthenticated, upload.single('file'), new CreateEmpresaController().handle)
@@ -65,5 +67,7 @@ router.delete('/subcategorias/:id', isAuthenticated, new DeleteSubCategoriaContr
 // Rotas Business Intelligence
 router.post('/bi/:id', isAuthenticated, new CreateBiController().handle)
 router.get('/bi/:id', isAuthenticated, new ListBiController().handle)
+router.put('/bi/:id', isAuthenticated, new UpdateBiController().handle)
+router.delete('/bi/:id', isAuthenticated, new DeleteBiController().handle)
 
 export { router };

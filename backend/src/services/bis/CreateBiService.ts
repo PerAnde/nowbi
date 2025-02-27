@@ -14,8 +14,20 @@ class CreateBiService {
             throw new Error("Selecione um mês válido!")
         }
 
-        if(ano < 2000 || ano > 2100){
+        if (ano < 2000 || ano > 2100) {
             throw new Error("Selecione um ano entre 2000 e 2100!")
+        }
+
+        const biJaExiste = await prismaClient.businessIntelligence.findFirst({
+            where: {
+                mes: mes,
+                ano: ano,
+                empresa_id: id,
+            }
+        })
+
+        if (biJaExiste) {
+            throw new Error(`Já existe um BI para ${mes} de ${ano}!`)
         }
 
         const bi = await prismaClient.businessIntelligence.create({

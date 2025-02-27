@@ -41,12 +41,12 @@ a.btn_link_principal:hover {
 
 .filtro_pagina {
     display: flex;
-    gap: 1rem;
+    gap: .8rem;
 
     a {
         display: flex;
         align-items: center;
-        gap: .5rem;
+        gap: .8rem;
         padding-bottom: .8rem;
         cursor: pointer;
         color: var(--texto-secundario);
@@ -55,7 +55,7 @@ a.btn_link_principal:hover {
     a span {
         border-radius: var(--border-radius-button);
         color: var(--branco);
-        padding: .5rem 1rem;
+        padding: .4rem .8rem;
     }
 
     a.filtro_receitas,
@@ -74,10 +74,6 @@ a.btn_link_principal:hover {
         font-weight: var(--medium);
         color: var(--vermelho);
         transition: .3s;
-    }
-
-    a.filtro_receitas span{
-        background-color: var(--verde);
     }
 
 }

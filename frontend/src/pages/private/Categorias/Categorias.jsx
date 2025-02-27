@@ -110,7 +110,7 @@ export const Categorias = () => {
     // Excluir categoria
     const confirmarExcluirCategoria = async () => {
         if (!categoriaSelecionada) return;
-        await excluirCategoria(categoriaSelecionada.id, () => buscarCategorias(filtroAtivo, setCategorias, setLoading), setExclusaoCategoria);
+        await excluirCategoria(categoriaSelecionada.id, () => buscarCategorias(setCategorias, setLoading), setExclusaoCategoria);
     }
 
     // Abrir modal excluir subcategoria
@@ -122,14 +122,14 @@ export const Categorias = () => {
     // Excluir subcategoria
     const confirmarExcluirSubCategoria = async () => {
         if (!subCategoriaSelecionada) return;
-        await excluirSubcategoria(subCategoriaSelecionada.id, () => buscarCategorias(filtroAtivo, setCategorias, setLoading), setExclusaoSubcategoria);
+        await excluirSubcategoria(subCategoriaSelecionada.id, () => buscarCategorias(setCategorias, setLoading), setExclusaoSubcategoria);
     }
 
     return (
         <Layout>
             <div className="box_conteudo_paginas">
                 <div className="header-paginas">
-                    <div className="box-header esquerdo">
+                    <div className="box-header">
                         <h2>Categorias</h2>
                         <div className={styles.box_menu_pagina}>
                             <Link to="/dashboard" className={styles.link_menu_pagina}>
@@ -140,7 +140,7 @@ export const Categorias = () => {
                         </div>
                     </div>
 
-                    <div className="box-header direito">
+                    <div className="box-header">
                         <Link className={styles.btn_link_principal} onClick={() => criarCategoria()} ><PiIcons.PiPlusBold /> Nova categoria</Link>
                     </div>
 

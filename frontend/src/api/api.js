@@ -12,7 +12,7 @@ const getToken = () => {
 // Exportando url na const api
 export const api = axios.create({
     // Url base do backend
-    baseURL: "http://192.168.1.12:3333"
+    baseURL: "http://192.168.1.9:3333"
 })
 
 // Toda vez que for feita uma requisicao passa por aqui

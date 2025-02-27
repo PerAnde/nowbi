@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../../api/api';
+import { buscarUsuario } from '../../../services/usuario';
 import { logout } from '../../../contexts/util';
 
 import Skeleton from 'react-loading-skeleton';
@@ -11,24 +12,46 @@ import styles from './Header.module.scss';
 import * as PiIcons from 'react-icons/pi';
 import { CgMenuLeft } from "react-icons/cg";
 
-import imgPerfil from '../../../assets/images/avatar-25.jpg';
-
 import { Theme } from '../../../theme/Theme';
+
+import imgSemFoto from '../../../assets/images/imgSemFoto.jpg'
 
 export const Header = ({ setMenuLateralAberto }) => {
 
-    const [abrirMenuMinhaConta, setAbrirMenuMinhaConta] = useState(false);
 
+    // Estados usuario
+    const [usuario, setUsuario] = useState({});
+
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [fotoUsuario, setFotoUsuario] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    // Buscando usuario
+    useEffect(() => {
+        buscarUsuario(setUsuario, setLoading);
+    }, [])
+
+    // Armazenando dados usuario
+    useEffect(() => {
+        if (usuario) {
+            setName(usuario.name || "");
+            setEmail(usuario.email || "");
+            setFotoUsuario(usuario.img_usuario ? `${api.defaults.baseURL}/files/${usuario.img_usuario}` : null);
+        }
+    }, [usuario])
+
+    // Estados Menu
+    const [abrirMenuMinhaConta, setAbrirMenuMinhaConta] = useState(false);
     const menuMinhaContaRef = useRef(null);
 
-    // Ajuste para desabilitar o scroll quando o menu Minha Conta estiver aberto
     useEffect(() => {
         if (abrirMenuMinhaConta) {
             document.body.style.overflow = 'hidden'; // Desativa o scroll
         } else {
             document.body.style.overflow = 'auto'; // Restaura o scroll
         }
-    }, [abrirMenuMinhaConta]); // Executa toda vez que abrirMenuMinhaConta mudar
+    }, [abrirMenuMinhaConta]);
 
     useEffect(() => {
         const handleMenuMinhaConta = (event) => {
@@ -43,41 +66,34 @@ export const Header = ({ setMenuLateralAberto }) => {
         };
     }, []);
 
-    const [usuario, setUsuario] = useState(null);
-    const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
-
-    // Função para buscar os dados do usuário
-    const fetchUsuarioData = async () => {
-        try {
-
-            // Time para testar Skeletons
-            // await new Promise(resolve => setTimeout(resolve, 10000))
-
-            const response = await api.get('/user');  // Fazendo a requisição GET para /user
-            setUsuario(response.data);  // Atualiza o estado com os dados do usuário
-            setLoading(false);  // Define o carregamento como falso quando os dados são recebidos
-        } catch (error) {
-            console.error('Erro ao buscar dados do usuário:', error);
-            setLoading(false);  // Define o carregamento como falso em caso de erro
-        }
-    };
-
-    useEffect(() => {
-        fetchUsuarioData();
-    }, []);
-
     return (
         <div className={styles.box_header}>
 
             <div className={styles.btn_menu_lateral}>
-                <CgMenuLeft  onClick={() => setMenuLateralAberto((prev) => !prev)} />
+                <CgMenuLeft onClick={() => setMenuLateralAberto((prev) => !prev)} />
             </div>
 
             <div className={styles.btn_minha_conta_header} ref={menuMinhaContaRef}>
 
                 <div className={styles.box_btns_header}>
                     <span className={styles.background_btn_minha_conta} onClick={() => setAbrirMenuMinhaConta(!abrirMenuMinhaConta)}>
-                        <img src={imgPerfil} className={styles.btn_minha_conta} />
+                        {loading ? (
+                            <Skeleton
+                                circle={true}
+                                width={42}
+                                height={42}
+                                baseColor="rgb(170, 170, 170, .1)"
+                                highlightColor="rgb(232, 235, 239, .2)"
+                                borderRadius={5}
+                                className={styles.img_perfil_minha_conta}
+                            />
+                        ) : (
+                            fotoUsuario ? (
+                                <img src={fotoUsuario ? fotoUsuario : `${api.defaults.baseURL}/files/${usuario.img_usuario}`} alt='Foto Empresa' className={styles.btn_minha_conta} />
+                            ) : (
+                                <img src={imgSemFoto} className={styles.btn_minha_conta} />
+                            )
+                        )}
                     </span>
                 </div>
 
@@ -91,10 +107,26 @@ export const Header = ({ setMenuLateralAberto }) => {
                             </span>
                         </div>
 
-                        <img src={imgPerfil} className={styles.img_perfil_minha_conta} />
+                        {loading ? (
+                            <Skeleton
+                                circle={true}
+                                width={100}
+                                height={100}
+                                baseColor="rgb(170, 170, 170, .1)"
+                                highlightColor="rgb(232, 235, 239, .2)"
+                                borderRadius={5}
+                                className={styles.img_perfil_minha_conta}
+                            />
+                        ) : (
+                            fotoUsuario ? (
+                                <img src={fotoUsuario ? fotoUsuario : `${api.defaults.baseURL}/files/${usuario.img_usuario}`} alt='Foto Empresa' className={styles.img_perfil_minha_conta} />
+                            ) : (
+                                <img src={imgSemFoto} className={styles.img_perfil_minha_conta} />
+                            )
+                        )}
 
-                        <p className={styles.nome_usuario}>{loading ? <Skeleton width={180} height={23} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</p>
-                        <p className={styles.email_usuario}>{loading ? <Skeleton width={160} height={18} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.email}</p>
+                        <p className={styles.nome_usuario}>{loading ? <Skeleton width={180} height={23} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : name}</p>
+                        <p className={styles.email_usuario}>{loading ? <Skeleton width={160} height={18} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : email}</p>
                         <div className={styles.box_menu_minha_conta}>
                             <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`}><PiIcons.PiUser className={styles.icon} /> Minha Conta</Link>
                             <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollar className={styles.icon} /> Financeiro</Link>

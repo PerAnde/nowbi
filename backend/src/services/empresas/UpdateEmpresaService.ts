@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import prismaClient from "../../prisma";
 
 interface UpdateEmpresaRequest {
@@ -21,7 +23,24 @@ class UpdateEmpresaService {
             throw new Error("Empresa não encontrada!");
         }
 
-        const logoAtualizada = logo_empresa ? logo_empresa : empresaExiste.logo_empresa;
+        let logoAtualizada = empresaExiste.logo_empresa;
+
+        if (logo_empresa) {
+            // Caminho da pasta onde as logos estão salvas
+            const logoPath = path.resolve(__dirname, '..', '..', '..', 'images');
+
+            // Exclui a logo antiga, se houver
+            if (empresaExiste.logo_empresa) {
+                const logoAntigaPath = path.join(logoPath, empresaExiste.logo_empresa);
+
+                if (fs.existsSync(logoAntigaPath)) {
+                    fs.unlinkSync(logoAntigaPath);
+                }
+            }
+
+            // Atualiza para a nova logo
+            logoAtualizada = logo_empresa;
+        }
 
         const updateEmpresa = await prismaClient.empresa.update({
             where: { id },

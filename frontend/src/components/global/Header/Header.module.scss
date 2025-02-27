@@ -6,7 +6,7 @@
     justify-content: flex-end;
 }
 
-.btn_menu_lateral{
+.btn_menu_lateral {
     display: none;
     font-size: 2.5rem;
     cursor: pointer;
@@ -81,12 +81,13 @@
     position: relative;
     width: 44px;
     height: 44px;
-    background-color: var(--cor-primaria);
+    background-color: var(--background);
+    border: 2px solid var(--cor-primaria);
     border-radius: 50%;
     transition: .3s;
 }
 
-.background_btn_minha_conta:hover{
+.background_btn_minha_conta:hover {
     scale: (1.1);
     transition: .3s;
 }
@@ -114,19 +115,19 @@
     padding: 0 0.75rem;
 }
 
-.box_footer_conta{
+.box_footer_conta {
     padding: 0 1.5rem;
 }
 
-.box_menu_minha_conta{
+.box_menu_minha_conta {
     gap: .3rem;
 }
 
-.box_infos_conta{
+.box_infos_conta {
     overflow: auto;
 }
 
-.box_infos_conta::-webkit-scrollbar-thumb{
+.box_infos_conta::-webkit-scrollbar-thumb {
     background-color: var(--scroll-menu-minha-conta);
 }
 
@@ -136,7 +137,7 @@
     justify-content: space-between;
     width: 100%;
     margin-bottom: 2rem;
-    
+
     span {
         width: 40px;
         height: 40px;
@@ -223,12 +224,12 @@
     color: var(--texto-secundario);
 }
 
-@media screen and (max-width: 1260px){
+@media screen and (max-width: 1260px) {
     .box_header {
         justify-content: space-between;
     }
 
-    .btn_menu_lateral{
+    .btn_menu_lateral {
         display: block;
     }
 }

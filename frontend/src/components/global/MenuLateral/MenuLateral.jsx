@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { buscarUsuario } from '../../../services/usuario';
 
 import styles from './MenuLateral.module.scss';
 import * as PiIcons from 'react-icons/pi';
@@ -36,7 +37,7 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
             <div className={styles.conteudo_menu_lateral}>
                 <div className={styles.box_logo_now_bi}>
                     <img src={iconeLogo} />
-                    <p>now<span>BI</span></p>
+                    <p>show<span>BI</span></p>
                 </div>
 
                 <div className={styles.menu_lateral}>
@@ -46,10 +47,10 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                             <PiIcons.PiAlignLeft className={styles.icon} /> Dashboard
                         </Link>
                         <Link to='/empresas' className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiBuildings  className={styles.icon} /> Empresas
+                            <PiIcons.PiBuildings className={styles.icon} /> Empresas
                         </Link>
                         <Link to='/categorias' className={`${styles.btn_menu} ${location.pathname === '/categorias' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiListPlus  className={styles.icon} /> Categorias
+                            <PiIcons.PiListPlus className={styles.icon} /> Categorias
                         </Link>
                         <p>Conta</p>
                         <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
@@ -64,11 +65,11 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         </Link>
                     </div>
 
-                    {/* <div className={styles.box_mensagem_menu_lateral}>
+                    <div className={styles.box_mensagem_menu_lateral}>
                         <p>Período experimental</p>
                         <span>7 dias restantes</span>
                         <Link className={styles.btn_ativar_conta}>Ativar conta</Link>
-                    </div> */}
+                    </div>
                 </div>
             </div>
 

@@ -14,7 +14,7 @@ import { Layout } from '../../../layout/Layout'
 
 import * as PiIcons from 'react-icons/pi';
 
-import logoEmpresa1 from '../../../assets/images/avatar-9.jpg'
+import imgEmpresaSemLogo from '../../../assets/images/imgEmpresaSemLogo.jpg'
 
 import styles from './Empresas.module.scss'
 
@@ -89,7 +89,7 @@ export const Empresas = () => {
 
                 <div className="header-paginas">
 
-                    <div className="box-header esquerdo">
+                    <div className="box-header">
                         <h2>Empresas</h2>
 
                         <div className={styles.box_menu_pagina}>
@@ -99,7 +99,7 @@ export const Empresas = () => {
                         </div>
                     </div>
 
-                    <div className="box-header direito">
+                    <div className="box-header">
                         <Link className={styles.btn_link_principal} onClick={() => setPopUpNovaEmpresa(true)}><PiIcons.PiPlusBold /> Nova empresa</Link>
                     </div>
 
@@ -145,7 +145,7 @@ export const Empresas = () => {
 
                                         <div className={styles.box_img_logo_empresa}>
                                             <img
-                                                src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : logoEmpresa1}
+                                                src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : imgEmpresaSemLogo}
                                                 alt="Logo Empresa"
                                             />
                                         </div>
@@ -215,7 +215,7 @@ export const Empresas = () => {
                 trigger={popUpExcluirEmpresa}
                 setTrigger={setPopUpExcluirEmpresa}
                 mensagem={<>
-                    Todos os dados e <strong>BIs</strong> dessa empresa serão excluídos permanentemente!
+                    Todos os dados e <strong>BIs</strong> dessa empresa serão <strong>excluídos permanentemente!</strong>
                 </>}
                 onConfirm={confirmarExclusao}
             />

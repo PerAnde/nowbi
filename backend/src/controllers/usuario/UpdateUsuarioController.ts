@@ -6,7 +6,8 @@ class UpdateUsuarioController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { name } = req.body;
+        const { name, cep, endereco, numero, bairro, cidade, ibge, estado, telefone } = req.body;
+        const img_usuario = req.file ? req.file.filename : null;
 
         const updateUsuarioService = new UpdateUsuarioService();
 
@@ -14,6 +15,15 @@ class UpdateUsuarioController {
             const usuario = await updateUsuarioService.execute({
                 id,
                 name,
+                cep,
+                endereco,
+                numero,
+                bairro,
+                cidade,
+                ibge,
+                estado,
+                telefone,
+                img_usuario,
             });
 
             return res.json(usuario)

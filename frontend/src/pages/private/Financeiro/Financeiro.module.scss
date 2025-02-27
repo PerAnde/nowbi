@@ -1,0 +1,17 @@
+.box_menu_pagina {
+    grid-column: 1/5;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+}
+
+.link_menu_pagina:hover {
+    text-decoration: underline;
+}
+
+.link_menu_pagina_atual {
+    color: var(--texto-secundario);
+    cursor: default;
+}

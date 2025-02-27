@@ -6,6 +6,7 @@ import { Input } from '../../../Input/Input';
 import { Button } from '../../../Button/Button';
 
 import * as PiIcons from 'react-icons/pi';
+
 import styles from './EditarEmpresa.module.scss';
 import { toast } from 'sonner';
 
@@ -92,17 +93,17 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
                             {fotoEmpresa ? (
                                 <img src={fotoEmpresa ? fotoEmpresa : `${api.defaults.baseURL}/files/${empresa.logo_empresa}`} alt='Foto Empresa' className={styles.picture_image} />
                             ) : (
-                                <span className={styles.picture_image}><PiIcons.PiCameraDuotone className={styles.icone_foto} />Enviar foto</span>
+                                <span className={styles.picture_image}>
+                                    <PiIcons.PiCameraDuotone className={styles.icone_foto} /> Enviar foto
+                                </span>
                             )}
                         </label>
-
                         <input
                             type='file'
                             accept='image/jpeg, image/jpg, image/png'
                             id="picture_input"
                             onChange={handleImageChange}
                         />
-
                         <p>Permitido *.jpeg, *.jpg, *.png<br></br>tamanho máximo de 3 Mb</p>
                     </div>
 
