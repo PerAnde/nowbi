@@ -1,15 +1,22 @@
 import prismaClient from "../../prisma";
 
 class DeleteBiService {
-    async execute(id: string): Promise<void> {
+    async execute(id: string, usuario_id: string): Promise<void> {
 
         const bi = await prismaClient.businessIntelligence.findUnique({
             where: {
-                id: id,
+                id
             },
+            include: {
+                empresa: true,
+            }
         });
 
         if (!bi) {
+            throw new Error("BI não encontrado!");
+        }
+        
+        if (bi.empresa.usuario_id !== usuario_id) {
             throw new Error("BI não encontrado!");
         }
 

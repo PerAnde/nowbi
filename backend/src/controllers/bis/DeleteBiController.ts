@@ -5,10 +5,11 @@ class DeleteBiController {
     async handle(req: Request, res: Response) {
         try {
             const { id } = req.params;
+            const { usuario_id } = req;
 
             const deletarBiService = new DeleteBiService();
 
-            await deletarBiService.execute(id);
+            await deletarBiService.execute(id, usuario_id);
 
             return res.status(200).json({ message: "BI Excluído com sucesso!" });
         } catch (error) {

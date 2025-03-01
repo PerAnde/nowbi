@@ -9,7 +9,7 @@ import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss'
 
-export const EditarBi = ({ trigger, setTrigger }) => {
+export const EditarBi = ({ trigger, setTrigger, biEditado }) => {
 
     const [mes, setMes] = useState("");
     const [ano, setAno] = useState("");
@@ -25,6 +25,7 @@ export const EditarBi = ({ trigger, setTrigger }) => {
             setMes("");
             setAno("");
             setTrigger(false);
+            biEditado();
         }
 
     };
@@ -88,5 +89,5 @@ export const EditarBi = ({ trigger, setTrigger }) => {
             </div>
         </div>
 
-    ) : "";
+    ) : null;
 }

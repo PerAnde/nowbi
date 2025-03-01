@@ -83,8 +83,27 @@ export const editarBi = async (id, mes, ano) => {
     }
 }
 
+// Ataulizar status bi
+export const atualizarStatus = async (id, status) => {
+    if (!id) {
+        toast.warning("BI inválido!");
+        return false;
+    }
+
+    try {
+        const data = { status };
+        await api.put(`/bi/status/${id}`, data);
+        toast.success("Status do BI atualizado com sucesso!");
+        return true;
+    } catch (error) {
+        toast.error(error.response?.data?.error || "Erro ao atualizar status");
+        return false;
+    }
+};
+
+
 // Excluir Bi
-export const excluirBi = async (id, navigate) => {
+export const excluirBi = async (id, idEmpresa, navigate) => {
     if (!id) {
         toast.warning("BI inválido!")
     }
@@ -93,6 +112,7 @@ export const excluirBi = async (id, navigate) => {
 
         await api.delete(`/bi/${id}`);
         toast.success("BI excluído com sucesso!")
+        navigate(`/empresas/${idEmpresa}`);
         return true;
 
     } catch (error) {

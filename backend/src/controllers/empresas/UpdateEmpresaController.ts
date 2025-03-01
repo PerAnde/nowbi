@@ -8,12 +8,14 @@ class UpdateEmpresaController {
         const { id } = req.params;
         const { name, cnpj_empresa } = req.body;
         const logo_empresa = req.file ? req.file.filename : null;
+        const { usuario_id } = req;
 
         const updateEmpresaService = new UpdateEmpresaService();
 
         try {
             const empresa = await updateEmpresaService.execute({
                 id,
+                usuario_id,
                 name,
                 cnpj_empresa,
                 logo_empresa

@@ -4,6 +4,7 @@
     gap: .5rem;
     align-items: center;
     margin-bottom: 2rem;
+    margin-right: 2rem;
     font-size: 1.4rem;
 }
 
@@ -19,6 +20,8 @@
 a.btn_link_principal {
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: .5rem;
     color: var(--texto-primario-button);
     padding: 1.2rem;
@@ -78,20 +81,25 @@ a.btn_link_principal:hover {
 
 }
 
-.btn_atualizar{
+.filtro_busca_categoria{
     display: flex;
     align-items: center;
     gap: 1rem;
-    color: var(--texto-secundario);
-    border: 1px solid var(--border-input);
-    border-radius: var(--border-radius-button);
     cursor: pointer;
     transition: .3s;
     padding: 1rem;
 }
 
-.btn_atualizar:hover{
-    color: var(--texto-primario);
+.input_busca{
+    background-color: var(--background);
+    border: none;
+    border-bottom: 1px solid var(--border-input);
+}
+
+.input_busca:hover,
+.input_busca:focus{
+    border: none;
+    border-bottom: 1px solid var(--cor-primaria);
 }
 
 .categoria_header {
@@ -290,5 +298,17 @@ a.btn_link_principal:hover {
     p {
         margin-bottom: 2.5rem;
         text-align: center;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .box_menu_categorias{
+        display: grid;
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .filtro_pagina{
+        margin-bottom: 1.5rem;
     }
 }

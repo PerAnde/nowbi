@@ -42,7 +42,7 @@
 
     --background-header-bi: #141a21;
     --background-menu-bi: #1c252e;
-    
+
     --scroll-menu-lateral: #293541;
 
     --scroll-menu-minha-conta: #e8ebef;
@@ -173,22 +173,44 @@ h3 {
     align-items: center;
 }
 
-.header-paginas h2{
+.header-paginas h2 {
     display: flex;
     gap: 2rem;
 }
 
-.box-header{
+.box-header {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.box-header-btns{
+.box-header-btns {
+    grid-column: 1/5;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.box-btns-pagina-bi{
     display: flex;
     gap: 1.5rem;
 }
 
 #picture_input {
     display: none;
+}
+
+@media screen and (max-width: 500px) {
+    .box-header {
+        width: 100%;
+    }
+
+    .box-header-btns {
+        flex-direction: column-reverse;
+    }
+
+    .box-btns-pagina-bi {
+        display: grid;
+        grid-template-columns: 50px 50px 1fr;
+        gap: 1.5rem;
+    }
 }

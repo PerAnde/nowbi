@@ -4,10 +4,12 @@ interface UpdateBiRequest {
     id: string;
     mes: string;
     ano: number;
+    status: boolean;
+    usuario_id: string;
 }
 
 class UpdateBiService {
-    async execute({ id, mes, ano }: UpdateBiRequest) {
+    async execute({ id, mes, ano, status, usuario_id }: UpdateBiRequest) {
 
         if (!id) {
             throw new Error("Id inválido!")
@@ -24,10 +26,17 @@ class UpdateBiService {
         // Verifica se o ID do BI existe
         const biExiste = await prismaClient.businessIntelligence.findUnique({
             where: { id },
+            include: {
+                empresa: true,
+            }
         })
 
         if (!biExiste) {
             throw new Error("BI não encontrado!")
+        }
+
+        if (biExiste.empresa.usuario_id !== usuario_id) {
+            throw new Error("BI não encontrado!");
         }
 
         // Verifica se ja existe um BI com o mes e ano
@@ -42,17 +51,18 @@ class UpdateBiService {
             throw new Error(`Já existe um BI para ${mes} de ${ano}!`)
         }
 
-
         const updateBi = await prismaClient.businessIntelligence.update({
             where: { id },
             data: {
                 mes: mes,
                 ano: ano,
+                status: status,
             },
             select: {
                 id: true,
                 mes: true,
                 ano: true,
+                status: true,
             }
         })
 

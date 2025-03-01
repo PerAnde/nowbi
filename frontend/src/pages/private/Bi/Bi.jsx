@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-import { buscarBi, excluirBi } from '../../../services/bis';
+import { buscarBi, atualizarStatus, excluirBi } from '../../../services/bis';
 import { buscarEmpresa } from '../../../services/empresas';
 
 import { Layout } from '../../../layout/Layout'
 
+import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
+
 import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
-
-import { Input } from '../../../components/Input/Input';
-import { Select } from '../../../components/Select/Select';
-import { Button } from '../../../components/Button/Button';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -28,26 +26,9 @@ export const Bi = () => {
     const [empresa, setEmpresa] = useState();
     const [loading, setLoading] = useState(true);
 
-    // Estados incluri Lancamento
-    const [novoLancamentoValor, setNovoLancamentoValor] = useState('')
-    const [tipo, setTipo] = useState("");
-    const [categoria, setCategoria] = useState("");
-    const [subcategoria, setSubcategoria] = useState("");
-
+    const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
     const [popUpEditarBi, setPopUpEditarBi] = useState(false);
     const [popUpExcluirBi, setPopUpExcluirBi] = useState(false);
-
-    const categorias = [
-        { value: "JANEIRO", label: "Janeiro" },
-        { value: "FEVEREIRO", label: "Fevereiro" },
-        { value: "MARÇO", label: "Março" },
-    ];
-
-    const subcategorias = [
-        { value: "Bla", label: "Janeiro" },
-        { value: "bu", label: "Fevereiro" },
-        { value: "jet", label: "Março" },
-    ];
 
     const navigate = useNavigate();
 
@@ -69,28 +50,34 @@ export const Bi = () => {
         }
     }, [bi])
 
-    const capitalizeFirstLetter = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    };
+    // Pegando id da empresa
+    const idEmpresa = bi?.empresa_id;
 
-    // Formata valor do input
-    const formatarValor = (valor) => {
-        // Remove tudo que não é número
-        valor = valor.replace(/\D/g, "");
+    // Atualizar BI
+    const atualizarBi = () => {
+        buscarBi(id, setBi, setLoading);
+    }
 
-        // Converte para número e formata para reais
-        valor = (Number(valor) / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-        });
-
-        return valor;
+    // Atualziar status bi
+    const atualizarStatusBi = async () => {
+        try {
+            await atualizarStatus(id, !bi.status);
+            console.log(bi.status)
+            atualizarBi();
+        } catch (error) {
+            console.error("Erro ao atualizar status do BI", error);
+        }
     };
 
     // Excluir BI
     const confirmarExclusao = async () => {
-        excluirBi(id);
+        excluirBi(id, idEmpresa, navigate);
     }
+
+    // Formata escrita Mes
+    const capitalizeFirstLetter = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
 
     return (
         <Layout>
@@ -127,9 +114,27 @@ export const Bi = () => {
 
                     <div className="box-header">
                         <div className="box-header-btns">
-                            <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)}><PiIcons.PiNotePencilBold />Editar </Link>
-                            <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)}><PiIcons.PiTrashBold /> Excluir</Link>
-                            <Link className={`${styles.btn_link_principal} ${styles.btn_concluir}`}><PiIcons.PiChecksBold /> Concluir BI</Link>
+                            <div className="box-btns-pagina-bi">
+                                <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)}><PiIcons.PiNotePencilBold /></Link>
+                                <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)}><PiIcons.PiTrashBold /></Link>
+                                {bi.status ? (
+                                    <Link
+                                        className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
+                                        onClick={() => atualizarStatusBi()}
+                                    >
+                                        <PiIcons.PiChecksBold /> Reabrir BI
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
+                                        onClick={() => atualizarStatusBi()}
+                                    >
+                                        <PiIcons.PiChecksBold /> Finalizar BI
+                                    </Link>
+                                )}
+
+                            </div>
+                            <Link className={styles.btn_link_principal} onClick={(e) => setPopUpNovoLancamento(true)}><PiIcons.PiPlusBold /> Novo Lançamento</Link>
                         </div>
                     </div>
 
@@ -137,45 +142,7 @@ export const Bi = () => {
 
                 <form className={styles.box_incluir_lancamento}>
 
-                    <div className={styles.box_inputs}>
-                        <Input type="text" placeholder="R$ 0,00" value={novoLancamentoValor} onChange={(e) => setNovoLancamentoValor(formatarValor(e.target.value))} />
-                    </div>
 
-                    <div className={styles.box_inputs}>
-                        <label htmlFor="receita" className={`${styles.box_input_radio} ${styles.input_receita}`} >
-                            <Input type="radio" name="tipo" id="receita" value="RECEITA" onChange={(e) => setTipo(e.target.value)} />
-                            <label htmlFor="receita"><span><PiIcons.PiTrendUpBold /></span> Receita</label>
-                        </label>
-                    </div>
-
-                    <div className={styles.box_inputs}>
-                        <label htmlFor="despesa" className={`${styles.box_input_radio} ${styles.input_despesa}`}>
-                            <Input type="radio" name="tipo" id="despesa" value="DESPESA" onChange={(e) => setTipo(e.target.value)} />
-                            <label htmlFor="despesa"><span><PiIcons.PiTrendDownBold /></span> Despesa</label>
-                        </label>
-                    </div>
-
-                    <div className={styles.box_inputs}>
-                        <Select
-                            options={categorias}
-                            value={categoria}
-                            onChange={(e) => setMes(e.target.value)}
-                            placeholder="Selecione a categoria"
-                        />
-                    </div>
-
-                    <div className={styles.box_inputs}>
-                        <Select
-                            options={subcategorias}
-                            value={subcategoria}
-                            onChange={(e) => setMes(e.target.value)}
-                            placeholder="Selecione a subcategoria"
-                        />
-                    </div>
-
-                    <div className={styles.box_inputs}>
-                        <Button type="submit"><span><PiIcons.PiPlusBold /></span></Button>
-                    </div>
 
                 </form>
 
@@ -194,12 +161,14 @@ export const Bi = () => {
 
             </div>
 
-            <EditarBi trigger={popUpEditarBi} setTrigger={setPopUpEditarBi} />
+            <CriarLancamento trigger={popUpNovoLancamento} setTrigger={setPopUpNovoLancamento} />
+            <EditarBi trigger={popUpEditarBi} setTrigger={setPopUpEditarBi} biEditado={atualizarBi} />
             <ExcluirBi
                 trigger={popUpExcluirBi}
                 setTrigger={setPopUpExcluirBi}
                 mensagem={<>Todos os dados desse <strong>BI</strong> serão <strong>excluídos permanentemente!</strong></>}
                 onConfirm={confirmarExclusao}
+                biExcluido={idEmpresa}
             />
 
         </Layout>

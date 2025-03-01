@@ -32,6 +32,7 @@ import { DeleteSubCategoriaController } from '../controllers/subcategoria/Delete
 import { CreateBiController } from '../controllers/bis/CreateBiController';
 import { ListBiController } from '../controllers/bis/ListBiController';
 import { UpdateBiController } from '../controllers/bis/UpdateBiController';
+import { UpdateStatusBiController } from '../controllers/bis/UpdateStatusBiController';
 import { DeleteBiController } from '../controllers/bis/DeleteBiController';
 
 import uploadConfig from '../config/multer'
@@ -68,6 +69,7 @@ router.delete('/subcategorias/:id', isAuthenticated, new DeleteSubCategoriaContr
 router.post('/bi/:id', isAuthenticated, new CreateBiController().handle)
 router.get('/bi/:id', isAuthenticated, new ListBiController().handle)
 router.put('/bi/:id', isAuthenticated, new UpdateBiController().handle)
+router.put('/bi/status/:id', isAuthenticated, new UpdateStatusBiController().handle)
 router.delete('/bi/:id', isAuthenticated, new DeleteBiController().handle)
 
 export { router };

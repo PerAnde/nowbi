@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '../../../layout/Layout';
+import { Input } from '../../../components/Input/Input';
 
 import { buscarCategorias, excluirCategoria } from '../../../services/categorias';
 import { excluirSubcategoria } from '../../../services/subcategorias';
@@ -27,6 +28,8 @@ export const Categorias = () => {
     const [filtro, setFiltro] = useState('RECEITA');
     // Loading categorias
     const [loading, setLoading] = useState(true);
+    // Busca
+    const [filtroBusca, setFiltroBusca] = useState('');
     // Menu para mostrar subcategorias
     const [menuAberto, setMenuAberto] = useState(null);
     const [mostrarSubcategorias, setMostrarSubCategorias] = useState(false)
@@ -55,11 +58,16 @@ export const Categorias = () => {
     }, [popUpCriarCategoria]);
 
     // Filtra categorias
+    // const categoriasFiltradas = categorias?.filter(categoria => {
+    //     if (filtro === 'RECEITA') return categoria.tipo === "RECEITA";
+    //     if (filtro === 'DESPESA') return categoria.tipo === "DESPESA";
+    //     return true;
+    // })
     const categoriasFiltradas = categorias?.filter(categoria => {
-        if (filtro === 'RECEITA') return categoria.tipo === "RECEITA";
-        if (filtro === 'DESPESA') return categoria.tipo === "DESPESA";
-        return true;
-    })
+        const correspondeFiltro = filtro === 'RECEITA' ? categoria.tipo === "RECEITA" : filtro === 'DESPESA' ? categoria.tipo === "DESPESA" : true;
+        const correspondeBusca = categoria.name.toLowerCase().includes(filtroBusca.toLowerCase());
+        return correspondeFiltro && correspondeBusca;
+    });
 
     // Abre menu categoria
     useEffect(() => {
@@ -162,6 +170,10 @@ export const Categorias = () => {
                             Despesas
                         </Link>
                     </div>
+
+                    <div className={styles.filtro_busca_categoria}>
+                        <Input type="text" placeholder="Buscar categoria..." value={filtroBusca} onChange={(e) => setFiltroBusca(e.target.value)} className={styles.input_busca} />
+                    </div>
                 </div>
 
                 <div className={styles.categoria_header}>
@@ -246,11 +258,23 @@ export const Categorias = () => {
                     </div>
                 ) : (
                     <div className={styles.box_sem_categorias}>
-                        <span>
-                            <PiIcons.PiListMagnifyingGlassDuotone />
-                        </span>
-                        <p>Nenhuma categoria cadastrada!</p>
+                        {filtro === "RECEITA" ? (
+                            <>
+                                <span>
+                                    <PiIcons.PiListMagnifyingGlassDuotone />
+                                </span>
+                                <p>Nenhuma categoria em receita!</p>
+                            </>
+                        ) : (
+                            <>
+                                <span>
+                                    <PiIcons.PiListMagnifyingGlassDuotone />
+                                </span>
+                                <p>Nenhuma categoria em despesa!</p>
+                            </>
+                        )}
                     </div>
+
                 )}
 
             </div>

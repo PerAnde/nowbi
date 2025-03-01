@@ -4,23 +4,32 @@ import prismaClient from "../../prisma";
 
 interface UpdateEmpresaRequest {
     id: string;
+    usuario_id: string;
     name: string;
     cnpj_empresa: string;
     logo_empresa?: string;
 }
 
 class UpdateEmpresaService {
-    async execute({ id, name, cnpj_empresa, logo_empresa }: UpdateEmpresaRequest) {
+    async execute({ id, usuario_id, name, cnpj_empresa, logo_empresa }: UpdateEmpresaRequest) {
         if (!id) {
             throw new Error("Id inválido!")
         }
 
         const empresaExiste = await prismaClient.empresa.findUnique({
             where: { id },
+            select: {
+                usuario_id: true,
+                logo_empresa: true,
+            }
         });
 
         if (!empresaExiste) {
             throw new Error("Empresa não encontrada!");
+        }
+
+        if (empresaExiste.usuario_id !== usuario_id) {
+            throw new Error("Empresa não encontrada!")
         }
 
         let logoAtualizada = empresaExiste.logo_empresa;

@@ -6,7 +6,8 @@ class UpdateBiController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { mes, ano } = req.body;
+        const { mes, ano, status } = req.body;
+        const { usuario_id } = req;
 
         const updateBiService = new UpdateBiService();
 
@@ -15,6 +16,8 @@ class UpdateBiController {
                 id,
                 mes,
                 ano,
+                status,
+                usuario_id
             });
 
             return res.json(bi);
