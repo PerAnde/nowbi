@@ -26,6 +26,25 @@
     cursor: default;
 }
 
+.box_busca_empresa{
+    grid-column: 4/5;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.input_busca{
+    border: none;
+    background-color: var(--background);
+    border-bottom: 1px solid var(--border-input);
+}
+
+.input_busca:hover,
+.input_busca:focus{
+    border: none;
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
 a.btn_link_principal {
     display: flex;
     align-items: center;
@@ -255,5 +274,7 @@ a.btn_link_principal:hover {
         grid-template-columns: 1fr;
     }
 
-
+    .box_busca_empresa{
+        grid-column: 1/5;
+    }
 }

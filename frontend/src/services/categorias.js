@@ -13,12 +13,15 @@ export const buscarCategorias = async (setCategorias, setLoading) => {
 
         const response = await api.get('/categorias')
 
-        setCategorias(response.data)
+        const ordemAlfabeticaCategorias = response.data.sort((a, b) => a.name.localeCompare(b.name));
+
+        setCategorias(ordemAlfabeticaCategorias);
         setLoading(false)
 
     } catch (error) {
         toast.error("Erro ao buscar categorias")
         console.error("Erro ao buscar categorias", error)
+    } finally {
         setLoading(false);
     }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../../../api/api';
 import { buscarEmpresas, excluirEmpresa } from '../../../services/empresas';
+import { Input } from '../../../components/Input/Input';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -22,6 +23,7 @@ export const Empresas = () => {
 
     const [empresas, setEmpresas] = useState([])
     const [loading, setLoading] = useState(true);
+    const [busca, setBusca] = useState('');
 
     const [menuAberto, setMenuAberto] = useState(null);
     const [popUpNovaEmpresa, setPopUpNovaEmpresa] = useState(false);
@@ -61,6 +63,11 @@ export const Empresas = () => {
     const handleMenuClick = (index) => {
         setMenuAberto((prev) => (prev === index ? null : index));
     };
+
+    // Campos de busca
+    const buscaEmpresa = empresas.filter(empresa =>
+        empresa.name.toLowerCase().includes(busca.toLowerCase())
+    );
 
     const atualizarEmpresas = () => {
         buscarEmpresas(setEmpresas, setLoading);
@@ -105,6 +112,10 @@ export const Empresas = () => {
 
                 </div>
 
+                <div className={styles.box_busca_empresa}>
+                    <Input type="text" placeholder="Buscar empresa..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
+                </div>
+
                 <div className={styles.box_empresas}>
                     {loading ? (
                         Array.from({ length: 12 }).map((_, id) => (
@@ -136,8 +147,8 @@ export const Empresas = () => {
                                 </div>
                             </div>
                         ))
-                    ) : empresas.length > 0 ? (
-                        empresas.map((empresa, index) => (
+                    ) : buscaEmpresa.length > 0 ? (
+                        buscaEmpresa.map((empresa, index) => (
                             <div key={empresa.id} className={styles.box_componente}>
 
                                 <div>
@@ -178,7 +189,7 @@ export const Empresas = () => {
                                                 <h3>{empresa.name}</h3>
                                             </div>
                                             <div>
-                                                <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p>
+                                                {empresa.cnpj_empresa <= 0 ? '' : <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p>}
                                                 <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
                                             </div>
                                             <div className={`${styles.info_total_bi} ${empresa.bis.length == 0 ? '' : styles.existe_bi}`}>
@@ -202,13 +213,13 @@ export const Empresas = () => {
                             <span>
                                 <PiIcons.PiListMagnifyingGlassDuotone />
                             </span>
-                            <p>Nenhuma empresa cadastrada!</p>
+                            <p>Nenhuma empresa!</p>
                         </div>
                     )}
                 </div>
             </div>
 
-            <CriarEmpresa trigger={popUpNovaEmpresa} setTrigger={setPopUpNovaEmpresa} empresaCriada={atualizarEmpresas}/>
+            <CriarEmpresa trigger={popUpNovaEmpresa} setTrigger={setPopUpNovaEmpresa} empresaCriada={atualizarEmpresas} />
             <EditarEmpresa trigger={popUpEditarEmpresa} setTrigger={setPopUpEditarEmpresa} empresa={empresaSelecionada} empresaEditada={atualizarEmpresas} />
 
             <ExcluirEmpresa

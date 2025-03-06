@@ -29,7 +29,7 @@ export const Categorias = () => {
     // Loading categorias
     const [loading, setLoading] = useState(true);
     // Busca
-    const [filtroBusca, setFiltroBusca] = useState('');
+    const [busca, setBusca] = useState('');
     // Menu para mostrar subcategorias
     const [menuAberto, setMenuAberto] = useState(null);
     const [mostrarSubcategorias, setMostrarSubCategorias] = useState(false)
@@ -57,18 +57,6 @@ export const Categorias = () => {
         }
     }, [popUpCriarCategoria]);
 
-    // Filtra categorias
-    // const categoriasFiltradas = categorias?.filter(categoria => {
-    //     if (filtro === 'RECEITA') return categoria.tipo === "RECEITA";
-    //     if (filtro === 'DESPESA') return categoria.tipo === "DESPESA";
-    //     return true;
-    // })
-    const categoriasFiltradas = categorias?.filter(categoria => {
-        const correspondeFiltro = filtro === 'RECEITA' ? categoria.tipo === "RECEITA" : filtro === 'DESPESA' ? categoria.tipo === "DESPESA" : true;
-        const correspondeBusca = categoria.name.toLowerCase().includes(filtroBusca.toLowerCase());
-        return correspondeFiltro && correspondeBusca;
-    });
-
     // Abre menu categoria
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -93,6 +81,13 @@ export const Categorias = () => {
     const handleMenuSubcategoriasClick = (index) => {
         setMostrarSubCategorias((prev) => (prev === index ? null : index));
     };
+
+    // Campo de busca categorias
+    const categoriasFiltradas = categorias?.filter(categoria => {
+        const correspondeFiltro = filtro === 'RECEITA' ? categoria.tipo === "RECEITA" : filtro === 'DESPESA' ? categoria.tipo === "DESPESA" : true;
+        const correspondeBusca = categoria.name.toLowerCase().includes(busca.toLowerCase());
+        return correspondeFiltro && correspondeBusca;
+    });
 
     // Buscar categorias
     useEffect(() => {
@@ -172,7 +167,7 @@ export const Categorias = () => {
                     </div>
 
                     <div className={styles.filtro_busca_categoria}>
-                        <Input type="text" placeholder="Buscar categoria..." value={filtroBusca} onChange={(e) => setFiltroBusca(e.target.value)} className={styles.input_busca} />
+                        <Input type="text" placeholder="Buscar categoria..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
                     </div>
                 </div>
 

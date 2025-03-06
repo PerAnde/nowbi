@@ -100,7 +100,7 @@ export const Bi = () => {
                             <PiIcons.PiDotOutlineFill />
                             <Link to='/empresas' className={styles.link_menu_pagina}>Empresas</Link>
                             <PiIcons.PiDotOutlineFill />
-                            <Link to={`/empresas/${bi?.empresa_id}`} className={styles.link_menu_pagina}>{empresa?.name}</Link>
+                            <Link to={`/empresas/${bi?.empresa_id}`} className={styles.link_menu_pagina}>{empresa?.name?.length > 10 ? `${empresa.name.slice(0, 10)}...` : empresa?.name}</Link>
                             <PiIcons.PiDotOutlineFill />
                             <p className={styles.link_menu_pagina_atual}>
                                 {loading ? (
@@ -119,32 +119,32 @@ export const Bi = () => {
                                 <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)}><PiIcons.PiTrashBold /></Link>
                                 {bi.status ? (
                                     <Link
-                                        className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
+                                        className={`${styles.btn_link_principal} ${styles.btn_reabrir}`}
                                         onClick={() => atualizarStatusBi()}
                                     >
-                                        <PiIcons.PiChecksBold /> Reabrir BI
+                                        <PiIcons.PiArrowArcLeftBold /> Reabrir BI
                                     </Link>
                                 ) : (
                                     <Link
                                         className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
                                         onClick={() => atualizarStatusBi()}
                                     >
-                                        <PiIcons.PiChecksBold /> Finalizar BI
+                                        <PiIcons.PiCheckBold /> Finalizar BI
                                     </Link>
                                 )}
 
                             </div>
-                            <Link className={styles.btn_link_principal} onClick={(e) => setPopUpNovoLancamento(true)}><PiIcons.PiPlusBold /> Novo Lançamento</Link>
+
+                            {bi.status ? (
+                                ''
+                            ) : (
+                                <Link className={styles.btn_link_principal} onClick={(e) => setPopUpNovoLancamento(true)}><PiIcons.PiPlusBold /> Novo Lançamento</Link>
+                            )}
+
                         </div>
                     </div>
 
                 </div>
-
-                <form className={styles.box_incluir_lancamento}>
-
-
-
-                </form>
 
                 <div className={styles.box_menu_lancamentos}>
                     <div className={styles.filtro_pagina}>

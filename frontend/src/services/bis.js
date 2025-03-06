@@ -13,6 +13,7 @@ export const buscarBi = async (id, setBi, setLoading, navigate) => {
         if (response.data) {
             setBi(response.data);
             setLoading(false)
+
         } else {
             setBi(null)
             navigate("/notfound");

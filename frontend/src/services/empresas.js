@@ -1,30 +1,31 @@
 import { api } from '../api/api'
 import { toast } from 'sonner'
 import { format } from 'date-fns';
+import { ptBR } from "date-fns/locale";
 
 // Buscar empresas
 export const buscarEmpresas = async (setEmpresas, setLoading) => {
-
     try {
-        // Time para testar Skeletons
-        // await new Promise(resolve => setTimeout(resolve, 2000))
-
         const response = await api.get("/empresas");
 
-        const dataCriacaoEmpresas = response.data.map(empresa => ({
-            ...empresa,
-            created_at: format(new Date(empresa.created_at), "dd MMM yyyy")
-        }))
+        const ordemAlfabeticaEmpresas = response.data
+            .map(empresa => ({
+                ...empresa,
+                created_at: format(new Date(empresa.created_at), "dd MMM yyyy", { locale: ptBR })
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
 
-        setEmpresas(dataCriacaoEmpresas)
+        setEmpresas(ordemAlfabeticaEmpresas);
         setLoading(false);
 
     } catch (error) {
-        toast.error("Erro ao buscar empresas!")
-        console.log(error)
+        toast.error("Erro ao buscar empresas!");
+        console.error("Erro ao buscar empresas:", error);
+    } finally {
+        setLoading(false);
     }
+};
 
-}
 
 // Buscar Empresa
 export const buscarEmpresa = async (id, setEmpresa, setLoading, navigate) => {
