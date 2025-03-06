@@ -89,6 +89,15 @@ export const CriarLancamento = ({ trigger, setTrigger }) => {
                         />
                     </div>
 
+                    <div className={styles.box_inputs}>
+                        <Select
+                            options={categoriasFiltradosPorTipo.map(categoria => ({ value: categoria.id, label: categoria.name }))}
+                            value={categoriaSelecionada}
+                            onChange={(e) => setCategoriaSelecionada(e.target.value)}
+                            placeholder="Selecione a categoria"
+                        />
+                    </div>
+
                     <div className={styles.box_btn_button}>
                         <Button type="submit"><span><PiIcons.PiPlusBold /></span> Incluir lançamento</Button>
                     </div>
