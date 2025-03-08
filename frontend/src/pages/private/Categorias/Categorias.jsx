@@ -85,8 +85,14 @@ export const Categorias = () => {
     // Campo de busca categorias
     const categoriasFiltradas = categorias?.filter(categoria => {
         const correspondeFiltro = filtro === 'RECEITA' ? categoria.tipo === "RECEITA" : filtro === 'DESPESA' ? categoria.tipo === "DESPESA" : true;
-        const correspondeBusca = categoria.name.toLowerCase().includes(busca.toLowerCase());
-        return correspondeFiltro && correspondeBusca;
+        const correspondeBuscaCategoria = categoria.name.toLowerCase().includes(busca.toLowerCase());
+
+        // Verifica se alguma subcategoria contém o termo buscado
+        const correspondeBuscaSubcategoria = categoria.subcategorias?.some(subcategoria =>
+            subcategoria.name.toLowerCase().includes(busca.toLowerCase())
+        );
+
+        return correspondeFiltro && (correspondeBuscaCategoria || correspondeBuscaSubcategoria);
     });
 
     // Buscar categorias

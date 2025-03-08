@@ -25,6 +25,9 @@ export const Bi = () => {
     const { id } = useParams();
     const [bi, setBi] = useState({});
     const [loading, setLoading] = useState(true);
+    const [filtro, setFiltro] = useState("TODOS");
+    // Busca
+    const [busca, setBusca] = useState('');
 
     const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
     const [popUpEditarBi, setPopUpEditarBi] = useState(false);
@@ -99,6 +102,25 @@ export const Bi = () => {
         });
     };
 
+    // Lancamentos filtrados
+    const lancamentosFiltrados = bi.lancamentoBi
+        ? bi.lancamentoBi.filter(lancamento => {
+            const correspondeFiltro = filtro === "TODOS" || lancamento.tipo === filtro;
+
+            const buscaNormalizada = busca.toLowerCase();
+
+            // Impede a busca pelos termos "receita" ou "despesa"
+            const ignorarBusca = buscaNormalizada === "receita" || buscaNormalizada === "despesa";
+
+            const correspondeBuscaValor = !ignorarBusca && lancamento.valor?.toString().includes(busca);
+            const correspondeBuscaCategoria = !ignorarBusca && lancamento.categoria?.name.toLowerCase().includes(buscaNormalizada);
+            const correspondeBuscaSubcategoria = !ignorarBusca && lancamento.subcategoria?.name.toLowerCase().includes(buscaNormalizada);
+
+            return correspondeFiltro && (correspondeBuscaValor || correspondeBuscaCategoria || correspondeBuscaSubcategoria);
+        })
+        : [];
+
+
     return (
         <Layout>
             <div className="box_conteudo_paginas">
@@ -168,24 +190,28 @@ export const Bi = () => {
 
                 <div className={styles.box_menu_lancamentos}>
                     <div className={styles.filtro_pagina}>
-                        <Link className={`${styles.filtro_todos} ${styles.ativo}`}>
+                        <Link className={`${styles.filtro_todos} ${filtro === "TODOS" ? styles.ativo : ""}`} onClick={() => setFiltro("TODOS")}>
                             <PiIcons.PiListBulletsBold />
                             Todos
                         </Link>
-                        <Link className={`${styles.filtro_receitas}`}>
+                        <Link className={`${styles.filtro_receitas} ${filtro === "RECEITA" ? styles.ativo : ""}`} onClick={() => setFiltro("RECEITA")}>
                             <PiIcons.PiArrowUpRightBold />
                             Receitas
                         </Link>
-                        <Link className={`${styles.filtro_despesas}`}>
+                        <Link className={`${styles.filtro_despesas} ${filtro === "DESPESA" ? styles.ativo : ""}`} onClick={() => setFiltro("DESPESA")}>
                             <PiIcons.PiArrowDownRightBold />
                             Despesas
                         </Link>
+                    </div>
+
+                    <div className={styles.filtro_busca_categoria}>
+                        <Input type="text" placeholder="Buscar lançamento..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
                     </div>
                 </div>
 
                 {lancamentosSelecionados.length > 0 ? (
                     <div className={styles.box_excluir_lancamentos}>
-                        <p>Excluir lancamentos selecionados</p>
+                        <p>Excluir lançamentos</p>
                         <Link className={styles.btn_excluir_lancamentos}>
                             <PiIcons.PiTrashBold />
                             <p>Excluir</p>
@@ -203,8 +229,8 @@ export const Bi = () => {
                 )}
 
                 <div className={styles.box_categorias}>
-                    {bi.lancamentoBi && bi.lancamentoBi.length > 0 ? (
-                        bi.lancamentoBi.map((lancamento, index) => (
+                    {lancamentosFiltrados.length > 0 ? (
+                        lancamentosFiltrados.map((lancamento, index) => (
                             <div key={lancamento.id || index} className={styles.box_categoria}>
                                 <label className={styles.checkbox_confirmar} htmlFor={lancamento.id} ref={(el) => (lancamentoRef.current[index] = el)}>
                                     <Input
