@@ -19,5 +19,6 @@ export const buscarCep = async (cep, setEndereco, setBairro, setCidade, setIbge,
         }
     } catch (error) {
         setCepErro(true);
+        toast.error("CEP inválido ou não encontrado!")
     }
 };

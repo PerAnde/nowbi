@@ -2,7 +2,6 @@ import prismaClient from "../../prisma";
 
 interface ListCategoriaRequest {
     usuario_id: string;
-    tipo?: 'RECEITA' | 'DESPESA';
 }
 
 class ListCategoriasService {

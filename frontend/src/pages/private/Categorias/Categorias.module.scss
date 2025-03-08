@@ -257,21 +257,22 @@ a.btn_link_principal:hover {
     }
 
     a.btn_editar_subcategoria{
-        background-color: var(--background);
+        border: 1px solid var(--border-input);
         border-radius: var(--border-radius-button);
     }
 
     a.btn_editar_subcategoria:hover{
+        background-color: var(--background);
         color: var(--texto-primario);
     }
 
     a.btn_excluir_subcategoria{
-        background-color: var(--vermelho-15);
+        border: 1px solid var(--vermelho-15);
     }
 
     a.btn_excluir_subcategoria:hover{
-        background-color: var(--vermelho);
-        color: var(--branco);
+        background-color: var(--vermelho-15);
+        color: var(--vermelho);
     }
 }
 

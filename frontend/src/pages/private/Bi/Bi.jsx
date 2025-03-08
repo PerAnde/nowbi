@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { buscarBi, atualizarStatus, excluirBi } from '../../../services/bis';
-import { buscarEmpresa } from '../../../services/empresas';
+import { toast } from 'sonner';
 
 import { Layout } from '../../../layout/Layout'
 
@@ -17,13 +17,13 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 import * as PiIcons from 'react-icons/pi';
 
 import styles from './Bi.module.scss'
+import { Input } from '../../../components/Input/Input';
 
 export const Bi = () => {
 
     // Estados BI e Empresa
     const { id } = useParams();
     const [bi, setBi] = useState({});
-    const [empresa, setEmpresa] = useState();
     const [loading, setLoading] = useState(true);
 
     const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
@@ -32,11 +32,16 @@ export const Bi = () => {
 
     const navigate = useNavigate();
 
+    // Estado lancamentos selecionados
+    const [lancamentosSelecionados, setLancamentosSelecionados] = useState([]);
+    const lancamentoRef = useRef([]);
+
+    // Desativa ou ativa scroll
     useEffect(() => {
         if (popUpEditarBi) {
-            document.body.style.overflow = 'hidden'; // Desativa o scroll
+            document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'auto'; // Restaura o scroll
+            document.body.style.overflow = 'auto';
         }
     }, [popUpEditarBi]);
 
@@ -62,10 +67,9 @@ export const Bi = () => {
     const atualizarStatusBi = async () => {
         try {
             await atualizarStatus(id, !bi.status);
-            console.log(bi.status)
             atualizarBi();
         } catch (error) {
-            console.error("Erro ao atualizar status do BI", error);
+            toast.error("Erro ao atualizar status do BI!");
         }
     };
 
@@ -77,6 +81,22 @@ export const Bi = () => {
     // Formata escrita Mes
     const capitalizeFirstLetter = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
+
+    // Pegando lancamentos selecionados
+    const handleLancamentoClick = (id) => {
+        setLancamentosSelecionados((prevSelecionados) => {
+            // Verificar se o ID já está presente na lista
+            const isSelected = prevSelecionados.includes(id);
+
+            if (isSelected) {
+                // Remover o ID da lista
+                return prevSelecionados.filter((itemId) => itemId !== id);
+            } else {
+                // Adicionar o ID à lista
+                return [...prevSelecionados, id];
+            }
+        });
     };
 
     return (
@@ -100,7 +120,7 @@ export const Bi = () => {
                             <PiIcons.PiDotOutlineFill />
                             <Link to='/empresas' className={styles.link_menu_pagina}>Empresas</Link>
                             <PiIcons.PiDotOutlineFill />
-                            <Link to={`/empresas/${bi?.empresa_id}`} className={styles.link_menu_pagina}>{empresa?.name?.length > 10 ? `${empresa.name.slice(0, 10)}...` : empresa?.name}</Link>
+                            <Link to={`/empresas/${bi.empresa?.id}`} className={styles.link_menu_pagina}>{bi.empresa?.name?.length > 10 ? `${bi.empresa.name.slice(0, 10)}...` : bi.empresa?.name}</Link>
                             <PiIcons.PiDotOutlineFill />
                             <p className={styles.link_menu_pagina_atual}>
                                 {loading ? (
@@ -148,15 +168,73 @@ export const Bi = () => {
 
                 <div className={styles.box_menu_lancamentos}>
                     <div className={styles.filtro_pagina}>
-                        <Link className={`${styles.filtro_receitas} ${styles.ativo}`}>
+                        <Link className={`${styles.filtro_todos} ${styles.ativo}`}>
+                            <PiIcons.PiListBulletsBold />
+                            Todos
+                        </Link>
+                        <Link className={`${styles.filtro_receitas}`}>
                             <PiIcons.PiArrowUpRightBold />
                             Receitas
                         </Link>
-                        <Link className={styles.filtro_despesas}>
+                        <Link className={`${styles.filtro_despesas}`}>
                             <PiIcons.PiArrowDownRightBold />
                             Despesas
                         </Link>
                     </div>
+                </div>
+
+                {lancamentosSelecionados.length > 0 ? (
+                    <div className={styles.box_excluir_lancamentos}>
+                        <p>Excluir lancamentos selecionados</p>
+                        <Link className={styles.btn_excluir_lancamentos}>
+                            <PiIcons.PiTrashBold />
+                            <p>Excluir</p>
+                        </Link>
+                    </div>
+                ) : (
+                    <div className={styles.categoria_header}>
+                        <span></span>
+                        <span>Valor</span>
+                        <span>Tipo</span>
+                        <span>Categoria</span>
+                        <span>Subategoria</span>
+                        <span>Opções</span>
+                    </div>
+                )}
+
+                <div className={styles.box_categorias}>
+                    {bi.lancamentoBi && bi.lancamentoBi.length > 0 ? (
+                        bi.lancamentoBi.map((lancamento, index) => (
+                            <div key={lancamento.id || index} className={styles.box_categoria}>
+                                <label className={styles.checkbox_confirmar} htmlFor={lancamento.id} ref={(el) => (lancamentoRef.current[index] = el)}>
+                                    <Input
+                                        type="checkbox"
+                                        id={lancamento.id}
+                                        className={styles.input_checkbox}
+                                        checked={lancamentosSelecionados.includes(lancamento.id)}
+                                        onChange={() => handleLancamentoClick(lancamento.id)}
+                                    />
+                                    <span className={styles.custom_checkbox}>
+                                        <PiIcons.PiCheckFatFill className={styles.custom_icon} />
+                                    </span>
+                                </label>
+                                <p>R$ {parseFloat(lancamento.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                <p className={`${styles.tipo} ${lancamento.tipo === "RECEITA" ? styles.tipo_receita : styles.tipo_despesa}`}>{capitalizeFirstLetter(lancamento.tipo)}</p>
+                                <p>{lancamento.categoria.name}</p>
+                                <p>{lancamento.subcategoria ? lancamento.subcategoria.name : <span>Sem subcategoria</span>}</p>
+                                <div className={styles.box_btns_opcoes_lancamento}>
+                                    <Link className={styles.btn_editar_lancamento}>
+                                        <PiIcons.PiNotePencilBold />
+                                        <p>Editar</p>
+                                    </Link>
+                                    <Link className={styles.btn_excluir_lancamento}>
+                                        <PiIcons.PiTrashBold />
+                                        <p>Excluir</p>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))
+                    ) : null}
                 </div>
 
             </div>

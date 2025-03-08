@@ -31,7 +31,9 @@ export const ExcluirEmpresa = ({ trigger, setTrigger, mensagem, onConfirm }) => 
                             onChange={(e) => setConfirmarCheckbox(e.target.checked)}
                             className={styles.input_checkbox}
                         />
-                        <span className={styles.custom_checkbox}></span>
+                        <span className={styles.custom_checkbox}>
+                            <PiIcons.PiCheckFatFill className={styles.custom_icon} />
+                        </span>
                         <p>Estou ciente</p>
                     </label>
                 </div>
@@ -40,7 +42,7 @@ export const ExcluirEmpresa = ({ trigger, setTrigger, mensagem, onConfirm }) => 
                     {confirmarCheckbox ? (
                         <Button onClick={() => { onConfirm(); setTrigger(false); setConfirmarCheckbox(false) }}>Confirmar</Button>
                     ) : ('')}
-                    <Button onClick={() => setTrigger(false)} className={styles.btn_cancelar}>Cancelar</Button>
+                    <Button onClick={() => { setTrigger(false), setConfirmarCheckbox(false) }} className={styles.btn_cancelar}>Cancelar</Button>
                 </div>
             </div>
         </div>

@@ -13,7 +13,29 @@ class ListBiService {
                 mes: true,
                 ano: true,
                 status: true,
-                empresa_id: true,
+                empresa: {
+                    select: {
+                        id: true,
+                        name: true,
+                    }
+                },
+                lancamentoBi: {
+                    select: {
+                        id: true,
+                        valor: true,
+                        tipo: true,
+                        categoria: {
+                            select: {
+                                name: true,
+                            }
+                        },
+                        subcategoria: {
+                            select: {
+                                name: true,
+                            }
+                        }
+                    }
+                },
             }
         });
 

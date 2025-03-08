@@ -13,8 +13,6 @@ export const criarSubcategoria = async (name, categoriaId) => {
         return false;
     }
 
-    console.log("Enviando para API:", { name, categoriaId });
-
     try {
 
         const data = {

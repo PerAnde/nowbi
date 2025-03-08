@@ -20,6 +20,7 @@ import { DeleteEmpresaController } from '../controllers/empresas/DeleteEmpresaCo
 // Controllers Categorias
 import { CreateCategoriaController } from '../controllers/categorias/CreateCategoriaController';
 import { ListCategoriasController } from '../controllers/categorias/ListCategoriasController';
+import { ListCategoriaController } from '../controllers/categorias/ListCategoriaController';
 import { UpdateCategoriaController } from '../controllers/categorias/UpdateCategoriaController';
 import { DeleteCategoriaController } from '../controllers/categorias/DeleteCategoriaController';
 
@@ -34,6 +35,9 @@ import { ListBiController } from '../controllers/bis/ListBiController';
 import { UpdateBiController } from '../controllers/bis/UpdateBiController';
 import { UpdateStatusBiController } from '../controllers/bis/UpdateStatusBiController';
 import { DeleteBiController } from '../controllers/bis/DeleteBiController';
+
+// Controllers Lancamento BI
+import { CreateLancamentoBiController } from '../controllers/lancamentosBi/CreateLancamentoBiController';
 
 import uploadConfig from '../config/multer'
 
@@ -57,6 +61,7 @@ router.delete('/empresas/:id', isAuthenticated, new DeleteEmpresaController().ha
 // Rotas Categorias
 router.post('/categorias', isAuthenticated, new CreateCategoriaController().handle)
 router.get('/categorias', isAuthenticated, new ListCategoriasController().handle)
+router.get('/categorias/:id', isAuthenticated, new ListCategoriaController().handle)
 router.put('/categorias/:id', isAuthenticated, new UpdateCategoriaController().handle)
 router.delete('/categorias/:id', isAuthenticated, new DeleteCategoriaController().handle)
 
@@ -71,5 +76,9 @@ router.get('/bi/:id', isAuthenticated, new ListBiController().handle)
 router.put('/bi/:id', isAuthenticated, new UpdateBiController().handle)
 router.put('/bi/status/:id', isAuthenticated, new UpdateStatusBiController().handle)
 router.delete('/bi/:id', isAuthenticated, new DeleteBiController().handle)
+
+// Rotas Lancamento BI
+router.post('/lancamentos/:id', isAuthenticated, new CreateLancamentoBiController().handle)
+router.get('/lancamentos', isAuthenticated, new CreateLancamentoBiController().handle)
 
 export { router };
