@@ -13,6 +13,16 @@ class DeleteCategoriaService {
             throw new Error("Categoria não encontrada!");
         }
 
+        const estaVinculadaLancamento = await prismaClient.lancamentoBi.findFirst({
+            where: {
+                categoria_id: id,
+            }
+        })
+
+        if (estaVinculadaLancamento) {
+            throw new Error("Não é possível excluir essa categoria, pois ela está vinculada a um lançamento!");
+        }
+
         await prismaClient.subCategoria.deleteMany({
             where: {
                 categoria_id: id,

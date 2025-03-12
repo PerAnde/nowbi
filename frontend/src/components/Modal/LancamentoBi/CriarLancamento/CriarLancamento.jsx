@@ -11,7 +11,7 @@ import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss'
 import { criarLancamento } from '../../../../services/lancamentos';
 
-export const CriarLancamento = ({ trigger, setTrigger }) => {
+export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
 
     // Estados incluri Lancamento
     const [valor, setValor] = useState('')
@@ -50,7 +50,6 @@ export const CriarLancamento = ({ trigger, setTrigger }) => {
         }
     }, [categoriaSelecionada]);
 
-
     // Formata valor do input
     const formatarValor = (valor) => {
         // Remove tudo que não é número
@@ -82,9 +81,8 @@ export const CriarLancamento = ({ trigger, setTrigger }) => {
             setTipo("");
             setCategoriaSelecionada("");
             setSubcategoriaSelecionada("");
+            lancamentoCriado();
         }
-
-        console.log(`Valor: ${valor}, Tipo: ${tipo}, Categoria: ${categoriaSelecionada}, Subcategoria: ${subcategoriaSelecionada}`);
     }
 
     return trigger ? (

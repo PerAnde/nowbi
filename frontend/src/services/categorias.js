@@ -95,13 +95,13 @@ export const editarCategoria = async (name, tipo, categoria, setTrigger) => {
         const data = { name, tipo };
 
         await api.put(`/categorias/${categoria.id}`, data); // Atualiza a categoria pelo ID
-        toast.success("Subategoria atualizada com sucesso!")
+        toast.success("Categoria atualizada com sucesso!")
         setTrigger(false);
 
         return true;
 
     } catch (error) {
-        toast.error("Erro ao atualizar a categoria!")
+        toast.error(error.response.data.error)
         return false;
     }
 
@@ -118,7 +118,7 @@ export const excluirCategoria = async (categoriaId, buscarCategorias, setModalCo
         buscarCategorias();
 
     } catch (error) {
-        toast.error("Erro ao excluir a categoria!")
+        toast.error(error.response.data.error)
         console.error("Erro ao excluir a categoria!", error)
     }
 

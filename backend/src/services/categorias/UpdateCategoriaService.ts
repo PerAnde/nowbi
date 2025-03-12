@@ -20,6 +20,16 @@ class UpdateCategoriaService {
             throw new Error("Categoria não encontrada!");
         }
 
+        const estaVinculadoLancamento = await prismaClient.lancamentoBi.findFirst({
+            where: {
+                categoria_id: id,
+            }
+        })
+
+        if (estaVinculadoLancamento) {
+            throw new Error("Não é possível mudar o TIPO desss categoria, pois ela está vinculada a um lançamento!");
+        }
+
         const updateCategoria = await prismaClient.categoria.update({
             where: { id },
             data: {

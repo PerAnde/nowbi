@@ -73,7 +73,7 @@ export const Empresa = () => {
                             <PiIcons.PiDotOutlineFill />
                             <p className={styles.link_menu_pagina_atual}>
                                 {loading ? (
-                                    <Skeleton width={120} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                    <Skeleton width={80} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                                 ) : (
                                     <span>{empresa?.name?.length > 10 ? `${empresa.name.slice(0, 10)}...` : empresa?.name}</span>
                                 )}

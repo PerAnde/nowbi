@@ -24,6 +24,7 @@ class ListBiService {
                         id: true,
                         valor: true,
                         tipo: true,
+                        created_at: true,
                         categoria: {
                             select: {
                                 name: true,

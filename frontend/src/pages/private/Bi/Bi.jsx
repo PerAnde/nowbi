@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { Layout } from '../../../layout/Layout'
 
 import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
+import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
 
 import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
@@ -29,11 +30,17 @@ export const Bi = () => {
     // Busca
     const [busca, setBusca] = useState('');
 
-    const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
+    // Modais
     const [popUpEditarBi, setPopUpEditarBi] = useState(false);
     const [popUpExcluirBi, setPopUpExcluirBi] = useState(false);
 
+    const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
+    const [popUpEditarLancamento, setPopUpEditarLancamento] = useState(false);
+
     const navigate = useNavigate();
+
+    // Lancamento selecionado
+    const [lancamentoSelecionado, setLancamentoSelecionado] = useState(null);
 
     // Estado lancamentos selecionados
     const [lancamentosSelecionados, setLancamentosSelecionados] = useState([]);
@@ -104,22 +111,19 @@ export const Bi = () => {
 
     // Lancamentos filtrados
     const lancamentosFiltrados = bi.lancamentoBi
-        ? bi.lancamentoBi.filter(lancamento => {
-            const correspondeFiltro = filtro === "TODOS" || lancamento.tipo === filtro;
+        ? bi.lancamentoBi
+            .filter(lancamento => {
+                const correspondeFiltro = filtro === "TODOS" || lancamento.tipo === filtro;
+                const buscaNormalizada = busca.toLowerCase();
+                const ignorarBusca = buscaNormalizada === "receita" || buscaNormalizada === "despesa";
+                const correspondeBuscaValor = !ignorarBusca && lancamento.valor?.toString().includes(busca);
+                const correspondeBuscaCategoria = !ignorarBusca && lancamento.categoria?.name.toLowerCase().includes(buscaNormalizada);
+                const correspondeBuscaSubcategoria = !ignorarBusca && lancamento.subcategoria?.name.toLowerCase().includes(buscaNormalizada);
 
-            const buscaNormalizada = busca.toLowerCase();
-
-            // Impede a busca pelos termos "receita" ou "despesa"
-            const ignorarBusca = buscaNormalizada === "receita" || buscaNormalizada === "despesa";
-
-            const correspondeBuscaValor = !ignorarBusca && lancamento.valor?.toString().includes(busca);
-            const correspondeBuscaCategoria = !ignorarBusca && lancamento.categoria?.name.toLowerCase().includes(buscaNormalizada);
-            const correspondeBuscaSubcategoria = !ignorarBusca && lancamento.subcategoria?.name.toLowerCase().includes(buscaNormalizada);
-
-            return correspondeFiltro && (correspondeBuscaValor || correspondeBuscaCategoria || correspondeBuscaSubcategoria);
-        })
+                return correspondeFiltro && (correspondeBuscaValor || correspondeBuscaCategoria || correspondeBuscaSubcategoria);
+            })
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         : [];
-
 
     return (
         <Layout>
@@ -142,11 +146,15 @@ export const Bi = () => {
                             <PiIcons.PiDotOutlineFill />
                             <Link to='/empresas' className={styles.link_menu_pagina}>Empresas</Link>
                             <PiIcons.PiDotOutlineFill />
-                            <Link to={`/empresas/${bi.empresa?.id}`} className={styles.link_menu_pagina}>{bi.empresa?.name?.length > 10 ? `${bi.empresa.name.slice(0, 10)}...` : bi.empresa?.name}</Link>
+                            {loading ? (
+                                <Skeleton width={100} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                            ) : (
+                                <Link to={`/empresas/${bi.empresa?.id}`} className={styles.link_menu_pagina}>{bi.empresa?.name?.length > 10 ? `${bi.empresa.name.slice(0, 10)}...` : bi.empresa?.name}</Link>
+                            )}
                             <PiIcons.PiDotOutlineFill />
                             <p className={styles.link_menu_pagina_atual}>
                                 {loading ? (
-                                    <Skeleton width={120} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                    <Skeleton width={80} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                                 ) : (
                                     <span>{capitalizeFirstLetter(bi.mes)} / {bi.ano}</span>
                                 )}
@@ -229,7 +237,18 @@ export const Bi = () => {
                 )}
 
                 <div className={styles.box_categorias}>
-                    {lancamentosFiltrados.length > 0 ? (
+                    {loading ? (
+                        Array.from({ length: 12 }).map((_, id) => (
+                            <div key={id} className={styles.box_categoria}>
+                                <Skeleton width={25} height={25} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                <Skeleton width={120} height={25} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                <Skeleton width={70} height={25} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                <Skeleton width={110} height={25} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                <Skeleton width={110} height={25} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                <Skeleton width={200} height={25} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                            </div>
+                        ))
+                    ) : lancamentosFiltrados.length > 0 ? (
                         lancamentosFiltrados.map((lancamento, index) => (
                             <div key={lancamento.id || index} className={styles.box_categoria}>
                                 <label className={styles.checkbox_confirmar} htmlFor={lancamento.id} ref={(el) => (lancamentoRef.current[index] = el)}>
@@ -249,7 +268,10 @@ export const Bi = () => {
                                 <p>{lancamento.categoria.name}</p>
                                 <p>{lancamento.subcategoria ? lancamento.subcategoria.name : <span>Sem subcategoria</span>}</p>
                                 <div className={styles.box_btns_opcoes_lancamento}>
-                                    <Link className={styles.btn_editar_lancamento}>
+                                    <Link className={styles.btn_editar_lancamento} onClick={() => {
+                                        setLancamentoSelecionado(lancamento)
+                                        setPopUpEditarLancamento(true)
+                                    }}>
                                         <PiIcons.PiNotePencilBold />
                                         <p>Editar</p>
                                     </Link>
@@ -265,7 +287,6 @@ export const Bi = () => {
 
             </div>
 
-            <CriarLancamento trigger={popUpNovoLancamento} setTrigger={setPopUpNovoLancamento} />
             <EditarBi trigger={popUpEditarBi} setTrigger={setPopUpEditarBi} biEditado={atualizarBi} />
             <ExcluirBi
                 trigger={popUpExcluirBi}
@@ -273,6 +294,13 @@ export const Bi = () => {
                 mensagem={<>Todos os dados desse <strong>BI</strong> serão <strong>excluídos permanentemente!</strong></>}
                 onConfirm={confirmarExclusao}
                 biExcluido={idEmpresa}
+            />
+            <CriarLancamento trigger={popUpNovoLancamento} setTrigger={setPopUpNovoLancamento} lancamentoCriado={atualizarBi} />
+            <EditarLancamento
+                trigger={popUpEditarLancamento}
+                setTrigger={setPopUpEditarLancamento}
+                lancamento={lancamentoSelecionado}
+                lancamentoEditado={atualizarBi}
             />
 
         </Layout>

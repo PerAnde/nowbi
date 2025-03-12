@@ -195,7 +195,6 @@ a.btn_link_principal.btn_reabrir {
     display: flex;
     align-items: center;
     gap: 1rem;
-    cursor: pointer;
     transition: .3s;
     padding: 1rem;
 }
@@ -474,6 +473,19 @@ a.btn_excluir_lancamento:hover {
 
     .box_categoria p:nth-child(6) {
         grid-column: 1/6;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .box_menu_lancamentos {
+        flex-direction: column;
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .filtro_busca_categoria{
+        width: 100%;
+        grid-column: 1/5;
     }
 }
 

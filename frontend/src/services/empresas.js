@@ -6,6 +6,9 @@ import { ptBR } from "date-fns/locale";
 // Buscar empresas
 export const buscarEmpresas = async (setEmpresas, setLoading) => {
     try {
+
+        // await new Promise(resolve => setTimeout(resolve, 5000))
+
         const response = await api.get("/empresas");
 
         const ordemAlfabeticaEmpresas = response.data
