@@ -256,3 +256,22 @@ img.picture_image {
     display: flex;
     gap: 1.5rem;
 }
+
+.box_link_alterar_categoria{
+    display: flex;
+}
+
+.box_link_alterar_categoria a{
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--border-input);
+    border-radius: var(--border-radius-button);
+    color: var(--texto-secundario);
+}
+
+.box_link_alterar_categoria a:hover{
+    background-color: var(--placeholder);
+    color: var(--texto-primario);
+    transition: 0.3s;
+}

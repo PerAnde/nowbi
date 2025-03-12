@@ -79,7 +79,14 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Editar Lançamento</h3>
-                    <span onClick={() => { setTrigger(false); }}>
+                    <span onClick={() => {
+                        setTrigger(false)
+                        setValor(lancamento.valor)
+                        setTipo(lancamento.tipo)
+                        setCategoriaSelecionada(lancamento.categoria)
+                        setSubcategoriaSelecionada(lancamento.subcategoria)
+                        setAlterarCategoria(true)
+                    }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
@@ -93,7 +100,9 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
                     />
 
                     {alterarCategoria ? (
-                        <Link onClick={() => setAlterarCategoria(false)}>Alterar categoria</Link>
+                        <div className={styles.box_link_alterar_categoria}>
+                            <Link onClick={() => setAlterarCategoria(false)}>Alterar categorias</Link>
+                        </div>
                     ) : (
                         <>
                             <div className={styles.box_inputs}>
