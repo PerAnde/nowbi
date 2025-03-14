@@ -1,18 +1,18 @@
-select {
+.input_select {
     width: 100%;
     outline: none;
     padding: 1.8rem;
     border-radius: 5px;
     border: none;
-    background-color: var(--cor-componente);
+    background-color: red;
     border: 1px solid var(--border-input);
     color: var(--texto-primario);
     transition: .3s;
     cursor: pointer;
 }
 
-select:focus,
-select:hover {
+.input_select:focus,
+.input_select:hover {
     border: 1px solid var(--cor-primaria);
     transition: .3s;
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { criarBi } from '../../../../services/bis';
+import { SelectMes } from '../../../Selects/SelectMes';
+import { SelectAno } from '../../../Selects/SelectAno';
 
-import { Select } from '../../../Select/Select'
 import { Button } from '../../../Button/Button'
 
 import * as PiIcons from 'react-icons/pi';
@@ -11,44 +12,24 @@ import styles from '../../Modal.module.scss'
 
 export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
 
-    const [mes, setMes] = useState("");
-    const [ano, setAno] = useState("");
-
+    // ID da empresa
     const { id } = useParams();
+    const [mesSelecionado, setMesSelecionado] = useState("");
+    const [anoSelecionado, setAnoSelecionado] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const success = await criarBi(id, mes, Number(ano));
+        const success = await criarBi(id, mesSelecionado, Number(anoSelecionado));
 
         if (success) {
-            setMes("");
-            setAno("");
+            setMesSelecionado("");
+            setAnoSelecionado("");
             setTrigger(false);
             biCriado();
         }
 
     };
-
-    const meses = [
-        { value: "JANEIRO", label: "Janeiro" },
-        { value: "FEVEREIRO", label: "Fevereiro" },
-        { value: "MARÇO", label: "Março" },
-        { value: "ABRIL", label: "Abril" },
-        { value: "MAIO", label: "Maio" },
-        { value: "JUNHO", label: "Junho" },
-        { value: "JULHO", label: "Julho" },
-        { value: "AGOSTO", label: "Agosto" },
-        { value: "SETEMBRO", label: "Setembro" },
-        { value: "OUTUBRO", label: "Outubro" },
-        { value: "NOVEMBRO", label: "Novembro" },
-        { value: "DEZEMBRO", label: "Dezembro" },
-    ];
-
-    const anos = Array.from({ length: 101 }, (_, i) => 2000 + i).map((year) => ({
-        value: year,
-        label: year,
-    }));
 
     return trigger ? (
 
@@ -65,18 +46,13 @@ export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
 
                         <div className={styles.box_selects}>
-                            <Select
-                                options={meses}
-                                value={mes}
-                                onChange={(e) => setMes(e.target.value)}
-                                placeholder="Selecione o mês"
+                            <SelectMes
+                                mesSelecionado={mesSelecionado}
+                                setMesSelecionado={setMesSelecionado}
                             />
-
-                            <Select
-                                options={anos}
-                                value={ano}
-                                onChange={(e) => setAno(e.target.value)}
-                                placeholder="Selecione o ano"
+                            <SelectAno
+                                anoSelecionado={anoSelecionado}
+                                setAnoSelecionado={setAnoSelecionado}
                             />
                         </div>
 

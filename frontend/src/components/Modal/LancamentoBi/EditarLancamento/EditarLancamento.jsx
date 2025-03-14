@@ -6,8 +6,9 @@ import { Select } from '../../../Select/Select';
 import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss';
 import { buscarCategorias, buscarCategoria } from '../../../../services/categorias';
+import { editarLancamento } from '../../../../services/lancamentos';
 
-export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEditado }) => {
+export const EditarLancamento = ({ trigger, setTrigger, lancamento }) => {
 
     const [valor, setValor] = useState('');
     const [tipo, setTipo] = useState('');
@@ -17,6 +18,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
     const [categorias, setCategorias] = useState([]);
     const [categoria, setCategoria] = useState([]);
     const [subcategorias, setSubcategorias] = useState([]);
+
     const [loading, setLoading] = useState(false);
 
     const [alterarCategoria, setAlterarCategoria] = useState(true);
@@ -27,7 +29,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
             setValor(lancamento.valor || '');
             setTipo(lancamento.tipo || '');
             setCategoriaSelecionada(lancamento.categoria || '');
-            setSubcategoriaSelecionada(lancamento.subcategoria || '');
+            setSubcategoriaSelecionada(lancamento.subcategoria ? lancamento.subcategoria : '');
         }
     }, [lancamento]);
 
@@ -57,13 +59,19 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
     // Formata campo valor
     const formatarValor = (valor) => {
         valor = valor.replace(/\D/g, '');
-        valor = (Number(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        return valor;
+        if (!valor) return "R$ 0,00";
+
+        let valorNumerico = parseFloat(valor) / 100;
+        return `R$ ${valorNumerico.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     };
 
     // Removendo formatação para enviar para a API
     const removerFormatacaoMoeda = (valor) => {
-        return Number(valor.replace(/[^0-9,-]+/g, '').replace(',', '.'));
+        if (!valor) return 0;
+
+        let numeroCorrigido = valor.replace(/[\sR$.]/g, "").replace(",", ".");
+
+        return parseFloat(numeroCorrigido);
     };
 
     const handleSubmit = async (e) => {
@@ -71,8 +79,24 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
 
         const valorNumerico = removerFormatacaoMoeda(valor);
 
-        console.log(valorNumerico, tipo, categoriaSelecionada, subcategoriaSelecionada)
-    }
+        console.log(valorNumerico, tipo, categoriaSelecionada.id, subcategoriaSelecionada.id)
+
+        const success = await editarLancamento(
+            valorNumerico,
+            tipo,
+            categoriaSelecionada,
+            subcategoriaSelecionada,
+            lancamento
+        );
+
+        if (success) {
+            setTrigger(false);
+            setValor("");
+            setTipo("");
+            setCategoriaSelecionada("");
+            setSubcategoriaSelecionada("");
+        }
+    };
 
     return trigger ? (
         <div className={styles.popup}>
@@ -81,10 +105,6 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
                     <h3>Editar Lançamento</h3>
                     <span onClick={() => {
                         setTrigger(false)
-                        setValor(lancamento.valor)
-                        setTipo(lancamento.tipo)
-                        setCategoriaSelecionada(lancamento.categoria)
-                        setSubcategoriaSelecionada(lancamento.subcategoria)
                         setAlterarCategoria(true)
                     }}>
                         <PiIcons.PiXBold className={styles.close} />

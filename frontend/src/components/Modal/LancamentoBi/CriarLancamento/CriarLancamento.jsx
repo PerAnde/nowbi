@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { buscarCategorias, buscarCategoria } from '../../../../services/categorias';
+import { criarLancamento } from '../../../../services/lancamentos';
 
 import { Input } from '../../../Input/Input'
 import { Button } from '../../../Button/Button'
@@ -8,8 +9,10 @@ import { Select } from '../../../Select/Select';
 
 import * as PiIcons from 'react-icons/pi';
 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
+
 import styles from '../../Modal.module.scss'
-import { criarLancamento } from '../../../../services/lancamentos';
 
 export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
 
@@ -78,7 +81,6 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
 
         if (success) {
             setValor("");
-            setTipo("");
             setCategoriaSelecionada("");
             setSubcategoriaSelecionada("");
             lancamentoCriado();
@@ -119,16 +121,16 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
                             onChange={(e) => setCategoriaSelecionada(e.target.value)}
                             placeholder="Selecione a categoria"
                         />
-
                     </div>
 
                     <div className={styles.box_inputs}>
-                        {subcategorias <= 0 ? "" : <Select
-                            options={subcategorias.map(sub => ({ value: sub.id, label: sub.name }))}
-                            value={subcategoriaSelecionada}
-                            onChange={(e) => setSubcategoriaSelecionada(e.target.value)}
-                            placeholder="Selecione a subcategoria"
-                        />}
+                        {subcategorias <= 0 ? "" :
+                            <Select
+                                options={subcategorias.map(sub => ({ value: sub.id, label: sub.name }))}
+                                value={subcategoriaSelecionada}
+                                onChange={(e) => setSubcategoriaSelecionada(e.target.value)}
+                                placeholder="Selecione a subcategoria"
+                            />}
 
                     </div>
 

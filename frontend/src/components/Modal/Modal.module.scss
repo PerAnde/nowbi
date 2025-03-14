@@ -253,15 +253,17 @@ img.picture_image {
 }
 
 .box_selects {
-    display: flex;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
 }
 
-.box_link_alterar_categoria{
+.box_link_alterar_categoria {
     display: flex;
 }
 
-.box_link_alterar_categoria a{
+.box_link_alterar_categoria a {
     width: 100%;
     padding: 1rem;
     text-align: center;
@@ -270,8 +272,14 @@ img.picture_image {
     color: var(--texto-secundario);
 }
 
-.box_link_alterar_categoria a:hover{
+.box_link_alterar_categoria a:hover {
     background-color: var(--placeholder);
     color: var(--texto-primario);
     transition: 0.3s;
+}
+
+@media screen and (max-width: 500px) {
+    .box_selects {
+        grid-template-columns: 1fr;
+    }
 }

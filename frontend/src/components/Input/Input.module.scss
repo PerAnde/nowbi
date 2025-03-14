@@ -3,7 +3,7 @@ input.input {
     width: 100%;
     outline: none;
     padding: 1.8rem;
-    border-radius: 5px;
+    border-radius: var(--border-radius-button);
     border: none;
     background-color: var(--cor-componente);
     border: 1px solid var(--border-input);

@@ -2,15 +2,17 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { buscarBi, atualizarStatus, excluirBi } from '../../../services/bis';
+import { excluirLancamento } from '../../../services/lancamentos';
 import { toast } from 'sonner';
 
 import { Layout } from '../../../layout/Layout'
 
-import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
-import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
-
 import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
+
+import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
+import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
+import { ExcluirLancamento } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -24,7 +26,7 @@ export const Bi = () => {
 
     // Estados BI e Empresa
     const { id } = useParams();
-    const [bi, setBi] = useState({});
+    const [bi, setBi] = useState({ lancamentoBi: [] });
     const [loading, setLoading] = useState(true);
     const [filtro, setFiltro] = useState("TODOS");
     // Busca
@@ -36,6 +38,7 @@ export const Bi = () => {
 
     const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
     const [popUpEditarLancamento, setPopUpEditarLancamento] = useState(false);
+    const [exclusaoLancamento, setExclusaoLancamento] = useState(false);
 
     const navigate = useNavigate();
 
@@ -124,6 +127,34 @@ export const Bi = () => {
             })
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         : [];
+
+    const totalReceitas = bi.lancamentoBi
+        ?.filter(lancamento => lancamento.tipo === "RECEITA")
+        .reduce((acc, lancamento) => acc + Number(lancamento.valor || 0), 0) || 0;
+
+    const totalDespesas = bi.lancamentoBi
+        ?.filter(lancamento => lancamento.tipo === "DESPESA")
+        .reduce((acc, lancamento) => acc + Number(lancamento.valor || 0), 0) || 0;
+
+    const totalFiltrado = filtro === "RECEITA"
+        ? totalReceitas
+        : filtro === "DESPESA"
+            ? totalDespesas
+            : totalReceitas + totalDespesas;
+
+
+    // Abrir modal excluir categoria
+    const handleExcluirLancamento = (lancamento) => {
+        setLancamentoSelecionado(lancamento);
+        setExclusaoLancamento(true);
+    };
+
+    // Excluir lancamento
+    const confirmarExcluirLancamento = async () => {
+        if (!lancamentoSelecionado) return;
+        await excluirLancamento(lancamentoSelecionado.id, setExclusaoLancamento);
+        atualizarBi();
+    }
 
     return (
         <Layout>
@@ -226,14 +257,18 @@ export const Bi = () => {
                         </Link>
                     </div>
                 ) : (
-                    <div className={styles.categoria_header}>
-                        <span></span>
-                        <span>Valor</span>
-                        <span>Tipo</span>
-                        <span>Categoria</span>
-                        <span>Subategoria</span>
-                        <span>Opções</span>
-                    </div>
+                    lancamentosFiltrados.length > 0 ? (
+                        <div className={styles.categoria_header}>
+                            <span></span>
+                            <span>Valor</span>
+                            <span>Tipo</span>
+                            <span>Categoria</span>
+                            <span>Subategoria</span>
+                            <span>Opções</span>
+                        </div>
+                    ) : (
+                        ''
+                    )
                 )}
 
                 <div className={styles.box_categorias}>
@@ -275,14 +310,57 @@ export const Bi = () => {
                                         <PiIcons.PiNotePencilBold />
                                         <p>Editar</p>
                                     </Link>
-                                    <Link className={styles.btn_excluir_lancamento}>
+                                    <Link className={styles.btn_excluir_lancamento} onClick={() => handleExcluirLancamento({ id: lancamento.id })}>
                                         <PiIcons.PiTrashBold />
                                         <p>Excluir</p>
                                     </Link>
                                 </div>
                             </div>
                         ))
-                    ) : null}
+                    ) : (
+                        <div className={styles.box_sem_bi}>
+                            {filtro === "TODOS" ? (
+                                <>
+                                    <span>
+                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                    </span>
+                                    <p>Nenhum lançamento!</p>
+                                </>
+                            ) : (
+                                ''
+                            )}
+                            {filtro === "RECEITA" ? (
+                                <>
+                                    <span>
+                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                    </span>
+                                    <p>Nenhum lançamento em receita!</p>
+                                </>
+                            ) : (
+                                ''
+                            )}
+                            {filtro === "DESPESA" ? (
+                                <>
+                                    <span>
+                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                    </span>
+                                    <p>Nenhum lançamento em despesa!</p>
+                                </>
+                            ) : (
+                                ''
+                            )}
+                        </div>
+                    )}
+
+                    {lancamentosFiltrados.length > 0 ? (
+                        <div className={styles.box_total_lancamentos}>
+                            <p>Total de lançamentos</p>
+                            <p><strong>{totalFiltrado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
+                        </div>
+                    ) : (
+                        ''
+                    )}
+
                 </div>
 
             </div>
@@ -301,6 +379,14 @@ export const Bi = () => {
                 setTrigger={setPopUpEditarLancamento}
                 lancamento={lancamentoSelecionado}
                 lancamentoEditado={atualizarBi}
+            />
+            <ExcluirLancamento
+                trigger={exclusaoLancamento}
+                setTrigger={setExclusaoLancamento}
+                mensagem={<>
+                    Tem certeza que deseja excluir esse lançamento?
+                </>}
+                onConfirm={confirmarExcluirLancamento}
             />
 
         </Layout>

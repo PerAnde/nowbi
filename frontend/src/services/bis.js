@@ -26,23 +26,26 @@ export const buscarBi = async (id, setBi, setLoading, navigate) => {
 }
 
 // Criar BI
-export const criarBi = async (id, mes, ano) => {
+export const criarBi = async (id, mesSelecionado, anoSelecionado) => {
     if (!id) {
         toast.warning("Empresa inválida!")
         return false;
     }
 
-    if (!mes) {
+    if (!mesSelecionado) {
         toast.warning("Selecione um mês!")
         return false;
     }
 
-    if (!ano) {
+    if (!anoSelecionado) {
         toast.warning('Selecione um ano!');
         return false;
     }
 
     try {
+
+        const mes = mesSelecionado;
+        const ano = anoSelecionado;
 
         const data = { mes, ano };
         await api.post(`/bi/${id}`, data);

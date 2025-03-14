@@ -14,8 +14,8 @@ class CreateBiService {
             throw new Error("Selecione um mês válido!")
         }
 
-        if (ano < 2000 || ano > 2100) {
-            throw new Error("Selecione um ano entre 2000 e 2100!")
+        if (ano < 2000 || ano > 2050) {
+            throw new Error("Selecione um ano entre 2000 e 2050!")
         }
 
         const biJaExiste = await prismaClient.businessIntelligence.findFirst({
