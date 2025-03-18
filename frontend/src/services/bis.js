@@ -108,6 +108,9 @@ export const atualizarStatus = async (id, status) => {
 
 // Excluir Bi
 export const excluirBi = async (id, idEmpresa, navigate) => {
+
+    console.log(idEmpresa)
+
     if (!id) {
         toast.warning("BI inválido!")
     }

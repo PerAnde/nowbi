@@ -14,6 +14,7 @@ export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
 
     // ID da empresa
     const { id } = useParams();
+    // Estados Selecionados
     const [mesSelecionado, setMesSelecionado] = useState("");
     const [anoSelecionado, setAnoSelecionado] = useState("");
 

@@ -71,6 +71,8 @@ export const Bi = () => {
     // Pegando id da empresa
     const idEmpresa = bi?.empresa_id;
 
+    console.log(idEmpresa)
+
     // Atualizar BI
     const atualizarBi = () => {
         buscarBi(id, setBi, setLoading);

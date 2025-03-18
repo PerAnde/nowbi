@@ -26,15 +26,15 @@ class UpdateCategoriaService {
             }
         })
 
-        if (estaVinculadoLancamento) {
-            throw new Error("Não é possível mudar o TIPO desss categoria, pois ela está vinculada a um lançamento!");
+        if (estaVinculadoLancamento && tipo !== categoriaExiste.tipo) {
+            throw new Error("Não é possível mudar o TIPO dessa categoria, pois ela está vinculada a um lançamento!");
         }
 
         const updateCategoria = await prismaClient.categoria.update({
             where: { id },
             data: {
                 name,
-                tipo,
+                tipo: estaVinculadoLancamento ? categoriaExiste.tipo : tipo,
             },
             select: {
                 id: true,

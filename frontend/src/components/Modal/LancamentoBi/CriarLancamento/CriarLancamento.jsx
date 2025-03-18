@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { buscarCategorias, buscarCategoria } from '../../../../services/categorias';
 import { criarLancamento } from '../../../../services/lancamentos';
+import { formatarValor, removerFormatacaoMoeda } from '../../../../utils/formatUtils'
 
 import { Input } from '../../../Input/Input'
 import { Button } from '../../../Button/Button'
 import { Select } from '../../../Select/Select';
 
 import * as PiIcons from 'react-icons/pi';
-
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
 import styles from '../../Modal.module.scss'
 
@@ -52,25 +50,6 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
             buscarCategoria(categoriaSelecionada, setCategoria, setLoading);
         }
     }, [categoriaSelecionada]);
-
-    // Formata valor do input
-    const formatarValor = (valor) => {
-        // Remove tudo que não é número
-        valor = valor.replace(/\D/g, "");
-
-        // Converte para número e formata para reais
-        valor = (Number(valor) / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-        });
-
-        return valor;
-    };
-
-    // Removendo formatação para enviar pra a API
-    const removerFormatacaoMoeda = (valor) => {
-        return Number(valor.replace(/[^0-9,-]+/g, "").replace(",", "."));
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
