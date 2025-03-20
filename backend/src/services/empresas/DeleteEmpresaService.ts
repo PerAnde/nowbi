@@ -16,20 +16,41 @@ class DeleteEmpresaService {
             throw new Error("Empresa não encontrada!");
         }
 
-        if(empresa.usuario_id !== usuario_id) {
-            throw new Error("Empresa não encontrada!")
+        if (empresa.usuario_id !== usuario_id) {
+            throw new Error("Empresa não encontrada!");
         }
 
-        await prismaClient.businessIntelligence.deleteMany({
+        const businessIntelligences = await prismaClient.businessIntelligence.findMany({
             where: {
                 empresa_id: id,
+            },
+            select: {
+                id: true,
             }
-        })
+        });
+
+        const biIds = businessIntelligences.map(bi => bi.id);
+
+        if (biIds.length > 0) {
+            await prismaClient.lancamentoBi.deleteMany({
+                where: {
+                    businessIntelligence_id: {
+                        in: biIds,
+                    }
+                }
+            });
+
+            await prismaClient.businessIntelligence.deleteMany({
+                where: {
+                    empresa_id: id,
+                }
+            });
+        }
 
         // Remove a empresa
         await prismaClient.empresa.delete({
             where: {
-                id: id,
+                id,
             },
         });
     }

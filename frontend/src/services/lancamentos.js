@@ -98,3 +98,34 @@ export const excluirLancamento = async (lancamentoId, setExclusaoLancamento) => 
         }
     }
 }
+
+export const excluirLancamentos = async (lancamentosIds, setExclusaoLancamentos) => {
+
+    if (!lancamentosIds || lancamentosIds.length === 0) {
+        toast.error("Selecione pelo menos um lançamento para excluir!");
+        return;
+    }
+
+    try {
+
+        const response = await api.delete("/lancamentos", {
+            data: { ids: lancamentosIds },
+        });
+
+        if (response.status !== 200 && response.status !== 204) {
+            throw new Error("Ocorreu um erro na exclusão!");
+        }
+
+        setExclusaoLancamentos(false);
+        toast.success("Lançamentos excluídos com sucesso!");
+
+    } catch (error) {
+        console.error("Erro ao excluir os lançamentos:", error);
+
+        if (error.response?.data?.error) {
+            toast.error(error.response.data.error);
+        } else {
+            toast.error("Erro ao excluir os lançamentos! Tente novamente.");
+        }
+    }
+};

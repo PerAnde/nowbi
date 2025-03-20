@@ -40,8 +40,8 @@ export const Categorias = () => {
     const [popUpCriarSubCategoria, setPopUpCriarSubCategoria] = useState(false);
     const [popUpEditarSubCategoria, setPopUpEditarSubCategoria] = useState(false);
     // Estados para categorias
-    const [exclusaoCategoria, setExclusaoCategoria] = useState(false)
-    const [exclusaoSubcategoria, setExclusaoSubcategoria] = useState(false)
+    const [popUpExclusaoCategoria, setExclusaoCategoria] = useState(false)
+    const [popUpExclusaoSubcategoria, setExclusaoSubcategoria] = useState(false)
     // Categoria e subcategorias selecionada
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
     const [subCategoriaSelecionada, setSubCategoriaSelecionada] = useState(null)
@@ -50,12 +50,12 @@ export const Categorias = () => {
 
     // Remove Scroll da página
     useEffect(() => {
-        if (popUpCriarCategoria) {
+        if (popUpCriarCategoria || popUpEditarCategoria || popUpCriarSubCategoria || popUpEditarSubCategoria || popUpExclusaoCategoria || popUpExclusaoSubcategoria) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
-    }, [popUpCriarCategoria]);
+    }, [popUpCriarCategoria || popUpEditarCategoria || popUpCriarSubCategoria || popUpEditarSubCategoria || popUpExclusaoCategoria || popUpExclusaoSubcategoria]);
 
     // Abre menu categoria
     useEffect(() => {
@@ -308,7 +308,7 @@ export const Categorias = () => {
             />
 
             <ExcluirCategoria
-                trigger={exclusaoCategoria}
+                trigger={popUpExclusaoCategoria}
                 setTrigger={setExclusaoCategoria}
                 mensagem={<>
                     Tem certeza que deseja excluir essa categoria?
@@ -317,7 +317,7 @@ export const Categorias = () => {
             />
 
             <ExcluirSubcategoria
-                trigger={exclusaoSubcategoria}
+                trigger={popUpExclusaoSubcategoria}
                 setTrigger={setExclusaoSubcategoria}
                 mensagem={<>
                     Tem certeza que deseja excluir essa subcategoria?

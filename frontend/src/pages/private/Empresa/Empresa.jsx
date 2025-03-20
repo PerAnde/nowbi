@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { buscarEmpresa } from '../../../services/empresas';
 import { useNavigate } from "react-router-dom";
+import { capitalizeFirstLetter } from '../../../utils/formatUtils'
 
 import { Layout } from '../../../layout/Layout'
 
@@ -48,10 +49,6 @@ export const Empresa = () => {
         if (filtro === 'concluido') return bi.status;
         return true;
     })
-
-    const capitalizeFirstLetter = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    };
 
     return (
         <Layout>

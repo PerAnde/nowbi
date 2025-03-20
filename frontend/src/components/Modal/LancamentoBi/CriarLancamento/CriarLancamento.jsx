@@ -1,55 +1,36 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import { buscarCategorias, buscarCategoria } from '../../../../services/categorias';
 import { criarLancamento } from '../../../../services/lancamentos';
 import { formatarValor, removerFormatacaoMoeda } from '../../../../utils/formatUtils'
 
 import { Input } from '../../../Input/Input'
 import { Button } from '../../../Button/Button'
-import { Select } from '../../../Select/Select';
 
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss'
+import { SelectCategoria } from '../../../Selects/SelectCategoria';
+import { SelectSubcategoria } from '../../../Selects/SelectSubcategoria';
 
 export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
 
+    // ID do BI
+    const { id } = useParams();
     // Estados incluri Lancamento
     const [valor, setValor] = useState('')
     const [tipo, setTipo] = useState("RECEITA");
+
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
     const [subcategoriaSelecionada, setSubcategoriaSelecionada] = useState("");
-    const { id } = useParams();
 
-    const [categorias, setCategorias] = useState([]);
-    const [categoria, setCategoria] = useState([]);
-    const [subcategorias, setSubcategorias] = useState([]);
-
-    const [loading, setLoading] = useState(false);
-
-    // Buscando todas as categorias
     useEffect(() => {
-        buscarCategorias(setCategorias, setLoading);
-    }, [])
+        setCategoriaSelecionada("");
+        setSubcategoriaSelecionada("");
+    }, [tipo])
 
-    // Filtrando select de categorias pelo tipo RECEITA ou DESPESA
-    const categoriasFiltradosPorTipo = categorias.filter(categoria => categoria.tipo === tipo)
-
-    // Atualiza as subcategorias quando uma categoria é buscada
     useEffect(() => {
-        if (categoria && categoria.subcategorias) {
-            setSubcategorias(categoria.subcategorias);
-        } else {
-            setSubcategorias([]); // Se não houver subcategorias, zera a lista
-        }
-    }, [categoria]);
-
-    // Buscar subcategorias da categoria selecionada
-    useEffect(() => {
-        if (categoriaSelecionada) {
-            buscarCategoria(categoriaSelecionada, setCategoria, setLoading);
-        }
-    }, [categoriaSelecionada]);
+        setSubcategoriaSelecionada("");
+    }, [categoriaSelecionada])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -93,24 +74,22 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
                         </label>
                     </div>
 
-                    <div className={styles.box_inputs}>
-                        <Select
-                            options={categoriasFiltradosPorTipo.map(categoria => ({ value: categoria.id, label: categoria.name }))}
-                            value={categoriaSelecionada}
-                            onChange={(e) => setCategoriaSelecionada(e.target.value)}
-                            placeholder="Selecione a categoria"
-                        />
-                    </div>
+                    <div className={styles.box_selects}>
+                        <div className={styles.box_select}>
+                            <SelectCategoria
+                                tipo={tipo}
+                                categoriaSelecionada={categoriaSelecionada}
+                                setCategoriaSelecionada={setCategoriaSelecionada}
+                            />
+                        </div>
 
-                    <div className={styles.box_inputs}>
-                        {subcategorias <= 0 ? "" :
-                            <Select
-                                options={subcategorias.map(sub => ({ value: sub.id, label: sub.name }))}
-                                value={subcategoriaSelecionada}
-                                onChange={(e) => setSubcategoriaSelecionada(e.target.value)}
-                                placeholder="Selecione a subcategoria"
-                            />}
-
+                        <div className={styles.box_select}>
+                            <SelectSubcategoria
+                                categoriaSelecionada={categoriaSelecionada}
+                                subcategoriaSelecionada={subcategoriaSelecionada}
+                                setSubcategoriaSelecionada={setSubcategoriaSelecionada}
+                            />
+                        </div>
                     </div>
 
                     <div className={styles.box_btn_button}>

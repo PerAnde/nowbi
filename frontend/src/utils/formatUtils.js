@@ -16,3 +16,8 @@ export const formatarValor = (valor) => {
 export const removerFormatacaoMoeda = (valor) => {
     return Number(valor.replace(/[^0-9,-]+/g, "").replace(",", "."));
 };
+
+// Formata escrita do Mes
+export const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

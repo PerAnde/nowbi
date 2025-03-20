@@ -40,6 +40,7 @@ import { DeleteBiController } from '../controllers/bis/DeleteBiController';
 import { CreateLancamentoBiController } from '../controllers/lancamentosBi/CreateLancamentoBiController';
 import { UpdateLancamentoBiController } from '../controllers/lancamentosBi/UpdateLancamentoBiController';
 import { DeleteLancamentoBiController } from '../controllers/lancamentosBi/DeleteLancamentoBiController';
+import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/DeleteLancamentosBiController';
 
 import uploadConfig from '../config/multer'
 
@@ -83,5 +84,6 @@ router.delete('/bi/:id', isAuthenticated, new DeleteBiController().handle)
 router.post('/lancamentos/:id', isAuthenticated, new CreateLancamentoBiController().handle)
 router.put('/lancamentos/:id', isAuthenticated, new UpdateLancamentoBiController().handle)
 router.delete('/lancamentos/:id', isAuthenticated, new DeleteLancamentoBiController().handle)
+router.delete('/lancamentos', isAuthenticated, new DeleteLancamentosBiController().handle)
 
 export { router };

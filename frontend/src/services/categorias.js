@@ -27,34 +27,6 @@ export const buscarCategorias = async (setCategorias, setLoading) => {
 
 }
 
-// Buscar categoria
-export const buscarCategoria = async (id, setCategoria, setLoading) => {
-
-    try {
-
-        // Time para testar Skeletons
-        // await new Promise(resolve => setTimeout(resolve, 2000))
-
-        setLoading(true);
-
-        const response = await api.get(`/categorias/${id}`)
-
-        if(response.data.length > 0) {
-            setCategoria(response.data[0]);
-            setLoading(false);
-        } else {
-            setCategoria(null);
-        }
-
-    } catch (error) {
-        toast.error("Erro ao buscar categoria")
-        console.error("Erro ao buscar categoria", error)
-    } finally {
-        setLoading(false);
-    }
-
-}
-
 // Criar categoria
 export const criarCategoria = async (name, tipo) => {
     if (!name) {

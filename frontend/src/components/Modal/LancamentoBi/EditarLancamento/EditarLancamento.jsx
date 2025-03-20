@@ -5,7 +5,8 @@ import { Button } from '../../../Button/Button';
 import { Select } from '../../../Select/Select';
 import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss';
-import { buscarCategorias, buscarCategoria } from '../../../../services/categorias';
+import { buscarCategorias } from '../../../../services/categorias';
+import { buscarSubcategorias } from '../../../../services/subcategorias';
 import { editarLancamento } from '../../../../services/lancamentos';
 
 export const EditarLancamento = ({ trigger, setTrigger, lancamento }) => {
@@ -44,7 +45,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento }) => {
     // Atualiza as subcategorias quando uma categoria é buscada
     useEffect(() => {
         if (categoriaSelecionada) {
-            buscarCategoria(categoriaSelecionada, setCategoria, setLoading);
+            buscarSubcategorias(categoriaSelecionada, setCategoria, setLoading);
         }
     }, [categoriaSelecionada]);
 

@@ -15,10 +15,16 @@ class DeleteBiService {
         if (!bi) {
             throw new Error("BI não encontrado!");
         }
-        
+
         if (bi.empresa.usuario_id !== usuario_id) {
             throw new Error("BI não encontrado!");
         }
+
+        await prismaClient.lancamentoBi.deleteMany({
+            where: {
+                businessIntelligence_id: id,
+            }
+        })
 
         await prismaClient.businessIntelligence.delete({
             where: {

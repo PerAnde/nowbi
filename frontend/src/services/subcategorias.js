@@ -1,6 +1,35 @@
 import { api } from '../api/api'
 import { toast } from 'sonner'
 
+// Buscar categoria
+export const buscarSubcategorias = async (id, setSubcategorias, setLoadingSubcategorias) => {
+
+    try {
+
+        // Time para testar Skeletons
+        // await new Promise(resolve => setTimeout(resolve, 2000))
+        if (!id) return;
+
+        setLoadingSubcategorias(true);
+
+        const response = await api.get(`/categorias/${id}`)
+
+        if (response.data.length > 0) {
+            setSubcategorias(response.data[0].subcategorias);
+            setLoadingSubcategorias(false);
+        } else {
+            setSubcategorias(null);
+        }
+
+    } catch (error) {
+        toast.error("Erro ao buscar categoria")
+        console.error("Erro ao buscar categoria", error)
+    } finally {
+        setLoadingSubcategorias(false);
+    }
+
+}
+
 // Criar subcategoria
 export const criarSubcategoria = async (name, categoriaId) => {
     if (!name) {

@@ -1,25 +1,28 @@
 export const customSelectStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
         ...provided,
-        backgroundColor: 'var(--cor-componente)',
+        width: '100%',
+        backgroundColor: state.isDisabled ? 'var(--border-disabled)' : 'var(--cor-componente)',
+        color: state.isDisabled ? 'var(--texto-secundario)' : 'var(--texto-primario)',
         borderRadius: 'var(--border-radius-button)',
         border: '1px solid var(--border-input)',
-        padding: '1.8rem',
+        padding: '1.5rem',
         boxShadow: 'none',
+        cursor: state.isDisabled ? 'not-allowed' : 'pointer',
         '&:hover': {
-            borderColor: 'var(--border-input)'
+            borderColor: state.isDisabled ? 'var(--border-disabled)' : 'var(--cor-primaria)',
         }
     }),
     option: (provided, state) => ({
         ...provided,
-        backgroundColor: state.isSelected ? 'var(--button-cor-primaria-hover)' : 'var(--cor-componente)',
-        color: state.isSelected ? 'var(--branco)' : 'var(--texto-primario)',
+        backgroundColor: state.isSelected ? 'var(--cor-primaria-15)' : 'var(--cor-componente)',
+        color: state.isSelected ? 'var(--cor-primaria)' : 'var(--texto-secundario)',
         padding: '1rem',
         cursor: 'pointer',
         textAlign: 'center',
         '&:hover': {
-            backgroundColor: 'var(--button-cor-primaria)',
-            color: 'var(--branco)'
+            backgroundColor: 'var(--cor-primaria-15)',
+            color: 'var(--cor-primaria)',
         }
     }),
     menu: (provided) => ({
@@ -28,7 +31,9 @@ export const customSelectStyles = {
         borderRadius: 'var(--border-radius-button)',
         boxShadow: 'var(--box-shadow-select)',
         zIndex: 9999,
-        position: "absolute"
+        marginTop: '.5rem',
+        position: "absolute",
+        padding: '.5rem 0',
     }),
     menuPortal: base => ({ ...base, zIndex: 9999 })
 };

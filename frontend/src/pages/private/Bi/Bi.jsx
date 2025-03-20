@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { buscarBi, atualizarStatus, excluirBi } from '../../../services/bis';
-import { excluirLancamento } from '../../../services/lancamentos';
+import { excluirLancamento, excluirLancamentos } from '../../../services/lancamentos';
 import { toast } from 'sonner';
+import { capitalizeFirstLetter } from '../../../utils/formatUtils'
 
 import { Layout } from '../../../layout/Layout'
 
@@ -13,6 +14,7 @@ import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
 import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
 import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
 import { ExcluirLancamento } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
+import { ExcluirLancamentos } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -38,7 +40,8 @@ export const Bi = () => {
 
     const [popUpNovoLancamento, setPopUpNovoLancamento] = useState(false);
     const [popUpEditarLancamento, setPopUpEditarLancamento] = useState(false);
-    const [exclusaoLancamento, setExclusaoLancamento] = useState(false);
+    const [popUpExclusaoLancamento, setPopUpExclusaoLancamento] = useState(false);
+    const [popUpExclusaoLancamentos, setPopUpExclusaoLancamentos] = useState(false);
 
     const navigate = useNavigate();
 
@@ -51,27 +54,19 @@ export const Bi = () => {
 
     // Desativa ou ativa scroll
     useEffect(() => {
-        if (popUpEditarBi) {
+        if (popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpExclusaoLancamento || popUpExclusaoLancamentos) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
-    }, [popUpEditarBi]);
+    }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
 
     useEffect(() => {
         buscarBi(id, setBi, setLoading, navigate)
     }, [id])
 
-    useEffect(() => {
-        if (bi?.empresa_id) {
-            buscarEmpresa(bi?.empresa_id, setEmpresa, setLoading, navigate)
-        }
-    }, [bi])
-
     // Pegando id da empresa
-    const idEmpresa = bi?.empresa_id;
-
-    console.log(idEmpresa)
+    const idEmpresa = bi?.empresa?.id;
 
     // Atualizar BI
     const atualizarBi = () => {
@@ -92,11 +87,6 @@ export const Bi = () => {
     const confirmarExclusao = async () => {
         excluirBi(id, idEmpresa, navigate);
     }
-
-    // Formata escrita Mes
-    const capitalizeFirstLetter = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    };
 
     // Pegando lancamentos selecionados
     const handleLancamentoClick = (id) => {
@@ -145,18 +135,34 @@ export const Bi = () => {
             : totalReceitas + totalDespesas;
 
 
-    // Abrir modal excluir categoria
+    // Abrir modal excluir lancamento
     const handleExcluirLancamento = (lancamento) => {
         setLancamentoSelecionado(lancamento);
-        setExclusaoLancamento(true);
+        setPopUpExclusaoLancamento(true);
     };
 
     // Excluir lancamento
     const confirmarExcluirLancamento = async () => {
         if (!lancamentoSelecionado) return;
-        await excluirLancamento(lancamentoSelecionado.id, setExclusaoLancamento);
+        await excluirLancamento(lancamentoSelecionado.id, setPopUpExclusaoLancamento);
         atualizarBi();
     }
+
+    // Abrir modal excluir lancamentos
+    const handleExcluirLancamentos = () => {
+        if (lancamentosSelecionados.length === 0) return;
+        setPopUpExclusaoLancamentos(true);
+    };
+
+    const confirmarExcluirLancamentos = async () => {
+        if (lancamentosSelecionados.length === 0) return;
+
+        await excluirLancamentos(lancamentosSelecionados, setPopUpExclusaoLancamentos);
+        setPopUpExclusaoLancamentos(false);
+        setLancamentosSelecionados([]);
+        atualizarBi();
+
+    };
 
     return (
         <Layout>
@@ -253,7 +259,7 @@ export const Bi = () => {
                 {lancamentosSelecionados.length > 0 ? (
                     <div className={styles.box_excluir_lancamentos}>
                         <p>Excluir lançamentos</p>
-                        <Link className={styles.btn_excluir_lancamentos}>
+                        <Link className={styles.btn_excluir_lancamentos} onClick={handleExcluirLancamentos}>
                             <PiIcons.PiTrashBold />
                             <p>Excluir</p>
                         </Link>
@@ -328,10 +334,7 @@ export const Bi = () => {
                                     </span>
                                     <p>Nenhum lançamento!</p>
                                 </>
-                            ) : (
-                                ''
-                            )}
-                            {filtro === "RECEITA" ? (
+                            ) : filtro === "RECEITA" ? (
                                 <>
                                     <span>
                                         <PiIcons.PiListMagnifyingGlassDuotone />
@@ -339,24 +342,25 @@ export const Bi = () => {
                                     <p>Nenhum lançamento em receita!</p>
                                 </>
                             ) : (
-                                ''
-                            )}
-                            {filtro === "DESPESA" ? (
                                 <>
                                     <span>
                                         <PiIcons.PiListMagnifyingGlassDuotone />
                                     </span>
                                     <p>Nenhum lançamento em despesa!</p>
                                 </>
-                            ) : (
-                                ''
                             )}
                         </div>
                     )}
 
                     {lancamentosFiltrados.length > 0 ? (
                         <div className={styles.box_total_lancamentos}>
-                            <p>Total de lançamentos</p>
+                            {filtro === "TODOS" ? (
+                                <p>Total de lançamentos</p>
+                            ) : filtro === "RECEITA" ? (
+                                <p>Total de receitas</p>
+                            ) : (
+                                <p>Total de despesas</p>
+                            )}
                             <p><strong>{totalFiltrado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
                         </div>
                     ) : (
@@ -367,7 +371,10 @@ export const Bi = () => {
 
             </div>
 
-            <EditarBi trigger={popUpEditarBi} setTrigger={setPopUpEditarBi} biEditado={atualizarBi} />
+            <EditarBi
+                trigger={popUpEditarBi}
+                setTrigger={setPopUpEditarBi}
+                biEditado={atualizarBi} />
             <ExcluirBi
                 trigger={popUpExcluirBi}
                 setTrigger={setPopUpExcluirBi}
@@ -375,7 +382,10 @@ export const Bi = () => {
                 onConfirm={confirmarExclusao}
                 biExcluido={idEmpresa}
             />
-            <CriarLancamento trigger={popUpNovoLancamento} setTrigger={setPopUpNovoLancamento} lancamentoCriado={atualizarBi} />
+            <CriarLancamento
+                trigger={popUpNovoLancamento}
+                setTrigger={setPopUpNovoLancamento}
+                lancamentoCriado={atualizarBi} />
             <EditarLancamento
                 trigger={popUpEditarLancamento}
                 setTrigger={setPopUpEditarLancamento}
@@ -383,13 +393,18 @@ export const Bi = () => {
                 lancamentoEditado={atualizarBi}
             />
             <ExcluirLancamento
-                trigger={exclusaoLancamento}
-                setTrigger={setExclusaoLancamento}
-                mensagem={<>
-                    Tem certeza que deseja excluir esse lançamento?
-                </>}
+                trigger={popUpExclusaoLancamento}
+                setTrigger={setPopUpExclusaoLancamento}
+                mensagem={<>Tem certeza que deseja excluir esse lançamento?</>}
                 onConfirm={confirmarExcluirLancamento}
             />
+            <ExcluirLancamentos
+                trigger={popUpExclusaoLancamentos}
+                setTrigger={setPopUpExclusaoLancamentos}
+                mensagem={<>Tem certeza que deseja excluir esses lançamentos?</>}
+                onConfirm={confirmarExcluirLancamentos}
+            />
+
 
         </Layout>
     )
