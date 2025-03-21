@@ -139,6 +139,12 @@ img.picture_image {
     gap: 1.5rem;
 }
 
+.box_dados_empresa{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
 .box_btn_button {
     display: flex;
     justify-content: flex-end;

@@ -36,6 +36,7 @@ export const AppRoutes = () => {
                 <Route path='/dashboard' element={<PrivateRoutes><Dashboard /></PrivateRoutes>} />
                 <Route path='/empresas' element={<PrivateRoutes><Empresas /></PrivateRoutes>} />
                 <Route path='/empresas/:id' element={<PrivateRoutes><Empresa /></PrivateRoutes>} />
+                <Route path='/empresas/grupo/:id' element={<PrivateRoutes><Empresa /></PrivateRoutes>} />
                 <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
                 <Route path='/bi/:id' element={<PrivateRoutes><Bi /></PrivateRoutes>} />
                 {/* Rotas Dashboard BI */}

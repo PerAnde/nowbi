@@ -26,11 +26,16 @@
     cursor: default;
 }
 
-.box_busca_empresa{
-    grid-column: 4/5;
+.box_buscas{
+    grid-column: 1/5;
     width: 100%;
     display: flex;
-    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.box_select_grupo{
+    width: 200px;
 }
 
 .input_busca{
@@ -61,6 +66,41 @@ a.btn_link_principal {
 
 a.btn_link_principal:hover {
     background-color: var(--button-cor-secundaria-hover);
+}
+
+a.btn_link_principal.btn_criar_grupo {
+    color: var(--texto-secundario);
+    border: 1px solid var(--texto-secundario);
+    background-color: var(--background);
+}
+
+a.btn_link_principal.btn_criar_grupo:hover {
+    background-color: var(--button-cor-secundaria);
+    border: 1px solid var(--button-cor-secundaria);
+    color: var(--texto-primario-button);
+}
+
+a.btn_link_principal.btn_editar {
+    color: var(--texto-secundario);
+    border: 1px solid var(--texto-secundario);
+    background-color: var(--background);
+}
+
+a.btn_link_principal.btn_excluir {
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
+    background-color: var(--background)
+}
+
+a.btn_link_principal.btn_editar:hover {
+    background-color: var(--button-cor-secundaria);
+    border: 1px solid var(--button-cor-secundaria);
+    color: var(--texto-primario-button);
+}
+
+a.btn_link_principal.btn_excluir:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
 }
 
 .box_empresas {
@@ -274,7 +314,14 @@ a.btn_link_principal:hover {
         grid-template-columns: 1fr;
     }
 
-    .box_busca_empresa{
+    .box_buscas{
         grid-column: 1/5;
+        flex-direction: column;
     }
+
+    .box_select_grupo,
+    .box_input_busca{
+        width: 100%;
+    }
+
 }

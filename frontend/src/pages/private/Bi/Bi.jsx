@@ -14,7 +14,7 @@ import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
 import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
 import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
 import { ExcluirLancamento } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
-import { ExcluirLancamentos } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
+import { ExcluirLancamentos } from '../../../components/Modal/LancamentoBi/ExcluirLancamentos/ExcluirLancamentos'
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton

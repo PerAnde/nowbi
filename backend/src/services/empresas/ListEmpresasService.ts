@@ -12,6 +12,7 @@ class ListEmpresasService {
                 name: true,
                 cnpj_empresa: true,
                 logo_empresa: true,
+                email_empresa: true,
                 bis: true,
                 created_at: true,
                 updated_at: true,

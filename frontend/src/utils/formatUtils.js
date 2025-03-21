@@ -21,3 +21,13 @@ export const removerFormatacaoMoeda = (valor) => {
 export const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
+
+// Fomratar CNPJ
+export const formatarCnpj = (valor) => {
+    valor = valor.replace(/\D/g, "");
+    return valor
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/\.(\d{3})(\d)/, ".$1/$2")
+        .replace(/(\d{4})(\d)/, "$1-$2");
+};

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { criarEmpresa } from '../../../../services/empresas';
+import { formatarCnpj } from '../../../../utils/formatUtils';
 
 import { Input } from '../../../Input/Input'
 import { Button } from '../../../Button/Button'
+import { SelectGrupoEmpresa } from '../../../../components/Selects/SelectGrupoEmpresa'
 
 import * as PiIcons from 'react-icons/pi';
 
@@ -28,16 +30,7 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
 
     const [name, setName] = useState("");
     const [cnpjEmpresa, setCnpjEmpresa] = useState("");
-
-    // Fomratar CNPJ
-    const formatarCnpj = (valor) => {
-        valor = valor.replace(/\D/g, "");
-        return valor
-            .replace(/^(\d{2})(\d)/, "$1.$2")
-            .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
-            .replace(/\.(\d{3})(\d)/, ".$1/$2")
-            .replace(/(\d{4})(\d)/, "$1-$2");
-    };
+    const [emailAutenticaBi, setEmailAutenticaBi] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,11 +39,12 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
         const fileInput = document.getElementById('picture_input');
         const fotoEmpresa = fileInput?.files[0] || null;
 
-        const success = await criarEmpresa(name, cnpjEmpresa, fotoEmpresa)
+        const success = await criarEmpresa(name, cnpjEmpresa, emailAutenticaBi, fotoEmpresa)
 
         if (success) {
             setName("");
             setCnpjEmpresa("");
+            setEmailAutenticaBi("");
             setFotoEmpresa(null);
             setTrigger(false);
             empresaCriada();
@@ -64,7 +58,7 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova empresa</h3>
-                    <span onClick={() => { setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName('') }}>
+                    <span onClick={() => { setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName(''), setEmailAutenticaBi('') }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
@@ -86,14 +80,27 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
                     </div>
 
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
-                        <Input type="text" placeholder="Nome da empresa" value={name} onChange={(e) => setName(e.target.value)} />
                         <Input
                             type="text"
-                            placeholder="CNPJ (Opcional)"
-                            value={cnpjEmpresa}
-                            onChange={(e) => setCnpjEmpresa(formatarCnpj(e.target.value))}
-                            maxLength={18}
+                            placeholder="Nome da empresa"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
+                        <div className={styles.box_dados_empresa}>
+                            <Input
+                                type="text"
+                                placeholder="CNPJ (Opcional)"
+                                value={cnpjEmpresa}
+                                onChange={(e) => setCnpjEmpresa(formatarCnpj(e.target.value))}
+                                maxLength={18}
+                            />
+                            <Input
+                                type="email"
+                                placeholder="Email da empresa"
+                                value={emailAutenticaBi}
+                                onChange={(e) => setEmailAutenticaBi(e.target.value)}
+                            />
+                        </div>
 
                         <div className={styles.box_btn_button}>
                             <Button type="submit">Cadastrar</Button>

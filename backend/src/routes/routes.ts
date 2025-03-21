@@ -10,6 +10,14 @@ import { AuthUsuarioController } from '../controllers/usuario/AuthUsuarioControl
 import { DetailUsuarioController } from '../controllers/usuario/DetailUsuarioController';
 import { UpdateUsuarioController } from '../controllers/usuario/UpdateUsuarioController';
 
+// Controllers Grupo Empresas
+import { CreateGrupoController } from '../controllers/grupoEmpresas/CreateGrupoController';
+import { ListGruposController } from '../controllers/grupoEmpresas/ListGruposController';
+import { ListGrupoController } from '../controllers/grupoEmpresas/ListGrupoController';
+import { UpdateGrupoController } from '../controllers/grupoEmpresas/UpdateGrupoController';
+import { UpdateEmpresasGrupoController } from '../controllers/grupoEmpresas/UpdateEmpresasGrupoController';
+import { DeleteGrupoController } from '../controllers/grupoEmpresas/DeleteGrupoController';
+
 // Controllers Empresas
 import { CreateEmpresaController } from '../controllers/empresas/CreateEmpresaController';
 import { ListEmpresasController } from '../controllers/empresas/ListEmpresasController';
@@ -53,6 +61,14 @@ router.post('/register', new CreateUsuarioController().handle)
 router.post('/login', new AuthUsuarioController().handle)
 router.get('/user', isAuthenticated, new DetailUsuarioController().handle)
 router.put('/user/:id', isAuthenticated, upload.single('file'), new UpdateUsuarioController().handle)
+
+// Rotas Grupo Empresas
+router.post('/empresas/grupo', isAuthenticated, new CreateGrupoController().handle)
+router.get('/empresas/grupos', isAuthenticated, new ListGruposController().handle)
+router.get('/empresas/grupo/:id', isAuthenticated, new ListGrupoController().handle)
+router.put('/empresas/grupo/:id', isAuthenticated, new UpdateGrupoController().handle)
+router.patch('/empresas/grupo/:id', isAuthenticated, new UpdateEmpresasGrupoController().handle)
+router.delete('/empresas/grupo/:id', isAuthenticated, new DeleteGrupoController().handle)
 
 // Rotas Empresas
 router.post('/empresas', isAuthenticated, upload.single('file'), new CreateEmpresaController().handle)

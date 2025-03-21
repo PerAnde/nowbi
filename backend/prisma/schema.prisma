@@ -8,83 +8,103 @@ datasource db {
 }
 
 model Usuario {
-    id          String      @id @default(uuid())
-    name        String
-    email       String      @unique
-    cpf_cnpj    String      @unique
-    password    String
-    created_at  DateTime    @default(now())
-    updated_at  DateTime    @updatedAt
-    endereco    String?     @db.VarChar(255)
-    numero      String?     @db.VarChar(10)
-    bairro      String?     @db.VarChar(100)
-    cidade      String?     @db.VarChar(100)
-    ibge        String?     @db.VarChar(10)
-    estado      String?     @db.VarChar(2)
-    cep         String?     @db.VarChar(10)
-    telefone    String?     @db.VarChar(13)
-    img_usuario String?     @db.VarChar(255)
-    categorias  Categoria[]
-    empresas    Empresa[]
+    id             String         @id @default(uuid())
+    name           String
+    email          String         @unique
+    cpf_cnpj       String         @unique
+    password       String
+    created_at     DateTime       @default(now())
+    updated_at     DateTime       @updatedAt
+    bairro         String?        @db.VarChar(100)
+    cep            String?        @db.VarChar(10)
+    cidade         String?        @db.VarChar(100)
+    endereco       String?        @db.VarChar(255)
+    estado         String?        @db.VarChar(2)
+    ibge           String?        @db.VarChar(10)
+    img_usuario    String?        @db.VarChar(255)
+    numero         String?        @db.VarChar(10)
+    telefone       String?        @db.VarChar(13)
+    categorias     Categoria[]
+    empresas       Empresa[]
+    grupo_empresas GrupoEmpresa[]
 
     @@map("usuarios")
 }
 
+model GrupoEmpresa {
+    id          String @id @default(uuid())
+    name        String
+    email_grupo String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    empresas Empresa[]
+
+    usuario    Usuario? @relation(fields: [usuario_id], references: [id])
+    usuario_id String?
+
+    @@map("grupo_empresas")
+}
+
 model Empresa {
-    id           String                 @id @default(uuid())
-    name         String
-    cnpj_empresa String?
-    logo_empresa String?
-    created_at   DateTime               @default(now())
-    updated_at   DateTime               @updatedAt
-    usuario_id   String
-    bis          BusinessIntelligence[]
-    usuario      Usuario                @relation(fields: [usuario_id], references: [id])
+    id            String   @id @default(uuid())
+    name          String
+    cnpj_empresa  String?
+    logo_empresa  String?
+    email_empresa String
+    created_at    DateTime @default(now())
+    updated_at    DateTime @updatedAt
+    usuario_id    String
+    usuario       Usuario  @relation(fields: [usuario_id], references: [id])
+
+    bis BusinessIntelligence[]
+
+    grupo_empresa    GrupoEmpresa? @relation(fields: [grupo_empresa_id], references: [id])
+    grupo_empresa_id String?
 
     @@index([usuario_id], map: "empresas_usuario_id_fkey")
+    @@index([grupo_empresa_id], map: "empresas_grupo_empresa_id_fkey")
     @@map("empresas")
 }
 
 model Categoria {
-    id         String        @id @default(uuid())
-    name       String
-    tipo       TipoCategoria
-    created_at DateTime      @default(now())
-    updated_at DateTime      @updatedAt
-    usuario_id String
-    usuario    Usuario       @relation(fields: [usuario_id], references: [id])
-
-    subcategorias SubCategoria[]
+    id            String         @id @default(uuid())
+    name          String
+    tipo          TipoCategoria
+    created_at    DateTime       @default(now())
+    updated_at    DateTime       @updatedAt
+    usuario_id    String
+    usuario       Usuario        @relation(fields: [usuario_id], references: [id])
     lancamentoBi  LancamentoBi[]
+    subcategorias SubCategoria[]
 
     @@index([usuario_id], map: "categorias_usuario_id_fkey")
     @@map("categorias")
 }
 
 model SubCategoria {
-    id           String   @id @default(uuid())
+    id           String         @id @default(uuid())
     name         String
     categoria_id String
-    created_at   DateTime @default(now())
-    updated_at   DateTime @updatedAt
-
-    categoria    Categoria      @relation(fields: [categoria_id], references: [id])
+    created_at   DateTime       @default(now())
+    updated_at   DateTime       @updatedAt
     lancamentoBi LancamentoBi[]
+    categoria    Categoria      @relation(fields: [categoria_id], references: [id])
 
     @@index([categoria_id], map: "sub_categorias_categoria_id_fkey")
     @@map("sub_categorias")
 }
 
 model BusinessIntelligence {
-    id         String   @id @default(uuid())
-    mes        String
-    ano        Int
-    status     Boolean  @default(false)
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-    empresa_id String
-    empresa    Empresa  @relation(fields: [empresa_id], references: [id])
-
+    id           String         @id @default(uuid())
+    mes          String
+    ano          Int
+    status       Boolean        @default(false)
+    created_at   DateTime       @default(now())
+    updated_at   DateTime       @updatedAt
+    empresa_id   String
+    empresa      Empresa        @relation(fields: [empresa_id], references: [id])
     lancamentoBi LancamentoBi[]
 
     @@index([empresa_id], map: "business_intelligence_empresa_id_fkey")
@@ -92,24 +112,21 @@ model BusinessIntelligence {
 }
 
 model LancamentoBi {
-    id    String        @id @default(uuid())
-    valor Decimal
-    tipo  TipoCategoria
-
-    categoria    Categoria @relation(fields: [categoria_id], references: [id])
-    categoria_id String
-
-    subcategoria    SubCategoria? @relation(fields: [subcategoria_id], references: [id])
-    subcategoria_id String?
-
+    id                      String               @id @default(uuid())
+    valor                   Decimal
+    tipo                    TipoCategoria
+    categoria_id            String
+    subcategoria_id         String?
     businessIntelligence_id String
+    created_at              DateTime             @default(now())
+    updated_at              DateTime             @updatedAt
     businessIntelligence    BusinessIntelligence @relation(fields: [businessIntelligence_id], references: [id])
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    categoria               Categoria            @relation(fields: [categoria_id], references: [id])
+    subcategoria            SubCategoria?        @relation(fields: [subcategoria_id], references: [id])
 
     @@index([categoria_id], map: "lancamento_bi_categoria_id_fkey")
     @@index([subcategoria_id], map: "lancamento_bi_subcategoria_id_fkey")
+    @@index([businessIntelligence_id], map: "lancamentos_bi_businessIntelligence_id_fkey")
     @@map("lancamentos_bi")
 }
 

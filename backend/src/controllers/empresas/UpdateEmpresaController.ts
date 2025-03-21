@@ -6,7 +6,7 @@ class UpdateEmpresaController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { name, cnpj_empresa } = req.body;
+        const { name, cnpj_empresa, email_empresa } = req.body;
         const logo_empresa = req.file ? req.file.filename : null;
         const { usuario_id } = req;
 
@@ -18,7 +18,8 @@ class UpdateEmpresaController {
                 usuario_id,
                 name,
                 cnpj_empresa,
-                logo_empresa
+                logo_empresa,
+                email_empresa
             });
 
             return res.json(empresa);

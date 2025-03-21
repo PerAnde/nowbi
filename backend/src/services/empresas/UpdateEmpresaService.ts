@@ -8,10 +8,11 @@ interface UpdateEmpresaRequest {
     name: string;
     cnpj_empresa: string;
     logo_empresa?: string;
+    email_empresa: string;
 }
 
 class UpdateEmpresaService {
-    async execute({ id, usuario_id, name, cnpj_empresa, logo_empresa }: UpdateEmpresaRequest) {
+    async execute({ id, usuario_id, name, cnpj_empresa, email_empresa, logo_empresa }: UpdateEmpresaRequest) {
         if (!id) {
             throw new Error("Id inválido!")
         }
@@ -21,6 +22,7 @@ class UpdateEmpresaService {
             select: {
                 usuario_id: true,
                 logo_empresa: true,
+                email_empresa: true,
             }
         });
 
@@ -57,12 +59,14 @@ class UpdateEmpresaService {
                 name,
                 cnpj_empresa,
                 logo_empresa: logoAtualizada,
+                email_empresa: email_empresa,
             },
             select: {
                 id: true,
                 name: true,
                 cnpj_empresa: true,
                 logo_empresa: true,
+                email_empresa: true,
             },
         });
 
