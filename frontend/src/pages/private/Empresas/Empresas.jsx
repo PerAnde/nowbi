@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { api } from '../../../api/api';
 import { buscarEmpresas, excluirEmpresa } from '../../../services/empresas';
-import { buscarGrupo } from '../../../services/grupoEmpresas';
+import { buscarGrupo, buscarGrupos, excluirGrupo } from '../../../services/grupoEmpresas';
 import { Input } from '../../../components/Input/Input';
 import { SelectGrupoEmpresa } from '../../../components/Selects/SelectGrupoEmpresa';
 
@@ -12,7 +13,7 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 import { CriarEmpresa } from '../../../components/Modal/Empresa/CriarEmpresa/CriarEmpresa'
 import { EditarEmpresa } from '../../../components/Modal/Empresa/EditarEmpresa/EditarEmpresa'
 import { ExcluirEmpresa } from '../../../components/Modal/Empresa/ExcluirEmpresa/ExcluirEmpresa';
-import { CriarGrupoEmpresas } from '../../../components/Modal/GrupoDeEmpresas/CriarGrupoEmpresas'
+import { CriarGrupo } from '../../../components/Modal/GrupoDeEmpresas/CriarGrupo'
 
 import { Layout } from '../../../layout/Layout'
 
@@ -21,11 +22,14 @@ import * as PiIcons from 'react-icons/pi';
 import imgEmpresaSemLogo from '../../../assets/images/imgEmpresaSemLogo.jpg'
 
 import styles from './Empresas.module.scss'
+import { EditarGrupo } from '../../../components/Modal/GrupoDeEmpresas/EditarGrupo';
+import { ExcluirGrupo } from '../../../components/Modal/GrupoDeEmpresas/ExcluirGrupo';
 
 export const Empresas = () => {
 
     const [empresas, setEmpresas] = useState([])
-    const [grupo, setGrupo] = useState({});
+    const [grupo, setGrupo] = useState([]);
+    const [grupos, setGrupos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [busca, setBusca] = useState('');
 
@@ -42,15 +46,17 @@ export const Empresas = () => {
 
     const menuEmpresaRef = useRef([]);
 
-    console.log(grupo[0]?.empresas)
+    useEffect(() => {
+        buscarGrupos(setGrupos)
+    }, [grupos]);
 
     useEffect(() => {
-        if (popUpCriarEmpresa || popUpEditarEmpresa || popUpExcluirEmpresa || popUpCriarGrupo) {
+        if (popUpCriarEmpresa || popUpEditarEmpresa || popUpExcluirEmpresa || popUpCriarGrupo || popUpEditarGrupo) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
-    }, [popUpCriarEmpresa || popUpEditarEmpresa || popUpExcluirEmpresa || popUpCriarGrupo]);
+    }, [popUpCriarEmpresa || popUpEditarEmpresa || popUpExcluirEmpresa || popUpCriarGrupo || popUpEditarGrupo]);
 
     // Abrir menu empresa
     useEffect(() => {
@@ -94,6 +100,13 @@ export const Empresas = () => {
         buscarEmpresas(setEmpresas, setLoading);
     }
 
+    const confirmarExclusaoGrupo = async () => {
+        if (!grupoSelecionado) return;
+        await excluirGrupo(grupoSelecionado)
+        buscarGrupos(setGrupos)
+        setGrupoSelecionado(null)
+    }
+
     // Buscar empresas
     useEffect(() => {
         buscarEmpresas(setEmpresas, setLoading)
@@ -106,6 +119,13 @@ export const Empresas = () => {
             setGrupo({})
         }
     }, [grupoSelecionado])
+
+    const atualizarGrupo = () => {
+        if (grupoSelecionado) {
+            buscarGrupo(grupoSelecionado, setGrupo);
+            buscarGrupos(setGrupos)
+        }
+    };
 
     return (
         <Layout>
@@ -126,10 +146,10 @@ export const Empresas = () => {
                     <div className="box-header">
                         <div className="box-header-btns">
                             {grupo.length > 0 ? (
-                                <>
-                                    <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarGrupo(true)}><PiIcons.PiNotePencilBold /></Link>
-                                    <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirGrupo(true)}><PiIcons.PiTrashBold /></Link>
-                                </>
+                                <div className={styles.box_btns_grupo}>
+                                    <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarGrupo(true)}><PiIcons.PiNotePencilBold /> Editar grupo</Link>
+                                    <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirGrupo(true)}><PiIcons.PiTrashBold />Excluir Grupo</Link>
+                                </div>
                             ) : (
                                 <Link className={`${styles.btn_link_principal} ${styles.btn_criar_grupo}`} onClick={() => setPopUpCriarGrupo(true)}><PiIcons.PiSquaresFourBold />Criar grupo</Link>
                             )}
@@ -144,11 +164,17 @@ export const Empresas = () => {
                         <SelectGrupoEmpresa
                             grupoSelecionado={grupoSelecionado}
                             setGrupoSelecionado={setGrupoSelecionado}
+                            grupos={grupos}
                         />
                     </div>
-                    <div className={styles.box_input_busca}>
-                        <Input type="text" placeholder="Buscar empresa..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
-                    </div>
+                    {grupoSelecionado ? (
+                        ''
+                    ) : (
+                        <div className={styles.box_input_busca}>
+                            <Input type="text" placeholder="Buscar empresa..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
+                        </div>
+                    )}
+
                 </div>
 
                 <div className={styles.box_empresas}>
@@ -186,7 +212,73 @@ export const Empresas = () => {
                         ))
                     ) : grupo.length > 0 ? (
                         grupo[0]?.empresas.map((empresa, index) => (
-                            <h3>{empresa.name}</h3>
+                            <div key={empresa.id} className={styles.box_componente}>
+                                <div>
+                                    <div className={styles.box_header_empresa}>
+
+                                        <div className={styles.box_img_logo_empresa}>
+                                            <img
+                                                src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : imgEmpresaSemLogo}
+                                                alt="Logo Empresa"
+                                            />
+                                        </div>
+
+                                        <div className={styles.btn_opcoes_empresa} ref={(el) => (menuEmpresaRef.current[index] = el)}>
+                                            <span onClick={() => handleMenuClick(index)}>
+                                                <PiIcons.PiDotsThreeVerticalBold />
+                                            </span>
+
+                                            <div className={`${styles.box_opcoes_empresas} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
+                                                <Link onClick={() => {
+                                                    setEmpresaSelecionada(empresa)
+                                                    setPopUpEditarEmpresa(true)
+                                                }}>
+                                                    <PiIcons.PiNotePencilBold />
+                                                    <p>Editar</p>
+                                                </Link>
+                                                <Link
+                                                    onClick={() => {
+                                                        setPopUpCriarGrupo(true)
+                                                    }}>
+                                                    <PiIcons.PiSquaresFourBold />
+                                                    <p>Grupo</p>
+                                                </Link>
+                                                <Link
+                                                    className={styles.btn_excluir}
+                                                    onClick={() => modalExcluirEmpresa({ id: empresa.id })}>
+                                                    <PiIcons.PiTrashBold />
+                                                    <p>Excluir</p>
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div className={styles.box_infos_empresa}>
+
+                                        <div className={styles.infos_empresa}>
+                                            <div>
+                                                <h3>{empresa.name}</h3>
+                                            </div>
+                                            <div>
+                                                {empresa.cnpj_empresa ? <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p> : ''}
+                                                <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
+                                            </div>
+                                            <div className={`${styles.info_total_bi} ${empresa.bis.length === 0 ? '' : styles.existe_bi}`}>
+                                                <PiIcons.PiChartPieSliceDuotone />
+                                                <p>{empresa.bis.length} BI's</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className={styles.box_btns_empresa}>
+                                    <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
+                                        Gerenciar BI's
+                                    </Link>
+                                </div>
+                            </div>
                         ))
                     ) : buscaEmpresa.length > 0 ? (
                         buscaEmpresa.map((empresa, index) => (
@@ -239,10 +331,10 @@ export const Empresas = () => {
                                                 <h3>{empresa.name}</h3>
                                             </div>
                                             <div>
-                                                {empresa.cnpj_empresa <= 0 ? '' : <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p>}
+                                                {empresa.cnpj_empresa ? <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p> : ''}
                                                 <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
                                             </div>
-                                            <div className={`${styles.info_total_bi} ${empresa.bis.length == 0 ? '' : styles.existe_bi}`}>
+                                            <div className={`${styles.info_total_bi} ${empresa.bis.length === 0 ? '' : styles.existe_bi}`}>
                                                 <PiIcons.PiChartPieSliceDuotone />
                                                 <p>{empresa.bis.length} BI's</p>
                                             </div>
@@ -286,9 +378,24 @@ export const Empresas = () => {
                 </>}
                 onConfirm={confirmarExclusao}
             />
-            <CriarGrupoEmpresas
+            <CriarGrupo
                 trigger={popUpCriarGrupo}
                 setTrigger={setPopUpCriarGrupo}
+                grupoCriado={atualizarGrupo}
+            />
+            <EditarGrupo
+                trigger={popUpEditarGrupo}
+                setTrigger={setPopUpEditarGrupo}
+                grupo={grupo}
+                grupoAtualizado={atualizarGrupo}
+            />
+            <ExcluirGrupo
+                trigger={popUpExcluirGrupo}
+                setTrigger={setPopUpExcluirGrupo}
+                mensagem={<>
+                    Excluir grupo?
+                </>}
+                onConfirm={confirmarExclusaoGrupo}
             />
 
         </Layout>

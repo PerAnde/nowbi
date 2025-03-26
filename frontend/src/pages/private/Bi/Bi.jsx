@@ -204,8 +204,8 @@ export const Bi = () => {
                     <div className="box-header">
                         <div className="box-header-btns">
                             <div className="box-btns-pagina-bi">
-                                <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)}><PiIcons.PiNotePencilBold /></Link>
-                                <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)}><PiIcons.PiTrashBold /></Link>
+                                <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)}><PiIcons.PiNotePencilBold /> Editar Bi</Link>
+                                <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)}><PiIcons.PiTrashBold />Excluir Bi</Link>
                                 {bi.status ? (
                                     <Link
                                         className={`${styles.btn_link_principal} ${styles.btn_reabrir}`}
@@ -227,7 +227,7 @@ export const Bi = () => {
                             {bi.status ? (
                                 ''
                             ) : (
-                                <Link className={styles.btn_link_principal} onClick={(e) => setPopUpNovoLancamento(true)}><PiIcons.PiPlusBold /> Novo Lançamento</Link>
+                                <Link className={styles.btn_link_principal} onClick={(e) => setPopUpNovoLancamento(true)}><PiIcons.PiPlusBold /> Novo lançamento</Link>
                             )}
 
                         </div>

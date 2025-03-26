@@ -6,15 +6,15 @@ class UpdateEmpresasGrupoController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { empresas_adicionar, empresas_remover } = req.body;
+        const { adicionar_empresa, remover_empresa } = req.body;
 
         const updateEmpresasGrupoService = new UpdateEmpresasGrupoService();
 
         try {
             const grupoAtualizado = await updateEmpresasGrupoService.execute({
                 id,
-                empresas_adicionar,
-                empresas_remover
+                adicionar_empresa,
+                remover_empresa
             });
 
             return res.json(grupoAtualizado);

@@ -201,7 +201,7 @@ h3 {
     display: none;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
     .box-header {
         width: 100%;
     }
@@ -212,7 +212,7 @@ h3 {
 
     .box-btns-pagina-bi {
         display: grid;
-        grid-template-columns: 50px 50px 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 1.5rem;
     }
 }

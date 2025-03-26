@@ -14,6 +14,16 @@ class CreateGrupoEmpresasService {
             throw new Error("Dados inválidos!")
         }
 
+        const emailGrupoJaExiste = await prismaClient.grupoEmpresa.findFirst({
+            where: {
+                email_grupo: email_grupo,
+            }
+        })
+
+        if (emailGrupoJaExiste) {
+            throw new Error("Este e-mail já está em uso por um grupo ou empresa.")
+        }
+
         const grupoEmpresa = await prismaClient.grupoEmpresa.create({
             data: {
                 name: name,

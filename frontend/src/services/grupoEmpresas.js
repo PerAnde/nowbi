@@ -26,7 +26,7 @@ export const criarGrupoEmpresa = async (name, emailGrupo) => {
         return true;
 
     } catch (error) {
-        toast.error("Erro ao criar grupo!")
+        toast.error(error.response.data.error)
         return false;
     }
 
@@ -47,6 +47,7 @@ export const buscarGrupos = async (setGrupos) => {
 
 }
 
+// Buscar grupo
 export const buscarGrupo = async (grupoSelecionado, setGrupo) => {
 
     try {
@@ -57,6 +58,44 @@ export const buscarGrupo = async (grupoSelecionado, setGrupo) => {
     } catch (error) {
         toast.error("Erro ao buscar o grupo!")
         console.error("Erro ao buscar o grupo!", error)
+    }
+
+}
+
+// Editar grupo
+export const editarGrupo = async (id, name, emailGrupo, setTrigger) => {
+
+    try {
+
+        const data = {
+            name: name,
+            email_grupo: emailGrupo,
+        }
+
+        await api.put(`/empresas/grupo/${id}`, data)
+        toast.success("Grupo atualizado com sucesso!")
+        setTrigger(false);
+
+        return true;
+
+    } catch (error) {
+        toast.error("Erro ao atualizar o grupo!")
+        console.error("Erro ao atualizar o grupo!", error)
+    }
+
+}
+
+// Excluir grupo
+export const excluirGrupo = async (grupoSelecionado) => {
+
+    try {
+
+        await api.delete(`/empresas/grupo/${grupoSelecionado}`);
+        toast.success("Grupo excluído com sucesso!")
+
+    } catch (error) {
+        toast.error("Erro ao excluir o grupo!")
+        console.error("Erro ao excluir o grupo!", error)
     }
 
 }

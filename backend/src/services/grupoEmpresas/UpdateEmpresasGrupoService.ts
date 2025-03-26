@@ -2,12 +2,12 @@ import prismaClient from "../../prisma";
 
 interface UpdateEmpresasGrupoRequest {
     id: string;
-    empresas_adicionar?: string[];
-    empresas_remover?: string[];
+    adicionar_empresa?: string[];
+    remover_empresa?: string[];
 }
 
 class UpdateEmpresasGrupoService {
-    async execute({ id, empresas_adicionar, empresas_remover }: UpdateEmpresasGrupoRequest) {
+    async execute({ id, adicionar_empresa, remover_empresa }: UpdateEmpresasGrupoRequest) {
         if (!id) {
             throw new Error("ID inválido!");
         }
@@ -24,8 +24,8 @@ class UpdateEmpresasGrupoService {
         // Filtra apenas empresas que estão associadas ao grupo
         const empresasAtuaisIds = grupoExiste.empresas.map(empresa => empresa.id);
 
-        const empresasRemoverFiltradas = empresas_remover
-            ? empresas_remover.filter(empresa_id => empresasAtuaisIds.includes(empresa_id))
+        const empresasRemoverFiltradas = remover_empresa
+            ? remover_empresa.filter(empresa_id => empresasAtuaisIds.includes(empresa_id))
             : [];
 
         // Remove a relação do grupo antigo
@@ -42,10 +42,10 @@ class UpdateEmpresasGrupoService {
         }
 
         // Adiciona novas empresas ao grupo
-        if (empresas_adicionar && empresas_adicionar.length > 0) {
+        if (adicionar_empresa && adicionar_empresa.length > 0) {
             await prismaClient.empresa.updateMany({
                 where: {
-                    id: { in: empresas_adicionar },
+                    id: { in: adicionar_empresa },
                 },
                 data: {
                     grupo_empresa_id: id, // Associa a empresa ao grupo

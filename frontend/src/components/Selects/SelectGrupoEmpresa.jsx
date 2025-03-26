@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Select from 'react-select'
 import { customSelectStyles } from './customSelectStyles'
-import { buscarGrupos } from '../../services/grupoEmpresas'
 
-export const SelectGrupoEmpresa = ({ grupoSelecionado, setGrupoSelecionado }) => {
-
-    const [grupos, setGrupos] = useState([]);
-
-    useEffect(() => {
-        buscarGrupos(setGrupos)
-    }, [])
+export const SelectGrupoEmpresa = ({ grupoSelecionado, setGrupoSelecionado, grupos }) => {
 
     const grupoOptions = grupos.map((grupo) => ({
         value: grupo.id,

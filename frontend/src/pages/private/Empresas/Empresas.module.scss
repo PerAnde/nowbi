@@ -26,6 +26,11 @@
     cursor: default;
 }
 
+.box_btns_grupo{
+    display: flex;
+    gap: 1.5rem;
+}
+
 .box_buscas{
     grid-column: 1/5;
     width: 100%;
@@ -256,8 +261,6 @@ a.btn_link_principal.btn_excluir:hover {
     }
 }
 
-// ------
-
 .box_btns_empresa {
     display: flex;
     gap: 1.5rem;
@@ -312,6 +315,15 @@ a.btn_link_principal.btn_excluir:hover {
 @media screen and (max-width: 650px) {
     .box_empresas {
         grid-template-columns: 1fr;
+    }
+
+    .box_btns_grupo{
+        display: flex;
+        gap: 1.5rem;
+
+        .btn_link_principal{
+            width: 100%;
+        }
     }
 
     .box_buscas{

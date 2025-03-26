@@ -12,7 +12,16 @@ class ListGrupoService {
                 id: true,
                 name: true,
                 email_grupo: true,
-                empresas: true,
+                empresas: {
+                    select: {
+                        id: true,
+                        name: true,
+                        cnpj_empresa: true,
+                        created_at: true,
+                        logo_empresa: true,
+                        bis: true,
+                    }
+                },
                 created_at: true,
                 updated_at: true,
             }

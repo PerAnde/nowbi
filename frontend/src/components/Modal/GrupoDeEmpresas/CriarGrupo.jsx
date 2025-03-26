@@ -8,7 +8,7 @@ import * as PiIcons from 'react-icons/pi';
 import styles from '../Modal.module.scss'
 import { criarGrupoEmpresa } from '../../../services/grupoEmpresas';
 
-export const CriarGrupoEmpresas = ({ trigger, setTrigger }) => {
+export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
 
     const [name, setName] = useState('');
     const [emailGrupo, setEmailGrupo] = useState('');
@@ -22,6 +22,7 @@ export const CriarGrupoEmpresas = ({ trigger, setTrigger }) => {
             setName('')
             setEmailGrupo('')
             setTrigger(false)
+            grupoCriado()
         }
     };
 
