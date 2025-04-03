@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useNavigate } from "react-router-dom";
 import { api } from '../../../api/api';
 import { buscarEmpresas, excluirEmpresa } from '../../../services/empresas';
 import { buscarGrupo, buscarGrupos, excluirGrupo } from '../../../services/grupoEmpresas';
@@ -24,6 +23,8 @@ import imgEmpresaSemLogo from '../../../assets/images/imgEmpresaSemLogo.jpg'
 import styles from './Empresas.module.scss'
 import { EditarGrupo } from '../../../components/Modal/GrupoDeEmpresas/EditarGrupo';
 import { ExcluirGrupo } from '../../../components/Modal/GrupoDeEmpresas/ExcluirGrupo';
+import { AddEmpresaGrupo } from '../../../components/Modal/GrupoDeEmpresas/AddEmpresaGrupo';
+import { toast } from 'sonner';
 
 export const Empresas = () => {
 
@@ -40,15 +41,16 @@ export const Empresas = () => {
     const [popUpCriarGrupo, setPopUpCriarGrupo] = useState(false);
     const [popUpEditarGrupo, setPopUpEditarGrupo] = useState(false);
     const [popUpExcluirGrupo, setPopUpExcluirGrupo] = useState(false);
+    const [popUpAddEmpresaGrupo, setPopUpAddEmpresaGrupo] = useState(false);
 
     const [empresaSelecionada, setEmpresaSelecionada] = useState(null)
-    const [grupoSelecionado, setGrupoSelecionado] = useState(null);
+    const [grupoSelecionado, setGrupoSelecionado] = useState('');
 
     const menuEmpresaRef = useRef([]);
 
     useEffect(() => {
         buscarGrupos(setGrupos)
-    }, [grupos]);
+    }, []);
 
     useEffect(() => {
         if (popUpCriarEmpresa || popUpEditarEmpresa || popUpExcluirEmpresa || popUpCriarGrupo || popUpEditarGrupo) {
@@ -126,6 +128,10 @@ export const Empresas = () => {
             buscarGrupos(setGrupos)
         }
     };
+
+    const handleLinkCopiado = () => {
+        toast.success("Link copiado para a área de transferência!")
+    }
 
     return (
         <Layout>
@@ -207,6 +213,8 @@ export const Empresas = () => {
 
                                 <div className={styles.box_btns_empresa}>
                                     <Skeleton width={100} height={35} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                    <Skeleton width={70} height={35} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                                    <Skeleton width={50} height={35} borderRadius={5} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                                 </div>
                             </div>
                         ))
@@ -236,12 +244,9 @@ export const Empresas = () => {
                                                     <PiIcons.PiNotePencilBold />
                                                     <p>Editar</p>
                                                 </Link>
-                                                <Link
-                                                    onClick={() => {
-                                                        setPopUpCriarGrupo(true)
-                                                    }}>
-                                                    <PiIcons.PiSquaresFourBold />
-                                                    <p>Grupo</p>
+                                                <Link onClick={handleLinkCopiado} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                                    <PiIcons.PiLinkBold />
+                                                    <p>Link</p>
                                                 </Link>
                                                 <Link
                                                     className={styles.btn_excluir}
@@ -275,7 +280,10 @@ export const Empresas = () => {
 
                                 <div className={styles.box_btns_empresa}>
                                     <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
-                                        Gerenciar BI's
+                                        Gerenciar
+                                    </Link>
+                                    <Link to={`/dashboardbi/${empresa.link_bi}`} target='_blank' className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                        Visualizar
                                     </Link>
                                 </div>
                             </div>
@@ -308,10 +316,15 @@ export const Empresas = () => {
                                                 </Link>
                                                 <Link
                                                     onClick={() => {
-                                                        setPopUpCriarGrupo(true)
+                                                        setEmpresaSelecionada(empresa.id)
+                                                        setPopUpAddEmpresaGrupo(true)
                                                     }}>
                                                     <PiIcons.PiSquaresFourBold />
                                                     <p>Grupo</p>
+                                                </Link>
+                                                <Link onClick={handleLinkCopiado} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                                    <PiIcons.PiLinkBold />
+                                                    <p>Link</p>
                                                 </Link>
                                                 <Link
                                                     className={styles.btn_excluir}
@@ -345,7 +358,10 @@ export const Empresas = () => {
 
                                 <div className={styles.box_btns_empresa}>
                                     <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
-                                        Gerenciar BI's
+                                        Gerenciar
+                                    </Link>
+                                    <Link to={`/dashboardbi/${empresa.link_bi}`} target='_blank' className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                        Visualizar
                                     </Link>
                                 </div>
                             </div>
@@ -381,7 +397,7 @@ export const Empresas = () => {
             <CriarGrupo
                 trigger={popUpCriarGrupo}
                 setTrigger={setPopUpCriarGrupo}
-                grupoCriado={atualizarGrupo}
+                grupoCriado={() => buscarGrupos(setGrupos)}
             />
             <EditarGrupo
                 trigger={popUpEditarGrupo}
@@ -396,6 +412,11 @@ export const Empresas = () => {
                     Excluir grupo?
                 </>}
                 onConfirm={confirmarExclusaoGrupo}
+            />
+            <AddEmpresaGrupo
+                trigger={popUpAddEmpresaGrupo}
+                setTrigger={setPopUpAddEmpresaGrupo}
+                empresa={empresaSelecionada}
             />
 
         </Layout>

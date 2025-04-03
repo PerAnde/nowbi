@@ -10,7 +10,6 @@ export const LayoutBi = ({ children }) => {
         <main className={styles.layout_bi}>
 
             <HeaderBi />
-            <MenuBi />
 
             <section className={styles.section}>
                 {children}

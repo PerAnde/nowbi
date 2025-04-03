@@ -50,6 +50,9 @@ import { UpdateLancamentoBiController } from '../controllers/lancamentosBi/Updat
 import { DeleteLancamentoBiController } from '../controllers/lancamentosBi/DeleteLancamentoBiController';
 import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/DeleteLancamentosBiController';
 
+// Controller DashboardBi
+import { ListEmpresaDashboardBIController } from '../controllers/empresas/ListEmpresaDashboardBIController';
+
 import uploadConfig from '../config/multer'
 
 const router = Router();
@@ -101,5 +104,8 @@ router.post('/lancamentos/:id', isAuthenticated, new CreateLancamentoBiControlle
 router.put('/lancamentos/:id', isAuthenticated, new UpdateLancamentoBiController().handle)
 router.delete('/lancamentos/:id', isAuthenticated, new DeleteLancamentoBiController().handle)
 router.delete('/lancamentos', isAuthenticated, new DeleteLancamentosBiController().handle)
+
+// Rotas Dashboard BI
+router.get('/dashboardbi/:link_bi', new ListEmpresaDashboardBIController().handle)
 
 export { router };

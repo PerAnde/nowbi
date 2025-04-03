@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../../../api/api';
 import { editarEmpresa } from '../../../../services/empresas';
+import { formatarCnpj } from '../../../../utils/formatUtils'
 
 import { Input } from '../../../Input/Input';
 import { Button } from '../../../Button/Button';
@@ -15,6 +16,7 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
     const [name, setName] = useState('');
     const [cnpjEmpresa, setCnpjEmpresa] = useState('');
     const [fotoEmpresa, setFotoEmpresa] = useState(null);
+    const [emailAutenticaBi, setEmailAutenticaBi] = useState("");
 
     // Preencher os estados ao abrir o modal
     useEffect(() => {
@@ -22,6 +24,7 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
             setName(empresa.name || '');
             setCnpjEmpresa(empresa.cnpj_empresa || '');
             setFotoEmpresa(empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : null);
+            setEmailAutenticaBi(empresa.email_empresa || '')
         }
     }, [empresa]);
 
@@ -46,23 +49,11 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
             return;
         }
 
-        const formData = new FormData();
-
-        // Adiciona os dados básicos
-        formData.append('name', name);
-
-        // Adiciona o CNPJ, se disponível
-        if (cnpjEmpresa) {
-            formData.append('cnpj_empresa', cnpjEmpresa);
-        }
-
         // Adiciona a nova imagem, se selecionada
         const fileInput = document.getElementById('picture_input');
-        if (fileInput.files[0]) {
-            formData.append('file', fileInput.files[0]);
-        }
+        const fotoEmpresa = fileInput?.files[0] || null;
 
-        const success = await editarEmpresa(empresa.id, formData, setTrigger);
+        const success = await editarEmpresa(empresa.id, name, cnpjEmpresa, emailAutenticaBi, fotoEmpresa);
 
         if (success) {
             setName("");
@@ -109,8 +100,27 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
 
 
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
-                        <Input type="text" placeholder="Nome da empresa" value={name} onChange={(e) => setName(e.target.value)} />
-                        <Input type="text" placeholder="CNPJ (Opcional)" value={cnpjEmpresa} onChange={(e) => setCnpjEmpresa(e.target.value)} />
+                        <Input
+                            type="text"
+                            placeholder="Nome da empresa"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <div className={styles.box_dados_empresa}>
+                            <Input
+                                type="text"
+                                placeholder="CNPJ (Opcional)"
+                                value={cnpjEmpresa}
+                                onChange={(e) => setCnpjEmpresa(formatarCnpj(e.target.value))}
+                                maxLength={18}
+                            />
+                            <Input
+                                type="email"
+                                placeholder="Email da empresa"
+                                value={emailAutenticaBi}
+                                onChange={(e) => setEmailAutenticaBi(e.target.value)}
+                            />
+                        </div>
 
                         <div className={styles.box_btn_button}>
                             <Button type="submit">Salvar alterações</Button>

@@ -2,7 +2,7 @@ export const customSelectStyles = {
     control: (provided, state) => ({
         ...provided,
         width: '100%',
-        backgroundColor: state.isDisabled ? 'var(--border-disabled)' : 'var(--cor-componente)',
+        backgroundColor: state.isDisabled ? 'var(--cor-componente)' : 'var(--cor-componente)',
         color: state.isDisabled ? 'var(--texto-secundario)' : 'var(--texto-primario)',
         borderRadius: 'var(--border-radius-button)',
         border: '1px solid var(--border-input)',

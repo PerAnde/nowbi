@@ -85,6 +85,35 @@ export const editarGrupo = async (id, name, emailGrupo, setTrigger) => {
 
 }
 
+// Adicionar empresa ao grupo
+export const atualizarEmpresaNoGrupo = async (grupoId, empresaId, acao, setTrigger) => {
+    try {
+
+        const data = {
+            empresa_id: empresaId,
+            acao: acao
+        }
+
+        await api.patch(`/empresas/grupo/${grupoId}`, data);
+        toast.success(`Empresa ${acao === "adicionar" ? "adicionada" : "removida"} com sucesso!`);
+        setTrigger(false)
+
+    } catch (error) {
+        console.error("Erro na requisição:", error); // Para depuração
+
+        if (error.response) {
+            toast.error(error.response.data?.error || "Erro desconhecido no servidor.");
+        } else if (error.request) {
+            toast.error("Erro na comunicação com o servidor.");
+        } else {
+            toast.error("Ocorreu um erro inesperado.");
+        }
+
+        return false;
+    }
+};
+
+
 // Excluir grupo
 export const excluirGrupo = async (grupoSelecionado) => {
 

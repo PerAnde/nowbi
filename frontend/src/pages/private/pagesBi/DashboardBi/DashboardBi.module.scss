@@ -4,20 +4,10 @@
     padding: 2rem;
 }
 
-.header_resumo {
-    margin-bottom: 2rem;
-}
-
-.header_resumo h3 {
-    color: var(--texto-secundario);
-    font-weight: var(--regular);
-    font-size: 1.5rem;
-    margin-bottom: .5rem;
-}
-
-.header_resumo span {
-    font-size: 3rem;
-    font-weight: var(--bold);
+.activeMonth {
+    background-color: var(--cor-primaria);
+    color: white;
+    font-weight: bold;
 }
 
 .box_infos_resumo {
@@ -27,6 +17,7 @@
     border-radius: var(--border-radius-componente);
     padding: 1rem;
     gap: 1rem;
+    margin-bottom: 3rem;
 }
 
 .box_dados {
@@ -36,7 +27,6 @@
     padding: 2rem;
     border-radius: var(--border-radius-componente);
     color: var(--texto-secundario);
-    cursor: pointer;
 }
 
 .box_dados.ativo {
@@ -44,7 +34,7 @@
     color: var(--texto-primario);
 }
 
-.box_icone_dados{
+.box_icone_dados {
     display: flex;
     align-items: center;
     padding: 1.5rem;
@@ -52,27 +42,72 @@
     font-size: 2rem;
 }
 
-.box_icone_dados.icone_receita{
+.box_icone_dados.icone_receita {
     background-color: var(--verde-15);
     color: var(--verde);
 }
 
-.box_icone_dados.icone_despesa{
+.box_icone_dados.icone_despesa {
     background-color: var(--vermelho-15);
     color: var(--vermelho);
 }
 
-.infos_dados p{
+.infos_dados p {
     margin-bottom: .5rem;
 }
 
-.infos_dados span{
+.infos_dados span {
     font-weight: var(--bold);
     font-size: 2.5rem;
 }
 
-@media screen and (max-width: 600px){
-    .box_infos_resumo{
+.box_resumo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.chart_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.box_graficos_donnut {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom_legend {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.legend_item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1.4rem;
+
+    span.item_valor,
+    span.item_percentual {
+        color: var(--texto-secundario);
+    }
+}
+
+.color_box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+@media screen and (max-width: 600px) {
+    .box_infos_resumo {
         grid-template-columns: 1fr;
     }
 }

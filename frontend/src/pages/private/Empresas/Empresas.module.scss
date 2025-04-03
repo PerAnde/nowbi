@@ -26,12 +26,12 @@
     cursor: default;
 }
 
-.box_btns_grupo{
+.box_btns_grupo {
     display: flex;
     gap: 1.5rem;
 }
 
-.box_buscas{
+.box_buscas {
     grid-column: 1/5;
     width: 100%;
     display: flex;
@@ -39,18 +39,18 @@
     gap: 1.5rem;
 }
 
-.box_select_grupo{
+.box_select_grupo {
     width: 200px;
 }
 
-.input_busca{
+.input_busca {
     border: none;
     background-color: var(--background);
     border-bottom: 1px solid var(--border-input);
 }
 
 .input_busca:hover,
-.input_busca:focus{
+.input_busca:focus {
     border: none;
     border-bottom: 1px solid var(--cor-primaria);
 }
@@ -252,7 +252,7 @@ a.btn_link_principal.btn_excluir:hover {
         color: var(--texto-secundario);
     }
 
-    .info_total_bi p{
+    .info_total_bi p {
         font-size: 1.4rem;
     }
 
@@ -283,9 +283,18 @@ a.btn_link_principal.btn_excluir:hover {
         transition: .3s;
     }
 
-    a.btn_link.btn_link_editar {
-        background-color: var(--background);
+    a.btn_link.btn_link_cor_secundaria {
+        color: var(--texto-secundario);
+        border: 1px solid var(--border-input);
+        background-color: var(--cor-componente);
     }
+
+    a.btn_link.btn_link_cor_secundaria:hover {
+        color: var(--texto-primario);
+        border: 1px solid var(--border-input);
+        background-color: var(--border-input);
+    }
+
 }
 
 .box_sem_empresas {
@@ -317,22 +326,22 @@ a.btn_link_principal.btn_excluir:hover {
         grid-template-columns: 1fr;
     }
 
-    .box_btns_grupo{
+    .box_btns_grupo {
         display: flex;
         gap: 1.5rem;
 
-        .btn_link_principal{
+        .btn_link_principal {
             width: 100%;
         }
     }
 
-    .box_buscas{
+    .box_buscas {
         grid-column: 1/5;
         flex-direction: column;
     }
 
     .box_select_grupo,
-    .box_input_busca{
+    .box_input_busca {
         width: 100%;
     }
 

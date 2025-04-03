@@ -40,7 +40,7 @@ export const AppRoutes = () => {
                 <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
                 <Route path='/bi/:id' element={<PrivateRoutes><Bi /></PrivateRoutes>} />
                 {/* Rotas Dashboard BI */}
-                <Route path='/dashboardbi' element={<DashboardBi />} />
+                <Route path='/dashboardbi/:link_bi' element={<DashboardBi />} />
                 <Route path='/entradasbi' element={<DashboardBi />} />
                 <Route path='/saidasbi' element={<DashboardBi />} />
                 <Route path='/detalhesbi' element={<DashboardBi />} />

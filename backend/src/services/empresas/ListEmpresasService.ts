@@ -14,6 +14,7 @@ class ListEmpresasService {
                 logo_empresa: true,
                 email_empresa: true,
                 bis: true,
+                link_bi: true,
                 created_at: true,
                 updated_at: true,
             }

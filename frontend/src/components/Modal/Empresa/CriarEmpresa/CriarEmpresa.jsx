@@ -4,7 +4,6 @@ import { formatarCnpj } from '../../../../utils/formatUtils';
 
 import { Input } from '../../../Input/Input'
 import { Button } from '../../../Button/Button'
-import { SelectGrupoEmpresa } from '../../../../components/Selects/SelectGrupoEmpresa'
 
 import * as PiIcons from 'react-icons/pi';
 

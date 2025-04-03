@@ -61,6 +61,11 @@ export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file) =>
         return false;
     }
 
+    if (!cnpjEmpresa) {
+        toast.warning("Preencha o CNPJ da empresa!");
+        return false;
+    }
+
     if (!emailAutenticaBi) {
         toast.warning("Preencha o email da empresa!");
         return false;
@@ -86,7 +91,7 @@ export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file) =>
         }
     } catch (error) {
         if (error.response) {
-            toast.error(`Erro ao criar a empresa: ${error.response.data.message || 'Erro desconhecido'}`);
+            toast.error(`${error.response.data.error || 'Erro desconhecido'}`);
         } else {
             toast.error("Erro ao criar a empresa! Tente novamente.");
         }
@@ -96,8 +101,21 @@ export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file) =>
 };
 
 // Editar Empresa
-export const editarEmpresa = async (id, formData) => {
+export const editarEmpresa = async (id, name, cnpjEmpresa, emailAutenticaBi, file) => {
+
     try {
+
+        const formData = new FormData();
+
+        // Adiciona os dados básicos
+        formData.append('name', name);
+        formData.append('cnpj_empresa', cnpjEmpresa);
+        formData.append('email_empresa', emailAutenticaBi);
+
+        if (file) {
+            formData.append('file', file);
+        }
+
         await api.put(`/empresas/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -108,7 +126,7 @@ export const editarEmpresa = async (id, formData) => {
         return true;
 
     } catch (error) {
-        toast.error("Ocorreu um erro ao atualizar a empresa.");
+        toast.error(error.response.data.error);
         return false;
     }
 };

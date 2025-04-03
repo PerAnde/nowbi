@@ -31,6 +31,7 @@
     --amarelo-hover: #e49800;
     --laranja: #e4630e;
     --laranja-15: rgba(228, 99, 14, .15);
+    --laranja-claro: #f39150;
 
     --gradient-azul: linear-gradient(120deg, #0352ad, #078bec);
 
@@ -55,7 +56,7 @@
     --box-shadow-componente: 0 0 5px rgba(0, 0, 0, .05);
     --box-shadow-menu: 0 0 50px rgba(0, 0, 0, .1);
     --box-shadow-table: 0 20px 50px rgba(0, 0, 0, .05);
-    --box-shadow-select: 0 0 15px rgba(0, 0, 0, .1);
+    --box-shadow-select: 0 0 15px rgba(0, 0, 0, .2);
 
     --hover-link-menu-minha-conta: #f4f6f8;
     --hover-link-menu-lateral: #1c252e;
@@ -119,6 +120,9 @@ html {
     font-size: 62.5%; // 1 rem = 10 pixels
     -webkit-font-smoothing: antialiased;
     // overflow: hidden;
+
+    overflow-y: auto !important;
+    height: auto !important;
 }
 
 body {
@@ -129,6 +133,8 @@ body {
     font-weight: var(--light);
     letter-spacing: -.02rem;
     overflow: hidden;
+    overflow-y: auto !important;
+    height: auto !important;
 }
 
 ::-webkit-scrollbar {
