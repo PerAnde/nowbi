@@ -234,11 +234,28 @@ export const DashboardBi = () => {
                 {viewMode === "resumo" ? (
                     <div className={styles.box_resumo}>
 
+                        <div className={styles.box_grafico_anual}>
+                            <h3>Últimos 12 meses</h3>
+                            <ResponsiveContainer width="100%" height={400}>
+                                <BarChart data={barData}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                                    <XAxis dataKey="month" stroke="var(--texto-secundario)" />
+                                    <YAxis stroke="var(--texto-secundario)" />
+                                    <Tooltip
+                                        formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                        contentStyle={{ background: "var(--branco)", color: "var(--cinza)", borderRadius: "8px", border: '1px solid var(--texto-secundario)' }} />
+                                    <Legend />
+                                    <Bar dataKey="receitas" fill="#3789da" name="Receitas" radius={[8, 8, 0, 0]} />
+                                    <Bar dataKey="despesas" fill="#eb5555" name="Despesas" radius={[8, 8, 0, 0]} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+
                         <div className={styles.chart_container}>
 
                             <div className={styles.box_graficos_donnut}>
                                 <ResponsiveContainer width={350} height={350}>
-                                    <h3>Receitas por Subcategoria</h3>
+                                    <h3>Receitas</h3>
                                     <PieChart>
                                         <Pie
                                             data={pieDataReceitas}
@@ -277,7 +294,7 @@ export const DashboardBi = () => {
 
                             <div className={styles.box_graficos_donnut}>
                                 <ResponsiveContainer width={350} height={350}>
-                                    <h3>Despesas por Subcategoria</h3>
+                                    <h3>Despesas</h3>
                                     <PieChart>
                                         <Pie
                                             data={pieDataDespesas}
@@ -312,22 +329,6 @@ export const DashboardBi = () => {
                                     ))}
                                 </div>
                             </div>
-                        </div>
-
-                        <div className={styles.box_grafico_anual}>
-                            <ResponsiveContainer width="100%" height={400}>
-                                <BarChart data={barData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                                    <XAxis dataKey="month" stroke="var(--texto-secundario)" />
-                                    <YAxis stroke="var(--texto-secundario)" />
-                                    <Tooltip
-                                        formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                                        contentStyle={{ background: "var(--branco)", color: "var(--cinza)", borderRadius: "8px", border: '1px solid var(--texto-secundario)' }} />
-                                    <Legend />
-                                    <Bar dataKey="receitas" fill="var(--cor-primaria)" name="Receitas" radius={[8, 8, 0, 0]} />
-                                    <Bar dataKey="despesas" fill="var(--vermelho)" name="Despesas" radius={[8, 8, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
                         </div>
 
                     </div>
