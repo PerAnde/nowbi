@@ -50,8 +50,8 @@
 
     --border-input: #e8ebef;
     --placeholder: #e8ebef;
-    --hover-input: #e0e3e6;
     --border-disabled: #f6f7f8;
+    --hover-input: #e0e3e6;
 
     --box-shadow-componente: 0 0 5px rgba(0, 0, 0, .05);
     --box-shadow-menu: 0 0 50px rgba(0, 0, 0, .1);
@@ -76,6 +76,7 @@
     --button-painel-cor-secundaria: #1c252e;
     --button-painel-cor-secundaria-hover: #26323d;
 
+    --border-radius-componente_dre: .5rem;
     --border-radius-componente: 1rem;
     --border-radius-button: .8rem;
 
@@ -150,7 +151,6 @@ body {
     background: var(--texto-secundario-componente-escuro);
     border-radius: 10px;
 }
-
 
 a {
     text-decoration: none;

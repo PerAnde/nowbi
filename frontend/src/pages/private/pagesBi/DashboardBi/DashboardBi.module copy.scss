@@ -1,0 +1,132 @@
+.resumo_bi {
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+}
+
+// .box_menu_btns{
+
+// }
+
+// .box_filtro_mes{
+
+// }
+
+.box_infos_resumo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--background);
+    border-radius: var(--border-radius-componente);
+    padding: 1rem;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.box_dados {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: var(--border-radius-componente);
+    color: var(--texto-secundario);
+}
+
+.box_dados.ativo {
+    background-color: var(--cor-componente);
+    color: var(--texto-primario);
+}
+
+.box_icone_dados {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: 50%;
+    font-size: 2rem;
+}
+
+.box_icone_dados.icone_receita {
+    background-color: var(--verde-15);
+    color: var(--verde);
+}
+
+.box_icone_dados.icone_despesa {
+    background-color: var(--vermelho-15);
+    color: var(--vermelho);
+}
+
+.infos_dados p {
+    margin-bottom: .5rem;
+}
+
+.infos_dados span {
+    font-weight: var(--bold);
+    font-size: 2.5rem;
+}
+
+.box_resumo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.chart_container{
+    display: flex;
+    gap: 5rem;
+}
+
+.box_graficos_donnut {
+    display: flex;
+    // grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: space-evenly;
+    // gap: 5rem;
+    height: 450px;
+    overflow: hidden;
+}
+
+.custom_legend {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    max-height: 100%;
+    background-color: var(--background);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+}
+
+.legend_item {
+    display: grid;
+    grid-template-columns: 10px 1fr 130px 30px;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1.4rem;
+
+    span.item_valor,
+    span.item_percentual {
+        color: var(--texto-secundario);
+    }
+}
+
+.color_box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+@media screen and (max-width: 800px) {
+    .box_graficos_donnut {
+        display: grid;
+        grid-template-columns: 1fr;
+        height: 600px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .box_infos_resumo {
+        grid-template-columns: 1fr;
+        justify-content: center;
+    }
+}
