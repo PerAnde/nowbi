@@ -12,7 +12,7 @@ const getToken = () => {
 // Exportando url na const api
 export const api = axios.create({
     // Url base do backend
-    baseURL: "http://192.168.1.11:3333"
+    baseURL: import.meta.env.VITE_API_URL
 })
 
 // Toda vez que for feita uma requisicao passa por aqui
