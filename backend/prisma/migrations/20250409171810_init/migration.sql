@@ -31,6 +31,7 @@ CREATE TABLE `grupo_empresas` (
     `updated_at` DATETIME(3) NOT NULL,
     `usuario_id` VARCHAR(191) NULL,
 
+    INDEX `grupo_empresas_usuario_id_fkey`(`usuario_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -40,12 +41,14 @@ CREATE TABLE `empresas` (
     `name` VARCHAR(191) NOT NULL,
     `cnpj_empresa` VARCHAR(191) NULL,
     `logo_empresa` VARCHAR(191) NULL,
-    `email_empresa` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `usuario_id` VARCHAR(191) NOT NULL,
     `grupo_empresa_id` VARCHAR(191) NULL,
+    `email_empresa` VARCHAR(191) NOT NULL,
+    `link_bi` VARCHAR(40) NOT NULL,
 
+    UNIQUE INDEX `empresas_link_bi_key`(`link_bi`),
     INDEX `empresas_usuario_id_fkey`(`usuario_id`),
     INDEX `empresas_grupo_empresa_id_fkey`(`grupo_empresa_id`),
     PRIMARY KEY (`id`)
@@ -111,10 +114,10 @@ CREATE TABLE `lancamentos_bi` (
 ALTER TABLE `grupo_empresas` ADD CONSTRAINT `grupo_empresas_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `empresas` ADD CONSTRAINT `empresas_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `empresas` ADD CONSTRAINT `empresas_grupo_empresa_id_fkey` FOREIGN KEY (`grupo_empresa_id`) REFERENCES `grupo_empresas`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `empresas` ADD CONSTRAINT `empresas_grupo_empresa_id_fkey` FOREIGN KEY (`grupo_empresa_id`) REFERENCES `grupo_empresas`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `empresas` ADD CONSTRAINT `empresas_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `categorias` ADD CONSTRAINT `categorias_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
