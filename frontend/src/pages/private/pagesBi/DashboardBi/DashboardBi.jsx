@@ -204,11 +204,24 @@ export const DashboardBi = () => {
     const despesasAgrupadas = agruparPorCategoria(despesas);
 
     const lucroBruto = summary.receitas - summary.despesas;
-    const margemLucro = (lucroBruto / summary.receitas) * 100 || 0;
 
     const custos = Object.entries(despesasAgrupadas).find(
         ([categoria]) => categoria.toLowerCase() === "custos"
     )?.[1]?.total || 0;
+
+    // Margem de conbribuicao
+    const margemDeContribuicao = summary.receitas - custos;
+    const margemDeContribuicaoPercentual = (margemDeContribuicao / summary.receitas) * 100 || 0;
+
+    // Custos fixos = todas as despesas exceto "Custos"
+    const custosFixos = Object.entries(despesasAgrupadas)
+        .filter(([categoria]) => categoria.toLowerCase() !== "custos")
+        .reduce((total, [, dados]) => total + dados.total, 0);
+
+    // Ponto de equilíbrio
+    const pontoDeEquilibrio = margemDeContribuicaoPercentual > 0
+        ? custosFixos / (margemDeContribuicaoPercentual / 100)
+        : 0;
 
     const despesasOrdenadas = Object.entries(despesasAgrupadas).sort(([catA], [catB]) => {
         if (catA.toLowerCase() === "despesas financeiras") return 1; // Move "Despesas Financeiras" para o final
@@ -400,7 +413,7 @@ export const DashboardBi = () => {
                             </span>
                             <div className={styles.infos_dados}>
                                 <p>Ponto de Equilíbrio</p>
-                                <span>R$ 10.000,00</span>
+                                <span>{pontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             </div>
                         </div>
                         <div className={`${styles.box_dados}`}>
@@ -409,7 +422,7 @@ export const DashboardBi = () => {
                             </span>
                             <div className={styles.infos_dados}>
                                 <p>Margem de Contribuição</p>
-                                <span>R$ 2.000,00</span>
+                                <span>{margemDeContribuicaoPercentual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             </div>
                         </div>
                     </div>
