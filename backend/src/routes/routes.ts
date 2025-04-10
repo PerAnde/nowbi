@@ -57,7 +57,7 @@ import uploadConfig from '../config/multer'
 
 const router = Router();
 
-const upload = multer(uploadConfig.upload("images"));
+const upload = multer(uploadConfig.upload());
 
 // Rotas Usuario
 router.post('/register', new CreateUsuarioController().handle)

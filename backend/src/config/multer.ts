@@ -4,11 +4,11 @@ import multer from "multer";
 import { extname, resolve } from 'path';
 
 export default {
-    upload(folder: string,) {
+    upload() {
 
         return {
             storage: multer.diskStorage({
-                destination: resolve(__dirname, '..', folder),
+                destination: resolve(__dirname, '..', 'images'),
                 filename: (request, file, callback) => {
                     const fileHash = crypto.randomBytes(16).toString("hex");
 
