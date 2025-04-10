@@ -416,7 +416,7 @@ export const DashboardBi = () => {
                                 <span>{pontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             </div>
                         </div>
-                        <div className={`${styles.box_dados}`}>
+                        {/* <div className={`${styles.box_dados}`}>
                             <span className={`${styles.box_icone_dados} ${styles.icone_margem}`}>
                                 <PiIcons.PiChartPieSlice />
                             </span>
@@ -424,7 +424,7 @@ export const DashboardBi = () => {
                                 <p>Margem de Contribuição</p>
                                 <span>{margemDeContribuicaoPercentual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
