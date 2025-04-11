@@ -11,19 +11,19 @@ class CreateCategoriasNovoUsuarioService {
         await prismaClient.categoria.createMany({
             data: [
                 // Receitas
-                { name: "Aporte de Sócios", tipo: "RECEITA", usuario_id: usuario_id },
-                { name: "Receitas Adicionais em Operações Financeiras", tipo: "RECEITA", usuario_id: usuario_id },
-                { name: "Rendimento Aplicações", tipo: "RECEITA", usuario_id: usuario_id },
-                { name: "Vendas de Mercadoria", tipo: "RECEITA", usuario_id: usuario_id },
+                { name: "Aporte de Sócios", tipo: "RECEITA", usuario_id: usuario_id, grupoDre: "OUTRAS_RECEITAS" },
+                { name: "Receitas Adicionais em Operações Financeiras", tipo: "RECEITA", usuario_id: usuario_id, grupoDre: "RECEITA_FINANCEIRA" },
+                { name: "Rendimento Aplicações", tipo: "RECEITA", usuario_id: usuario_id, grupoDre: "OUTRAS_RECEITAS" },
+                { name: "Vendas de Mercadoria", tipo: "RECEITA", usuario_id: usuario_id, grupoDre: "RECEITA_OPERACIONAL_BRUTA" },
                 // Despesas
-                { name: "Custos de Produtos", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Despesas Adicionais em Operações Financeiras", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Despesas Administrativas", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Despesas Comerciais", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Despesas Marketing", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Impostos", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Investimentos", tipo: "DESPESA", usuario_id: usuario_id },
-                { name: "Retirada Sócios", tipo: "DESPESA", usuario_id: usuario_id },
+                { name: "Custos de Produtos", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
+                { name: "Despesas Adicionais em Operações Financeiras", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_FINANCEIRAS" },
+                { name: "Despesas Administrativas", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
+                { name: "Despesas Comerciais", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
+                { name: "Despesas Marketing", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
+                { name: "Impostos", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DEDUCOES_DA_RECEITA_BRUTA" },
+                { name: "Investimentos", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "OUTRAS_DESPESAS" },
+                { name: "Retirada Sócios", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "OUTRAS_DESPESAS" },
             ]
         })
 
