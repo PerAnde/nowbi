@@ -23,7 +23,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
             setName("");
             setTipo("");
             setTrigger(false);
-            setGrupoDre("NAO_EXIBIR_NO_DRE");
+            setGrupoDre("NAO_EXIBIR_NO_DRE"); // Padrao como Nao Exibir no DRE
             categoriaCriada();
         }
     };
