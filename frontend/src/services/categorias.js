@@ -28,7 +28,7 @@ export const buscarCategorias = async (setCategorias, setLoading) => {
 }
 
 // Criar categoria
-export const criarCategoria = async (name, tipo) => {
+export const criarCategoria = async (name, tipo, grupoDre) => {
     if (!name) {
         toast.warning('Preencha o nome da categoria!');
         return false;
@@ -40,7 +40,7 @@ export const criarCategoria = async (name, tipo) => {
     }
 
     try {
-        const data = { name, tipo };
+        const data = { name, tipo, grupoDre };
         await api.post('/categorias', data);
         toast.success('Categoria cadastrada com sucesso!');
         return true;  // Indica sucesso
@@ -51,7 +51,7 @@ export const criarCategoria = async (name, tipo) => {
 };
 
 // Editar categoria
-export const editarCategoria = async (name, tipo, categoria, setTrigger) => {
+export const editarCategoria = async (name, tipo, categoria, setTrigger, grupoDre) => {
 
     if (!name) {
         toast.warning("Preencha o nome da categoria!")
@@ -64,7 +64,7 @@ export const editarCategoria = async (name, tipo, categoria, setTrigger) => {
     }
 
     try {
-        const data = { name, tipo };
+        const data = { name, tipo, grupoDre };
 
         await api.put(`/categorias/${categoria.id}`, data); // Atualiza a categoria pelo ID
         toast.success("Categoria atualizada com sucesso!")

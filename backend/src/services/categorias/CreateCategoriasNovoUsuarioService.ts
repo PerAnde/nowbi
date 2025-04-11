@@ -19,6 +19,7 @@ class CreateCategoriasNovoUsuarioService {
                 { name: "Custos de Produtos", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
                 { name: "Despesas Adicionais em Operações Financeiras", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_FINANCEIRAS" },
                 { name: "Despesas Administrativas", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
+                { name: "Despesas com Pessoal", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
                 { name: "Despesas Comerciais", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
                 { name: "Despesas Marketing", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DESPESAS_OPERACIONAIS" },
                 { name: "Impostos", tipo: "DESPESA", usuario_id: usuario_id, grupoDre: "DEDUCOES_DA_RECEITA_BRUTA" },

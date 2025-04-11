@@ -15,10 +15,12 @@ class ListCategoriasService {
                 name: true,
                 tipo: true,
                 subcategorias: true,
+                grupoDre: true,
             },
         });
 
         return categorias;
+
     }
 }
 

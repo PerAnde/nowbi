@@ -7,7 +7,7 @@ interface ListCategoriaRequest {
 
 class ListCategoriaService {
     async execute({ id, usuario_id }: ListCategoriaRequest) {
-        const where: any = { usuario_id };
+        // const where: any = { usuario_id };
 
         const categoria = await prismaClient.categoria.findMany({
             where: {
@@ -19,6 +19,7 @@ class ListCategoriaService {
                 name: true,
                 tipo: true,
                 subcategorias: true,
+                grupoDre: true,
             }
         });
 
