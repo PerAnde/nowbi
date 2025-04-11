@@ -3,26 +3,13 @@ import { criarCategoria } from '../../../../services/categorias';
 
 import { Input } from '../../../Input/Input'
 import { Button } from '../../../Button/Button'
+import { SelectGrupoDre } from '../../../Selects/SelectGrupoDre';
 
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss'
 
 export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
-
-    const grupoDreReceita = [
-        { label: 'Receita Operacional Bruta', value: 'RECEITA_OPERACIONAL_BRUTA' },
-        { label: 'Receita Financeira', value: 'RECEITA_FINANCEIRA' },
-        { label: 'Outras Receitas', value: 'OUTRAS_RECEITAS' },
-    ];
-
-    const grupoDreDespesa = [
-        { label: 'Deduções da Receita Bruta', value: 'DEDUCOES_DA_RECEITA_BRUTA' },
-        { label: 'Despesas Operacionais', value: 'DESPESAS_OPERACIONAIS' },
-        { label: 'Despesas Financeiras', value: 'DESPESAS_FINANCEIRAS' },
-        { label: 'Outras Despesas', value: 'OUTRAS_DESPESAS' },
-        { label: 'IR e CSLL', value: 'IR_CSLL' },
-    ];
 
     const [name, setName] = useState("");
     const [tipo, setTipo] = useState("");
@@ -47,7 +34,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova Categoria</h3>
-                    <span onClick={() => setTrigger(false)}>
+                    <span onClick={() => { setTrigger(false); setName(""); setTipo(""); setGrupoDre(""); }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
@@ -67,16 +54,9 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
                         </div>
 
                         {tipo && (
-                            <select
-                                value={grupoDre}
-                                onChange={(e) => setGrupoDre(e.target.value)}
-                                className={styles.select}
-                            >
-                                <option value="NAO_EXIBIR_NO_DRE">Não exibir na DRE</option>
-                                {(tipo === 'RECEITA' ? grupoDreReceita : grupoDreDespesa).map((grupo) => (
-                                    <option key={grupo.value} value={grupo.value}>{grupo.label}</option>
-                                ))}
-                            </select>
+                            <div className={styles.box_select}>
+                                <SelectGrupoDre tipo={tipo} grupoDre={grupoDre} setGrupoDre={setGrupoDre} />
+                            </div>
                         )}
 
                         <div className={styles.box_btn_button}>
@@ -86,7 +66,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
                 </form>
 
             </div>
-        </div>
+        </div >
 
     ) : "";
 }

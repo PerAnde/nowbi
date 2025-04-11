@@ -145,6 +145,18 @@ img.picture_image {
     gap: 1.5rem;
 }
 
+.box_select_dre{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+
+    p{
+        text-align: left;
+    }
+}
+
 .box_btn_button {
     display: flex;
     justify-content: flex-end;
