@@ -2,24 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { buscarDashboardBi } from '../../../../services/dashboardBi';
 import { Link } from 'react-router-dom';
-import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
 import styles from './DashboardBi.module.scss';
 import './dre.css'
 import { LayoutBi } from '../../../../layout/LayoutBi/LayoutBi';
 import * as PiIcons from 'react-icons/pi';
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
-import * as XLSX from "xlsx";
-import { toast } from 'sonner';
+import { exportarParaExcel } from '../../../../utils/exportExcel';
+import { salvarDRE } from '../../../../utils/salvarPDF';
 
 const COLORS = [
-    "#3789da", "#37a2da", "#37bcda",
-    "#ffa55c", "#ff8a5c", "#ff6f5c",
-    "#ffc05c", "#ffdb5c", "#fff35c",
-    "#eb6755", "#eb5555", "#eb5587",
-    "#9678ea", "#8378ea", "#7880ea",
-    "#37cbda", "#37dac2", "#37daa6",
-    "#7893ea", "#78a5ea", "#78b8ea",
-    "#eb55ab", "#eb55cf", "#d655eb",
+    "#3789da", "#ff8a5c", "#8378ea",
+    "#ffa55c", "#37a2da", "#ff6f5c",
+    "#ffc05c", "#eb5555", "#fff35c",
+    "#d655eb", "#ffdb5c", "#7893ea",
+    "#9678ea", "#37dac2", "#7880ea",
+    "#37cbda", "#37bcda", "#37daa6",
+    "#eb5587", "#eb55cf", "#78b8ea",
+    "#eb55ab", "#78a5ea", "#eb6755",
 ]
 
 const processBIData = (empresa, selectedMonth) => {
@@ -115,7 +115,7 @@ export const DashboardBi = () => {
             const ultimoMes = mesesAtivosOrdenados[mesesAtivosOrdenados.length - 1];
             const mesAnoUltimo = `${ultimoMes.mes} / ${ultimoMes.ano}`;
 
-            setSelectedMonth(mesAnoUltimo); // Agora setamos o mês antes de processar os dados
+            setSelectedMonth(mesAnoUltimo); // Seta o mês antes de processar os dados
         }
     }, [empresa]);
 
@@ -209,19 +209,10 @@ export const DashboardBi = () => {
         ([categoria]) => categoria.toLowerCase() === "custos"
     )?.[1]?.total || 0;
 
-    // Margem de conbribuicao
-    const margemDeContribuicao = summary.receitas - custos;
-    const margemDeContribuicaoPercentual = (margemDeContribuicao / summary.receitas) * 100 || 0;
-
     // Custos fixos = todas as despesas exceto "Custos"
     const custosFixos = Object.entries(despesasAgrupadas)
         .filter(([categoria]) => categoria.toLowerCase() !== "custos")
         .reduce((total, [, dados]) => total + dados.total, 0);
-
-    // Ponto de equilíbrio
-    const pontoDeEquilibrio = margemDeContribuicaoPercentual > 0
-        ? custosFixos / (margemDeContribuicaoPercentual / 100)
-        : 0;
 
     const despesasOrdenadas = Object.entries(despesasAgrupadas).sort(([catA], [catB]) => {
         if (catA.toLowerCase() === "despesas financeiras") return 1; // Move "Despesas Financeiras" para o final
@@ -229,137 +220,39 @@ export const DashboardBi = () => {
         return 0;
     });
 
-    // Exportar Excel
-    const exportarParaExcel = () => {
+    // Deducoes e Impostos
+    const deducoesImpostos = Object.entries(despesasAgrupadas).find(
+        ([categoria]) => categoria.toLowerCase() === "impostos"
+    )?.[1]?.total || 0;
+    // Buscando despesas comerciais
+    const despesasComerciais = Object.entries(despesasAgrupadas).find(
+        ([categoria]) => categoria.toLowerCase() === "despesas comerciais"
+    )?.[1]?.total || 0;
+    // Buscando despesas administrativas
+    const despesasAdministrativas = Object.entries(despesasAgrupadas).find(
+        ([categoria]) => categoria.toLowerCase() === "despesas administrativas"
+    )?.[1]?.total || 0;
+    // Buscando despesas pessoal
+    const despesasComPessoal = Object.entries(despesasAgrupadas).find(
+        ([categoria]) => categoria.toLowerCase() === "despesas com pessoal"
+    )?.[1]?.total || 0;
+    // Buscando despesas comerciais
+    const despesasFinanceiras = Object.entries(despesasAgrupadas).find(
+        ([categoria]) => categoria.toLowerCase() === "despesas financeiras"
+    )?.[1]?.total || 0;
 
-        toast.info("Gerando arquivo em Excel aguarde!")
+    // Margem de contribuição
+    const margemDeContribuicao = summary.receitas - custos - despesasComerciais;
+    const margemDeContribuicaoPercentual = summary.receitas > 0
+        ? ((margemDeContribuicao / summary.receitas) * 100).toFixed(2)
+        : "0.00";
 
-        const dados = [
-            ["Demonstração do Resultado do Exercício (DRE)"],
-            [],
-            ["Descrição", "Total", "Análise Vertical"],
+    // Ponto de equilíbrio
+    const pontoDeEquilibrio = despesasAdministrativas + despesasComPessoal + despesasFinanceiras;
+    const resultadoPontoDeEquilibrio = pontoDeEquilibrio / margemDeContribuicaoPercentual * 100
 
-            // Receita Bruta
-            ["Receita Bruta"],
-            ...Object.entries(receitasAgrupadas).flatMap(([categoria, dados]) => [
-                [categoria, dados.total, ((dados.total / summary.receitas) * 100).toFixed(2) + "%"],
-                ...Object.entries(dados.subcategorias).map(([sub, valor]) => [
-                    `  ↳ ${sub}`,
-                    valor,
-                    ((valor / summary.receitas) * 100).toFixed(2) + "%"
-                ])
-            ]),
-
-            // Deduções e Impostos
-            ["Deduções e Impostos (-)"],
-            ...Object.entries(despesasAgrupadas)
-                .filter(([categoria]) => categoria.toLowerCase() === "impostos")
-                .flatMap(([categoria, dados]) => [
-                    [categoria, dados.total, ((dados.total / summary.receitas) * 100).toFixed(2) + "%"],
-                    ...Object.entries(dados.subcategorias).map(([sub, valor]) => [
-                        `  ↳ ${sub}`,
-                        valor,
-                        ((valor / summary.receitas) * 100).toFixed(2) + "%"
-                    ])
-                ]),
-            [],
-
-            // Receita Operacional Líquida
-            ["Receita Operacional Líquida", summary.receitas],
-            [],
-
-            // Custos Variáveis
-            ["Custo Variável (CPV ou CMV)"],
-            ...Object.entries(despesasAgrupadas)
-                .filter(([categoria]) => categoria.toLowerCase() === "custos")
-                .flatMap(([categoria, dados]) => [
-                    [categoria, dados.total, ((dados.total / summary.receitas) * 100).toFixed(2) + "%"],
-                    ...Object.entries(dados.subcategorias).map(([sub, valor]) => [
-                        `  ↳ ${sub}`,
-                        valor,
-                        ((valor / summary.receitas) * 100).toFixed(2) + "%"
-                    ])
-                ]),
-
-            // Resultado Bruto
-            ["Resultado Bruto", summary.receitas - custos],
-            [],
-
-            // Despesas Operacionais
-            ["Despesas Operacionais (-)"],
-            ...despesasOrdenadas
-                .filter(([categoria]) => categoria.toLowerCase() !== "impostos" && categoria.toLowerCase() !== "custos")
-                .flatMap(([categoria, dados]) => [
-                    [categoria, dados.total, ((dados.total / summary.receitas) * 100).toFixed(2) + "%"],
-                    ...Object.entries(dados.subcategorias).map(([sub, valor]) => [
-                        `  ↳ ${sub}`,
-                        valor,
-                        ((valor / summary.receitas) * 100).toFixed(2) + "%"
-                    ])
-                ]),
-
-            // Lucro/Prejuízo Operacional
-            ["Lucro/Prejuízo Operacional", lucroBruto],
-            [],
-
-            // Outras Receitas/Despesas
-            ["Outras Receitas/Despesas"],
-            [],
-
-            // Resultado Antes do IR e CSLL
-            ["Resultado Antes do IR e CSLL", lucroBruto],
-            [],
-
-            // Lucro/Prejuízo Acumulado
-            ["Lucro/Prejuízo Acumulado", lucroBruto, ((lucroBruto / summary.receitas) * 100).toFixed(2) + "%"]
-        ];
-
-        const ws = XLSX.utils.aoa_to_sheet(dados);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "DRE");
-
-        XLSX.writeFile(wb, "dre.xlsx");
-    };
-
-    const salvarDRE = () => {
-        const dreContainer = document.querySelector(".box_resultados_dre");
-
-        if (!dreContainer) return;
-
-        const novaAba = window.open("", "_blank");
-
-        // Pega todas as folhas de estilo da página atual
-        const styles = Array.from(document.styleSheets)
-            .map((sheet) => {
-                try {
-                    return Array.from(sheet.cssRules)
-                        .map(rule => rule.cssText)
-                        .join("\n");
-                } catch (e) {
-                    return "";
-                }
-            })
-            .join("\n");
-
-        novaAba.document.write(`
-            <html>
-                <head>
-                    <title>DRE</title>
-                    <style>${styles}</style>
-                </head>
-                <body>
-                    ${dreContainer.outerHTML}
-                </body>
-            </html>
-        `);
-
-        novaAba.document.close();
-        novaAba.focus();
-
-        setTimeout(() => {
-            novaAba.print();
-        }, 500);
-    };
+    // Receita Operacional Líquida
+    const receitaLiquida = summary.receitas - deducoesImpostos;
 
     return (
         <LayoutBi>
@@ -388,6 +281,8 @@ export const DashboardBi = () => {
                         </select>
                     </div>
 
+                    <p>{summary.receitas} | {custos}</p>
+
                     <div className={styles.box_infos_resumo}>
                         <div className={`${styles.box_dados} ${styles.ativo}`}>
                             <span className={`${styles.box_icone_dados} ${styles.icone_receita}`}>
@@ -413,18 +308,18 @@ export const DashboardBi = () => {
                             </span>
                             <div className={styles.infos_dados}>
                                 <p>Ponto de Equilíbrio</p>
-                                <span>{pontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                <span>{resultadoPontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             </div>
                         </div>
-                        {/* <div className={`${styles.box_dados}`}>
+                        <div className={`${styles.box_dados}`}>
                             <span className={`${styles.box_icone_dados} ${styles.icone_margem}`}>
                                 <PiIcons.PiChartPieSlice />
                             </span>
                             <div className={styles.infos_dados}>
                                 <p>Margem de Contribuição</p>
-                                <span>{margemDeContribuicaoPercentual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                <span>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} - {margemDeContribuicaoPercentual}%</span>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
 
@@ -589,7 +484,7 @@ export const DashboardBi = () => {
                         <div className="box_topo_dre">
                             <h2>Demonstração do Resultado do Exercício (DRE)</h2>
                             <div className="box_btns_salvar">
-                                <button onClick={exportarParaExcel}>Exportar .XLS</button>
+                                <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button>
                                 <button onClick={salvarDRE}>Salvar PDF</button>
                             </div>
                         </div>
@@ -607,7 +502,6 @@ export const DashboardBi = () => {
                                     </div>
 
                                 </div>
-
 
                                 {/* /* Receita Bruta */}
                                 <div className="resultado_dre">
@@ -660,7 +554,7 @@ export const DashboardBi = () => {
                                 <div className="resultado_dre">
                                     <div className="header_info_resultado">
                                         <strong>Receita Operacional Líquida</strong>
-                                        <strong>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                                        <strong>{receitaLiquida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
                                     </div>
                                 </div>
 
