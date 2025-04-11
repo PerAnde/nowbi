@@ -218,7 +218,7 @@ export const Categorias = () => {
                                             setPopUpCriarSubCategoria(true)
                                         }}>
                                             <PiIcons.PiPlusBold className={styles.icone_box_opcoes} />
-                                            <p>Adicionar subcategoria</p>
+                                            <p>Incluir subcategoria</p>
                                         </Link>
                                         <Link onClick={() => {
                                             setCategoriaSelecionada(categoria)

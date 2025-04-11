@@ -20,9 +20,9 @@ class CreateEmpresaService {
             throw new Error("Insira o CNPJ da empresa!")
         }
 
-        if (!email_empresa) {
-            throw new Error("Insira o email da empresa!")
-        }
+        // if (!email_empresa) {
+        //     throw new Error("Insira o email da empresa!")
+        // }
 
         const link_bi = crypto.randomBytes(20).toString("hex");
 

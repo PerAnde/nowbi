@@ -66,10 +66,10 @@ export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file) =>
         return false;
     }
 
-    if (!emailAutenticaBi) {
-        toast.warning("Preencha o email da empresa!");
-        return false;
-    }
+    // if (!emailAutenticaBi) {
+    //     toast.warning("Preencha o email da empresa!");
+    //     return false;
+    // }
 
     try {
         const formData = new FormData();

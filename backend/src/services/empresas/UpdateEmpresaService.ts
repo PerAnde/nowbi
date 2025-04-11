@@ -22,9 +22,9 @@ class UpdateEmpresaService {
         if (!cnpj_empresa) {
             throw new Error("Informe o CNPJ da empresa!")
         }
-        if (!email_empresa) {
-            throw new Error("Informe o email da empresa!")
-        }
+        // if (!email_empresa) {
+        //     throw new Error("Informe o email da empresa!")
+        // }
 
         const empresaExiste = await prismaClient.empresa.findUnique({
             where: { id },

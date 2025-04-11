@@ -324,7 +324,7 @@ export const Empresas = () => {
                                                 </Link>
                                                 <Link onClick={handleLinkCopiado} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
                                                     <PiIcons.PiLinkBold />
-                                                    <p>Link</p>
+                                                    <p>Link do BI</p>
                                                 </Link>
                                                 <Link
                                                     className={styles.btn_excluir}

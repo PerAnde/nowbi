@@ -100,26 +100,26 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
 
 
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
-                        <Input
-                            type="text"
-                            placeholder="Nome da empresa"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
                         <div className={styles.box_dados_empresa}>
                             <Input
                                 type="text"
-                                placeholder="CNPJ (Opcional)"
+                                placeholder="Nome da empresa"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <Input
+                                type="text"
+                                placeholder="CNPJ"
                                 value={cnpjEmpresa}
                                 onChange={(e) => setCnpjEmpresa(formatarCnpj(e.target.value))}
                                 maxLength={18}
                             />
-                            <Input
+                            {/* <Input
                                 type="email"
                                 placeholder="Email da empresa"
                                 value={emailAutenticaBi}
                                 onChange={(e) => setEmailAutenticaBi(e.target.value)}
-                            />
+                            /> */}
                         </div>
 
                         <div className={styles.box_btn_button}>
