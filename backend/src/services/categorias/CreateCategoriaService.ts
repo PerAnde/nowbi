@@ -1,14 +1,16 @@
 import prismaClient from "../../prisma";
+import { GrupoDre } from "@prisma/client";
 
 interface CategoriaRequest {
     name: string;
     tipo: 'RECEITA' | 'DESPESA';
     usuario_id: string;
+    grupoDre: GrupoDre;
 }
 
 class CreateCategoriaService {
 
-    async execute({ name, tipo, usuario_id }: CategoriaRequest) {
+    async execute({ name, tipo, usuario_id, grupoDre }: CategoriaRequest) {
         if (!name || !usuario_id) {
             throw new Error("Nome inválido!")
         }
@@ -21,12 +23,14 @@ class CreateCategoriaService {
                 name: name,
                 tipo: tipo,
                 usuario_id: usuario_id,
+                grupoDre
             },
             select: {
                 id: true,
                 name: true,
                 tipo: true,
                 usuario_id: true,
+                grupoDre: true,
             }
         })
 
