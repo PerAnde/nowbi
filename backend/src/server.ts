@@ -29,10 +29,7 @@ if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
 }
 
-app.use(
-    '/files',
-    express.static(path.resolve(process.cwd(), 'images'))
-);
+app.use('/files', express.static(folderPath));
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     if (error.message) {
