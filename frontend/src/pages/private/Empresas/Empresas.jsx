@@ -302,8 +302,6 @@ export const Empresas = () => {
                                             />
                                         </div>
 
-                                        <p>{empresa.logo_empresa}</p>
-
                                         <div className={styles.btn_opcoes_empresa} ref={(el) => (menuEmpresaRef.current[index] = el)}>
                                             <span onClick={() => handleMenuClick(index)}>
                                                 <PiIcons.PiDotsThreeVerticalBold />
