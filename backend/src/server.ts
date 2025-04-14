@@ -25,13 +25,14 @@ app.use(cors({
 // Chamando rotas
 app.use(router);
 
-Criando pasta imagens
+// Criando pasta imagens
 const folderPath = path.resolve(process.cwd(), 'images');
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
 }
 
 // Caminho para salvar imagens
+console.log("Diretório atual do servidor:", __dirname);
 app.use('/files', express.static(path.resolve(__dirname, 'images')));
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
