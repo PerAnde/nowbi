@@ -7,6 +7,7 @@ import 'express-async-errors'
 // Importando cors
 import cors from 'cors';
 
+import fs from 'fs';
 import path from 'path';
 
 // Importando rotas
@@ -23,10 +24,15 @@ app.use(cors({
 // Chamando rotas
 app.use(router);
 
+const folderPath = path.resolve(process.cwd(), 'images');
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+}
+
 app.use(
     '/files',
-    express.static(path.resolve(__dirname, '..', 'images'))
-)
+    express.static(path.resolve(process.cwd(), 'images'))
+);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     if (error.message) {

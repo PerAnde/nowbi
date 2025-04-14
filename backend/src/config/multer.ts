@@ -8,7 +8,7 @@ export default {
 
         return {
             storage: multer.diskStorage({
-                destination: resolve(__dirname, '..', folder),
+                destination: resolve(process.cwd(), folder),
                 filename: (request, file, callback) => {
                     const fileHash = crypto.randomBytes(16).toString("hex");
 
