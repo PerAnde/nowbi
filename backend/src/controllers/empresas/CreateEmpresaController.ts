@@ -8,9 +8,6 @@ class CreateEmpresaController {
         const usuario_id = req.usuario_id;
         // Caso esteja enviando imagem, lidando com ela
         const logo_empresa = req.file ? req.file.filename : null;
-        
-        console.log("🟢 Requisição recebida no CreateEmpresaController");
-        console.log("📦 Arquivo enviado:", req.file);
 
         const createEmpresaService = new CreateEmpresaService();
 

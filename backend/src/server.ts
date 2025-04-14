@@ -17,6 +17,7 @@ const app = express();
 // Tratando dados como JSON
 app.use(express.json());
 // Chamando cors para qualquer ip conseguir fazer req
+app.use('/files', cors({ origin: '*' }));
 app.use(cors({
     origin: '*',
 }));
@@ -24,11 +25,13 @@ app.use(cors({
 // Chamando rotas
 app.use(router);
 
+// Criando pasta imagens
 const folderPath = path.resolve(process.cwd(), 'images');
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
 }
 
+// Caminho para salvar imagens
 app.use('/files', express.static(folderPath));
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
