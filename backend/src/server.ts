@@ -26,13 +26,13 @@ app.use(cors({
 app.use(router);
 
 // Criando pasta imagens
-const folderPath = path.resolve(process.cwd(), 'images');
-if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
-}
+// const folderPath = path.resolve(process.cwd(), 'images');
+// if (!fs.existsSync(folderPath)) {
+//     fs.mkdirSync(folderPath);
+// }
 
 // Caminho para salvar imagens
-app.use('/files', express.static(folderPath));
+app.use('/files', express.static(path.resolve(__dirname, 'images')));
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     if (error.message) {
