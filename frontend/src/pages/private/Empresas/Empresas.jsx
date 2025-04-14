@@ -226,7 +226,7 @@ export const Empresas = () => {
 
                                         <div className={styles.box_img_logo_empresa}>
                                             <img
-                                                src="https://api.nowbi.com.br/files/75125738f8a3e00008109cb49ff17947-logo-instagram.jpg"
+                                                src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : imgEmpresaSemLogo}
                                                 alt="Logo Empresa"
                                             />
                                         </div>
