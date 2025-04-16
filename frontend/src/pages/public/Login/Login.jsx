@@ -107,7 +107,7 @@ export const Login = () => {
 
                 </form>
 
-                <Link to="/cadastro" className={styles.box_link}>
+                {/* <Link to="/cadastro" className={styles.box_link}>
 
                     <div className={styles.link}>
                         <PiIcons.PiStarDuotone className={styles.icon} />
@@ -118,7 +118,7 @@ export const Login = () => {
                     </div>
 
                     <PiIcons.PiCaretRight className={styles.icon} />
-                </Link>
+                </Link> */}
 
             </div>
 

@@ -78,7 +78,7 @@ export const Dashboard = () => {
                     <div className={styles.texto_bem_vindo}>
                         <h1>Bem vindo de volta 👋 <br />
                             {loading ? <Skeleton width={200} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</h1>
-                        <p>Acompanhe e gerencie seus BIs agora mesmo!</p>
+                        <p>Acompanhe e gerencie suas empresas agora mesmo!</p>
 
                         <Link to="/empresas" className={styles.btn_cor_primaria}>Ver Empresas</Link>
                     </div>

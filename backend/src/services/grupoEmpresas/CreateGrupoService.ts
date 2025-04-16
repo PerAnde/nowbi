@@ -2,7 +2,7 @@ import prismaClient from "../../prisma";
 
 interface GrupoEmpresasRequest {
     name: string;
-    email_grupo: string;
+    email_grupo?: string;
     usuario_id: string;
 }
 

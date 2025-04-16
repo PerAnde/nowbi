@@ -60,7 +60,7 @@ const router = Router();
 const upload = multer(uploadConfig.upload("images"));
 
 // Rotas Usuario
-router.post('/register', new CreateUsuarioController().handle)
+// router.post('/register', new CreateUsuarioController().handle)
 router.post('/login', new AuthUsuarioController().handle)
 router.get('/user', isAuthenticated, new DetailUsuarioController().handle)
 router.put('/user/:id', isAuthenticated, upload.single('file'), new UpdateUsuarioController().handle)
