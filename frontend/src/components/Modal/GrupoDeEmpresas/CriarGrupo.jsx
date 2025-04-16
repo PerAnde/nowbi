@@ -11,16 +11,16 @@ import { criarGrupoEmpresa } from '../../../services/grupoEmpresas';
 export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
 
     const [name, setName] = useState('');
-    const [emailGrupo, setEmailGrupo] = useState('');
+    // const [emailGrupo, setEmailGrupo] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const success = await criarGrupoEmpresa(name, emailGrupo)
+        const success = await criarGrupoEmpresa(name)
 
         if (success) {
             setName('')
-            setEmailGrupo('')
+            // setEmailGrupo('')
             setTrigger(false)
             grupoCriado()
         }
@@ -32,7 +32,7 @@ export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Novo grupo de empresas</h3>
-                    <span onClick={() => { setTrigger(false), setName(''), setEmailGrupo('') }}>
+                    <span onClick={() => { setTrigger(false), setName('') }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
@@ -46,12 +46,12 @@ export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
-                            <Input
+                            {/* <Input
                                 type="email"
                                 placeholder="Email do grupo"
                                 value={emailGrupo}
                                 onChange={(e) => setEmailGrupo(e.target.value)}
-                            />
+                            /> */}
                         </div>
 
                         <div className={styles.box_btn_button}>

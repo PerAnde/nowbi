@@ -8,16 +8,16 @@ export const criarGrupoEmpresa = async (name, emailGrupo) => {
         toast.warning("Insira um nome para o grupo!")
         return false;
     }
-    if (!emailGrupo) {
-        toast.warning("Insira um email para o grupo!")
-        return false;
-    }
+    // if (!emailGrupo) {
+    //     toast.warning("Insira um email para o grupo!")
+    //     return false;
+    // }
 
     try {
 
         const data = {
             name: name,
-            email_grupo: emailGrupo,
+            // email_grupo: emailGrupo,
         };
 
         await api.post("/empresas/grupo", data)
@@ -69,7 +69,7 @@ export const editarGrupo = async (id, name, emailGrupo, setTrigger) => {
 
         const data = {
             name: name,
-            email_grupo: emailGrupo,
+            // email_grupo: emailGrupo,
         }
 
         await api.put(`/empresas/grupo/${id}`, data)

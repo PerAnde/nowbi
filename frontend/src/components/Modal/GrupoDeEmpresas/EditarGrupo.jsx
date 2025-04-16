@@ -12,25 +12,25 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
 
     const [id, setId] = useState('');
     const [name, setName] = useState('');
-    const [emailGrupo, setEmailGrupo] = useState('');
+    // const [emailGrupo, setEmailGrupo] = useState('');
 
     useEffect(() => {
         if (grupo) {
             setId(grupo[0]?.id || '')
             setName(grupo[0]?.name || '');
-            setEmailGrupo(grupo[0]?.email_grupo || '');
+            // setEmailGrupo(grupo[0]?.email_grupo || '');
         }
     }, [grupo])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const success = await editarGrupo(id, name, emailGrupo, setTrigger)
+        const success = await editarGrupo(id, name, setTrigger)
 
         if (success) {
             setId('')
             setName('')
-            setEmailGrupo('')
+            // setEmailGrupo('')
             setTrigger(false)
             grupoAtualizado()
         }
@@ -42,7 +42,7 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Editar grupo</h3>
-                    <span onClick={() => { setTrigger(false), setName(''), setEmailGrupo('') }}>
+                    <span onClick={() => { setTrigger(false), setName('') }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
@@ -56,12 +56,12 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
-                            <Input
+                            {/* <Input
                                 type="email"
                                 placeholder="Email do grupo"
                                 value={emailGrupo}
                                 onChange={(e) => setEmailGrupo(e.target.value)}
-                            />
+                            /> */}
                         </div>
 
                         <div className={styles.box_btn_button}>
