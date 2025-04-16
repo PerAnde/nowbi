@@ -3,7 +3,7 @@ import crypto from 'crypto'
 
 interface GrupoEmpresasRequest {
     name: string;
-    email_grupo: string;
+    email_grupo?: string;
     usuario_id: string;
 }
 
