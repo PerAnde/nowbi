@@ -27,18 +27,26 @@ app.use(cors({
 app.use(router);
 
 // Criando pasta imagens
-const folderPath = path.resolve(process.cwd(), 'images');
+const folderPath = process.env.UPLOAD_FOLDER;
+
+// Verificando se a variável de ambiente está definida
+if (!folderPath) {
+    throw new Error('UPLOAD_FOLDER não está configurado. Defina a variável de ambiente para o diretório de uploads.');
+}
+
 if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
+    fs.mkdirSync(folderPath, { recursive: true });
 }
 
 // Caminho para salvar imagens
-app.use('/files', express.static(path.resolve(process.cwd(), 'images')));
+app.use('/files', express.static(folderPath));
+
+// app.use('/files', express.static(path.resolve(process.cwd(), 'images')));
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof multer.MulterError) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-            return res.status(400).json({ error: 'Arquivo maior que 3MB.' });
+            return res.status(400).json({ error: 'Envie uma imagem com no máximo 3MB.' });
         }
     }
 
