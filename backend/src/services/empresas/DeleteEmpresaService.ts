@@ -1,4 +1,6 @@
 import prismaClient from "../../prisma";
+import fs from "fs";
+import path from "path";
 
 class DeleteEmpresaService {
     async execute(id: string, usuario_id: string): Promise<void> {
@@ -9,6 +11,7 @@ class DeleteEmpresaService {
             },
             select: {
                 usuario_id: true,
+                logo_empresa: true,
             }
         });
 
@@ -18,6 +21,15 @@ class DeleteEmpresaService {
 
         if (empresa.usuario_id !== usuario_id) {
             throw new Error("Empresa não encontrada!");
+        }
+
+        // Remove a imagem se existir
+        if (empresa.logo_empresa) {
+            const logoPath = path.resolve(__dirname, '..', '..', '..', 'images', empresa.logo_empresa);
+
+            if (fs.existsSync(logoPath)) {
+                fs.unlinkSync(logoPath);
+            }
         }
 
         const businessIntelligences = await prismaClient.businessIntelligence.findMany({
