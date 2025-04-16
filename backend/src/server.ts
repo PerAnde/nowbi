@@ -27,21 +27,13 @@ app.use(cors({
 app.use(router);
 
 // Criando pasta imagens
-const folderPath = process.env.UPLOAD_FOLDER;
-
-// Verificando se a variável de ambiente está definida
-if (!folderPath) {
-    throw new Error('UPLOAD_FOLDER não está configurado. Defina a variável de ambiente para o diretório de uploads.');
-}
-
+const folderPath = path.resolve(process.cwd(), 'images');
 if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath, { recursive: true });
+    fs.mkdirSync(folderPath);
 }
 
 // Caminho para salvar imagens
-app.use('/files', express.static(folderPath));
-
-// app.use('/files', express.static(path.resolve(process.cwd(), 'images')));
+app.use('/files', express.static(path.resolve(process.cwd(), 'images')));
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof multer.MulterError) {
