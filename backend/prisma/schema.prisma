@@ -34,10 +34,11 @@ model Usuario {
 model GrupoEmpresa {
     id          String    @id @default(uuid())
     name        String
-    email_grupo String?
+    email_grupo String
     created_at  DateTime  @default(now())
     updated_at  DateTime  @updatedAt
     usuario_id  String?
+    link_grupo  String
     empresas    Empresa[]
     usuario     Usuario?  @relation(fields: [usuario_id], references: [id])
 
