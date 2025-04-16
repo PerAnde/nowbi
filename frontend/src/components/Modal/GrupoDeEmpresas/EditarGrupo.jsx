@@ -49,20 +49,20 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
 
                 <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
-                        <div className={styles.box_dados_empresa}>
                             <Input
                                 type="text"
                                 placeholder="Nome do grupo"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
-                            {/* <Input
+                        {/* <div className={styles.box_dados_empresa}>
+                            <Input
                                 type="email"
                                 placeholder="Email do grupo"
                                 value={emailGrupo}
                                 onChange={(e) => setEmailGrupo(e.target.value)}
-                            /> */}
-                        </div>
+                            />
+                        </div> */}
 
                         <div className={styles.box_btn_button}>
                             <Button type="submit">Salvar alterações</Button>
