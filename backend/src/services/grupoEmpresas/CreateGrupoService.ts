@@ -30,7 +30,7 @@ class CreateGrupoEmpresasService {
         const grupoEmpresa = await prismaClient.grupoEmpresa.create({
             data: {
                 name: name,
-                email_grupo: email_grupo || "",
+                email_grupo: email_grupo || "", // Tornar obrigatorio futuramente
                 link_grupo: link_grupo,
                 usuario_id: usuario_id
             },

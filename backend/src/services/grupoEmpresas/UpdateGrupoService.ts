@@ -24,7 +24,7 @@ class UpdateGrupoService {
             where: { id },
             data: {
                 name,
-                email_grupo: email_grupo || ""
+                email_grupo: email_grupo || "" // Tornar obrigatorio futuramente
             },
             select: {
                 id: true,
