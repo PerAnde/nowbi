@@ -26,7 +26,7 @@ app.use(cors({
 // Chamando rotas
 app.use(router);
 
-// Criando pasta imagens
+// Criando pasta imagens se não existir
 const folderPath = path.resolve(process.cwd(), 'images');
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
