@@ -9,6 +9,7 @@ import cors from 'cors';
 
 import fs from 'fs';
 import path from 'path';
+import multer from 'multer';
 
 // Importando rotas
 import { router } from './routes/routes';
@@ -34,18 +35,22 @@ if (!fs.existsSync(folderPath)) {
 // Caminho para salvar imagens
 app.use('/files', express.static(path.resolve(process.cwd(), 'images')));
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-    if (error.message) {
-        // Se for uma instancia do tipo error
-        return res.status(400).json({
-            error: error.message
-        })
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ error: 'Arquivo maior que 3MB.' });
+        }
     }
 
-    return res.status(500).json({
-        error: 'Erro interno, tente novamente mais tarde!'
-    })
+    if (err.message === 'Tipo de arquivo inválido. Envie uma imagem JPG, JPEG ou PNG.') {
+        return res.status(400).json({ error: err.message });
+    }
 
+    if (err instanceof Error) {
+        return res.status(400).json({ error: err.message });
+    }
+
+    return res.status(500).json({ error: 'Erro interno, tente novamente mais tarde!' });
 });
 
 const port = process.env.PORT
