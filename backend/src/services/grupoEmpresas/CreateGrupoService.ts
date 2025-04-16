@@ -10,7 +10,7 @@ class CreateGrupoEmpresasService {
 
     async execute({ name, email_grupo, usuario_id }: GrupoEmpresasRequest) {
 
-        if (!name || !email_grupo || !usuario_id) {
+        if (!name || !usuario_id) {
             throw new Error("Dados inválidos!")
         }
 
