@@ -3,7 +3,7 @@ import crypto from 'crypto'
 
 interface GrupoEmpresasRequest {
     name: string;
-    email_grupo?: string;
+    email_grupo: string;
     usuario_id: string;
 }
 
@@ -30,7 +30,7 @@ class CreateGrupoEmpresasService {
         const grupoEmpresa = await prismaClient.grupoEmpresa.create({
             data: {
                 name: name,
-                email_grupo: email_grupo,
+                email_grupo: email_grupo ?? "",
                 link_grupo: link_grupo,
                 usuario_id: usuario_id
             },

@@ -3,7 +3,7 @@ import prismaClient from "../../prisma";
 interface UpdateGrupoRequest {
     id: string;
     name: string;
-    email_grupo?: string;
+    email_grupo: string;
 }
 
 class UpdateGrupoService {
@@ -24,7 +24,7 @@ class UpdateGrupoService {
             where: { id },
             data: {
                 name,
-                email_grupo: email_grupo
+                email_grupo: email_grupo ?? ""
             },
             select: {
                 id: true,
