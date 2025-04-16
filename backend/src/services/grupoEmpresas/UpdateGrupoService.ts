@@ -3,12 +3,12 @@ import prismaClient from "../../prisma";
 interface UpdateGrupoRequest {
     id: string;
     name: string;
-    email_grupo: string;
+    email_grupo?: string;
 }
 
 class UpdateGrupoService {
-    async execute({ id, name, email_grupo }: UpdateGrupoRequest) {
-        if (!id || !name || !email_grupo) {
+    async execute({ id, name }: UpdateGrupoRequest) {
+        if (!id || !name) {
             throw new Error("Dados inválidos!")
         }
 
@@ -24,7 +24,7 @@ class UpdateGrupoService {
             where: { id },
             data: {
                 name,
-                email_grupo,
+                email_grupo: null, // null oor enquanto
             },
             select: {
                 id: true,
