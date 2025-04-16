@@ -27,13 +27,13 @@ app.use(cors({
 app.use(router);
 
 // Criando pasta imagens se não existir
-const folderPath = path.resolve(process.cwd(), 'images');
+const folderPath = path.resolve(process.cwd(), '/home/nowbi/uploads/images');
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
 }
 
 // Caminho para salvar imagens
-app.use('/files', express.static(path.resolve(process.cwd(), 'images')));
+app.use('/files', express.static(path.resolve(process.cwd(), '/home/nowbi/uploads/images')));
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof multer.MulterError) {
