@@ -1,14 +1,15 @@
 import crypto from 'crypto';
 import multer, { FileFilterCallback } from 'multer';
-import { extname, resolve } from 'path';
 import { Request } from 'express';
 
 export default {
-    upload(folder: string) {
+    upload() {
+        const fullPath = process.env.UPLOAD_FOLDER!;
+
         return {
             storage: multer.diskStorage({
                 destination: (req, file, cb) => {
-                    const fullPath = resolve(process.cwd(), folder);
+                    // const fullPath = resolve(process.cwd(), folder);
                     cb(null, fullPath);
                 },
                 filename: (req, file, cb) => {
