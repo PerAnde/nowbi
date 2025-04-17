@@ -275,8 +275,8 @@ export const DashboardBi = () => {
 
     // Filtro grupos de DRE
     const gruposDeDRE = [
-        { titulo: 'Receita Operacional Bruta', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
-        { titulo: 'Deduções e Impostos', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
+        { titulo: 'Receita Operacional Bruta (+)', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
+        { titulo: 'Deduções e Impostos (-)', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
         { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
         { titulo: 'Outras Receitas', grupo: 'OUTRAS_RECEITAS' },
         { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
@@ -336,7 +336,7 @@ export const DashboardBi = () => {
                 const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
                 const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
                 resultado.push({
-                    titulo: 'Receita Operacional Líquida',
+                    titulo: 'Receita Operacional Líquida (=)',
                     grupo: 'RESULTADO_RECEITA_LIQUIDA',
                     dados: {
                         total: receitaBruta - deducoes,
