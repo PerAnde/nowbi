@@ -8,8 +8,7 @@ import './dre.css'
 import { LayoutBi } from '../../../../layout/LayoutBi/LayoutBi';
 import * as PiIcons from 'react-icons/pi';
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
-import { exportarParaExcel } from '../../../../utils/exportExcel';
-import { salvarDRE } from '../../../../utils/salvarPDF';
+import { salvarDRE } from '../../../../utils/salvarPDF'
 
 const COLORS = [
     "#3789da", "#ff8a5c", "#8378ea",
@@ -27,7 +26,8 @@ const processBIData = (empresa, selectedMonth) => {
     const result = {};
     let totalReceitas = 0;
     let totalDespesas = 0;
-    const categorias = {};
+    // const categorias = {};
+    const categoriasPorGrupo = {};
     const subcategorias = {};
     const detalhes = [];
 
@@ -42,7 +42,14 @@ const processBIData = (empresa, selectedMonth) => {
 
         lancamentoBi.forEach(({ valor, tipo, categoria, subcategoria }) => {
             const valorNum = parseFloat(valor);
-            detalhes.push({ mes: mesAnoAtual, tipo, valor: valorNum, categoria: categoria?.name, subcategoria: subcategoria?.name });
+            detalhes.push({
+                mes: mesAnoAtual,
+                tipo,
+                valor: valorNum,
+                categoria: categoria?.name,
+                grupoDre: categoria?.grupoDre,
+                subcategoria: subcategoria?.name
+            });
 
             if (tipo === "RECEITA") {
                 result[mesAnoAtual].receitas += valorNum;
@@ -53,16 +60,28 @@ const processBIData = (empresa, selectedMonth) => {
             }
 
             if (categoria) {
-                categorias[categoria.name] = (categorias[categoria.name] || 0) + valorNum;
+                // Adiciona a categoria ao grupo correspondente no agrupamento
+                if (!categoriasPorGrupo[categoria.grupoDre]) {
+                    categoriasPorGrupo[categoria.grupoDre] = [];
+                }
+                categoriasPorGrupo[categoria.grupoDre].push(categoria.name);
             }
 
             if (subcategoria) {
                 subcategorias[subcategoria.name] = (subcategorias[subcategoria.name] || 0) + valorNum;
             }
+
+            // if (categoria) {
+            //     categorias[categoria.name] = (categorias[categoria.name] || 0) + valorNum;
+            // }
+
+            // if (subcategoria) {
+            //     subcategorias[subcategoria.name] = (subcategorias[subcategoria.name] || 0) + valorNum;
+            // }
         });
     });
 
-    return { result, summary: { receitas: totalReceitas, despesas: totalDespesas, categorias, subcategorias, detalhes } };
+    return { result, summary: { receitas: totalReceitas, despesas: totalDespesas, categoriasPorGrupo, subcategorias, detalhes } };
 };
 
 export const DashboardBi = () => {
@@ -180,7 +199,7 @@ export const DashboardBi = () => {
     // DRE
 
     // Separando os dados
-    const receitas = summary.detalhes.filter(item => item.tipo === 'RECEITA');
+    // const receitas = summary.detalhes.filter(item => item.tipo === 'RECEITA');
     const despesas = summary.detalhes.filter(item => item.tipo === 'DESPESA');
 
     // Agrupando categorias
@@ -200,19 +219,19 @@ export const DashboardBi = () => {
         }, {});
     };
 
-    const receitasAgrupadas = agruparPorCategoria(receitas);
+    // const receitasAgrupadas = agruparPorCategoria(receitas);
     const despesasAgrupadas = agruparPorCategoria(despesas);
 
-    const lucroBruto = summary.receitas - summary.despesas;
+    // const lucroBruto = summary.receitas - summary.despesas;
 
     const custos = Object.entries(despesasAgrupadas).find(
         ([categoria]) => categoria.toLowerCase() === "custos"
     )?.[1]?.total || 0;
 
     // Custos fixos = todas as despesas exceto "Custos"
-    const custosFixos = Object.entries(despesasAgrupadas)
-        .filter(([categoria]) => categoria.toLowerCase() !== "custos")
-        .reduce((total, [, dados]) => total + dados.total, 0);
+    // const custosFixos = Object.entries(despesasAgrupadas)
+    //     .filter(([categoria]) => categoria.toLowerCase() !== "custos")
+    //     .reduce((total, [, dados]) => total + dados.total, 0);
 
     const despesasOrdenadas = Object.entries(despesasAgrupadas).sort(([catA], [catB]) => {
         if (catA.toLowerCase() === "despesas financeiras") return 1; // Move "Despesas Financeiras" para o final
@@ -221,9 +240,9 @@ export const DashboardBi = () => {
     });
 
     // Deducoes e Impostos
-    const deducoesImpostos = Object.entries(despesasAgrupadas).find(
-        ([categoria]) => categoria.toLowerCase() === "impostos"
-    )?.[1]?.total || 0;
+    // const deducoesImpostos = Object.entries(despesasAgrupadas).find(
+    //     ([categoria]) => categoria.toLowerCase() === "impostos"
+    // )?.[1]?.total || 0;
     // Buscando despesas comerciais
     const despesasComerciais = Object.entries(despesasAgrupadas).find(
         ([categoria]) => categoria.toLowerCase() === "despesas comerciais"
@@ -252,7 +271,101 @@ export const DashboardBi = () => {
     const resultadoPontoDeEquilibrio = pontoDeEquilibrio / margemDeContribuicaoPercentual * 100
 
     // Receita Operacional Líquida
-    const receitaLiquida = summary.receitas - deducoesImpostos;
+    // const receitaLiquida = summary.receitas - deducoesImpostos;
+
+    // Filtro grupos de DRE
+    const gruposDeDRE = [
+        { titulo: 'Receita Operacional Bruta', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
+        { titulo: 'Deduções e Impostos', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
+        { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
+        { titulo: 'Outras Receitas', grupo: 'OUTRAS_RECEITAS' },
+        { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
+        { titulo: 'Despesas Financeiras', grupo: 'DESPESAS_FINANCEIRAS' },
+        { titulo: 'Outras Despesas', grupo: 'OUTRAS_DESPESAS' },
+        { titulo: 'Impostos (IR e CSLL)', grupo: 'IR_CSLL' }
+    ];
+
+    // Função para filtrar e organizar os dados
+    const agruparPorGrupo = (dados) => {
+        return dados.reduce((acc, item) => {
+            if (!acc[item.grupoDre]) {
+                acc[item.grupoDre] = { total: 0, categorias: {} };
+            }
+
+            acc[item.grupoDre].total += item.valor;
+
+            if (item.categoria) {
+                if (!acc[item.grupoDre].categorias[item.categoria]) {
+                    acc[item.grupoDre].categorias[item.categoria] = { total: 0, subcategorias: {} };
+                }
+
+                acc[item.grupoDre].categorias[item.categoria].total += item.valor;
+
+                if (item.subcategoria) {
+                    if (!acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria]) {
+                        acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] = 0;
+                    }
+                    acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] += item.valor;
+                }
+            }
+
+            return acc;
+        }, {});
+    };
+
+    // Filtra e organiza os dados
+    const agruparDados = (dados) => {
+        const dadosAgrupados = agruparPorGrupo(dados);
+        const resultado = [];
+
+        const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
+
+        gruposDeDRE.forEach((grupo, index) => {
+            const grupoDados = dadosAgrupados[grupo.grupo];
+            if (grupoDados) {
+                resultado.push({
+                    ...grupo,
+                    dados: grupoDados
+                });
+            }
+
+            // === INSERINDO BLOCOS DE RESULTADO INTERMEDIÁRIO ===
+
+            // Depois de Deduções, inserir Receita Operacional Líquida
+            if (grupo.grupo === 'DEDUCOES_DA_RECEITA_BRUTA') {
+                const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
+                const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
+                resultado.push({
+                    titulo: 'Receita Operacional Líquida',
+                    grupo: 'RESULTADO_RECEITA_LIQUIDA',
+                    dados: {
+                        total: receitaBruta - deducoes,
+                        categorias: {}
+                    },
+                    isResultado: true
+                });
+            }
+
+            // if (grupo.grupo === 'DESPESAS_OPERACIONAIS') {
+            //     const receitaLiquida = receitaBruta - deducoes;
+            //     const despesas = getTotal('DESPESAS_OPERACIONAIS');
+            //     resultado.push({
+            //         titulo: 'Lucro/Prejuízo Operacional',
+            //         grupo: 'LUCRO_OPERACIONAL',
+            //         dados: {
+            //             total: receitaLiquida - despesas,
+            //             categorias: {}
+            //         },
+            //         isResultado: true
+            //     });
+            // }
+
+        });
+
+        return resultado;
+    };
+
+    const dadosFiltrados = agruparDados(dashboardData.summary.detalhes);
 
     return (
         <LayoutBi>
@@ -280,8 +393,6 @@ export const DashboardBi = () => {
                                 })}
                         </select>
                     </div>
-
-                    <p>{summary.receitas} | {custos}</p>
 
                     <div className={styles.box_infos_resumo}>
                         <div className={`${styles.box_dados} ${styles.ativo}`}>
@@ -494,169 +605,227 @@ export const DashboardBi = () => {
                             <div className="box_resultados_dre">
 
                                 <div className="box_header_dre">
-
                                     <div className="header_dados_dre">
                                         <p><strong>Descrição</strong></p>
                                         <p><strong>Total</strong></p>
                                         <p><strong>Análise Vertical</strong></p>
                                     </div>
-
                                 </div>
 
-                                {/* /* Receita Bruta */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Receita Bruta</strong>
-                                    </div>
-                                    {Object.entries(receitasAgrupadas).map(([categoria, dados]) => (
-                                        <React.Fragment key={categoria}>
-                                            <div className="box_categorias_dre">
-                                                <div>{categoria}</div>
-                                                <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                                            </div>
-                                            {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                                                <div key={sub} className="box_subcategorias_dre">
-                                                    <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                                                    <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                    <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div>
-                                                </div>
-                                            ))}
-                                        </React.Fragment>
-                                    ))}
-                                </div>
+                                {dadosFiltrados.map((grupo, idx) => (
 
-                                {/* Deduções e Impostos */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Deduções e Impostos (-)</strong>
-                                    </div>
-                                    {Object.entries(despesasAgrupadas).map(([categoria, dados]) =>
-                                        categoria.toLowerCase() === "impostos" && (
+                                    <div key={idx} className="resultado_dre">
+                                        <div className="header_info_resultado">
+                                            <p><strong>{grupo.titulo}</strong></p>
+                                            <p><strong>{grupo.dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
+                                        </div>
+
+                                        {/* Categorias */}
+                                        {Object.entries(grupo.dados.categorias).map(([categoria, dados]) => (
                                             <React.Fragment key={categoria}>
-                                                <div className="box_categorias_dre">
+                                                <div key={categoria} className="box_categorias_dre">
                                                     <div>{categoria}</div>
                                                     <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                                                     <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
                                                 </div>
+                                                {/* Subcategorias */}
                                                 {Object.entries(dados.subcategorias).map(([sub, valor]) => (
                                                     <div key={sub} className="box_subcategorias_dre">
-                                                        <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                                                        <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                        {/* <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div> */}
-                                                    </div>
-                                                ))}
-                                            </React.Fragment>
-                                        ))}
-                                </div>
-
-                                {/* Receita Líquida */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Receita Operacional Líquida</strong>
-                                        <strong>{receitaLiquida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                                    </div>
-                                </div>
-
-                                {/* Custo Variável (CPV ou CMV) */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Custo Variável (CPV ou CMV)</strong>
-                                    </div>
-                                    {Object.entries(despesasAgrupadas).map(([categoria, dados]) =>
-                                        categoria.toLowerCase() === "custos" && (
-                                            <React.Fragment key={categoria}>
-                                                <div className="box_categorias_dre">
-                                                    <div>{categoria}</div>
-                                                    <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                    <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                                                </div>
-                                                {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                                                    <div key={sub} className="box_subcategorias_dre">
-                                                        <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
+                                                        <div><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {sub}</div>
                                                         <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                                                     </div>
                                                 ))}
+
                                             </React.Fragment>
                                         ))}
-
-                                </div>
-
-                                {/* Resultado bruto */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Resultado Bruto</strong>
-                                        <strong>{(summary.receitas - custos).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
                                     </div>
-                                </div>
-
-                                {/* Despesas Operacionais */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Despesas Operacionais (-)</strong>
-                                        <strong>{(summary.receitas - custos).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                                    </div>
-                                </div>
-
-                                {/* /* Despesas Variáveis */}
-                                <div className="resultado_dre">
-                                    {despesasOrdenadas.map(([categoria, dados]) =>
-                                        categoria.toLowerCase() !== "impostos" && categoria.toLowerCase() !== "custos" && (
-                                            <React.Fragment key={categoria}>
-                                                <div className="box_categorias_dre">
-                                                    <div>{categoria}</div>
-                                                    <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                    <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                                                </div>
-                                                {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                                                    <div key={sub} className="box_subcategorias_dre">
-                                                        <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                                                        <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                        <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div>
-                                                    </div>
-                                                ))}
-                                            </React.Fragment>
-                                        ))}
-
-                                </div>
-
-                                {/* Lucro/Prejuízo Operacional */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Lucro/Prejuízo Operacional</strong>
-                                        <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                                    </div>
-                                </div>
-
-                                {/* Outras Receitas/Despesas */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Outras Receitas/Despesas</strong>
-                                    </div>
-                                </div>
-
-                                {/* Resultado Antes do IR e CSLL */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Resultado Antes do IR e CSLL</strong>
-                                        <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                                    </div>
-                                </div>
-
-                                {/* Lucro/Prejuízo Acumulado */}
-                                <div className="resultado_dre">
-                                    <div className="header_info_resultado">
-                                        <strong>Lucro/Prejuízo Acumulado</strong>
-                                        <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                                        <strong>{((lucroBruto / summary.receitas) * 100).toFixed(2)}%</strong>
-                                    </div>
-                                </div>
+                                ))}
 
                             </div>
 
                         </div>
 
                     </div>
+
+                    // <div className="dreContainer">
+
+                    //     <div className="box_topo_dre">
+                    //         <h2>Demonstração do Resultado do Exercício (DRE)</h2>
+                    //         <div className="box_btns_salvar">
+                    //             <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button>
+                    //             <button onClick={salvarDRE}>Salvar PDF</button>
+                    //         </div>
+                    //     </div>
+
+                    //     <div className="wrapper_dre">
+
+                    //         <div className="box_resultados_dre">
+
+                    //             <div className="box_header_dre">
+
+                    //                 <div className="header_dados_dre">
+                    //                     <p><strong>Descrição</strong></p>
+                    //                     <p><strong>Total</strong></p>
+                    //                     <p><strong>Análise Vertical</strong></p>
+                    //                 </div>
+
+                    //             </div>
+
+                    //             {/* /* Receita Bruta */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Receita Bruta</strong>
+                    //                 </div>
+                    //                 {Object.entries(receitasAgrupadas).map(([categoria, dados]) => (
+                    //                     <React.Fragment key={categoria}>
+                    //                         <div className="box_categorias_dre">
+                    //                             <div>{categoria}</div>
+                    //                             <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                             <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
+                    //                         </div>
+                    //                         {Object.entries(dados.subcategorias).map(([sub, valor]) => (
+                    //                             <div key={sub} className="box_subcategorias_dre">
+                    //                                 <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
+                    //                                 <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                 <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div>
+                    //                             </div>
+                    //                         ))}
+                    //                     </React.Fragment>
+                    //                 ))}
+                    //             </div>
+
+                    //             {/* Deduções e Impostos */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Deduções e Impostos (-)</strong>
+                    //                 </div>
+                    //                 {Object.entries(despesasAgrupadas).map(([categoria, dados]) =>
+                    //                     categoria.toLowerCase() === "impostos" && (
+                    //                         <React.Fragment key={categoria}>
+                    //                             <div className="box_categorias_dre">
+                    //                                 <div>{categoria}</div>
+                    //                                 <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                 <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
+                    //                             </div>
+                    //                             {Object.entries(dados.subcategorias).map(([sub, valor]) => (
+                    //                                 <div key={sub} className="box_subcategorias_dre">
+                    //                                     <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
+                    //                                     <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                     {/* <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div> */}
+                    //                                 </div>
+                    //                             ))}
+                    //                         </React.Fragment>
+                    //                     ))}
+                    //             </div>
+
+                    //             {/* Receita Líquida */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Receita Operacional Líquida</strong>
+                    //                     <strong>{receitaLiquida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //             {/* Custo Variável (CPV ou CMV) */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Custo Variável (CPV ou CMV)</strong>
+                    //                 </div>
+                    //                 {Object.entries(despesasAgrupadas).map(([categoria, dados]) =>
+                    //                     categoria.toLowerCase() === "custos" && (
+                    //                         <React.Fragment key={categoria}>
+                    //                             <div className="box_categorias_dre">
+                    //                                 <div>{categoria}</div>
+                    //                                 <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                 <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
+                    //                             </div>
+                    //                             {Object.entries(dados.subcategorias).map(([sub, valor]) => (
+                    //                                 <div key={sub} className="box_subcategorias_dre">
+                    //                                     <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
+                    //                                     <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                 </div>
+                    //                             ))}
+                    //                         </React.Fragment>
+                    //                     ))}
+
+                    //             </div>
+
+                    //             {/* Resultado bruto */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Resultado Bruto</strong>
+                    //                     <strong>{(summary.receitas - custos).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //             {/* Despesas Operacionais */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Despesas Operacionais (-)</strong>
+                    //                     <strong>{(summary.receitas - custos).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //             {/* /* Despesas Variáveis */}
+                    //             <div className="resultado_dre">
+                    //                 {despesasOrdenadas.map(([categoria, dados]) =>
+                    //                     categoria.toLowerCase() !== "impostos" && categoria.toLowerCase() !== "custos" && (
+                    //                         <React.Fragment key={categoria}>
+                    //                             <div className="box_categorias_dre">
+                    //                                 <div>{categoria}</div>
+                    //                                 <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                 <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
+                    //                             </div>
+                    //                             {Object.entries(dados.subcategorias).map(([sub, valor]) => (
+                    //                                 <div key={sub} className="box_subcategorias_dre">
+                    //                                     <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
+                    //                                     <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                    //                                     <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div>
+                    //                                 </div>
+                    //                             ))}
+                    //                         </React.Fragment>
+                    //                     ))}
+
+                    //             </div>
+
+                    //             {/* Lucro/Prejuízo Operacional */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Lucro/Prejuízo Operacional</strong>
+                    //                     <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //             {/* Outras Receitas/Despesas */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Outras Receitas/Despesas</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //             {/* Resultado Antes do IR e CSLL */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Resultado Antes do IR e CSLL</strong>
+                    //                     <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //             {/* Lucro/Prejuízo Acumulado */}
+                    //             <div className="resultado_dre">
+                    //                 <div className="header_info_resultado">
+                    //                     <strong>Lucro/Prejuízo Acumulado</strong>
+                    //                     <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                    //                     <strong>{((lucroBruto / summary.receitas) * 100).toFixed(2)}%</strong>
+                    //                 </div>
+                    //             </div>
+
+                    //         </div>
+
+                    //     </div>
+
+                    // </div>
+
                 )}
 
             </div>
