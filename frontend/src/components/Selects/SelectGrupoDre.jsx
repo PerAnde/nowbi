@@ -10,6 +10,7 @@ const gruposReceita = [
 
 const gruposDespesa = [
     { label: 'Deduções da Receita Bruta', value: 'DEDUCOES_DA_RECEITA_BRUTA' },
+    { label: 'Custo Variável (CPV ou CMV)', value: 'CUSTO_VARIAVEL' },
     { label: 'Despesas Operacionais', value: 'DESPESAS_OPERACIONAIS' },
     { label: 'Despesas Financeiras', value: 'DESPESAS_FINANCEIRAS' },
     { label: 'Outras Despesas', value: 'OUTRAS_DESPESAS' },

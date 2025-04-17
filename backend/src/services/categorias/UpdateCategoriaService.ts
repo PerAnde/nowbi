@@ -17,6 +17,7 @@ const gruposPermitidos = {
     ] as GrupoDre[],
     DESPESA: [
         "DEDUCOES_DA_RECEITA_BRUTA",
+        "CUSTO_VARIAVEL",
         "DESPESAS_OPERACIONAIS",
         "DESPESAS_FINANCEIRAS",
         "OUTRAS_DESPESAS",

@@ -278,6 +278,7 @@ export const DashboardBi = () => {
         { titulo: 'Receita Operacional Bruta (+)', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
         { titulo: 'Deduções e Impostos (-)', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
         { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
+        { titulo: 'Custo Variável (CPV ou CMV)', grupo: 'CUSTO_VARIAVEL' },
         { titulo: 'Outras Receitas', grupo: 'OUTRAS_RECEITAS' },
         { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
         { titulo: 'Despesas Financeiras', grupo: 'DESPESAS_FINANCEIRAS' },
@@ -346,7 +347,7 @@ export const DashboardBi = () => {
                 });
             }
 
-            // if (grupo.grupo === 'DESPESAS_OPERACIONAIS') {
+            // if (grupo.grupo === 'RESULTADO_RECEITA_LIQUIDA') {
             //     const receitaLiquida = receitaBruta - deducoes;
             //     const despesas = getTotal('DESPESAS_OPERACIONAIS');
             //     resultado.push({
@@ -378,7 +379,6 @@ export const DashboardBi = () => {
 
                 <div className={styles.box_filtro_e_resumo}>
                     <div className={styles.box_filtro_mes}>
-                        <label>Selecione o mês:</label>
                         <select onChange={(e) => setSelectedMonth(e.target.value)} value={selectedMonth}>
                             {empresa.bis
                                 .filter(bi => bi.status)
