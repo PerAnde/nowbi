@@ -34,6 +34,12 @@
     margin-bottom: 2rem;
 }
 
+.box_filtro_mes_ano{
+    display: grid;
+    grid-template-columns: 130px 90px;
+    gap: 1.5rem;
+}
+
 .box_infos_resumo {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;

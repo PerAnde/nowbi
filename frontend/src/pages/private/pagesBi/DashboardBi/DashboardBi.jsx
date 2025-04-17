@@ -7,8 +7,10 @@ import styles from './DashboardBi.module.scss';
 import './dre.css'
 import { LayoutBi } from '../../../../layout/LayoutBi/LayoutBi';
 import * as PiIcons from 'react-icons/pi';
-import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
+import { exportarParaExcel } from '../../../../utils/exportExcel'
 import { salvarDRE } from '../../../../utils/salvarPDF'
+import { SelectMesEmpresa } from '../../../../components/Selects/SelectMesEmpresa';
+import { SelectAnoEmpresa } from '../../../../components/Selects/SelectAnoEmpresa';
 
 const COLORS = [
     "#3789da", "#ff8a5c", "#8378ea",
@@ -32,9 +34,12 @@ const processBIData = (empresa, selectedMonth) => {
     const detalhes = [];
 
     mesesAtivos.forEach(({ mes, ano, lancamentoBi }) => {
-        const mesAnoAtual = `${mes} / ${ano}`; // Formato compatível com selectedMonth
+        const mesAnoAtual = `${mes.toUpperCase()} / ${ano}`;
 
-        if (selectedMonth && mesAnoAtual !== selectedMonth) return; // Comparação correta
+        // Comparação do mês selecionado, ambos em maiúsculas
+        if (selectedMonth && mesAnoAtual !== selectedMonth.toUpperCase()) return;
+
+        // if (selectedMonth && mesAnoAtual !== selectedMonth) return; // Comparação correta
 
         if (!result[mesAnoAtual]) {
             result[mesAnoAtual] = { receitas: 0, despesas: 0 };
@@ -91,6 +96,13 @@ export const DashboardBi = () => {
     const [loading, setLoading] = useState(true);
     const [dashboardData, setDashboardData] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState("");
+
+    const [mesSelecionado, setMesSelecionado] = useState('');
+    const [anoSelecionado, setAnoSelecionado] = useState('');
+
+    const [mesesDisponiveis, setMesesDisponiveis] = useState([]);
+    const [anosDisponiveis, setAnosDisponiveis] = useState([]);
+
     const [abaAtiva, setViewMode] = useState("resumo");
     const navigate = useNavigate();
 
@@ -126,17 +138,39 @@ export const DashboardBi = () => {
     useEffect(() => {
         if (!empresa || !empresa.bis.length) return;
 
-        const mesesAtivosOrdenados = empresa.bis
-            .filter(bi => bi.status)
-            .sort((a, b) => a.ano - b.ano || monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num);
+        const bisAtivos = empresa.bis.filter(bi => bi.status);
 
-        if (mesesAtivosOrdenados.length > 0) {
-            const ultimoMes = mesesAtivosOrdenados[mesesAtivosOrdenados.length - 1];
-            const mesAnoUltimo = `${ultimoMes.mes} / ${ultimoMes.ano}`;
+        const mesesUnicos = [...new Set(bisAtivos.map(bi => bi.mes.toLowerCase()))]
+            .sort((a, b) => monthOrder[a].num - monthOrder[b].num);
 
-            setSelectedMonth(mesAnoUltimo); // Seta o mês antes de processar os dados
-        }
+        const anosUnicos = [...new Set(bisAtivos.map(bi => bi.ano))]
+            .sort((a, b) => a - b);
+
+        setMesesDisponiveis(mesesUnicos);
+        setAnosDisponiveis(anosUnicos);
+
+        // Garantir que o último mês e ano sejam definidos corretamente
+        const ultimoBI = bisAtivos
+            .sort((a, b) => a.ano - b.ano || monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num)
+            .at(-1);
+
+        const mes = ultimoBI.mes.toLowerCase();
+        const ano = ultimoBI.ano;
+
+        setMesSelecionado(mes);
+        setAnoSelecionado(ano);
+
+        // Definindo o mês selecionado como o último mês por padrão
+        setSelectedMonth(`${mes} / ${ano}`);
+
     }, [empresa]);
+
+    useEffect(() => {
+        if (mesSelecionado && anoSelecionado) {
+            const mesCapitalizado = mesSelecionado.toUpperCase();  // Garantir maiúsculas
+            setSelectedMonth(`${mesCapitalizado} / ${anoSelecionado}`);
+        }
+    }, [mesSelecionado, anoSelecionado]);
 
     useEffect(() => {
         if (empresa && selectedMonth) {
@@ -197,9 +231,8 @@ export const DashboardBi = () => {
         .sort((a, b) => a.value - b.value);
 
     // DRE
-
     // Separando os dados
-    // const receitas = summary.detalhes.filter(item => item.tipo === 'RECEITA');
+    const receitas = summary.detalhes.filter(item => item.tipo === 'RECEITA');
     const despesas = summary.detalhes.filter(item => item.tipo === 'DESPESA');
 
     // Agrupando categorias
@@ -219,7 +252,7 @@ export const DashboardBi = () => {
         }, {});
     };
 
-    // const receitasAgrupadas = agruparPorCategoria(receitas);
+    const receitasAgrupadas = agruparPorCategoria(receitas);
     const despesasAgrupadas = agruparPorCategoria(despesas);
 
     const lucroBruto = summary.receitas - summary.despesas;
@@ -228,10 +261,6 @@ export const DashboardBi = () => {
         ([categoria]) => categoria.toLowerCase() === "custos"
     )?.[1]?.total || 0;
 
-    // Custos fixos = todas as despesas exceto "Custos"
-    // const custosFixos = Object.entries(despesasAgrupadas)
-    //     .filter(([categoria]) => categoria.toLowerCase() !== "custos")
-    //     .reduce((total, [, dados]) => total + dados.total, 0);
 
     const despesasOrdenadas = Object.entries(despesasAgrupadas).sort(([catA], [catB]) => {
         if (catA.toLowerCase() === "despesas financeiras") return 1; // Move "Despesas Financeiras" para o final
@@ -239,10 +268,6 @@ export const DashboardBi = () => {
         return 0;
     });
 
-    // Deducoes e Impostos
-    // const deducoesImpostos = Object.entries(despesasAgrupadas).find(
-    //     ([categoria]) => categoria.toLowerCase() === "impostos"
-    // )?.[1]?.total || 0;
     // Buscando despesas comerciais
     const despesasComerciais = Object.entries(despesasAgrupadas).find(
         ([categoria]) => categoria.toLowerCase() === "despesas comerciais"
@@ -392,20 +417,9 @@ export const DashboardBi = () => {
                 </div>
 
                 <div className={styles.box_filtro_e_resumo}>
-                    <div className={styles.box_filtro_mes}>
-                        <select onChange={(e) => setSelectedMonth(e.target.value)} value={selectedMonth}>
-                            {empresa.bis
-                                .filter(bi => bi.status)
-                                .sort((a, b) => a.ano - b.ano || monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num)
-                                .map(bi => {
-                                    const mesAno = `${bi.mes} / ${bi.ano}`;
-                                    return (
-                                        <option key={mesAno} value={mesAno}>
-                                            {capitalizeFirstLetter(bi.mes)} / {bi.ano}
-                                        </option>
-                                    );
-                                })}
-                        </select>
+                    <div className={styles.box_filtro_mes_ano}>
+                        <SelectMesEmpresa mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
+                        <SelectAnoEmpresa anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
                     </div>
 
                     <div className={styles.box_infos_resumo}>
