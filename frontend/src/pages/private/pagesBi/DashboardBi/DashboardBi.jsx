@@ -222,7 +222,7 @@ export const DashboardBi = () => {
     // const receitasAgrupadas = agruparPorCategoria(receitas);
     const despesasAgrupadas = agruparPorCategoria(despesas);
 
-    // const lucroBruto = summary.receitas - summary.despesas;
+    const lucroBruto = summary.receitas - summary.despesas;
 
     const custos = Object.entries(despesasAgrupadas).find(
         ([categoria]) => categoria.toLowerCase() === "custos"
@@ -330,12 +330,11 @@ export const DashboardBi = () => {
                 });
             }
 
-            // === INSERINDO BLOCOS DE RESULTADO INTERMEDIÁRIO ===
-
             // Depois de Deduções, inserir Receita Operacional Líquida
             if (grupo.grupo === 'DEDUCOES_DA_RECEITA_BRUTA') {
                 const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
                 const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
+
                 resultado.push({
                     titulo: 'Receita Operacional Líquida (=)',
                     grupo: 'RESULTADO_RECEITA_LIQUIDA',
@@ -347,19 +346,34 @@ export const DashboardBi = () => {
                 });
             }
 
-            // if (grupo.grupo === 'RESULTADO_RECEITA_LIQUIDA') {
-            //     const receitaLiquida = receitaBruta - deducoes;
-            //     const despesas = getTotal('DESPESAS_OPERACIONAIS');
-            //     resultado.push({
-            //         titulo: 'Lucro/Prejuízo Operacional',
-            //         grupo: 'LUCRO_OPERACIONAL',
-            //         dados: {
-            //             total: receitaLiquida - despesas,
-            //             categorias: {}
-            //         },
-            //         isResultado: true
-            //     });
-            // }
+            if (grupo.grupo === 'CUSTO_VARIAVEL') {
+                const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
+                const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
+                const custoVariavel = getTotal('CUSTO_VARIAVEL');
+                const receitaLiquida = receitaBruta - deducoes;
+
+                resultado.push({
+                    titulo: 'Resultado Bruto',
+                    grupo: 'RESULTADO_BRUTO',
+                    dados: {
+                        total: custoVariavel - receitaLiquida,
+                        categorias: {}
+                    },
+                    isResultado: true
+                });
+            }
+
+            if (grupo.grupo === 'IR_CSLL') {
+                resultado.push({
+                    titulo: 'Lucro/Prejuízo Acumulado',
+                    grupo: 'LUCRO_PREJUIZO_ACUMULADO',
+                    dados: {
+                        total: lucroBruto,
+                        categorias: {}
+                    },
+                    isResultado: true
+                });
+            }
 
         });
 
