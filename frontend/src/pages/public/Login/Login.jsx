@@ -14,7 +14,7 @@ import styles from '../Auth.module.scss'
 import * as PiIcons from "react-icons/pi";
 
 // Imagens
-import iconeLogo from '../../../assets/images/icone-logo-black.png'
+import iconeLogo from '../../../assets/images/icone-logo.png'
 import { toast } from 'sonner'
 
 export const Login = () => {
@@ -76,7 +76,7 @@ export const Login = () => {
                 <div className={styles.box_header_form}>
                     <div className={styles.box_logo_now_bi}>
                         <img src={iconeLogo} />
-                        <p>now<span>BI</span></p>
+                        <p>NowBi</p>
                     </div>
                     <h2>Olá, bem vindo de volta!</h2>
                     <p>Insira suas credenciais para continuar</p>

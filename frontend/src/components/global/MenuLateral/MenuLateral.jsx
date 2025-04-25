@@ -37,7 +37,7 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
             <div className={styles.conteudo_menu_lateral}>
                 <div className={styles.box_logo_now_bi}>
                     <img src={iconeLogo} />
-                    <p>show<span>BI</span></p>
+                    <p>NowBI</p>
                 </div>
 
                 <div className={styles.menu_lateral}>

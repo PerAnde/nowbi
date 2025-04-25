@@ -6,7 +6,7 @@ export const customSelectStyles = {
         color: state.isDisabled ? 'var(--texto-secundario)' : 'var(--texto-primario)',
         borderRadius: 'var(--border-radius-button)',
         border: '1px solid var(--border-input)',
-        padding: '1.5rem',
+        padding: '1.3rem 1.5rem',
         boxShadow: 'none',
         cursor: state.isDisabled ? 'not-allowed' : 'pointer',
         '&:hover': {

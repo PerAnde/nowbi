@@ -9,88 +9,25 @@
     color: var(--branco);
 }
 
-.box_1 {
-    display: flex;
-    gap: 1rem;
-
-    hr {
-        height: 25px;
-        border: 1px dashed var(--background-menu-bi);
-    }
-}
-
-.box_logo_now_bi {
+.box_infos_empresa {
     display: flex;
     grid-area: nav;
     align-items: center;
     gap: 1rem;
-    font-weight: var(--bold);
-
-    p {
-        font-size: 2rem;
-        color: var(--branco);
-    }
-
-    p span {
-        color: var(--cor-primaria);
-    }
-
-    img {
-        width: 25px;
-    }
 }
 
-.menu_mes_bi {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-}
-
-.btn_menu_ano,
-.btn_menu_mes {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    cursor: pointer;
-}
-
-.icone_menu_bi {
-    font-size: 1.5rem;
-    color: var(--texto-secundario);
-}
-
-.icone_escolha_mes {
-    font-size: 1.5rem;
-}
-
-.box_2 {
-    display: flex;
-    color: var(--texto-secundario);
-}
-
-// Box Submenu
-.box_sub_menu {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-    background-color: var(--branco);
-    box-shadow: var(--box-shadow-menu);
+.box_logo_empresa{
+    width: 50px;
+    height: 50px;
     border-radius: var(--border-radius-componente);
-    color: var(--texto-primario);
-    padding: .3rem;
-    top: 3rem;
-    left: -1.5rem;
+    overflow: hidden;
 }
 
-.box_sub_menu p {
-    border-radius: var(--border-radius-button);
-    padding: 1rem;
+.box_logo_empresa img{
+    width: 100%;
+    object-fit: cover;
 }
 
-.box_sub_menu p:hover {
-    background-color: var(--hover-input);
-    transition: .3s;
+.box_infos p.cnpj_empresa{
+    color: var(--texto-secundario);
 }

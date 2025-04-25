@@ -1,3 +1,12 @@
+.box_logo_empresa{
+    display: flex;
+    width: 100px;
+}
+
+.box_logo_empresa img{
+    max-width: 100%;
+}
+
 .box_menu_btns {
     display: flex;
 }
@@ -5,7 +14,7 @@
 .box_menu_btns a {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .5rem;
     padding: 1.3rem;
     color: var(--texto-secundario);
     border-top-left-radius: var(--border-radius-button);
@@ -20,18 +29,38 @@
     border-left: 1px solid var(--border-input);
 }
 
+.box_menu_btns a span{
+    display: flex;
+    align-items: center;
+}
+
 .box_filtro_e_resumo {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     background-color: var(--cor-componente);
-    border-top-right-radius: var(--border-radius-componente);
-    border-bottom-right-radius: var(--border-radius-componente);
-    border-bottom-left-radius: var(--border-radius-componente);
+    border-radius: var(--border-radius-componente);
     border: 1px solid var(--border-input);
     padding: 2rem;
     margin-top: -.1rem;
     margin-bottom: 2rem;
+}
+
+.box_header_pagina{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box_descricao_pagina{
+    display: flex;
+    flex-direction: column;
+    margin-left: .5rem;
+}
+
+.box_descricao_pagina h3{
+    font-weight: var(--medium);
+    color: var(--texto-secundario);
 }
 
 .box_filtro_mes_ano{
@@ -49,24 +78,32 @@
     gap: 1rem;
 }
 
-.box_dados {
+.box_dados_background {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 2rem;
-    padding: 2rem;
+    padding: 3rem 2rem;
     border-radius: var(--border-radius-componente);
     color: var(--texto-secundario);
     cursor: default;
 }
 
-.box_dados:hover {
+.box_dados_background:hover {
     background-color: var(--cor-componente);
+    color: var(--texto-primario);
     transition: .3s;
 }
 
-.box_dados.ativo {
+.box_dados_background.ativo {
     background-color: var(--cor-componente);
     color: var(--texto-primario);
+}
+
+.box_dados{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
 .box_icone_dados {
@@ -104,6 +141,60 @@
 .infos_dados span {
     font-weight: var(--bold);
     font-size: 2rem;
+}
+
+.box_info_mes_anterior{
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.box_info_mes_anterior .infos_mes{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.descricao_mes_anterior{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.box_info_mes_anterior.mes_anterior_receita{
+    color: var(--verde);
+}
+
+.box_info_mes_anterior.mes_anterior_despesa{
+    color: var(--vermelho);
+}
+
+.popup_info_mes{
+    position: absolute;
+    display: none;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-button);
+    box-shadow: var(--box-shadow-componente);
+    border: 1px solid var(--border-input);
+    color: var(--texto-secundario);
+    text-align: center;
+    padding: 1rem;
+    z-index: 999;
+    opacity: 0;
+}
+
+.box_info_mes_anterior:hover .popup_info_mes{
+    display: block;
+    opacity: 1;
 }
 
 .box_grafico_anual {
@@ -172,7 +263,7 @@
     max-height: 350px;
     background-color: var(--background);
     border-radius: var(--border-radius-componente);
-    padding: 2rem;
+    padding: 2rem 4rem 2rem 2rem;
 }
 
 .box_legendas::-webkit-scrollbar {
@@ -215,6 +306,14 @@
     .box_donut {
         flex-direction: column;
         height: auto;
+    }
+}
+
+@media screen and (max-width: 725px) {
+    .box_header_pagina{
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
     }
 }
 

@@ -5,21 +5,15 @@ import styles from './MenuBi.module.scss'
 
 import * as PiIcons from 'react-icons/pi';
 
-export const MenuBi = () => {
+export const MenuBi = ({ abaAtiva, setViewMode }) => {
     return (
         <div className={styles.menu_bi}>
             <div className={styles.links_menu}>
-                <Link to='/dashboardbi' className={`${styles.btn_menu} ${location.pathname === '/dashboardbi' ? styles.ativo : ''}`} >
-                    <PiIcons.PiChartPieSlice  className={styles.icon} /> Resumo
+                <Link className={`${styles.btn_menu} ${abaAtiva === "resumo" ? styles.ativo : ""}`} onClick={() => setViewMode("resumo")} >
+                    <PiIcons.PiChartPieSlice /> Resumo
                 </Link>
-                <Link to='/entradasbi' className={`${styles.btn_menu} ${location.pathname === '/entradasbi' ? styles.ativo : ''}`} >
-                    <PiIcons.PiTrendUpBold className={styles.icon} /> Entradas
-                </Link>
-                <Link to='/saidasbi' className={`${styles.btn_menu} ${location.pathname === '/saidasbi' ? styles.ativo : ''}`} >
-                    <PiIcons.PiTrendDownBold className={styles.icon} /> Saídas
-                </Link>
-                <Link to='/detalhesbi' className={`${styles.btn_menu} ${location.pathname === '/detalhesbi' ? styles.ativo : ''}`} >
-                    <PiIcons.PiListDashesBold className={styles.icon} /> Detalhes
+                <Link className={`${styles.btn_menu} ${abaAtiva === "dre" ? styles.ativo : ""}`} onClick={() => setViewMode("dre")} >
+                    <PiIcons.PiListDashesBold /> DRE
                 </Link>
             </div>
         </div>

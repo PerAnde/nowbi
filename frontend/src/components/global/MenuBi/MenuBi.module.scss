@@ -5,8 +5,8 @@
 
 .links_menu {
     display: flex;
-    gap: .3rem;
-    padding: 1.5rem 1.5rem 1.5rem;
+    gap: .5rem;
+    padding: 1.5rem;
 }
 
 .links_menu p {
@@ -32,7 +32,7 @@
 }
 
 .btn_menu.ativo {
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-primaria-15);
     color: var(--cor-primaria-claro);
 }
 

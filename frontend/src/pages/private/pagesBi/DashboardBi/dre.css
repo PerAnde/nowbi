@@ -14,11 +14,6 @@
     font-size: 1.6rem;
 }
 
-.box_topo_dre h2 {
-    font-size: 1.6rem;
-    font-weight: var(--medium);
-}
-
 .box_btns_salvar {
     display: flex;
     gap: 1.5rem;
@@ -97,11 +92,11 @@
 }
 
 .box_categorias_dre {
-    font-weight: var(--bold);
+    font-weight: var(--medium);
 }
 
 .box_subcategorias_dre {
-    color: var(--cinza);
+    color: var(--texto-secundario);
 }
 
 .nome_subcategoria {

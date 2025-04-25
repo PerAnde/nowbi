@@ -76,13 +76,6 @@ const processBIData = (empresa, selectedMonth) => {
                 subcategorias[subcategoria.name] = (subcategorias[subcategoria.name] || 0) + valorNum;
             }
 
-            // if (categoria) {
-            //     categorias[categoria.name] = (categorias[categoria.name] || 0) + valorNum;
-            // }
-
-            // if (subcategoria) {
-            //     subcategorias[subcategoria.name] = (subcategorias[subcategoria.name] || 0) + valorNum;
-            // }
         });
     });
 
@@ -174,8 +167,39 @@ export const DashboardBi = () => {
 
     useEffect(() => {
         if (empresa && selectedMonth) {
-            const processedData = processBIData(empresa, selectedMonth);
-            setDashboardData(processedData);
+            const bisAtivosOrdenados = empresa.bis
+                .filter(bi => bi.status)
+                .sort((a, b) => a.ano - b.ano || monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num);
+
+            const indexAtual = bisAtivosOrdenados.findIndex(bi =>
+                `${bi.mes.toUpperCase()} / ${bi.ano}` === selectedMonth.toUpperCase()
+            );
+
+            const biAtual = bisAtivosOrdenados[indexAtual];
+            const biAnterior = bisAtivosOrdenados[indexAtual - 1];
+
+            const dadosAtuais = processBIData(empresa, `${biAtual.mes.toUpperCase()} / ${biAtual.ano}`);
+            const dadosAnteriores = biAnterior ? processBIData(empresa, `${biAnterior.mes.toUpperCase()} / ${biAnterior.ano}`) : null;
+
+            const receitaAtual = dadosAtuais.summary.receitas;
+            const receitaAnterior = dadosAnteriores?.summary.receitas || 0;
+
+            const despesaAtual = dadosAtuais.summary.despesas;
+            const despesaAnterior = dadosAnteriores?.summary.despesas || 0;
+
+            const diferencaPercentualReceita = receitaAnterior
+                ? ((receitaAtual - receitaAnterior) / receitaAnterior) * 100
+                : 0;
+
+            const diferencaPercentualDespesa = despesaAnterior
+                ? ((despesaAtual - despesaAnterior) / despesaAnterior) * 100
+                : 0;
+
+            setDashboardData({
+                ...dadosAtuais,
+                diferencaPercentualReceita,
+                diferencaPercentualDespesa
+            });
         }
     }, [empresa, selectedMonth]);
 
@@ -203,7 +227,7 @@ export const DashboardBi = () => {
             });
 
             return {
-                month: `${monthOrder[mes.toLowerCase()].abbr}/${String(ano).slice(-2)}`, // Formato "Abr/24"
+                month: `${monthOrder[mes.toLowerCase()].abbr}/${String(ano)}`, // Formato "Abr/24"
                 receitas,
                 despesas
             };
@@ -408,55 +432,109 @@ export const DashboardBi = () => {
     const dadosFiltrados = agruparDados(dashboardData.summary.detalhes);
 
     return (
-        <LayoutBi>
+        <LayoutBi empresa={empresa} abaAtiva={abaAtiva} setViewMode={setViewMode}>
             <div className={styles.box_dashboard_bi}>
 
-                <div className={styles.box_menu_btns}>
-                    <Link className={abaAtiva === "resumo" ? styles.active : ""} onClick={() => setViewMode("resumo")}><PiIcons.PiChartBar /> Resumo</Link>
-                    <Link className={abaAtiva === "detalhes" ? styles.active : ""} onClick={() => setViewMode("detalhes")}><PiIcons.PiFilePdfThin /> DRE</Link>
-                </div>
-
                 <div className={styles.box_filtro_e_resumo}>
-                    <div className={styles.box_filtro_mes_ano}>
-                        <SelectMesEmpresa mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
-                        <SelectAnoEmpresa anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+
+                    <div className={styles.box_header_pagina}>
+                        <div className={styles.box_descricao_pagina}>
+                            {abaAtiva === "resumo" ? <h3>Resumo</h3> : <h3>Demonstração do Resultado do Exercício (DRE)</h3>}
+                        </div>
+
+                        <div className={styles.box_filtro_mes_ano}>
+                            <SelectMesEmpresa mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
+                            <SelectAnoEmpresa anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+                        </div>
                     </div>
 
                     <div className={styles.box_infos_resumo}>
-                        <div className={`${styles.box_dados} ${styles.ativo}`}>
-                            <span className={`${styles.box_icone_dados} ${styles.icone_receita}`}>
-                                <PiIcons.PiArrowUpRightBold />
-                            </span>
-                            <div className={styles.infos_dados}>
-                                <p>Receitas</p>
-                                <span>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                        <div className={`${styles.box_dados_background} ${styles.ativo}`}>
+                            <div className={styles.box_dados}>
+                                <span className={`${styles.box_icone_dados} ${styles.icone_receita}`}>
+                                    <PiIcons.PiArrowUpRightBold />
+                                </span>
+                                <div className={styles.infos_dados}>
+                                    <p>Receitas</p>
+                                    <span>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                </div>
+                            </div>
+                            <div className={`${styles.box_info_mes_anterior} ${styles.mes_anterior_receita}`}>
+                                <div className={styles.infos_mes}>
+                                    <div className={styles.descricao_mes_anterior}>
+                                        {dashboardData.diferencaPercentualReceita >= 0 ? <PiIcons.PiCaretDoubleUpDuotone /> : <PiIcons.PiCaretDoubleDownDuotone />}
+                                        {dashboardData.diferencaPercentualReceita > 0 ? '+' : ''}
+                                        {dashboardData.diferencaPercentualReceita.toFixed(2)}%
+                                    </div>
+                                    <div className={styles.popup_info_mes}>
+                                        <p>Diferença relacionada<br></br> ao mês anterior.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className={`${styles.box_dados}`}>
-                            <span className={`${styles.box_icone_dados} ${styles.icone_despesa}`}>
-                                <PiIcons.PiArrowDownRightBold />
-                            </span>
-                            <div className={styles.infos_dados}>
-                                <p>Despesas</p>
-                                <span>{summary.despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                        <div className={`${styles.box_dados_background}`}>
+                            <div className={styles.box_dados}>
+                                <span className={`${styles.box_icone_dados} ${styles.icone_despesa}`}>
+                                    <PiIcons.PiArrowDownRightBold />
+                                </span>
+                                <div className={styles.infos_dados}>
+                                    <p>Despesas</p>
+                                    <span>{summary.despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                </div>
+                            </div>
+                            <div className={`${styles.box_info_mes_anterior} ${styles.mes_anterior_despesa}`}>
+                                <div className={styles.infos_mes}>
+                                    <div className={styles.descricao_mes_anterior}>
+                                        {dashboardData.diferencaPercentualDespesa >= 0 ? <PiIcons.PiCaretDoubleUpDuotone /> : <PiIcons.PiCaretDoubleDownDuotone />}
+                                        {dashboardData.diferencaPercentualDespesa > 0 ? '+' : ''}
+                                        {dashboardData.diferencaPercentualDespesa.toFixed(2)}%
+                                    </div>
+                                    <div className={styles.popup_info_mes}>
+                                        <p>Diferença relacionada<br></br> ao mês anterior.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className={`${styles.box_dados}`}>
-                            <span className={`${styles.box_icone_dados} ${styles.icone_equilibrio}`}>
-                                <PiIcons.PiScales />
-                            </span>
-                            <div className={styles.infos_dados}>
-                                <p>Ponto de Equilíbrio</p>
-                                <span>{resultadoPontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                        <div className={`${styles.box_dados_background}`}>
+                            <div className={styles.box_dados}>
+                                <span className={`${styles.box_icone_dados} ${styles.icone_equilibrio}`}>
+                                    <PiIcons.PiScales />
+                                </span>
+                                <div className={styles.infos_dados}>
+                                    <p>Ponto de Equilíbrio</p>
+                                    <span>{resultadoPontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                </div>
+                            </div>
+                            <div className={styles.box_info_mes_anterior}>
+                                <div className={styles.infos_mes}>
+                                    <div className={styles.descricao_mes_anterior}>
+                                        <PiIcons.PiInfo />
+                                    </div>
+                                    <div className={styles.popup_info_mes}>
+                                        <p>Custos Fixos ÷ Margem de Contribuição</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className={`${styles.box_dados}`}>
-                            <span className={`${styles.box_icone_dados} ${styles.icone_margem}`}>
-                                <PiIcons.PiChartPieSlice />
-                            </span>
-                            <div className={styles.infos_dados}>
-                                <p>Margem de Contribuição</p>
-                                <span>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} - {margemDeContribuicaoPercentual}%</span>
+                        <div className={`${styles.box_dados_background}`}>
+                            <div className={styles.box_dados}>
+                                <span className={`${styles.box_icone_dados} ${styles.icone_margem}`}>
+                                    <PiIcons.PiChartPieSlice />
+                                </span>
+                                <div className={styles.infos_dados}>
+                                    <p>Margem de Contribuição</p>
+                                    <p><span>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span> ({margemDeContribuicaoPercentual}%)</p>
+                                </div>
+                            </div>
+                            <div className={styles.box_info_mes_anterior}>
+                                <div className={styles.infos_mes}>
+                                    <div className={styles.descricao_mes_anterior}>
+                                        <PiIcons.PiInfo />
+                                    </div>
+                                    <div className={styles.popup_info_mes}>
+                                        <p>Receitas - Custos variáveis</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -486,7 +564,7 @@ export const DashboardBi = () => {
                                     />
                                     <Tooltip
                                         formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                                        contentStyle={{ background: "var(--branco)", color: "var(--texto-secundario)", borderRadius: "8px", border: '1px solid var(--texto-secundario)' }} />
+                                        contentStyle={{ background: "var(--branco)", color: "var(--texto-primario)", borderRadius: "var(--border-radius-componente)", border: '1px solid var(--texto-secundario)' }} />
                                     <Legend
                                         layout="horizontal"
                                         verticalAlign="bottom"
@@ -498,12 +576,12 @@ export const DashboardBi = () => {
                                             justifyContent: "center",
                                             borderRadius: "var(--border-radius-componente)",
                                             padding: "4rem 0 0 0",
-                                            color: "var(--texto-secundario)",
+                                            color: "var(--cor-primaria)",
                                             fontSize: "1.4rem",
                                         }}
                                     />
-                                    <Bar dataKey="receitas" fill="#3789da" name="Receitas" radius={[8, 8, 0, 0]} />
-                                    <Bar dataKey="despesas" fill="#eb5555" name="Despesas" radius={[8, 8, 0, 0]} />
+                                    <Bar dataKey="receitas" fill="var(--cor-primaria)" name="Receitas" radius={[8, 8, 0, 0]} />
+                                    <Bar dataKey="despesas" fill="#e83a3a" name="Despesas" radius={[8, 8, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
 
@@ -542,7 +620,8 @@ export const DashboardBi = () => {
                                                 ))}
                                             </Pie>
 
-                                            <Tooltip formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} />
+                                            <Tooltip formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                                contentStyle={{ background: "var(--branco)", color: "var(--texto-primario)", borderRadius: "var(--border-radius-componente)", border: '1px solid var(--texto-secundario)' }} />
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -595,7 +674,8 @@ export const DashboardBi = () => {
                                                     />
                                                 ))}
                                             </Pie>
-                                            <Tooltip formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} />
+                                            <Tooltip formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                                contentStyle={{ background: "var(--branco)", color: "var(--texto-primario)", borderRadius: "var(--border-radius-componente)", border: '1px solid var(--texto-secundario)' }} />
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -623,7 +703,7 @@ export const DashboardBi = () => {
                         <div className="box_topo_dre">
                             <h2>Demonstração do Resultado do Exercício (DRE)</h2>
                             <div className="box_btns_salvar">
-                                <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button>
+                                {/* <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button> */}
                                 <button onClick={salvarDRE}>Salvar PDF</button>
                             </div>
                         </div>
@@ -636,7 +716,7 @@ export const DashboardBi = () => {
                                     <div className="header_dados_dre">
                                         <p><strong>Descrição</strong></p>
                                         <p><strong>Total</strong></p>
-                                        <p><strong>Análise Vertical</strong></p>
+                                        <p><strong>AV.</strong></p>
                                     </div>
                                 </div>
 
@@ -646,21 +726,22 @@ export const DashboardBi = () => {
                                         <div className="header_info_resultado">
                                             <p><strong>{grupo.titulo}</strong></p>
                                             <p><strong>{grupo.dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
+                                            <p><strong>{((grupo.dados.total / summary.receitas) * 100).toFixed(2)}%</strong></p>
                                         </div>
 
                                         {/* Categorias */}
                                         {Object.entries(grupo.dados.categorias).map(([categoria, dados]) => (
                                             <React.Fragment key={categoria}>
                                                 <div key={categoria} className="box_categorias_dre">
-                                                    <div>{categoria}</div>
-                                                    <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                                                    <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
+                                                    <p>{categoria}</p>
+                                                    <p>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                                    <p>{((dados.total / summary.receitas) * 100).toFixed(2)}%</p>
                                                 </div>
                                                 {/* Subcategorias */}
                                                 {Object.entries(dados.subcategorias).map(([sub, valor]) => (
                                                     <div key={sub} className="box_subcategorias_dre">
-                                                        <div><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {sub}</div>
-                                                        <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                                                        <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {sub}</p>
+                                                        <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                                     </div>
                                                 ))}
 
@@ -674,185 +755,6 @@ export const DashboardBi = () => {
                         </div>
 
                     </div>
-
-                    // <div className="dreContainer">
-
-                    //     <div className="box_topo_dre">
-                    //         <h2>Demonstração do Resultado do Exercício (DRE)</h2>
-                    //         <div className="box_btns_salvar">
-                    //             <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button>
-                    //             <button onClick={salvarDRE}>Salvar PDF</button>
-                    //         </div>
-                    //     </div>
-
-                    //     <div className="wrapper_dre">
-
-                    //         <div className="box_resultados_dre">
-
-                    //             <div className="box_header_dre">
-
-                    //                 <div className="header_dados_dre">
-                    //                     <p><strong>Descrição</strong></p>
-                    //                     <p><strong>Total</strong></p>
-                    //                     <p><strong>Análise Vertical</strong></p>
-                    //                 </div>
-
-                    //             </div>
-
-                    //             {/* /* Receita Bruta */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Receita Bruta</strong>
-                    //                 </div>
-                    //                 {Object.entries(receitasAgrupadas).map(([categoria, dados]) => (
-                    //                     <React.Fragment key={categoria}>
-                    //                         <div className="box_categorias_dre">
-                    //                             <div>{categoria}</div>
-                    //                             <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                             <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                    //                         </div>
-                    //                         {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                    //                             <div key={sub} className="box_subcategorias_dre">
-                    //                                 <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                    //                                 <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                 <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div>
-                    //                             </div>
-                    //                         ))}
-                    //                     </React.Fragment>
-                    //                 ))}
-                    //             </div>
-
-                    //             {/* Deduções e Impostos */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Deduções e Impostos (-)</strong>
-                    //                 </div>
-                    //                 {Object.entries(despesasAgrupadas).map(([categoria, dados]) =>
-                    //                     categoria.toLowerCase() === "impostos" && (
-                    //                         <React.Fragment key={categoria}>
-                    //                             <div className="box_categorias_dre">
-                    //                                 <div>{categoria}</div>
-                    //                                 <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                 <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                    //                             </div>
-                    //                             {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                    //                                 <div key={sub} className="box_subcategorias_dre">
-                    //                                     <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                    //                                     <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                     {/* <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div> */}
-                    //                                 </div>
-                    //                             ))}
-                    //                         </React.Fragment>
-                    //                     ))}
-                    //             </div>
-
-                    //             {/* Receita Líquida */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Receita Operacional Líquida</strong>
-                    //                     <strong>{receitaLiquida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //             {/* Custo Variável (CPV ou CMV) */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Custo Variável (CPV ou CMV)</strong>
-                    //                 </div>
-                    //                 {Object.entries(despesasAgrupadas).map(([categoria, dados]) =>
-                    //                     categoria.toLowerCase() === "custos" && (
-                    //                         <React.Fragment key={categoria}>
-                    //                             <div className="box_categorias_dre">
-                    //                                 <div>{categoria}</div>
-                    //                                 <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                 <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                    //                             </div>
-                    //                             {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                    //                                 <div key={sub} className="box_subcategorias_dre">
-                    //                                     <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                    //                                     <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                 </div>
-                    //                             ))}
-                    //                         </React.Fragment>
-                    //                     ))}
-
-                    //             </div>
-
-                    //             {/* Resultado bruto */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Resultado Bruto</strong>
-                    //                     <strong>{(summary.receitas - custos).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //             {/* Despesas Operacionais */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Despesas Operacionais (-)</strong>
-                    //                     <strong>{(summary.receitas - custos).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //             {/* /* Despesas Variáveis */}
-                    //             <div className="resultado_dre">
-                    //                 {despesasOrdenadas.map(([categoria, dados]) =>
-                    //                     categoria.toLowerCase() !== "impostos" && categoria.toLowerCase() !== "custos" && (
-                    //                         <React.Fragment key={categoria}>
-                    //                             <div className="box_categorias_dre">
-                    //                                 <div>{categoria}</div>
-                    //                                 <div>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                 <div>{((dados.total / summary.receitas) * 100).toFixed(2)}%</div>
-                    //                             </div>
-                    //                             {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                    //                                 <div key={sub} className="box_subcategorias_dre">
-                    //                                     <div className="nome_subcategoria"><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> <p>{sub}</p></div>
-                    //                                     <div>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    //                                     <div>{((valor / summary.receitas) * 100).toFixed(2)}%</div>
-                    //                                 </div>
-                    //                             ))}
-                    //                         </React.Fragment>
-                    //                     ))}
-
-                    //             </div>
-
-                    //             {/* Lucro/Prejuízo Operacional */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Lucro/Prejuízo Operacional</strong>
-                    //                     <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //             {/* Outras Receitas/Despesas */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Outras Receitas/Despesas</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //             {/* Resultado Antes do IR e CSLL */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Resultado Antes do IR e CSLL</strong>
-                    //                     <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //             {/* Lucro/Prejuízo Acumulado */}
-                    //             <div className="resultado_dre">
-                    //                 <div className="header_info_resultado">
-                    //                     <strong>Lucro/Prejuízo Acumulado</strong>
-                    //                     <strong>{lucroBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
-                    //                     <strong>{((lucroBruto / summary.receitas) * 100).toFixed(2)}%</strong>
-                    //                 </div>
-                    //             </div>
-
-                    //         </div>
-
-                    //     </div>
-
-                    // </div>
 
                 )}
 

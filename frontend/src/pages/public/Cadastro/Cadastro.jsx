@@ -14,7 +14,7 @@ import styles from '../Auth.module.scss'
 import * as PiIcons from "react-icons/pi";
 
 // Imagens
-import iconeLogo from '../../../assets/images/icone-logo-black.png'
+import iconeLogo from '../../../assets/images/icone-logo.png'
 
 export const Cadastro = () => {
 
@@ -73,7 +73,7 @@ export const Cadastro = () => {
                 <div className={styles.box_header_form}>
                     <div className={styles.box_logo_now_bi}>
                         <img src={iconeLogo} />
-                        <p>now<span>BI</span></p>
+                        <p>NowBi</p>
                     </div>
                     <h2>Cadastre-se</h2>
                     <p>Teste gratuitamente por 7 dias!</p>
