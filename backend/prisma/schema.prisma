@@ -17,8 +17,8 @@ model Usuario {
     updated_at DateTime @updatedAt
 
     dataFimPeriodoTeste DateTime
-    isPeriodoTesteAtivo Boolean  @default(true)
-    isPlanoAtivo        Boolean  @default(false)
+    isPeriodoTesteAtivo Boolean  @default(false)
+    isPlanoAtivo        Boolean  @default(true)
 
     bairro         String?        @db.VarChar(100)
     cep            String?        @db.VarChar(10)
