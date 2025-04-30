@@ -14,14 +14,12 @@ export const PrivateRoutes = ({ children }) => {
         // Verificando se não existe token dentro do Auth e redirecionando para /login
         if (!auth.token) {
             // Se nao existir token dentro do Auth redireciona para /login
-            navigate("/")
-            return
+            return navigate("/")
         }
 
         // Se não tiver periodo de teste ou plano ativo redireciona para /planos
-        if (auth.isPeriodoTesteAtivo === false && auth.isPlanoAtivo === false && location.pathname !== "/planos") {
-            navigate("/planos")
-            return
+        if (!auth.isPeriodoTesteAtivo && !auth.isPlanoAtivo && location.pathname !== "/planos") {
+            return navigate("/planos")
         }
 
     }, [auth.token, auth.isPeriodoTesteAtivo, auth.isPlanoAtivo, location.pathname, navigate])

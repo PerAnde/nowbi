@@ -31,7 +31,7 @@ export const AppRoutes = () => {
                 {/* <Route path='/cadastro' element={<Cadastro />} /> */}
                 {/* Rotas Privadas Usuario */}
                 <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
-                <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} />
+                {/* <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} /> */}
                 <Route path='/planos' element={<PrivateRoutes><Planos /></PrivateRoutes>} />
                 <Route path='/suporte' element={<PrivateRoutes><Suporte /></PrivateRoutes>} />
                 {/* Rotas Privadas Sistema */}
