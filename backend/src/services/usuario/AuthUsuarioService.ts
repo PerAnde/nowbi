@@ -46,7 +46,9 @@ class AuthUsuarioService {
             id: usuario.id,
             name: usuario.name,
             email: usuario.email,
-            token: token
+            token: token,
+            isPeriodoTesteAtivo: usuario.isPeriodoTesteAtivo,
+            isPlanoAtivo: usuario.isPlanoAtivo,
         }
     }
 }

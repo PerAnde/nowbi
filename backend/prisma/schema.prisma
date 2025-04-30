@@ -8,13 +8,18 @@ datasource db {
 }
 
 model Usuario {
-    id             String         @id @default(uuid())
-    name           String
-    email          String         @unique
-    cpf_cnpj       String         @unique
-    password       String
-    created_at     DateTime       @default(now())
-    updated_at     DateTime       @updatedAt
+    id         String   @id @default(uuid())
+    name       String
+    email      String   @unique
+    cpf_cnpj   String   @unique
+    password   String
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    dataFimPeriodoTeste DateTime
+    isPeriodoTesteAtivo Boolean  @default(true)
+    isPlanoAtivo        Boolean  @default(false)
+
     bairro         String?        @db.VarChar(100)
     cep            String?        @db.VarChar(10)
     cidade         String?        @db.VarChar(100)

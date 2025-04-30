@@ -21,6 +21,8 @@ class DetailUsuarioService {
                 cep: true,
                 telefone: true,
                 img_usuario: true,
+                isPeriodoTesteAtivo: true,
+                isPlanoAtivo: true,
             }
         })
 

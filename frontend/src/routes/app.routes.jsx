@@ -9,6 +9,7 @@ import { Cadastro } from '../pages/public/Cadastro/Cadastro';
 // Rotas Privadas Usuario
 import { MinhaConta } from '../pages/private/MinhaConta/MinhaConta';
 import { Financeiro } from '../pages/private/Financeiro/Financeiro';
+import { Planos } from '../pages/private/Planos/Planos';
 import { Suporte } from '../pages/private/Suporte/Suporte';
 // Rotas Privadas Sistema
 import { Dashboard } from '../pages/private/Dashboard/Dashboard';
@@ -31,6 +32,7 @@ export const AppRoutes = () => {
                 {/* Rotas Privadas Usuario */}
                 <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
                 <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} />
+                <Route path='/planos' element={<PrivateRoutes><Planos /></PrivateRoutes>} />
                 <Route path='/suporte' element={<PrivateRoutes><Suporte /></PrivateRoutes>} />
                 {/* Rotas Privadas Sistema */}
                 <Route path='/dashboard' element={<PrivateRoutes><Dashboard /></PrivateRoutes>} />

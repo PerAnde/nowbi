@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma";
+import { addDays, addMinutes } from "date-fns"; // Depois alterar para addDays
 
 import { hash } from "bcryptjs";
 import { CreateCategoriasNovoUsuarioService } from "../categorias/CreateCategoriasNovoUsuarioService";
@@ -155,12 +156,16 @@ class CreateUsuarioService {
 
         const senhaCriptografada = await hash(password, 10)
 
+
         const usuario = await prismaClient.usuario.create({
             data: {
                 name: name,
                 email: email,
                 cpf_cnpj: cpfCnpjNumerico,
                 password: senhaCriptografada,
+                dataFimPeriodoTeste: addMinutes(new Date(), 1),
+                isPeriodoTesteAtivo: true,
+                isPlanoAtivo: false,
             },
             select: {
                 id: true,

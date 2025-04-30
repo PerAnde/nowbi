@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         const response = await LoginRequest(email, password)
 
         // const para armazenar dados recebidos da const response
-        const payload = { token: response.token, email }
+        const payload = { token: response.token, email: response.email, isPeriodoTesteAtivo: response.isPeriodoTesteAtivo, isPlanoAtivo: response.isPlanoAtivo }
 
         // Por fim setUsuario recebe os dados armazenados no payload
         setUsuario(payload)
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
                 await autenticacao(email, password)
                 return true;
-                
+
             } else {
                 return false;
             }

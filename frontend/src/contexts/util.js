@@ -3,14 +3,14 @@ import { api } from "../api/api"
 import { toast } from "sonner"
 
 // Funcao para salvar dados do usuario no localStorage
-export function setUsuarioLocalStorage(token) {
+export function setUsuarioLocalStorage(user) {
     //  Armazenando dados do usuario no localStorage
-    localStorage.setItem('token', JSON.stringify(token))
+    localStorage.setItem('user', JSON.stringify(user))
 }
 
 // Pegando informacoes
 export function getUsuarioLocalStorage() {
-    const json = localStorage.getItem('token')
+    const json = localStorage.getItem('user')
 
     // Se nao existir um json retorna null
     if (!json) {
@@ -25,7 +25,7 @@ export function getUsuarioLocalStorage() {
 }
 
 export function logout() {
-    localStorage.removeItem('token')
+    localStorage.removeItem('user')
 
     window.location.replace('/');
 }
