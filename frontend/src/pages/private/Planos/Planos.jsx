@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../../../layout/Layout'
 
 import styles from './Planos.module.scss'
+import imgUpgrade from '../../../assets/images/upgrade.png'
 
 import * as PiIcons from 'react-icons/pi';
 
@@ -29,7 +30,7 @@ export const Planos = () => {
                             <i><PiIcons.PiStarFour /></i>
                             <h4>Essencial</h4>
                             <p>R$ 19,90<span>/mês</span></p>
-                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20ativar%20minha%20conta%20no%20plano%20essencial,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Contratar</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20ativar%20minha%20conta%20no%20plano%20essencial,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Atualizar plano</Link>
                         </div>
                         <div className={styles.detalhes_plano}>
                             <h5>Plano Essencial inclui</h5>
@@ -46,7 +47,7 @@ export const Planos = () => {
                             <i><PiIcons.PiStarFour /></i>
                             <h4>Premium</h4>
                             <p>R$ 89,90<span>/mês</span></p>
-                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20ativar%20minha%20conta%20no%20plano%20premium,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Contratar</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20ativar%20minha%20conta%20no%20plano%20premium,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Atualizar plano</Link>
                         </div>
                         <div className={styles.detalhes_plano}>
                             <h5>Plano Premium inclui</h5>
@@ -63,7 +64,7 @@ export const Planos = () => {
                             <i><PiIcons.PiStarFour /></i>
                             <h4>Enterprise</h4>
                             <p>R$ 184,90<span>/mês</span></p>
-                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20ativar%20minha%20conta%20no%20plano%20enterprise,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Contratar</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20ativar%20minha%20conta%20no%20plano%20enterprise,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Atualizar plano</Link>
                         </div>
                         <div className={styles.detalhes_plano}>
                             <h5>Plano Enterprise inclui</h5>
@@ -77,10 +78,11 @@ export const Planos = () => {
 
                     <div className={styles.box_plano_sob_medida}>
                         <div className={styles.detalhes_plano_sob_medida}>
-                            <p>Precisa de mais de 10 empresas?</p>
+                            <h4>Precisa de mais de 10 empresas?</h4>
                             <p>Fale com a gente e vamos montar uma solução sob medida.</p>
+                            <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20um%20plano%20personalizado,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Fale conosco</Link>
                         </div>
-                        <Link to="https://api.whatsapp.com/send?phone=5547992220209&text=Ol%C3%A1,%20gostaria%20de%20um%20plano%20personalizado,%20pode%20me%20ajuda?" target='_blank' className={`${styles.btn_contratar} ${styles.btn_contratar_full}`}>Fale conosco</Link>
+                        <img src={imgUpgrade} alt="" />
                     </div>
                 </div>
 

@@ -349,7 +349,7 @@ export const Empresas = () => {
                                                 <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
                                             </div>
                                             <div className={`${styles.info_total_bi} ${empresa.bis.length === 0 ? '' : styles.existe_bi}`}>
-                                                <PiIcons.PiChartPieSliceDuotone />
+                                                <PiIcons.PiListBullets />
                                                 <p>{empresa.bis.length} BI's</p>
                                             </div>
                                         </div>

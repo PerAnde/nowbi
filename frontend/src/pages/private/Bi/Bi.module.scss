@@ -224,7 +224,7 @@ a.btn_link_principal.btn_reabrir {
     transition: all .3s;
 }
 
-.box_excluir_lancamentos>p {
+.box_excluir_lancamentos > p span {
     font-weight: var(--semi-bold);
 }
 
@@ -369,6 +369,12 @@ a.btn_excluir_lancamentos:hover {
     background-color: var(--cor-primaria-15);
     border-radius: 50%;
     transition: .3s;
+}
+
+.box_categoria:has(.input_checkbox:checked)  {
+    color: var(--texto-primario);
+    background-color: var(--cor-componente);
+    box-shadow: var(--box-shadow-table);
 }
 
 // Botoes Editar / Excluir

@@ -258,7 +258,7 @@ export const Bi = () => {
 
                 {lancamentosSelecionados.length > 0 ? (
                     <div className={styles.box_excluir_lancamentos}>
-                        <p>Excluir lançamentos</p>
+                        <p><span>{lancamentosSelecionados.length}</span> Selecionados</p>
                         <Link className={styles.btn_excluir_lancamentos} onClick={handleExcluirLancamentos}>
                             <PiIcons.PiTrashBold />
                             <p>Excluir</p>
