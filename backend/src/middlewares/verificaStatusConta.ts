@@ -37,13 +37,13 @@ export async function verificaStatusConta(req: Request, res: Response, next: Nex
                     }
                 })
             }
-        }
 
-        const rotaLiberada = req.path.startsWith("/planos")
-        if (!rotaLiberada) {
-            return res.status(403).json({
-                message: "Seu período de teste expirou. Para continuar, ative a sua conta!",
-            });
+            const rotaLiberada = req.path.startsWith("/planos")
+            if (!rotaLiberada) {
+                return res.status(403).json({
+                    message: "Seu período de teste expirou. Para continuar, ative a sua conta!",
+                });
+            }
         }
 
         return next();
@@ -52,5 +52,6 @@ export async function verificaStatusConta(req: Request, res: Response, next: Nex
         console.error("Erro ao verificar status da conta:", error)
         return res.status(500).json({ message: "Erro ao verificar status da conta!" })
     }
+
 
 }

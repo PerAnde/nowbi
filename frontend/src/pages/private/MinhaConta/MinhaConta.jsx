@@ -186,7 +186,7 @@ export const MinhaConta = () => {
                         <div className={`${styles.box_componente} ${styles.box_img_cadastro}`}></div>
                     </form>
                 ) : (
-                    <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
+                    <form onSubmit={handleSubmit} className={styles.form_detalhes_usuario}>
                         {/* Dados do usuário */}
                         <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
                             <div className={styles.box_img_cadastro}>
@@ -235,7 +235,7 @@ export const MinhaConta = () => {
                             </div>
                         </div>
 
-                        <div className={`${styles.box_componente} ${styles.box_infos_plano}`}>
+                        {/* <div className={`${styles.box_componente} ${styles.box_infos_plano}`}>
                             <div className={styles.header_box_plano}>
                                 <span>Seu plano</span>
                                 <h2>Free</h2>
@@ -253,7 +253,7 @@ export const MinhaConta = () => {
                             <div className={styles.box_btn_ativacao_upgrade}>
                                 <Link className={styles.btn_link_principal} onClick={() => setPopUpUpgrade(true)}><PiIcons.PiPlusBold /> Ativar conta</Link>
                             </div>
-                        </div>
+                        </div> */}
                     </form>
                 )}
 

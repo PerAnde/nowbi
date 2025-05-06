@@ -28,7 +28,7 @@ export const AppRoutes = () => {
             <Routes>
                 {/* Rotas Publicas */}
                 <Route path='/' element={<Login />} />
-                {/* <Route path='/cadastro' element={<Cadastro />} /> */}
+                <Route path='/cadastro' element={<Cadastro />} />
                 {/* Rotas Privadas Usuario */}
                 <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
                 {/* <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} /> */}

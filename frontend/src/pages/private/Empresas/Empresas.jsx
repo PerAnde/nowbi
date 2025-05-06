@@ -157,7 +157,8 @@ export const Empresas = () => {
                                     <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirGrupo(true)}><PiIcons.PiTrashBold />Excluir Grupo</Link>
                                 </div>
                             ) : (
-                                <Link className={`${styles.btn_link_principal} ${styles.btn_criar_grupo}`} onClick={() => setPopUpCriarGrupo(true)}><PiIcons.PiSquaresFourBold />Criar grupo</Link>
+                                ''
+                                // <Link className={`${styles.btn_link_principal} ${styles.btn_criar_grupo}`} onClick={() => setPopUpCriarGrupo(true)}><PiIcons.PiSquaresFourBold />Criar grupo</Link>
                             )}
                             <Link className={styles.btn_link_principal} onClick={() => setPopUpCriarEmpresa(true)}><PiIcons.PiPlusBold /> Nova empresa</Link>
                         </div>
@@ -166,13 +167,13 @@ export const Empresas = () => {
                 </div>
 
                 <div className={styles.box_buscas}>
-                    <div className={styles.box_select_grupo}>
+                    {/* <div className={styles.box_select_grupo}>
                         <SelectGrupoEmpresa
                             grupoSelecionado={grupoSelecionado}
                             setGrupoSelecionado={setGrupoSelecionado}
                             grupos={grupos}
                         />
-                    </div>
+                    </div> */}
                     {grupoSelecionado ? (
                         ''
                     ) : (
@@ -314,14 +315,14 @@ export const Empresas = () => {
                                                     <PiIcons.PiNotePencilBold />
                                                     <p>Editar</p>
                                                 </Link>
-                                                <Link
+                                                {/* <Link
                                                     onClick={() => {
                                                         setEmpresaSelecionada(empresa.id)
                                                         setPopUpAddEmpresaGrupo(true)
                                                     }}>
                                                     <PiIcons.PiSquaresFourBold />
                                                     <p>Grupo</p>
-                                                </Link>
+                                                </Link> */}
                                                 <Link onClick={handleLinkCopiado} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
                                                     <PiIcons.PiLinkBold />
                                                     <p>Link do BI</p>

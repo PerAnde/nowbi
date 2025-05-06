@@ -56,9 +56,9 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiUser className={styles.icon} /> Minha conta
                         </Link>
-                        {/* <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiCurrencyDollar className={styles.icon} /> Financeiro
-                        </Link> */}
+                        <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiSketchLogo className={styles.icon} /> Planos
+                        </Link>
                         <p>Suporte</p>
                         <Link to='/suporte' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiQuestion className={styles.icon} /> Ajuda

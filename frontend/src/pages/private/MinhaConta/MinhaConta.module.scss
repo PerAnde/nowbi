@@ -16,10 +16,10 @@
     cursor: default;
 }
 
-.form_cadastro_empresa {
+.form_detalhes_usuario {
     grid-column: 1/5;
     display: grid;
-    grid-template-columns: 2fr 2fr;
+    // grid-template-columns: 2fr 2fr;
     gap: 2rem;
 }
 
@@ -145,7 +145,7 @@ a.btn_link_principal:hover {
 }
 
 @media screen and (max-width: 850px) {
-    .form_cadastro_empresa {
+    .form_detalhes_usuario {
         grid-template-columns: 1fr;
     }
 

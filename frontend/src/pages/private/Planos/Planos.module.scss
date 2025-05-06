@@ -15,3 +15,119 @@
     color: var(--texto-secundario);
     cursor: default;
 }
+
+.box_conteudos_planos{
+    grid-column: 1/4;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.box_plano{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    border: 1px solid var(--border-input);
+    box-shadow: var(--box-shadow-componente);
+    border-radius: var(--border-radius-componente);
+    background-color: var(--cor-componente);
+}
+
+.header_plano{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--background);
+    border-radius: var(--border-radius-componente);
+}
+
+.header_plano i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--cor-primaria-15);
+    color: var(--cor-primaria);
+    border-radius: 50%;
+}
+
+.header_plano h4{
+    font-size: 2rem;
+    font-weight: var(--semi-bold);
+}
+
+.header_plano p{
+    font-size: 2.5rem;
+}
+
+.header_plano span{
+    font-size: 1.6rem;
+}
+
+.btn_contratar{
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-primaria-claro));
+    color: var(--branco);
+    border-radius: var(--border-radius-button);
+    padding: 1.5rem;
+}
+
+.detalhes_plano{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.detalhes_plano h5{
+    color: var(--texto-secundario);
+    font-size: 1.6rem;
+    font-weight: var(--regular);
+}
+
+.detalhes_plano p{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.icone_detalhes_plano{
+    color: var(--cor-primaria);
+    font-size: 1.4rem;
+}
+
+.box_plano_sob_medida{
+    display: flex;
+    background-color: var(--cor-componente);
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-radius: var(--border-radius-componente);
+    grid-column: 1/4;
+}
+
+.detalhes_plano_sob_medida{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+@media screen and (max-width: 1100px) {
+    .box_conteudos_planos{
+        grid-template-columns: 1fr;
+    }
+
+    .box_plano{
+        grid-column: 1/4;
+    }
+
+    .box_plano_sob_medida{
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
