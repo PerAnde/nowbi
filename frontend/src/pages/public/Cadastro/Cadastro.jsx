@@ -15,6 +15,7 @@ import * as PiIcons from "react-icons/pi";
 
 // Imagens
 import iconeLogo from '../../../assets/images/icone-logo.png'
+import imgAuth from '../../../assets/images/imgAuth.jpg'
 
 export const Cadastro = () => {
 
@@ -51,7 +52,7 @@ export const Cadastro = () => {
 
             const success = await auth.signUp(name, email, cpf_cnpj, password)
 
-            if(success) {
+            if (success) {
                 navigate("/dashboard");
             } else {
                 setLoading(false)
@@ -60,7 +61,7 @@ export const Cadastro = () => {
         } catch (error) {
             toast.error(error.message || "Erro ao criar conta!")
             setLoading(false)
-        } 
+        }
 
     }
 
@@ -69,59 +70,65 @@ export const Cadastro = () => {
         <div className={styles.container_auth}>
 
             <div className={styles.box_form}>
+                <div className={styles.form}>
 
-                <div className={styles.box_header_form}>
-                    <div className={styles.box_logo_now_bi}>
-                        <img src={iconeLogo} />
-                        <p>NowBi</p>
-                    </div>
-                    <h2>Cadastre-se</h2>
-                    <p>Teste gratuitamente por 7 dias!</p>
-                </div>
-
-                <form onSubmit={handleSubmit} >
-                    <label>
-                        <p>Nome ou Razão Social:</p>
-                        <Input type="text" placeholder="Nome ou Razão Social" value={name} onChange={(e) => setName(e.target.value)} />
-                    </label>
-                    <div className={styles.box_dados_cadastro}>
-                        <label>
-                            <p>Email:</p>
-                            <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        </label>
-                        <label>
-                            <p>CPF ou CNPJ:</p>
-                            <Input type="text" placeholder="CPF ou CNPJ" value={cpf_cnpj} onChange={(e) => setCpf_cnpj(e.target.value)} />
-                        </label>
-                    </div>
-                    <div className={styles.box_dados_cadastro}>
-                        <label>
-                            <p>Senha:</p>
-                            <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        </label>
-
-                        <label>
-                            <p>Confirmar senha:</p>
-                            <Input type="password" placeholder="Senha" value={passwordMatch} onChange={(e) => setPasswordMatch(e.target.value)} />
-                        </label>
-                    </div>
-
-                    <ButtonAuth type="submit" loading={loading}>Cadastrar</ButtonAuth>
-                </form>
-
-                <Link to="/" className={styles.box_link}>
-
-                    <div className={styles.link}>
-                        <PiIcons.PiSignInDuotone className={styles.icon} />
-                        <div>
-                            <p>Já possui uma conta?</p>
-                            <p><span>Acesse sua conta!</span></p>
+                    <div className={styles.box_header_form}>
+                        <div className={styles.box_logo_now_bi}>
+                            <img src={iconeLogo} />
+                            <p>NowBi</p>
                         </div>
+                        <h2>Cadastre-se</h2>
+                        <p>Teste gratuitamente por 7 dias!</p>
                     </div>
 
-                    <PiIcons.PiCaretRight className={styles.icon} />
-                </Link>
+                    <form onSubmit={handleSubmit} >
+                        <label>
+                            <p>Nome ou Razão Social:</p>
+                            <Input type="text" placeholder="Nome ou Razão Social" value={name} onChange={(e) => setName(e.target.value)} />
+                        </label>
+                        <div className={styles.box_dados_cadastro}>
+                            <label>
+                                <p>Email:</p>
+                                <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </label>
+                            <label>
+                                <p>CPF ou CNPJ:</p>
+                                <Input type="text" placeholder="CPF ou CNPJ" value={cpf_cnpj} onChange={(e) => setCpf_cnpj(e.target.value)} />
+                            </label>
+                        </div>
+                        <div className={styles.box_dados_cadastro}>
+                            <label>
+                                <p>Senha:</p>
+                                <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </label>
 
+                            <label>
+                                <p>Confirmar senha:</p>
+                                <Input type="password" placeholder="Senha" value={passwordMatch} onChange={(e) => setPasswordMatch(e.target.value)} />
+                            </label>
+                        </div>
+
+                        <ButtonAuth type="submit" loading={loading}>Cadastrar</ButtonAuth>
+                    </form>
+
+                    <Link to="/" className={styles.box_link}>
+
+                        <div className={styles.link}>
+                            <PiIcons.PiSignInDuotone className={styles.icon} />
+                            <div>
+                                <p>Já possui uma conta?</p>
+                                <p><span>Acesse sua conta!</span></p>
+                            </div>
+                        </div>
+
+                        <PiIcons.PiCaretRight className={styles.icon} />
+                    </Link>
+
+                </div>
+            </div>
+
+            <div className={styles.box_img_auth}>
+                <img src={imgAuth} alt="" />
             </div>
 
         </div>

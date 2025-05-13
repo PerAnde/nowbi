@@ -15,6 +15,7 @@ import * as PiIcons from "react-icons/pi";
 
 // Imagens
 import iconeLogo from '../../../assets/images/icone-logo.png'
+import imgAuth from '../../../assets/images/imgAuth.jpg'
 import { toast } from 'sonner'
 
 export const Login = () => {
@@ -72,54 +73,60 @@ export const Login = () => {
         <div className={styles.container_auth}>
 
             <div className={styles.box_form}>
+                <div className={styles.form}>
 
-                <div className={styles.box_header_form}>
-                    <div className={styles.box_logo_now_bi}>
-                        <img src={iconeLogo} />
-                        <p>NowBi</p>
-                    </div>
-                    <h2>Olá, bem vindo de volta!</h2>
-                    <p>Insira suas credenciais para continuar</p>
-                </div>
-
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        <p>Login:</p>
-                        <Input type="email" placeholder="Digite seu email" value={email} onChange={(e) => setEmail(e.target.value)} className={`${campoEmailObrigatorio ? styles.input_erro : ''}`} />
-
-                        {campoEmailObrigatorio ? (
-                            <span className={styles.preencher_campos}>*Campo obrigatório!</span>
-                        ) : (
-                            ''
-                        )}
-                    </label>
-                    <label>
-                        <p>Senha:</p>
-                        <Input type="password" placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)} className={`${campoPasswordObrigatorio ? styles.input_erro : ''}`} />
-                        {campoPasswordObrigatorio ? (
-                            <span className={styles.preencher_campos}>*Campo obrigatório!</span>
-                        ) : (
-                            ''
-                        )}
-                    </label>
-
-                    <ButtonAuth type="submit" loading={loading}>Entrar</ButtonAuth>
-
-                </form>
-
-                <Link to="/cadastro" className={styles.box_link}>
-
-                    <div className={styles.link}>
-                        <PiIcons.PiStarDuotone className={styles.icon} />
-                        <div>
-                            <p>Não tem uma conta?</p>
-                            <p><span>Teste grátis por 7 dias!</span></p>
+                    <div className={styles.box_header_form}>
+                        <div className={styles.box_logo_now_bi}>
+                            <img src={iconeLogo} />
+                            <p>NowBi</p>
                         </div>
+                        <h2>Olá, bem vindo de volta!</h2>
+                        <p>Insira suas credenciais para continuar</p>
                     </div>
 
-                    <PiIcons.PiCaretRight className={styles.icon} />
-                </Link>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            <p>Login:</p>
+                            <Input type="email" placeholder="Digite seu email" value={email} onChange={(e) => setEmail(e.target.value)} className={`${campoEmailObrigatorio ? styles.input_erro : ''}`} />
 
+                            {campoEmailObrigatorio ? (
+                                <span className={styles.preencher_campos}>*Campo obrigatório!</span>
+                            ) : (
+                                ''
+                            )}
+                        </label>
+                        <label>
+                            <p>Senha:</p>
+                            <Input type="password" placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)} className={`${campoPasswordObrigatorio ? styles.input_erro : ''}`} />
+                            {campoPasswordObrigatorio ? (
+                                <span className={styles.preencher_campos}>*Campo obrigatório!</span>
+                            ) : (
+                                ''
+                            )}
+                        </label>
+
+                        <ButtonAuth type="submit" loading={loading}>Entrar</ButtonAuth>
+
+                    </form>
+
+                    <Link to="/cadastro" className={styles.box_link}>
+
+                        <div className={styles.link}>
+                            <PiIcons.PiStarDuotone className={styles.icon} />
+                            <div>
+                                <p>Não tem uma conta?</p>
+                                <p><span>Teste grátis por 7 dias!</span></p>
+                            </div>
+                        </div>
+
+                        <PiIcons.PiCaretRight className={styles.icon} />
+                    </Link>
+
+                </div>
+            </div>
+
+            <div className={styles.box_img_auth}>
+                <img src={imgAuth} alt="" />
             </div>
 
         </div>
