@@ -405,7 +405,7 @@ export const DashboardBi = () => {
                     titulo: 'Resultado Bruto',
                     grupo: 'RESULTADO_BRUTO',
                     dados: {
-                        total: custoVariavel - receitaLiquida,
+                        total: receitaLiquida - custoVariavel,
                         categorias: {}
                     },
                     isResultado: true
