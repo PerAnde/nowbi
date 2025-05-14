@@ -328,7 +328,6 @@ export const DashboardBi = () => {
         { titulo: 'Deduções e Impostos (-)', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
         { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
         { titulo: 'Custo Variável (CPV ou CMV)', grupo: 'CUSTO_VARIAVEL' },
-        { titulo: 'Outras Receitas', grupo: 'OUTRAS_RECEITAS' },
         { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
         { titulo: 'Despesas Financeiras', grupo: 'DESPESAS_FINANCEIRAS' },
         { titulo: 'Outras Despesas', grupo: 'OUTRAS_DESPESAS' },
@@ -379,7 +378,7 @@ export const DashboardBi = () => {
                 });
             }
 
-            // Depois de Deduções, inserir Receita Operacional Líquida
+            // Depois de DEDUCOES_DA_RECEITA_BRUTA, inserir Receita Operacional Líquida
             if (grupo.grupo === 'DEDUCOES_DA_RECEITA_BRUTA') {
                 const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
                 const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
@@ -395,6 +394,7 @@ export const DashboardBi = () => {
                 });
             }
 
+            // Depois de CUSTO_VARIAVEL, inserir Receita Bruto
             if (grupo.grupo === 'CUSTO_VARIAVEL') {
                 const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
                 const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
@@ -410,6 +410,41 @@ export const DashboardBi = () => {
                     },
                     isResultado: true
                 });
+            }
+
+            // Após OUTRAS_DESPESAS, inserir LUCRO/PREJUIZO OPERACIONAL
+            if (grupo.grupo === 'OUTRAS_DESPESAS') {
+                const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
+                const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
+                const custoVariavel = getTotal('CUSTO_VARIAVEL');
+                const despesasOperacionais = getTotal('DESPESAS_OPERACIONAIS');
+                const despesasFinanceiras = getTotal('DESPESAS_FINANCEIRAS');
+                const outrasDespesas = getTotal('OUTRAS_DESPESAS');
+
+                const receitaOperacionalBruta = receitaBruta - deducoes - custoVariavel;
+                const totalLucroPrejuizoOperacional = receitaOperacionalBruta - despesasOperacionais - despesasFinanceiras - outrasDespesas;
+
+                resultado.push({
+                    titulo: 'Lucro/Prejuízo Operacional',
+                    grupo: 'LUCRO_PREJUIZO_OPERACIONAL',
+                    dados: {
+                        total: totalLucroPrejuizoOperacional,
+                        categorias: {}
+                    },
+                    isResultado: true
+                });
+            }
+
+            // Após OUTRAS_DESPESAS, inserir OUTRAS_RECEITAS (se existir)
+            if (grupo.grupo === 'OUTRAS_DESPESAS') {
+                const outrasReceitas = dadosAgrupados['OUTRAS_RECEITAS'];
+                if (outrasReceitas) {
+                    resultado.push({
+                        titulo: 'Outras Receitas',
+                        grupo: 'OUTRAS_RECEITAS',
+                        dados: outrasReceitas
+                    });
+                }
             }
 
             if (grupo.grupo === 'IR_CSLL') {
@@ -716,7 +751,7 @@ export const DashboardBi = () => {
                                     <div className="header_dados_dre">
                                         <p><strong>Descrição</strong></p>
                                         <p><strong>Total</strong></p>
-                                        <p><strong>AV.</strong></p>
+                                        <p><strong>A.V.</strong></p>
                                     </div>
                                 </div>
 
