@@ -1,6 +1,17 @@
 import { api } from '../api/api'
 import { toast } from 'sonner'
 
+// Buscar Lancamento
+export const buscarLancamento = async (id) => {
+    try {
+        const response = await api.get(`/lancamentos/${id}`)
+        return response.data
+    } catch (error) {
+        toast.error(error.response.data.error);
+        return false;
+    }
+}
+
 // Criar Lancamento
 export const criarLancamento = async (id, valor, tipo, categoria, subcategoria) => {
 
@@ -57,8 +68,8 @@ export const editarLancamento = async (valorNumerico, tipo, categoriaSelecionada
         const data = {
             valor: valorNumerico,
             tipo,
-            categoria: categoriaSelecionada.id,
-            subcategoria: subcategoriaSelecionada?.id ? String(subcategoriaSelecionada.id) : null,
+            categoria: categoriaSelecionada,
+            subcategoria: subcategoriaSelecionada || null,
         };
 
         if (!subcategoriaSelecionada) {
@@ -67,7 +78,7 @@ export const editarLancamento = async (valorNumerico, tipo, categoriaSelecionada
 
         console.log(data)
 
-        await api.put(`/lancamentos/${lancamento.id}`, data);
+        await api.put(`/lancamentos/${lancamento}`, data);
         toast.success("Lançamento atualizado com sucesso!");
         return true;
     } catch (error) {

@@ -18,8 +18,17 @@ export const SelectSubcategoria = ({ categoriaSelecionada, subcategoriaSeleciona
         }
     }, [categoriaSelecionada]);
 
+    useEffect(() => {
+        if (subcategoriaSelecionada && subcategorias.length > 0) {
+            const existe = subcategorias.find(sc => sc.id === subcategoriaSelecionada);
+            if (!existe) {
+                // resetar se for inválida
+                setSubcategoriaSelecionada('');
+            }
+        }
+    }, [subcategorias]);
 
-    const subcategoriaOptions = subcategorias.map((subcategoria) => ({
+    const subcategoriaOptions = (subcategorias || []).map((subcategoria) => ({
         value: subcategoria.id,
         label: subcategoria.name
     }))

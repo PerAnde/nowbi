@@ -12,6 +12,9 @@ import { AuthUsuarioController } from '../controllers/usuario/AuthUsuarioControl
 import { DetailUsuarioController } from '../controllers/usuario/DetailUsuarioController';
 import { UpdateUsuarioController } from '../controllers/usuario/UpdateUsuarioController';
 
+// Controllers Planos e Teste
+import { ListPlanosController } from '../controllers/planos/planosController';
+
 // Controllers Grupo Empresas
 import { CreateGrupoController } from '../controllers/grupoEmpresas/CreateGrupoController';
 import { ListGruposController } from '../controllers/grupoEmpresas/ListGruposController';
@@ -48,6 +51,7 @@ import { DeleteBiController } from '../controllers/bis/DeleteBiController';
 
 // Controllers Lancamento BI
 import { CreateLancamentoBiController } from '../controllers/lancamentosBi/CreateLancamentoBiController';
+import { ListLancamentoBIController } from '../controllers/lancamentosBi/ListLancamentoBIController';
 import { UpdateLancamentoBiController } from '../controllers/lancamentosBi/UpdateLancamentoBiController';
 import { DeleteLancamentoBiController } from '../controllers/lancamentosBi/DeleteLancamentoBiController';
 import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/DeleteLancamentosBiController';
@@ -56,7 +60,6 @@ import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/Dele
 import { ListEmpresaDashboardBIController } from '../controllers/empresas/ListEmpresaDashboardBIController';
 
 import uploadConfig from '../config/multer'
-import { ListPlanosController } from '../controllers/planos/planosController';
 
 const router = Router();
 
@@ -105,6 +108,7 @@ router.delete('/bi/:id', isAuthenticated, verificaStatusConta, new DeleteBiContr
 
 // Rotas Lancamento BI
 router.post('/lancamentos/:id', isAuthenticated, verificaStatusConta, new CreateLancamentoBiController().handle)
+router.get('/lancamentos/:id', isAuthenticated, verificaStatusConta, new ListLancamentoBIController().handle)
 router.put('/lancamentos/:id', isAuthenticated, verificaStatusConta, new UpdateLancamentoBiController().handle)
 router.delete('/lancamentos/:id', isAuthenticated, verificaStatusConta, new DeleteLancamentoBiController().handle)
 router.delete('/lancamentos', isAuthenticated, verificaStatusConta, new DeleteLancamentosBiController().handle)

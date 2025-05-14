@@ -6,9 +6,6 @@ export const buscarCategorias = async (setCategorias, setLoading) => {
 
     try {
 
-        // Time para testar Skeletons
-        // await new Promise(resolve => setTimeout(resolve, 2000))
-
         setLoading(true);
 
         const response = await api.get('/categorias')

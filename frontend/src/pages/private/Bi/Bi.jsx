@@ -312,7 +312,7 @@ export const Bi = () => {
                                 <p>{lancamento.subcategoria ? lancamento.subcategoria.name : <span>Sem subcategoria</span>}</p>
                                 <div className={styles.box_btns_opcoes_lancamento}>
                                     <Link className={styles.btn_editar_lancamento} onClick={() => {
-                                        setLancamentoSelecionado(lancamento)
+                                        setLancamentoSelecionado(lancamento.id)
                                         setPopUpEditarLancamento(true)
                                     }}>
                                         <PiIcons.PiNotePencilBold />

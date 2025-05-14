@@ -1,86 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'
 import { Input } from '../../../Input/Input';
 import { Button } from '../../../Button/Button';
-import { Select } from '../../../Select/Select';
+import { SelectCategoria } from '../../../Selects/SelectCategoria';
+import { SelectSubcategoria } from '../../../Selects/SelectSubcategoria';
 import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss';
-import { buscarCategorias } from '../../../../services/categorias';
-import { buscarSubcategorias } from '../../../../services/subcategorias';
+import { buscarLancamento } from '../../../../services/lancamentos';
 import { editarLancamento } from '../../../../services/lancamentos';
+import { formatarValor, removerFormatacaoMoeda } from '../../../../utils/formatUtils'
 
-export const EditarLancamento = ({ trigger, setTrigger, lancamento }) => {
+export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEditado }) => {
 
     const [valor, setValor] = useState('');
     const [tipo, setTipo] = useState('');
-    const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
-    const [subcategoriaSelecionada, setSubcategoriaSelecionada] = useState('');
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+    const [subcategoriaSelecionada, setSubcategoriaSelecionada] = useState(null);
 
-    const [categorias, setCategorias] = useState([]);
-    const [categoria, setCategoria] = useState([]);
-    const [subcategorias, setSubcategorias] = useState([]);
+    console.log(valor)
+    console.log(tipo)
+    console.log(categoriaSelecionada)
+    console.log(subcategoriaSelecionada)
 
-    const [loading, setLoading] = useState(false);
-
-    const [alterarCategoria, setAlterarCategoria] = useState(true);
-
-    // Atualizando os valores dos estados com o lançamento
     useEffect(() => {
-        if (lancamento) {
-            setValor(lancamento.valor || '');
-            setTipo(lancamento.tipo || '');
-            setCategoriaSelecionada(lancamento.categoria || '');
-            setSubcategoriaSelecionada(lancamento.subcategoria ? lancamento.subcategoria : '');
-        }
+        const fetchLancamento = async () => {
+            if (!lancamento) return;
+
+            const responseLancamento = await buscarLancamento(lancamento);
+
+            if (responseLancamento) {
+                setValor(formatarValor(responseLancamento.valor || ''));
+                setTipo(responseLancamento.tipo || '');
+                setCategoriaSelecionada(responseLancamento.categoria?.id || '');
+                setSubcategoriaSelecionada(responseLancamento.subcategoria?.id || '');
+            }
+
+        };
+
+        fetchLancamento();
     }, [lancamento]);
-
-    // Buscando todas as categorias
-    useEffect(() => {
-        buscarCategorias(setCategorias, setLoading);
-    }, []);
-
-    // Filtrando select de categorias pelo tipo RECEITA ou DESPESA
-    const categoriasFiltradosPorTipo = categorias.filter(categoria => categoria.tipo === tipo);
-
-    // Atualiza as subcategorias quando uma categoria é buscada
-    useEffect(() => {
-        if (categoriaSelecionada) {
-            buscarSubcategorias(categoriaSelecionada, setCategoria, setLoading);
-        }
-    }, [categoriaSelecionada]);
-
-    useEffect(() => {
-        if (categoria && categoria.subcategorias) {
-            setSubcategorias(categoria.subcategorias);
-        } else {
-            setSubcategorias([]);
-        }
-    }, [categoria]);
-
-    // Formata campo valor
-    const formatarValor = (valor) => {
-        valor = valor.replace(/\D/g, '');
-        if (!valor) return "R$ 0,00";
-
-        let valorNumerico = parseFloat(valor) / 100;
-        return `R$ ${valorNumerico.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    };
-
-    // Removendo formatação para enviar para a API
-    const removerFormatacaoMoeda = (valor) => {
-        if (!valor) return 0;
-
-        let numeroCorrigido = valor.replace(/[\sR$.]/g, "").replace(",", ".");
-
-        return parseFloat(numeroCorrigido);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const valorNumerico = removerFormatacaoMoeda(valor);
-
-        console.log(valorNumerico, tipo, categoriaSelecionada.id, subcategoriaSelecionada.id)
 
         const success = await editarLancamento(
             valorNumerico,
@@ -90,12 +52,21 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento }) => {
             lancamento
         );
 
+        console.log('Enviou dados:', {
+            valorNumerico,
+            tipo,
+            categoriaSelecionada,
+            subcategoriaSelecionada,
+            lancamento
+        });
+
         if (success) {
             setTrigger(false);
             setValor("");
             setTipo("");
             setCategoriaSelecionada("");
             setSubcategoriaSelecionada("");
+            lancamentoEditado();
         }
     };
 
@@ -105,83 +76,53 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento }) => {
                 <div className={styles.box_btn_fechar}>
                     <h3>Editar Lançamento</h3>
                     <span onClick={() => {
-                        setTrigger(false)
-                        setAlterarCategoria(true)
+                        setTrigger(false);
+                        setCategoriaSelecionada("");
+                        setSubcategoriaSelecionada("");
                     }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <Input
-                        type="text"
-                        placeholder="R$ 0,00"
-                        value={valor}
-                        onChange={(e) => setValor(formatarValor(e.target.value))}
-                    />
 
-                    {alterarCategoria ? (
-                        <div className={styles.box_link_alterar_categoria}>
-                            <Link onClick={() => setAlterarCategoria(false)}>Alterar categorias</Link>
+                    <Input type="text" placeholder="R$ 0,00" value={valor} onChange={(e) => setValor(formatarValor(e.target.value))} />
+
+                    <div className={styles.box_inputs}>
+                        <label htmlFor="receita" className={`${styles.box_input_radio} ${styles.input_receita}`} >
+                            <Input type="radio" name="tipo" id="receita" value="RECEITA" onChange={(e) => setTipo(e.target.value)} checked={tipo === "RECEITA"} />
+                            <label htmlFor="receita"><span><PiIcons.PiTrendUpBold /></span> Receita</label>
+                        </label>
+
+                        <label htmlFor="despesa" className={`${styles.box_input_radio} ${styles.input_despesa}`}>
+                            <Input type="radio" name="tipo" id="despesa" value="DESPESA" onChange={(e) => setTipo(e.target.value)} checked={tipo === "DESPESA"} />
+                            <label htmlFor="despesa"><span><PiIcons.PiTrendDownBold /></span> Despesa</label>
+                        </label>
+                    </div>
+
+                    <div className={styles.box_selects}>
+                        <div className={styles.box_select}>
+                            <SelectCategoria
+                                tipo={tipo}
+                                categoriaSelecionada={categoriaSelecionada}
+                                setCategoriaSelecionada={setCategoriaSelecionada}
+                            />
                         </div>
-                    ) : (
-                        <>
-                            <div className={styles.box_inputs}>
-                                <label htmlFor="receita" className={`${styles.box_input_radio} ${styles.input_receita}`}>
-                                    <Input
-                                        type="radio"
-                                        name="tipo"
-                                        id="receita"
-                                        value="RECEITA"
-                                        onChange={(e) => setTipo(e.target.value)}
-                                        checked={tipo === 'RECEITA'}
-                                    />
-                                    <label htmlFor="receita">
-                                        <span><PiIcons.PiTrendUpBold /></span> Receita
-                                    </label>
-                                </label>
 
-                                <label htmlFor="despesa" className={`${styles.box_input_radio} ${styles.input_despesa}`}>
-                                    <Input
-                                        type="radio"
-                                        name="tipo"
-                                        id="despesa"
-                                        value="DESPESA"
-                                        onChange={(e) => setTipo(e.target.value)}
-                                        checked={tipo === 'DESPESA'}
-                                    />
-                                    <label htmlFor="despesa">
-                                        <span><PiIcons.PiTrendDownBold /></span> Despesa
-                                    </label>
-                                </label>
-                            </div>
-
-                            <div className={styles.box_inputs}>
-                                <Select
-                                    options={categoriasFiltradosPorTipo.map(categoria => ({ value: categoria.id, label: categoria.name }))}
-                                    value={categoriaSelecionada}
-                                    onChange={(e) => setCategoriaSelecionada(e.target.value)}
-                                    placeholder="Selecione a categoria"
-                                />
-                            </div>
-
-                            <div className={styles.box_inputs}>
-                                {subcategorias.length === 0 ? "" : (
-                                    <Select
-                                        options={subcategorias.map(sub => ({ value: sub.id, label: sub.name }))}
-                                        value={subcategoriaSelecionada}
-                                        onChange={(e) => setSubcategoriaSelecionada(e.target.value)}
-                                        placeholder="Selecione a subcategoria"
-                                    />
-                                )}
-                            </div>
-                        </>
-                    )}
+                        <div className={styles.box_select}>
+                            <SelectSubcategoria
+                                categoriaSelecionada={categoriaSelecionada}
+                                subcategoriaSelecionada={subcategoriaSelecionada}
+                                setSubcategoriaSelecionada={setSubcategoriaSelecionada}
+                            />
+                        </div>
+                    </div>
 
                     <div className={styles.box_btn_button}>
                         <Button type="submit">Salvar alterações</Button>
                     </div>
-                </form >
+
+                </form>
             </div >
         </div >
     ) : '';

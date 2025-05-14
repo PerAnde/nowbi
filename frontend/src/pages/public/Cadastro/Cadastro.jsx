@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../contexts/useAuth'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { toast } from 'sonner'
 
 // Importando componentes
@@ -9,6 +11,8 @@ import { ButtonAuth } from '../../../components/ButtonAuth/ButtonAuth'
 
 // Estilos
 import styles from '../Auth.module.scss'
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 // Icones
 import * as PiIcons from "react-icons/pi";
@@ -16,6 +20,10 @@ import * as PiIcons from "react-icons/pi";
 // Imagens
 import iconeLogo from '../../../assets/images/icone-logo.png'
 import imgAuth from '../../../assets/images/imgAuth.jpg'
+import cliente01 from '../../../assets/images/cliente01.png'
+import cliente02 from '../../../assets/images/cliente02.png'
+import cliente03 from '../../../assets/images/cliente03.png'
+import cliente04 from '../../../assets/images/cliente04.png'
 
 export const Cadastro = () => {
 
@@ -128,6 +136,112 @@ export const Cadastro = () => {
             </div>
 
             <div className={styles.box_img_auth}>
+                <div className={styles.slide_auth}>
+                    <Swiper
+                        modules={[Autoplay, Pagination]}
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        }}
+                    >
+                        <SwiperSlide>
+                            <div className={styles.card_depoimento}>
+                                <div className={styles.box_header_depoimento}>
+                                    <div className={styles.box_stars_depoimento}>
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                    </div>
+                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                </div>
+                                <div className={styles.descricao_depoimento}>
+                                    <p>Lorem ipsum dolor sit amet...</p>
+                                </div>
+                                <div className={styles.infos_usuario_depoimento}>
+                                    <div className={styles.nome_depoimento}>
+                                        <h3>Juan Kuester</h3>
+                                        <p>Streetblanks</p>
+                                    </div>
+                                    <img src={cliente02} />
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={styles.card_depoimento}>
+                                <div className={styles.box_header_depoimento}>
+                                    <div className={styles.box_stars_depoimento}>
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                    </div>
+                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                </div>
+                                <div className={styles.descricao_depoimento}>
+                                    <p>Lorem ipsum dolor sit amet...</p>
+                                </div>
+                                <div className={styles.infos_usuario_depoimento}>
+                                    <div className={styles.nome_depoimento}>
+                                        <h3>Naiara Tiesen</h3>
+                                        <p>NP Gestão Financeira</p>
+                                    </div>
+                                    <img src={cliente01} />
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={styles.card_depoimento}>
+                                <div className={styles.box_header_depoimento}>
+                                    <div className={styles.box_stars_depoimento}>
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                    </div>
+                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                </div>
+                                <div className={styles.descricao_depoimento}>
+                                    <p>Lorem ipsum dolor sit amet...</p>
+                                </div>
+                                <div className={styles.infos_usuario_depoimento}>
+                                    <div className={styles.nome_depoimento}>
+                                        <h3>Bruna Galperin</h3>
+                                        <p>Salty Vibe</p>
+                                    </div>
+                                    <img src={cliente03} />
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className={styles.card_depoimento}>
+                                <div className={styles.box_header_depoimento}>
+                                    <div className={styles.box_stars_depoimento}>
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                        <PiIcons.PiStarFill className={styles.estrela_ok} />
+                                    </div>
+                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                </div>
+                                <div className={styles.descricao_depoimento}>
+                                    <p>Lorem ipsum dolor sit amet...</p>
+                                </div>
+                                <div className={styles.infos_usuario_depoimento}>
+                                    <div className={styles.nome_depoimento}>
+                                        <h3>Vitor</h3>
+                                        <p>Odonto Sul</p>
+                                    </div>
+                                    <img src={cliente04} />
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                    </Swiper>
+                </div>
                 <img src={imgAuth} alt="" />
             </div>
 
