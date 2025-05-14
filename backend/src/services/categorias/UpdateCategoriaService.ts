@@ -20,6 +20,7 @@ const gruposPermitidos = {
         "CUSTO_VARIAVEL",
         "DESPESAS_OPERACIONAIS",
         "DESPESAS_FINANCEIRAS",
+        "DESPESAS_VARIAVEIS",
         "OUTRAS_DESPESAS",
         "IR_CSLL",
     ] as GrupoDre[],
