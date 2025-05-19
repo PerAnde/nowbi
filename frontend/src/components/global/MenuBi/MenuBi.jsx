@@ -13,7 +13,10 @@ export const MenuBi = ({ abaAtiva, setViewMode }) => {
                     <PiIcons.PiChartPieSlice /> Resumo
                 </Link>
                 <Link className={`${styles.btn_menu} ${abaAtiva === "dre" ? styles.ativo : ""}`} onClick={() => setViewMode("dre")} >
-                    <PiIcons.PiListDashesBold /> DRE
+                    <PiIcons.PiRowsBold /> DRE
+                </Link>
+                <Link className={`${styles.btn_menu} ${styles.disable}`} >
+                    <PiIcons.PiListDashesBold /> Detalhes <span>Em breve</span>
                 </Link>
             </div>
         </div>

@@ -36,6 +36,22 @@
     color: var(--cor-primaria-claro);
 }
 
+.btn_menu.disable{
+    cursor: default;
+}
+
+.btn_menu.disable:hover{
+    background-color: transparent;
+}
+
+.btn_menu span{
+    font-size: 1rem;
+    padding: .5rem;
+    background-color: var(--cor-primaria-15);
+    border-radius: var(--border-radius-button);
+    color: var(--cor-primaria);
+}
+
 @media screen and (max-width: 500px){
     .links_menu{
         display: grid;

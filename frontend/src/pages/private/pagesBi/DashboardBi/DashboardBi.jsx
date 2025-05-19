@@ -1,86 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { buscarDashboardBi } from '../../../../services/dashboardBi';
-import { Link } from 'react-router-dom';
+import { processaDadosBi } from '../../../../utils/processaDadosBi';
+import { CoresGraficos } from '../../../../utils/coresGraficos';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
 import styles from './DashboardBi.module.scss';
 import './dre.css'
 import { LayoutBi } from '../../../../layout/LayoutBi/LayoutBi';
 import * as PiIcons from 'react-icons/pi';
-import { exportarParaExcel } from '../../../../utils/exportExcel'
 import { salvarDRE } from '../../../../utils/salvarPDF'
 import { SelectMesEmpresa } from '../../../../components/Selects/SelectMesEmpresa';
 import { SelectAnoEmpresa } from '../../../../components/Selects/SelectAnoEmpresa';
-
-const COLORS = [
-    "#3789da", "#ff8a5c", "#8378ea",
-    "#ffa55c", "#37a2da", "#ff6f5c",
-    "#ffc05c", "#eb5555", "#fff35c",
-    "#d655eb", "#ffdb5c", "#7893ea",
-    "#9678ea", "#37dac2", "#7880ea",
-    "#37cbda", "#37bcda", "#37daa6",
-    "#eb5587", "#eb55cf", "#78b8ea",
-    "#eb55ab", "#78a5ea", "#eb6755",
-]
-
-const processBIData = (empresa, selectedMonth) => {
-    const mesesAtivos = empresa.bis.filter(bi => bi.status);
-    const result = {};
-    let totalReceitas = 0;
-    let totalDespesas = 0;
-    // const categorias = {};
-    const categoriasPorGrupo = {};
-    const subcategorias = {};
-    const detalhes = [];
-
-    mesesAtivos.forEach(({ mes, ano, lancamentoBi }) => {
-        const mesAnoAtual = `${mes.toUpperCase()} / ${ano}`;
-
-        // Comparação do mês selecionado, ambos em maiúsculas
-        if (selectedMonth && mesAnoAtual !== selectedMonth.toUpperCase()) return;
-
-        // if (selectedMonth && mesAnoAtual !== selectedMonth) return; // Comparação correta
-
-        if (!result[mesAnoAtual]) {
-            result[mesAnoAtual] = { receitas: 0, despesas: 0 };
-        }
-
-        lancamentoBi.forEach(({ valor, tipo, categoria, subcategoria }) => {
-            const valorNum = parseFloat(valor);
-            detalhes.push({
-                mes: mesAnoAtual,
-                tipo,
-                valor: valorNum,
-                categoria: categoria?.name,
-                grupoDre: categoria?.grupoDre,
-                subcategoria: subcategoria?.name
-            });
-
-            if (tipo === "RECEITA") {
-                result[mesAnoAtual].receitas += valorNum;
-                totalReceitas += valorNum;
-            } else if (tipo === "DESPESA") {
-                result[mesAnoAtual].despesas += valorNum;
-                totalDespesas += valorNum;
-            }
-
-            if (categoria) {
-                // Adiciona a categoria ao grupo correspondente no agrupamento
-                if (!categoriasPorGrupo[categoria.grupoDre]) {
-                    categoriasPorGrupo[categoria.grupoDre] = [];
-                }
-                categoriasPorGrupo[categoria.grupoDre].push(categoria.name);
-            }
-
-            if (subcategoria) {
-                subcategorias[subcategoria.name] = (subcategorias[subcategoria.name] || 0) + valorNum;
-            }
-
-        });
-    });
-
-    return { result, summary: { receitas: totalReceitas, despesas: totalDespesas, categoriasPorGrupo, subcategorias, detalhes } };
-};
 
 export const DashboardBi = () => {
 
@@ -178,8 +108,8 @@ export const DashboardBi = () => {
             const biAtual = bisAtivosOrdenados[indexAtual];
             const biAnterior = bisAtivosOrdenados[indexAtual - 1];
 
-            const dadosAtuais = processBIData(empresa, `${biAtual.mes.toUpperCase()} / ${biAtual.ano}`);
-            const dadosAnteriores = biAnterior ? processBIData(empresa, `${biAnterior.mes.toUpperCase()} / ${biAnterior.ano}`) : null;
+            const dadosAtuais = processaDadosBi(empresa, `${biAtual.mes.toUpperCase()} / ${biAtual.ano}`);
+            const dadosAnteriores = biAnterior ? processaDadosBi(empresa, `${biAnterior.mes.toUpperCase()} / ${biAnterior.ano}`) : null;
 
             const receitaAtual = dadosAtuais.summary.receitas;
             const receitaAnterior = dadosAnteriores?.summary.receitas || 0;
@@ -254,74 +184,6 @@ export const DashboardBi = () => {
         .map(([name, value]) => ({ name, value }))
         .sort((a, b) => a.value - b.value);
 
-    // DRE
-    // Separando os dados
-    const receitas = summary.detalhes.filter(item => item.tipo === 'RECEITA');
-    const despesas = summary.detalhes.filter(item => item.tipo === 'DESPESA');
-
-    // Agrupando categorias
-    const agruparPorCategoria = (dados) => {
-        return dados.reduce((acc, item) => {
-            if (!acc[item.categoria]) {
-                acc[item.categoria] = { total: 0, subcategorias: {} };
-            }
-            acc[item.categoria].total += item.valor;
-            if (item.subcategoria) {
-                if (!acc[item.categoria].subcategorias[item.subcategoria]) {
-                    acc[item.categoria].subcategorias[item.subcategoria] = 0;
-                }
-                acc[item.categoria].subcategorias[item.subcategoria] += item.valor;
-            }
-            return acc;
-        }, {});
-    };
-
-    const receitasAgrupadas = agruparPorCategoria(receitas);
-    const despesasAgrupadas = agruparPorCategoria(despesas);
-
-    const lucroBruto = summary.receitas - summary.despesas;
-
-    const custos = Object.entries(despesasAgrupadas).find(
-        ([categoria]) => categoria.toLowerCase() === "custos"
-    )?.[1]?.total || 0;
-
-
-    const despesasOrdenadas = Object.entries(despesasAgrupadas).sort(([catA], [catB]) => {
-        if (catA.toLowerCase() === "despesas financeiras") return 1; // Move "Despesas Financeiras" para o final
-        if (catB.toLowerCase() === "despesas financeiras") return -1;
-        return 0;
-    });
-
-    // Buscando despesas comerciais
-    const despesasComerciais = Object.entries(despesasAgrupadas).find(
-        ([categoria]) => categoria.toLowerCase() === "despesas comerciais"
-    )?.[1]?.total || 0;
-    // Buscando despesas administrativas
-    const despesasAdministrativas = Object.entries(despesasAgrupadas).find(
-        ([categoria]) => categoria.toLowerCase() === "despesas administrativas"
-    )?.[1]?.total || 0;
-    // Buscando despesas pessoal
-    const despesasComPessoal = Object.entries(despesasAgrupadas).find(
-        ([categoria]) => categoria.toLowerCase() === "despesas com pessoal"
-    )?.[1]?.total || 0;
-    // Buscando despesas comerciais
-    const despesasFinanceiras = Object.entries(despesasAgrupadas).find(
-        ([categoria]) => categoria.toLowerCase() === "despesas financeiras"
-    )?.[1]?.total || 0;
-
-    // Margem de contribuição
-    const margemDeContribuicao = summary.receitas - custos - despesasComerciais;
-    const margemDeContribuicaoPercentual = summary.receitas > 0
-        ? ((margemDeContribuicao / summary.receitas) * 100).toFixed(2)
-        : "0.00";
-
-    // Ponto de equilíbrio
-    const pontoDeEquilibrio = despesasAdministrativas + despesasComPessoal + despesasFinanceiras;
-    const resultadoPontoDeEquilibrio = pontoDeEquilibrio / margemDeContribuicaoPercentual * 100
-
-    // Receita Operacional Líquida
-    // const receitaLiquida = summary.receitas - deducoesImpostos;
-
     // Filtro grupos de DRE
     const gruposDeDRE = [
         { titulo: 'Receita Operacional Bruta (+)', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
@@ -329,9 +191,10 @@ export const DashboardBi = () => {
         { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
         { titulo: 'Custo Variável (CPV ou CMV)', grupo: 'CUSTO_VARIAVEL' },
         { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
+        { titulo: 'Despesas Variáveis', grupo: 'DESPESAS_VARIAVEIS' },
         { titulo: 'Despesas Financeiras', grupo: 'DESPESAS_FINANCEIRAS' },
         { titulo: 'Outras Despesas', grupo: 'OUTRAS_DESPESAS' },
-        { titulo: 'Impostos (IR e CSLL)', grupo: 'IR_CSLL' }
+        { titulo: 'Lucro/Prejuízo Acumulado', grupo: 'LUCRO_PREJUIZO_ACUMULADO' },
     ];
 
     // Função para filtrar e organizar os dados
@@ -361,6 +224,25 @@ export const DashboardBi = () => {
             return acc;
         }, {});
     };
+
+    // Pegando dados para gerar calculos
+    const dadosAgrupados = agruparPorGrupo(dashboardData.summary.detalhes);
+    const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
+
+    const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
+    const custoVariavel = getTotal('CUSTO_VARIAVEL');
+    const despesasVariaveis = getTotal('DESPESAS_VARIAVEIS');
+    const despesasOperacionais = getTotal('DESPESAS_OPERACIONAIS');
+
+    // Calculo margem de contribuicao
+    const margemDeContribuicao = receitaBruta - custoVariavel - despesasVariaveis;
+    const margemDeContribuicaoDecimal = receitaBruta > 0 ? (margemDeContribuicao / receitaBruta) : 0;
+    const margemDeContribuicaoPercentual = (margemDeContribuicaoDecimal * 100).toFixed(2);
+
+    // Calculo ponto de equilibrio
+    const pontoDeEquilibrio = margemDeContribuicaoDecimal > 0
+        ? (despesasOperacionais / margemDeContribuicaoDecimal)
+        : 0;
 
     // Filtra e organiza os dados
     const agruparDados = (dados) => {
@@ -418,11 +300,18 @@ export const DashboardBi = () => {
                 const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
                 const custoVariavel = getTotal('CUSTO_VARIAVEL');
                 const despesasOperacionais = getTotal('DESPESAS_OPERACIONAIS');
+                const despesasVariaveis = getTotal('DESPESAS_VARIAVEIS');
                 const despesasFinanceiras = getTotal('DESPESAS_FINANCEIRAS');
                 const outrasDespesas = getTotal('OUTRAS_DESPESAS');
+                const outrasReceitas = dadosAgrupados['OUTRAS_RECEITAS'];
+                const totalOutrasReceitas = outrasReceitas?.total || 0;
+                const irCsll = dadosAgrupados['IR_CSLL'];
+                const totalIrCsll = getTotal('IR_CSLL');
 
-                const receitaOperacionalBruta = receitaBruta - deducoes - custoVariavel;
-                const totalLucroPrejuizoOperacional = receitaOperacionalBruta - despesasOperacionais - despesasFinanceiras - outrasDespesas;
+                // Cálculo do lucro operacional
+                const receitaLiquida = receitaBruta - deducoes;
+                const lucroBruto = receitaLiquida - custoVariavel;
+                const totalLucroPrejuizoOperacional = lucroBruto - despesasOperacionais - despesasVariaveis - despesasFinanceiras - outrasDespesas;
 
                 resultado.push({
                     titulo: 'Lucro/Prejuízo Operacional',
@@ -433,11 +322,7 @@ export const DashboardBi = () => {
                     },
                     isResultado: true
                 });
-            }
 
-            // Após OUTRAS_DESPESAS, inserir OUTRAS_RECEITAS (se existir)
-            if (grupo.grupo === 'OUTRAS_DESPESAS') {
-                const outrasReceitas = dadosAgrupados['OUTRAS_RECEITAS'];
                 if (outrasReceitas) {
                     resultado.push({
                         titulo: 'Outras Receitas',
@@ -445,14 +330,35 @@ export const DashboardBi = () => {
                         dados: outrasReceitas
                     });
                 }
-            }
 
-            if (grupo.grupo === 'IR_CSLL') {
+                // Lucro Líquido Antes do IR = Operacional + Outras Receitas
+                const lucroAntesIR = totalLucroPrejuizoOperacional + totalOutrasReceitas;
+
+                resultado.push({
+                    titulo: 'Lucro Líquido Antes IR',
+                    grupo: 'LUCRO_LIQUIDO_ANTES_IR',
+                    dados: {
+                        total: lucroAntesIR,
+                        categorias: {}
+                    },
+                    isResultado: true
+                });
+
+                if (irCsll) {
+                    resultado.push({
+                        titulo: 'IR e CSLL',
+                        grupo: 'IR_CSLL',
+                        dados: irCsll,
+                        isResultado: false
+                    });
+                }
+
+                // Lucro/Prejuízo Acumulado = Lucro Antes IR - IR e CSLL
                 resultado.push({
                     titulo: 'Lucro/Prejuízo Acumulado',
                     grupo: 'LUCRO_PREJUIZO_ACUMULADO',
                     dados: {
-                        total: lucroBruto,
+                        total: lucroAntesIR - totalIrCsll,
                         categorias: {}
                     },
                     isResultado: true
@@ -537,7 +443,7 @@ export const DashboardBi = () => {
                                 </span>
                                 <div className={styles.infos_dados}>
                                     <p>Ponto de Equilíbrio</p>
-                                    <span>{resultadoPontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                    <span>{pontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                 </div>
                             </div>
                             <div className={styles.box_info_mes_anterior}>
@@ -648,7 +554,7 @@ export const DashboardBi = () => {
                                                 {pieDataReceitas.map((entry, index) => (
                                                     <Cell
                                                         key={entry.name}
-                                                        fill={COLORS[index % COLORS.length]}
+                                                        fill={CoresGraficos[index % CoresGraficos.length]}
                                                         opacity={dadoHoverGrafico === null || dadoHoverGrafico === index ? 1 : 0.6}
                                                         onMouseEnter={() => handlePieEnter(null, index)}
                                                     />
@@ -665,7 +571,7 @@ export const DashboardBi = () => {
                                         <div key={entry.name} className={styles.legendas}>
                                             <span
                                                 className={styles.bolinha}
-                                                style={{ backgroundColor: COLORS[pieDataReceitas.findIndex(e => e.name === entry.name) % COLORS.length] }}
+                                                style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
                                             ></span>
                                             <span>{entry.name}</span>
                                             <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
@@ -703,7 +609,7 @@ export const DashboardBi = () => {
                                                 {pieDataDespesas.map((entry, index) => (
                                                     <Cell
                                                         key={entry.name}
-                                                        fill={COLORS[index % COLORS.length]}
+                                                        fill={CoresGraficos[index % CoresGraficos.length]}
                                                         opacity={dadoHoverGrafico === null || dadoHoverGrafico === index ? 1 : 0.6}
                                                         onMouseEnter={() => handlePieEnter(null, index)}
                                                     />
@@ -719,7 +625,7 @@ export const DashboardBi = () => {
                                         <div key={entry.name} className={styles.legendas}>
                                             <span
                                                 className={styles.bolinha}
-                                                style={{ backgroundColor: COLORS[pieDataDespesas.findIndex(e => e.name === entry.name) % COLORS.length] }}
+                                                style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
                                             ></span>
                                             <span>{entry.name}</span>
                                             <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>

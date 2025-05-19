@@ -13,7 +13,9 @@ const gruposDespesa = [
     { label: 'Custo Variável (CPV ou CMV)', value: 'CUSTO_VARIAVEL' },
     { label: 'Despesas Operacionais', value: 'DESPESAS_OPERACIONAIS' },
     { label: 'Despesas Financeiras', value: 'DESPESAS_FINANCEIRAS' },
+    { label: 'Despesas Variáveis', value: 'DESPESAS_VARIAVEIS' },
     { label: 'Outras Despesas', value: 'OUTRAS_DESPESAS' },
+    { label: 'IR CSLL', value: 'IR_CSLL' },
 ];
 
 export const SelectGrupoDre = ({ tipo, grupoDre, setGrupoDre }) => {
