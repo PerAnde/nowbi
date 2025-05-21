@@ -11,6 +11,7 @@ import * as PiIcons from 'react-icons/pi';
 import { salvarDRE } from '../../../../utils/salvarPDF'
 import { SelectMesEmpresa } from '../../../../components/Selects/SelectMesEmpresa';
 import { SelectAnoEmpresa } from '../../../../components/Selects/SelectAnoEmpresa';
+import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 
 export const DashboardBi = () => {
 
@@ -105,6 +106,12 @@ export const DashboardBi = () => {
                 `${bi.mes.toUpperCase()} / ${bi.ano}` === selectedMonth.toUpperCase()
             );
 
+            if (indexAtual === -1) {
+                alert("Não há BI lançado para esse mês/ano.");
+                window.location.reload();
+                return;
+            }
+
             const biAtual = bisAtivosOrdenados[indexAtual];
             const biAnterior = bisAtivosOrdenados[indexAtual - 1];
 
@@ -130,6 +137,9 @@ export const DashboardBi = () => {
                 diferencaPercentualReceita,
                 diferencaPercentualDespesa
             });
+
+            setLoading(false);
+
         }
     }, [empresa, selectedMonth]);
 
@@ -380,7 +390,7 @@ export const DashboardBi = () => {
 
                     <div className={styles.box_header_pagina}>
                         <div className={styles.box_descricao_pagina}>
-                            {abaAtiva === "resumo" ? <h3>Resumo</h3> : <h3>Demonstração do Resultado do Exercício (DRE)</h3>}
+                            {abaAtiva === "resumo" ? <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3> : <h3>Demonstração do Resultado do Exercício (DRE)</h3>}
                         </div>
 
                         <div className={styles.box_filtro_mes_ano}>
@@ -408,7 +418,11 @@ export const DashboardBi = () => {
                                         {dashboardData.diferencaPercentualReceita.toFixed(2)}%
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Diferença relacionada<br></br> ao mês anterior.</p>
+                                        {dashboardData.diferencaPercentualReceita >= 0 ? (
+                                            <p>Aumento na receita de {dashboardData.diferencaPercentualReceita.toFixed(2)}% em relação ao mês anterior</p>
+                                        ) : (
+                                            <p>Redução na receita de {Math.abs(dashboardData.diferencaPercentualReceita).toFixed(2)}% em relação ao mês anterior</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -431,7 +445,11 @@ export const DashboardBi = () => {
                                         {dashboardData.diferencaPercentualDespesa.toFixed(2)}%
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Diferença relacionada<br></br> ao mês anterior.</p>
+                                        {dashboardData.diferencaPercentualDespesa >= 0 ? (
+                                            <p>Aumento na despesa de {dashboardData.diferencaPercentualDespesa.toFixed(2)}% em relação ao mês anterior</p>
+                                        ) : (
+                                            <p>Redução na despesa de {Math.abs(dashboardData.diferencaPercentualDespesa).toFixed(2)}% em relação ao mês anterior</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -473,7 +491,7 @@ export const DashboardBi = () => {
                                         <PiIcons.PiInfo />
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Receitas - Custos variáveis</p>
+                                        <p>Receitas - Custos variáveis - Despesas Variáveis</p>
                                     </div>
                                 </div>
                             </div>
@@ -635,6 +653,7 @@ export const DashboardBi = () => {
                                 </div>
                             </div>
                         </div>
+
                     </>
 
                 ) : (
