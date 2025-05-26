@@ -31,8 +31,12 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
     const [cnpjEmpresa, setCnpjEmpresa] = useState("");
     const [emailAutenticaBi, setEmailAutenticaBi] = useState("");
 
+    const [loading, setLoading] = useState(false)
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true)
 
         // Adiciona o arquivo diretamente no formData
         const fileInput = document.getElementById('picture_input');
@@ -48,6 +52,8 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
             setTrigger(false);
             empresaCriada();
         }
+
+        setLoading(false)
 
     };
 
@@ -102,7 +108,7 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Cadastrar</Button>
+                            <Button type="submit" loading={loading}>Cadastrar</Button>
                         </div>
                     </div>
                 </form>

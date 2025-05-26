@@ -11,6 +11,7 @@ import styles from '../../Modal.module.scss';
 export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, subcategoriaEditada }) => {
 
     const [name, setName] = useState('');
+    const [loading, setLoading] = useState(false)
 
     // Preencher os estados ao abrir o modal
     useEffect(() => {
@@ -22,6 +23,8 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, subcateg
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true)
+
         const success = await editarSubcategoria(name, subcategoria, setTrigger);
 
         if (success) {
@@ -29,6 +32,8 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, subcateg
             setTrigger(false);
             subcategoriaEditada();
         }
+
+        setLoading(false)
 
     };
 
@@ -55,7 +60,7 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, subcateg
                         />
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Salvar alterações</Button>
+                            <Button type="submit" loading={loading}>Salvar alterações</Button>
                         </div>
                     </div>
                 </form>

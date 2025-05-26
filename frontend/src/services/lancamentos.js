@@ -20,10 +20,10 @@ export const criarLancamento = async (id, valor, tipo, categoria, subcategoria) 
         return false;
     }
 
-    // if (!valor) {
-    //     toast.warning("Insira um valor!")
-    //     return false;
-    // }
+    if (!valor) {
+        toast.warning("Insira um valor!")
+        return false;
+    }
 
     if (!tipo) {
         toast.warning("Selecione RECEITA ou DESPESA!")

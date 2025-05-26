@@ -16,10 +16,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
     const [subcategoriaSelecionada, setSubcategoriaSelecionada] = useState(null);
 
-    console.log(valor)
-    console.log(tipo)
-    console.log(categoriaSelecionada)
-    console.log(subcategoriaSelecionada)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchLancamento = async () => {
@@ -41,6 +38,8 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true)
 
         const valorNumerico = removerFormatacaoMoeda(valor);
 
@@ -68,6 +67,8 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
             setSubcategoriaSelecionada("");
             lancamentoEditado();
         }
+
+        setLoading(false)
     };
 
     return trigger ? (
@@ -119,7 +120,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
                     </div>
 
                     <div className={styles.box_btn_button}>
-                        <Button type="submit">Salvar alterações</Button>
+                        <Button type="submit" loading={loading}>Salvar alterações</Button>
                     </div>
 
                 </form>

@@ -17,9 +17,12 @@ export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
     // Estados Selecionados
     const [mesSelecionado, setMesSelecionado] = useState("");
     const [anoSelecionado, setAnoSelecionado] = useState("");
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true)
 
         const success = await criarBi(id, mesSelecionado, Number(anoSelecionado));
 
@@ -29,6 +32,8 @@ export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
             setTrigger(false);
             biCriado();
         }
+
+        setLoading(false)
 
     };
 
@@ -58,7 +63,7 @@ export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Cadastrar</Button>
+                            <Button type="submit" loading={loading}>Cadastrar</Button>
                         </div>
                     </div>
                 </form>

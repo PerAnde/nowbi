@@ -13,6 +13,8 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria, subcategoria
     const [categoriaId, setCategoriaId] = useState('');
     const [name, setName] = useState('');
 
+    const [loading, setLoading] = useState(false)
+
     // Pegando ID da categoria pai
     useEffect(() => {
         if (categoria?.id) {
@@ -25,6 +27,8 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria, subcategoria
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true)
+
         const success = await criarSubcategoria(name, categoriaId)
 
         if(success){
@@ -33,6 +37,8 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria, subcategoria
             setTrigger(false);
             subcategoriaCriada();
         }
+
+        setLoading(false)
 
     };
 
@@ -61,7 +67,7 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria, subcategoria
                         />
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Cadastrar</Button>
+                            <Button type="submit" loading={loading}>Cadastrar</Button>
                         </div>
                     </div>
                 </form>

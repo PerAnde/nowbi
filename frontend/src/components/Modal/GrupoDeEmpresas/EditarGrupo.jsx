@@ -13,6 +13,7 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     // const [emailGrupo, setEmailGrupo] = useState('');
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         if (grupo) {
@@ -25,6 +26,8 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true)
+
         const success = await editarGrupo(id, name, setTrigger)
 
         if (success) {
@@ -34,6 +37,8 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
             setTrigger(false)
             grupoAtualizado()
         }
+
+        setLoading(false)
     };
 
     return trigger ? (
@@ -49,12 +54,12 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
 
                 <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
-                            <Input
-                                type="text"
-                                placeholder="Nome do grupo"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
+                        <Input
+                            type="text"
+                            placeholder="Nome do grupo"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
                         {/* <div className={styles.box_dados_empresa}>
                             <Input
                                 type="email"
@@ -65,7 +70,7 @@ export const EditarGrupo = ({ trigger, setTrigger, grupo, grupoAtualizado }) => 
                         </div> */}
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Salvar alterações</Button>
+                            <Button type="submit" loading={loading}>Salvar alterações</Button>
                         </div>
                     </div>
                 </form>

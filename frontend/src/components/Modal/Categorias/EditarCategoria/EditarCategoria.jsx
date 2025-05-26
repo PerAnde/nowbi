@@ -13,6 +13,7 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
     const [name, setName] = useState('');
     const [tipo, setTipo] = useState('');
     const [grupoDre, setGrupoDre] = useState('NAO_EXIBIR_NO_DRE');
+    const [loading, setLoading] = useState(false)
 
     // Preencher os estados ao abrir o modal
     useEffect(() => {
@@ -26,6 +27,8 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true)
+
         const success = await editarCategoria(name, tipo, categoria, setTrigger, grupoDre);
 
         if (success) {
@@ -35,6 +38,8 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
             setGrupoDre("NAO_EXIBIR_NO_DRE");
             categoriaEditada();
         }
+
+        setLoading(false)
 
     };
 
@@ -95,7 +100,7 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
                         )}
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Salvar alterações</Button>
+                            <Button type="submit" loading={loading}>Salvar alterações</Button>
                         </div>
                     </div>
                 </form>

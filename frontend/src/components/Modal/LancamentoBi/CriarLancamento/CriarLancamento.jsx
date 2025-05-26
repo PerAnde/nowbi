@@ -23,6 +23,8 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
     const [subcategoriaSelecionada, setSubcategoriaSelecionada] = useState("");
 
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         setCategoriaSelecionada("");
         setSubcategoriaSelecionada("");
@@ -35,6 +37,8 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true)
+
         const valorNumerico = removerFormatacaoMoeda(valor);
 
         const success = await criarLancamento(id, valorNumerico, tipo, categoriaSelecionada, subcategoriaSelecionada)
@@ -45,6 +49,8 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
             setSubcategoriaSelecionada("");
             lancamentoCriado();
         }
+
+        setLoading(false)
     }
 
     return trigger ? (
@@ -93,7 +99,7 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
                     </div>
 
                     <div className={styles.box_btn_button}>
-                        <Button type="submit"><span><PiIcons.PiPlusBold /></span> Incluir lançamento</Button>
+                        <Button type="submit" loading={loading}><span><PiIcons.PiPlusBold /></span> Incluir lançamento</Button>
                     </div>
 
                 </form>

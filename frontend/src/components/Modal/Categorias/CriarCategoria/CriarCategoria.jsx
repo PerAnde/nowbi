@@ -14,9 +14,12 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
     const [name, setName] = useState("");
     const [tipo, setTipo] = useState("");
     const [grupoDre, setGrupoDre] = useState('NAO_EXIBIR_NO_DRE');
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true)
 
         const success = await criarCategoria(name, tipo, grupoDre);
         if (success) {
@@ -26,6 +29,9 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
             setGrupoDre("NAO_EXIBIR_NO_DRE"); // Padrao como Nao Exibir no DRE
             categoriaCriada();
         }
+    
+        setLoading(false)
+        
     };
 
     return trigger ? (
@@ -60,7 +66,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
                         )}
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Cadastrar</Button>
+                            <Button type="submit" loading={loading}>Cadastrar</Button>
                         </div>
                     </div>
                 </form>

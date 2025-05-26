@@ -17,9 +17,12 @@ export const EditarBi = ({ trigger, setTrigger, biEditado }) => {
     // Estados Selecionados
     const [mesSelecionado, setMesSelecionado] = useState("");
     const [anoSelecionado, setAnoSelecionado] = useState("");
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true)
 
         const success = await editarBi(id, mesSelecionado, Number(anoSelecionado));
 
@@ -29,6 +32,8 @@ export const EditarBi = ({ trigger, setTrigger, biEditado }) => {
             setTrigger(false);
             biEditado();
         }
+
+        setLoading(false)
 
     };
 
@@ -58,7 +63,7 @@ export const EditarBi = ({ trigger, setTrigger, biEditado }) => {
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Salvar alterações</Button>
+                            <Button type="submit" loading={loading}>Salvar alterações</Button>
                         </div>
                     </div>
                 </form>

@@ -18,6 +18,8 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
     const [fotoEmpresa, setFotoEmpresa] = useState(null);
     const [emailAutenticaBi, setEmailAutenticaBi] = useState("");
 
+    const [loading, setLoading] = useState(false)
+
     // Preencher os estados ao abrir o modal
     useEffect(() => {
         if (empresa) {
@@ -44,6 +46,8 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true)
+
         if (!empresa?.id) {
             toast.error("ID da empresa não encontrado!")
             return;
@@ -62,6 +66,8 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
             setTrigger(false);
             empresaEditada();
         }
+
+        setLoading(false)
 
     };
 
@@ -123,7 +129,7 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Salvar alterações</Button>
+                            <Button type="submit" loading={loading}>Salvar alterações</Button>
                         </div>
                     </div>
                 </form>

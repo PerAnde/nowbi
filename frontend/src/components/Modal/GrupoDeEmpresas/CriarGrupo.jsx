@@ -12,9 +12,12 @@ export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
 
     const [name, setName] = useState('');
     // const [emailGrupo, setEmailGrupo] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true)
 
         const success = await criarGrupoEmpresa(name)
 
@@ -24,6 +27,8 @@ export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
             setTrigger(false)
             grupoCriado()
         }
+
+        setLoading(false)
     };
 
     return trigger ? (
@@ -55,7 +60,7 @@ export const CriarGrupo = ({ trigger, setTrigger, grupoCriado }) => {
                         </div> */}
 
                         <div className={styles.box_btn_button}>
-                            <Button type="submit">Cadastrar</Button>
+                            <Button type="submit" loading={loading}>Cadastrar</Button>
                         </div>
                     </div>
                 </form>
