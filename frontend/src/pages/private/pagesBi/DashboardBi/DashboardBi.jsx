@@ -586,14 +586,20 @@ export const DashboardBi = () => {
                                 </div>
                                 <div className={styles.box_legendas}>
                                     {pieDataReceitas.map((entry) => (
-                                        <div key={entry.name} className={styles.legendas}>
-                                            <span
-                                                className={styles.bolinha}
-                                                style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
-                                            ></span>
-                                            <span>{entry.name}</span>
-                                            <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                                            <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
+                                        <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
+                                            <div className={styles.box_nome_subcategoria}>
+                                                <div
+                                                    className={styles.bolinha}
+                                                    style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
+                                                ></div>
+                                                <span>{entry.name}</span>
+                                            </div>
+                                            <div>
+                                                <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                            <div>
+                                                <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -640,14 +646,20 @@ export const DashboardBi = () => {
                                 </div>
                                 <div className={styles.box_legendas}>
                                     {pieDataDespesas.map((entry) => (
-                                        <div key={entry.name} className={styles.legendas}>
-                                            <span
-                                                className={styles.bolinha}
-                                                style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
-                                            ></span>
-                                            <span>{entry.name}</span>
-                                            <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                                            <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
+                                        <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
+                                            <div className={styles.box_nome_subcategoria}>
+                                                <div
+                                                    className={styles.bolinha}
+                                                    style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
+                                                ></div>
+                                                <span>{entry.name}</span>
+                                            </div>
+                                            <div>
+                                                <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                            <div>
+                                                <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>

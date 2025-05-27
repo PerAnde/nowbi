@@ -1,9 +1,9 @@
-.box_logo_empresa{
+.box_logo_empresa {
     display: flex;
     width: 100px;
 }
 
-.box_logo_empresa img{
+.box_logo_empresa img {
     max-width: 100%;
 }
 
@@ -29,7 +29,7 @@
     border-left: 1px solid var(--border-input);
 }
 
-.box_menu_btns a span{
+.box_menu_btns a span {
     display: flex;
     align-items: center;
 }
@@ -46,24 +46,24 @@
     margin-bottom: 2rem;
 }
 
-.box_header_pagina{
+.box_header_pagina {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.box_descricao_pagina{
+.box_descricao_pagina {
     display: flex;
     flex-direction: column;
     margin-left: .5rem;
 }
 
-.box_descricao_pagina h3{
+.box_descricao_pagina h3 {
     font-weight: var(--medium);
     color: var(--texto-secundario);
 }
 
-.box_filtro_mes_ano{
+.box_filtro_mes_ano {
     display: grid;
     grid-template-columns: 130px 90px;
     gap: 1.5rem;
@@ -100,7 +100,7 @@
     color: var(--texto-primario);
 }
 
-.box_dados{
+.box_dados {
     display: flex;
     align-items: center;
     gap: 2rem;
@@ -143,7 +143,7 @@
     font-size: 2rem;
 }
 
-.box_info_mes_anterior{
+.box_info_mes_anterior {
     position: absolute;
     top: 1.5rem;
     right: 2rem;
@@ -154,27 +154,27 @@
     cursor: pointer;
 }
 
-.box_info_mes_anterior .infos_mes{
+.box_info_mes_anterior .infos_mes {
     display: flex;
     align-items: center;
     gap: .5rem;
 }
 
-.descricao_mes_anterior{
+.descricao_mes_anterior {
     display: flex;
     align-items: center;
     gap: .5rem;
 }
 
-.box_info_mes_anterior.mes_anterior_receita{
+.box_info_mes_anterior.mes_anterior_receita {
     color: var(--verde);
 }
 
-.box_info_mes_anterior.mes_anterior_despesa{
+.box_info_mes_anterior.mes_anterior_despesa {
     color: var(--vermelho);
 }
 
-.popup_info_mes{
+.popup_info_mes {
     position: absolute;
     display: none;
     top: 2rem;
@@ -192,7 +192,7 @@
     opacity: 0;
 }
 
-.box_info_mes_anterior:hover .popup_info_mes{
+.box_info_mes_anterior:hover .popup_info_mes {
     display: block;
     opacity: 1;
 }
@@ -263,7 +263,7 @@
     max-height: 350px;
     background-color: var(--background);
     border-radius: var(--border-radius-componente);
-    padding: 2rem 4rem 2rem 2rem;
+    padding: 1.5rem;
 }
 
 .box_legendas::-webkit-scrollbar {
@@ -278,22 +278,34 @@
 
 .legendas {
     display: grid;
-    grid-template-columns: 10px 200px 100px 30px;
+    grid-template-columns: 1fr 100px 50px;
     align-items: center;
-    gap: 1.5rem;
+    gap: 5rem;
     font-size: 1.4rem;
-    padding: .5rem;
-
-    span.bolinha {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-    }
+    padding: 1.5rem 2rem 1.5rem 1.5rem;
+    border-radius: var(--border-radius-button);
 
     span.item_valor,
     span.item_percentual {
         color: var(--texto-secundario);
     }
+
+}
+
+.box_nome_subcategoria {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    div.bolinha {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+}
+
+.legendas:hover {
+    background-color: var(--branco);
 }
 
 @media screen and (max-width: 1150px) {
@@ -310,7 +322,7 @@
 }
 
 @media screen and (max-width: 725px) {
-    .box_header_pagina{
+    .box_header_pagina {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
@@ -323,14 +335,29 @@
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 595px) {
     .box_legendas {
         width: 100%;
     }
 
     .legendas {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 2px 1fr 60px 20px;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "nome nome"
+            "valor percentual";
+        gap: 2rem;
     }
+
+    .legendas div:nth-child(1) {
+        grid-area: nome;
+    }
+
+    .legendas div:nth-child(2) {
+        grid-area: valor;
+    }
+
+    .legendas div:nth-child(3) {
+        grid-area: percentual;
+    }
+
 }
