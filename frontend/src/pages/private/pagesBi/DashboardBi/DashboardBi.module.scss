@@ -285,11 +285,17 @@
     font-size: 2rem;
 }
 
+.box_infos_legendas {
+    display: flex;
+    gap: 1rem;
+}
+
 .box_legendas {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: .5rem;
-    overflow-y: auto;
+    overflow: auto;
     max-height: 350px;
     background-color: var(--background);
     border-radius: var(--border-radius-componente);
@@ -304,6 +310,27 @@
 .box_legendas::-webkit-scrollbar-thumb {
     background: var(--border-input);
     border-radius: 10px;
+}
+
+.box_btn_ordem {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 2rem;
+    background-color: var(--background);
+    padding: 1rem;
+    border-radius: var(--border-radius-button);
+    border: 1px solid transparent;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.box_btn_ordem:hover {
+    border: 1px solid var(--cor-primaria);
+    transition: .3s;
 }
 
 .legendas {
@@ -382,6 +409,13 @@
 }
 
 @media screen and (max-width: 595px) {
+    .box_infos_legendas {
+        width: 100%;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        gap: .5rem;
+    }
+
     .box_legendas {
         width: 100%;
     }

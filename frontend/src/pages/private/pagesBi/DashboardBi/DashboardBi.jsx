@@ -33,6 +33,9 @@ export const DashboardBi = () => {
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
     const [dadoHoverGrafico, setDadoHoverGrafico] = useState(null);
 
+    const [ordemDecrescenteReceitas, setOrdemDecrescenteReceitas] = useState(true);
+    const [ordemDecrescenteDespesas, setOrdemDecrescenteDespesas] = useState(true);
+
     useEffect(() => {
         const handleResize = () => setGraficoMobile(window.innerWidth < 800);
         window.addEventListener("resize", handleResize);
@@ -186,13 +189,21 @@ export const DashboardBi = () => {
         }
     });
 
+    // Funcao muda ordem dos dados, maior para menor e vice-versa
+    const toggleOrdemReceitas = () => {
+        setOrdemDecrescenteReceitas((prev) => !prev);
+    };
+    const toggleOrdemDespesas = () => {
+        setOrdemDecrescenteDespesas((prev) => !prev);
+    };
+
     // Transformar os objetos em arrays para os gráficos
     const pieDataReceitas = Object.entries(receitasSubcategorias)
         .map(([name, value]) => ({ name, value }))
-        .sort((a, b) => a.value - b.value);
+        .sort((a, b) => ordemDecrescenteReceitas ? b.value - a.value : a.value - b.value);
     const pieDataDespesas = Object.entries(despesasSubcategorias)
         .map(([name, value]) => ({ name, value }))
-        .sort((a, b) => a.value - b.value);
+        .sort((a, b) => ordemDecrescenteDespesas ? b.value - a.value : a.value - b.value);
 
     // Filtro grupos de DRE
     const gruposDeDRE = [
@@ -204,7 +215,7 @@ export const DashboardBi = () => {
         { titulo: 'Despesas Variáveis', grupo: 'DESPESAS_VARIAVEIS' },
         { titulo: 'Despesas Financeiras', grupo: 'DESPESAS_FINANCEIRAS' },
         { titulo: 'Outras Despesas', grupo: 'OUTRAS_DESPESAS' },
-        { titulo: 'Lucro/Prejuízo Acumulado', grupo: 'LUCRO_PREJUIZO_ACUMULADO' },
+        { titulo: 'Saldo de Caixa (+/-)', grupo: 'SALDO_DE_CAIXA' },
     ];
 
     // Função para filtrar e organizar os dados
@@ -373,8 +384,8 @@ export const DashboardBi = () => {
 
                 // Lucro/Prejuízo Acumulado = Lucro Antes IR - IR e CSLL
                 resultado.push({
-                    titulo: 'Lucro/Prejuízo Acumulado',
-                    grupo: 'LUCRO_PREJUIZO_ACUMULADO',
+                    titulo: 'Saldo de Caixa (+/-)',
+                    grupo: 'SALDO_DE_CAIXA',
                     dados: {
                         total: lucroAntesIR - totalIrCsll,
                         categorias: {}
@@ -398,7 +409,7 @@ export const DashboardBi = () => {
 
                     <div className={styles.box_header_pagina}>
                         <div className={styles.box_descricao_pagina}>
-                            {abaAtiva === "resumo" ? <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3> : <h3>Fluxo de Caixa Realizado</h3>}
+                            {abaAtiva === "resumo" ? <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3> : <h3>Demonstrativo de Fluxo de Caixa</h3>}
                         </div>
 
                         <div className={styles.box_filtro_mes_ano}>
@@ -613,24 +624,29 @@ export const DashboardBi = () => {
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
-                                <div className={styles.box_legendas}>
-                                    {pieDataReceitas.map((entry) => (
-                                        <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
-                                            <div className={styles.box_nome_subcategoria}>
-                                                <div
-                                                    className={styles.bolinha}
-                                                    style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
-                                                ></div>
-                                                <span>{entry.name}</span>
+                                <div className={styles.box_infos_legendas}>
+                                    <div className={styles.box_legendas}>
+                                        {pieDataReceitas.map((entry) => (
+                                            <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
+                                                <div className={styles.box_nome_subcategoria}>
+                                                    <div
+                                                        className={styles.bolinha}
+                                                        style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
+                                                    ></div>
+                                                    <span>{entry.name}</span>
+                                                </div>
+                                                <div>
+                                                    <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                                </div>
+                                                <div>
+                                                    <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                                            </div>
-                                            <div>
-                                                <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <div className={styles.box_btn_ordem} onClick={toggleOrdemReceitas}>
+                                        {ordemDecrescenteReceitas ? <PiIcons.PiSortAscending /> : <PiIcons.PiSortDescending />}
+                                    </div>
                                 </div>
                             </div>
 
@@ -673,24 +689,29 @@ export const DashboardBi = () => {
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
-                                <div className={styles.box_legendas}>
-                                    {pieDataDespesas.map((entry) => (
-                                        <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
-                                            <div className={styles.box_nome_subcategoria}>
-                                                <div
-                                                    className={styles.bolinha}
-                                                    style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
-                                                ></div>
-                                                <span>{entry.name}</span>
+                                <div className={styles.box_infos_legendas}>
+                                    <div className={styles.box_legendas}>
+                                        {pieDataDespesas.map((entry) => (
+                                            <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
+                                                <div className={styles.box_nome_subcategoria}>
+                                                    <div
+                                                        className={styles.bolinha}
+                                                        style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
+                                                    ></div>
+                                                    <span>{entry.name}</span>
+                                                </div>
+                                                <div>
+                                                    <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                                </div>
+                                                <div>
+                                                    <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                                            </div>
-                                            <div>
-                                                <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <div className={styles.box_btn_ordem} onClick={toggleOrdemDespesas}>
+                                        {ordemDecrescenteDespesas ? <PiIcons.PiSortAscending /> : <PiIcons.PiSortDescending />}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -702,7 +723,7 @@ export const DashboardBi = () => {
                     <div className="dreContainer">
 
                         <div className="box_topo_dre">
-                            <h2>Fluxo de Caixa Realizado</h2>
+                            <h2>Demonstrativo de Fluxo de Caixa</h2>
                             <div className="box_btns_salvar">
                                 {/* <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button> */}
                                 <button onClick={salvarDRE}>Salvar PDF</button>
