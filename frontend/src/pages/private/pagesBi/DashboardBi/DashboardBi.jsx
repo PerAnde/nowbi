@@ -752,23 +752,25 @@ export const DashboardBi = () => {
                                         </div>
 
                                         {/* Categorias */}
-                                        {Object.entries(grupo.dados.categorias).map(([categoria, dados]) => (
-                                            <React.Fragment key={categoria}>
-                                                <div key={categoria} className="box_categorias_dre">
-                                                    <p>{categoria}</p>
-                                                    <p>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                                    <p>{((dados.total / summary.receitas) * 100).toFixed(2)}%</p>
-                                                </div>
-                                                {/* Subcategorias */}
-                                                {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                                                    <div key={sub} className="box_subcategorias_dre">
-                                                        <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {sub}</p>
-                                                        <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                        {Object.entries(grupo.dados.categorias)
+                                            .sort(([a], [b]) => a.localeCompare(b))
+                                            .map(([categoria, dados]) => (
+                                                <React.Fragment key={categoria}>
+                                                    <div key={categoria} className="box_categorias_dre">
+                                                        <p>{categoria}</p>
+                                                        <p>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                                        <p>{((dados.total / summary.receitas) * 100).toFixed(2)}%</p>
                                                     </div>
-                                                ))}
+                                                    {/* Subcategorias */}
+                                                    {Object.entries(dados.subcategorias).map(([sub, valor]) => (
+                                                        <div key={sub} className="box_subcategorias_dre">
+                                                            <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {sub}</p>
+                                                            <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                                        </div>
+                                                    ))}
 
-                                            </React.Fragment>
-                                        ))}
+                                                </React.Fragment>
+                                            ))}
                                     </div>
                                 ))}
 
