@@ -251,15 +251,16 @@ export const DashboardBi = () => {
     const margemDeContribuicao = resultadoBruto - despesasVariaveis;
     const margemDeContribuicaoDecimal = receitaBruta > 0 ? (margemDeContribuicao / receitaBruta) : 0;
     const margemDeContribuicaoPercentual = (margemDeContribuicaoDecimal * 100).toFixed(2);
+    const margemDeContribuicaoArredondadaDecimal = Number(margemDeContribuicaoPercentual) / 100;
 
     // Calculo ponto de equilibrio operacional
     const pontoDeEquilibrioOperacional = margemDeContribuicaoDecimal > 0
-        ? (despesasOperacionais / margemDeContribuicaoDecimal)
+        ? (despesasOperacionais / margemDeContribuicaoArredondadaDecimal)
         : 0;
 
     // Calceulo ponto de equilibrio financeiro
     const somaDepesasOperacionaisEFinanceiras = despesasOperacionais + despesasFinanceiras;
-    const pontoDeEquilibrioFinanceiro = somaDepesasOperacionaisEFinanceiras / margemDeContribuicaoDecimal;
+    const pontoDeEquilibrioFinanceiro = somaDepesasOperacionaisEFinanceiras / margemDeContribuicaoArredondadaDecimal;
 
     // Filtra e organiza os dados
     const agruparDados = (dados) => {
@@ -519,7 +520,7 @@ export const DashboardBi = () => {
                                         <PiIcons.PiInfo />
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Custos Fixos ÷ Margem de Contribuição</p>
+                                        <p>Depesas Operacionais + Despesas Financeiras ÷ Margem de Contribuição</p>
                                     </div>
                                 </div>
                             </div>
