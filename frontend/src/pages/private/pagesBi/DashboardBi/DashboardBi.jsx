@@ -499,7 +499,7 @@ export const DashboardBi = () => {
                                         <PiIcons.PiInfo />
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Custos Fixos ÷ Margem de Contribuição</p>
+                                        <p>Despesa Operacional ÷ Margem de Contribuição</p>
                                     </div>
                                 </div>
                             </div>
@@ -520,7 +520,7 @@ export const DashboardBi = () => {
                                         <PiIcons.PiInfo />
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Depesas Operacionais + Despesas Financeiras ÷ Margem de Contribuição</p>
+                                        <p>Despesa Operacional + Despesa Financeira ÷ Margem de Contribuição</p>
                                     </div>
                                 </div>
                             </div>
