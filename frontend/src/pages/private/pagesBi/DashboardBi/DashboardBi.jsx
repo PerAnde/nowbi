@@ -343,8 +343,8 @@ export const DashboardBi = () => {
                 const totalLucroPrejuizoOperacional = lucroBruto - despesasOperacionais - despesasVariaveis - despesasFinanceiras - outrasDespesas;
 
                 resultado.push({
-                    titulo: 'Lucro/Prejuízo Operacional',
-                    grupo: 'LUCRO_PREJUIZO_OPERACIONAL',
+                    titulo: 'Saldo de Caixa Operacional',
+                    grupo: 'SALDO_DE_CAIXA_OPERACIONAL',
                     dados: {
                         total: totalLucroPrejuizoOperacional,
                         categorias: {}
@@ -363,15 +363,15 @@ export const DashboardBi = () => {
                 // Lucro Líquido Antes do IR = Operacional + Outras Receitas
                 const lucroAntesIR = totalLucroPrejuizoOperacional + totalOutrasReceitas;
 
-                resultado.push({
-                    titulo: 'Lucro Líquido Antes IR',
-                    grupo: 'LUCRO_LIQUIDO_ANTES_IR',
-                    dados: {
-                        total: lucroAntesIR,
-                        categorias: {}
-                    },
-                    isResultado: true
-                });
+                // resultado.push({
+                //     titulo: 'Lucro Líquido Antes IR',
+                //     grupo: 'LUCRO_LIQUIDO_ANTES_IR',
+                //     dados: {
+                //         total: lucroAntesIR,
+                //         categorias: {}
+                //     },
+                //     isResultado: true
+                // });
 
                 if (irCsll) {
                     resultado.push({
