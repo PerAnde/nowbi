@@ -71,11 +71,36 @@
 
 .box_infos_resumo {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(6, 1fr);
     background-color: var(--background);
     border-radius: var(--border-radius-componente);
     padding: 1rem;
     gap: 1rem;
+}
+
+.box_infos_resumo>.box_dados_background:nth-child(1) {
+    grid-column: span 3;
+    border-left: 1px solid var(--verde);
+}
+
+.box_infos_resumo>.box_dados_background:nth-child(2) {
+    grid-column: span 3;
+    border-left: 1px solid var(--vermelho);
+}
+
+.box_infos_resumo>.box_dados_background:nth-child(3) {
+    grid-column: span 2;
+    border-left: 1px solid var(--cor-primaria);
+}
+
+.box_infos_resumo>.box_dados_background:nth-child(4) {
+    grid-column: span 2;
+    border-left: 1px solid var(--laranja);
+}
+
+.box_infos_resumo>.box_dados_background:nth-child(5) {
+    grid-column: span 2;
+    border-left: 1px solid var(--roxo);
 }
 
 .box_dados_background {
@@ -124,14 +149,19 @@
     color: var(--vermelho);
 }
 
+.box_icone_dados.icone_margem {
+    background-color: var(--cor-primaria-15);
+    color: var(--cor-primaria);
+}
+
 .box_icone_dados.icone_equilibrio {
     background-color: var(--laranja-15);
     color: var(--laranja);
 }
 
-.box_icone_dados.icone_margem {
-    background-color: var(--cor-primaria-15);
-    color: var(--cor-primaria);
+.box_icone_dados.icone_equilibrio_financeiro {
+    background-color: var(--roxo-15);
+    color: var(--roxo);
 }
 
 .infos_dados p {
@@ -308,9 +338,25 @@
     background-color: var(--branco);
 }
 
-@media screen and (max-width: 1150px) {
-    .box_infos_resumo {
-        grid-template-columns: 1fr 1fr;
+@media screen and (max-width: 1020px) {
+    .box_infos_resumo>.box_dados_background:nth-child(1) {
+        grid-column: span 6;
+    }
+
+    .box_infos_resumo>.box_dados_background:nth-child(2) {
+        grid-column: span 6;
+    }
+
+    .box_infos_resumo>.box_dados_background:nth-child(3) {
+        grid-column: span 6;
+    }
+
+    .box_infos_resumo>.box_dados_background:nth-child(4) {
+        grid-column: span 6;
+    }
+
+    .box_infos_resumo>.box_dados_background:nth-child(5) {
+        grid-column: span 6;
     }
 }
 

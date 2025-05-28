@@ -240,19 +240,26 @@ export const DashboardBi = () => {
     const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
 
     const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
+    const deducoesImpostos = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
     const custoVariavel = getTotal('CUSTO_VARIAVEL');
     const despesasVariaveis = getTotal('DESPESAS_VARIAVEIS');
     const despesasOperacionais = getTotal('DESPESAS_OPERACIONAIS');
+    const despesasFinanceiras = getTotal('DESPESAS_FINANCEIRAS');
 
     // Calculo margem de contribuicao
-    const margemDeContribuicao = receitaBruta - custoVariavel - despesasVariaveis;
+    const resultadoBruto = receitaBruta - deducoesImpostos - custoVariavel
+    const margemDeContribuicao = resultadoBruto - despesasVariaveis;
     const margemDeContribuicaoDecimal = receitaBruta > 0 ? (margemDeContribuicao / receitaBruta) : 0;
     const margemDeContribuicaoPercentual = (margemDeContribuicaoDecimal * 100).toFixed(2);
 
-    // Calculo ponto de equilibrio
-    const pontoDeEquilibrio = margemDeContribuicaoDecimal > 0
+    // Calculo ponto de equilibrio operacional
+    const pontoDeEquilibrioOperacional = margemDeContribuicaoDecimal > 0
         ? (despesasOperacionais / margemDeContribuicaoDecimal)
         : 0;
+
+    // Calceulo ponto de equilibrio financeiro
+    const somaDepesasOperacionaisEFinanceiras = despesasOperacionais + despesasFinanceiras;
+    const pontoDeEquilibrioFinanceiro = somaDepesasOperacionaisEFinanceiras / margemDeContribuicaoDecimal;
 
     // Filtra e organiza os dados
     const agruparDados = (dados) => {
@@ -390,7 +397,7 @@ export const DashboardBi = () => {
 
                     <div className={styles.box_header_pagina}>
                         <div className={styles.box_descricao_pagina}>
-                            {abaAtiva === "resumo" ? <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3> : <h3>Demonstração do Resultado do Exercício (DRE)</h3>}
+                            {abaAtiva === "resumo" ? <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3> : <h3>Fluxo de Caixa Realizado</h3>}
                         </div>
 
                         <div className={styles.box_filtro_mes_ano}>
@@ -456,12 +463,33 @@ export const DashboardBi = () => {
                         </div>
                         <div className={`${styles.box_dados_background}`}>
                             <div className={styles.box_dados}>
+                                <span className={`${styles.box_icone_dados} ${styles.icone_margem}`}>
+                                    <PiIcons.PiChartPieSlice />
+                                </span>
+                                <div className={styles.infos_dados}>
+                                    <p>Margem de Contribuição</p>
+                                    <p><span>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span> ({margemDeContribuicaoPercentual}%)</p>
+                                </div>
+                            </div>
+                            <div className={styles.box_info_mes_anterior}>
+                                <div className={styles.infos_mes}>
+                                    <div className={styles.descricao_mes_anterior}>
+                                        <PiIcons.PiInfo />
+                                    </div>
+                                    <div className={styles.popup_info_mes}>
+                                        <p>Resultado Bruto - Despesas Variáveis</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={`${styles.box_dados_background}`}>
+                            <div className={styles.box_dados}>
                                 <span className={`${styles.box_icone_dados} ${styles.icone_equilibrio}`}>
                                     <PiIcons.PiScales />
                                 </span>
                                 <div className={styles.infos_dados}>
-                                    <p>Ponto de Equilíbrio</p>
-                                    <span>{pontoDeEquilibrio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                    <p>Ponto de Equilíbrio Operacional</p>
+                                    <span>{pontoDeEquilibrioOperacional.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                 </div>
                             </div>
                             <div className={styles.box_info_mes_anterior}>
@@ -477,12 +505,12 @@ export const DashboardBi = () => {
                         </div>
                         <div className={`${styles.box_dados_background}`}>
                             <div className={styles.box_dados}>
-                                <span className={`${styles.box_icone_dados} ${styles.icone_margem}`}>
-                                    <PiIcons.PiChartPieSlice />
+                                <span className={`${styles.box_icone_dados} ${styles.icone_equilibrio_financeiro}`}>
+                                    <PiIcons.PiCurrencyDollarSimple />
                                 </span>
                                 <div className={styles.infos_dados}>
-                                    <p>Margem de Contribuição</p>
-                                    <p><span>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span> ({margemDeContribuicaoPercentual}%)</p>
+                                    <p>Ponto de Equilíbrio Financeiro</p>
+                                    <span>{pontoDeEquilibrioFinanceiro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                 </div>
                             </div>
                             <div className={styles.box_info_mes_anterior}>
@@ -491,7 +519,7 @@ export const DashboardBi = () => {
                                         <PiIcons.PiInfo />
                                     </div>
                                     <div className={styles.popup_info_mes}>
-                                        <p>Receitas - Custos variáveis - Despesas Variáveis</p>
+                                        <p>Custos Fixos ÷ Margem de Contribuição</p>
                                     </div>
                                 </div>
                             </div>
@@ -673,7 +701,7 @@ export const DashboardBi = () => {
                     <div className="dreContainer">
 
                         <div className="box_topo_dre">
-                            <h2>Demonstração do Resultado do Exercício (DRE)</h2>
+                            <h2>Fluxo de Caixa Realizado</h2>
                             <div className="box_btns_salvar">
                                 {/* <button onClick={() => exportarParaExcel(receitasAgrupadas, despesasAgrupadas, summary, custos, despesasOrdenadas, lucroBruto)}>Exportar .XLS</button> */}
                                 <button onClick={salvarDRE}>Salvar PDF</button>
