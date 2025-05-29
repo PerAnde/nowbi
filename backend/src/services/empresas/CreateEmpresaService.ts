@@ -24,6 +24,41 @@ class CreateEmpresaService {
         //     throw new Error("Insira o email da empresa!")
         // }
 
+        // Buscando plano do usuario
+        const usuario = await prismaClient.usuario.findUnique({
+            where: { id: usuario_id },
+            select: {
+                plano_id: true,
+            }
+        })
+
+        if (!usuario) {
+            throw new Error("Usuário não encontrado!")
+        }
+
+        // Buscando limite do plano
+        const plano = await prismaClient.plano.findUnique({
+            where: { id: usuario.plano_id },
+            select: {
+                limiteEmpresas: true,
+                nome: true,
+            }
+        })
+
+        if (!plano) {
+            throw new Error("Plano do usuário não encontrado!")
+        }
+
+        // Verificando quantas empresas o usuario ja tem
+        const totalEmpresas = await prismaClient.empresa.count({
+            where: { usuario_id }
+        })
+
+        // Verificar se ja atingiu o limite
+        if (totalEmpresas >= plano.limiteEmpresas) {
+            throw new Error(`Limite de empresas do plano "${plano.nome}" atingido. Faça upgrade para criar mais empresas.`)
+        }
+
         const link_bi = crypto.randomBytes(20).toString("hex");
 
         const empresa = await prismaClient.empresa.create({

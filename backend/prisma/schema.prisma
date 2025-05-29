@@ -16,24 +16,39 @@ model Usuario {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    dataFimPeriodoTeste DateTime?
+    dataFimPeriodoTeste DateTime
     isPeriodoTesteAtivo Boolean  @default(false)
     isPlanoAtivo        Boolean  @default(true)
 
-    bairro         String?        @db.VarChar(100)
-    cep            String?        @db.VarChar(10)
-    cidade         String?        @db.VarChar(100)
-    endereco       String?        @db.VarChar(255)
-    estado         String?        @db.VarChar(2)
-    ibge           String?        @db.VarChar(10)
-    img_usuario    String?        @db.VarChar(255)
-    numero         String?        @db.VarChar(10)
-    telefone       String?        @db.VarChar(13)
+    bairro      String? @db.VarChar(100)
+    cep         String? @db.VarChar(10)
+    cidade      String? @db.VarChar(100)
+    endereco    String? @db.VarChar(255)
+    estado      String? @db.VarChar(2)
+    ibge        String? @db.VarChar(10)
+    img_usuario String? @db.VarChar(255)
+    numero      String? @db.VarChar(10)
+    telefone    String? @db.VarChar(13)
+
+    plano_id Int?
+    plano    Plano? @relation(fields: [plano_id], references: [id])
+
     categorias     Categoria[]
     empresas       Empresa[]
     grupo_empresas GrupoEmpresa[]
 
     @@map("usuarios")
+}
+
+model Plano {
+    id             Int       @id @default(autoincrement())
+    nome           String    @unique
+    descricao      String?
+    valor          Decimal   @db.Decimal(10, 2)
+    limiteEmpresas Int
+    usuarios       Usuario[]
+
+    @@map("planos")
 }
 
 model GrupoEmpresa {

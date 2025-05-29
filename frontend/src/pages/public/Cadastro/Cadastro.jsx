@@ -156,9 +156,9 @@ export const Cadastro = () => {
                                     </div>
                                     <PiIcons.PiQuotesFill className={styles.icone_aspas} />
                                 </div>
-                                <div className={styles.descricao_depoimento}>
+                                {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
-                                </div>
+                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Juan Kuester</h3>
@@ -180,9 +180,9 @@ export const Cadastro = () => {
                                     </div>
                                     <PiIcons.PiQuotesFill className={styles.icone_aspas} />
                                 </div>
-                                <div className={styles.descricao_depoimento}>
+                                {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
-                                </div>
+                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Naiara Tiesen</h3>
@@ -204,9 +204,9 @@ export const Cadastro = () => {
                                     </div>
                                     <PiIcons.PiQuotesFill className={styles.icone_aspas} />
                                 </div>
-                                <div className={styles.descricao_depoimento}>
+                                {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
-                                </div>
+                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Bruna Galperin</h3>
@@ -228,9 +228,9 @@ export const Cadastro = () => {
                                     </div>
                                     <PiIcons.PiQuotesFill className={styles.icone_aspas} />
                                 </div>
-                                <div className={styles.descricao_depoimento}>
+                                {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
-                                </div>
+                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Vitor</h3>
