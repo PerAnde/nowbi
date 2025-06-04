@@ -23,6 +23,15 @@ class DetailUsuarioService {
                 img_usuario: true,
                 isPeriodoTesteAtivo: true,
                 isPlanoAtivo: true,
+                dataFimPeriodoTeste: true,
+                plano: {
+                    select: {
+                        nome: true,
+                        descricao: true,
+                        limiteEmpresas: true,
+                        valor: true,
+                    }
+                }
             }
         })
 

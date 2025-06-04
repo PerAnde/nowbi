@@ -1,4 +1,4 @@
-// Formatar valor
+// Formatar valor dos inputs
 export const formatarValor = (valor) => {
     // Remove tudo que não é número
     valor = valor.replace(/\D/g, "");
@@ -10,6 +10,17 @@ export const formatarValor = (valor) => {
     });
 
     return valor;
+};
+
+// Formatar valor do banco
+export const formatarValorExibicao = (valor) => {
+  if (valor == null) return "-";
+  return Number(valor).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 };
 
 // Remover formatacao

@@ -7,6 +7,7 @@ class UpdateCategoriaController {
 
         const { id } = req.params;
         const { name, tipo, grupoDre } = req.body;
+        const usuario_id = req.usuario_id;
 
         const updateCategoriaService = new UpdateCategoriaService();
 
@@ -16,6 +17,7 @@ class UpdateCategoriaController {
                 name,
                 tipo,
                 grupoDre,
+                usuario_id
             });
 
             return res.json(categoria);

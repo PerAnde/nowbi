@@ -81,7 +81,7 @@ router.patch('/empresas/grupo/:id', isAuthenticated, verificaStatusConta, new Up
 router.delete('/empresas/grupo/:id', isAuthenticated, verificaStatusConta, new DeleteGrupoController().handle)
 
 // Rotas Empresas
-router.post('/empresas', isAuthenticated, verificaStatusConta, limitaRecursosDuranteTeste, upload.single('file'), new CreateEmpresaController().handle)
+router.post('/empresas', isAuthenticated, verificaStatusConta, upload.single('file'), new CreateEmpresaController().handle)
 router.get('/empresas', isAuthenticated, verificaStatusConta, new ListEmpresasController().handle)
 router.get('/empresas/:id', isAuthenticated, verificaStatusConta, new ListEmpresaController().handle)
 router.put('/empresas/:id', isAuthenticated, verificaStatusConta, upload.single('file'), new UpdateEmpresaController().handle)

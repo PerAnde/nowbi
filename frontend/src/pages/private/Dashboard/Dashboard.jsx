@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../../api/api';
 import { Link } from 'react-router-dom';
-import { buscarEmpresa } from '../../../services/empresas';
+import { formatarValorExibicao, capitalizeFirstLetter } from '../../../utils/formatUtils'
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -23,10 +23,6 @@ export const Dashboard = () => {
     // Função para buscar os dados do usuário
     const fetchUsuarioData = async () => {
         try {
-
-            // Time para testar Skeletons
-            // await new Promise(resolve => setTimeout(resolve, 7000))
-
             const response = await api.get('/user');
             setUsuario(response.data);
             setLoading(false);
@@ -65,7 +61,6 @@ export const Dashboard = () => {
         buscarEmpresas();
     }, [])
 
-
     return (
         <Layout>
             <div className='box_conteudo_paginas'>
@@ -77,7 +72,7 @@ export const Dashboard = () => {
 
                     <div className={styles.texto_bem_vindo}>
                         <h1>Bem vindo de volta 👋 <br />
-                            {loading ? <Skeleton width={200} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : usuario.name}</h1>
+                            {loading ? <Skeleton width={200} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : capitalizeFirstLetter(usuario.name)}</h1>
                         <p>Acompanhe e gerencie suas empresas agora mesmo!</p>
 
                         <Link to="/empresas" className={styles.btn_cor_primaria}>Ver Empresas</Link>
@@ -88,24 +83,24 @@ export const Dashboard = () => {
                 <div className={styles.box_info_financeiro}>
 
                     <div className={styles.box_header_fatura}>
-                        <p>Última fatura</p>
-                        <span>R$ 100,00</span>
+                        <p>Seu Plano</p>
+                        <span>{usuario?.plano?.nome}</span>
                     </div>
 
                     <div className={styles.box_infos_fatura}>
                         <div>
-                            <p>Vencimento:</p>
-                            <p>10/01/2025</p>
+                            <p>Valor</p>
+                            <p><span>{formatarValorExibicao(usuario?.plano?.valor)}</span></p>
                         </div>
                         <div>
-                            <p>Status:</p>
-                            <p>Em aberto</p>
+                            <p>Total de empresas</p>
+                            <p><span>{usuario?.plano?.limiteEmpresas}</span></p>
                         </div>
                     </div>
 
                     <div className={styles.box_btn_fatura}>
-                        <Link to='/financeiro' className={styles.btn_fatura}>Histórico financeiro</Link>
-                        <Link to='/dashboard' className={`${styles.btn_fatura} ${styles.btn_pagar_fatura}`}>Pagar fatura</Link>
+                        {/* <Link to='/financeiro' className={styles.btn_fatura}>Fazer upgrade</Link> */}
+                        <Link to='/planos' className={`${styles.btn_fatura} ${styles.btn_pagar_fatura}`}>Fazer upgrade</Link>
                     </div>
 
                 </div>

@@ -90,8 +90,8 @@ export const Planos = () => {
                     <div class={styles.box_plano_personalizado}>
                         <div class={styles.detalhes_plano_personalizado}>
                             <h3>Seu negócio vai além dos nossos planos?</h3>
-                            <p>Montamos uma solução sob medida para atender às suas necessidades.</p>
-                            <Link to="" class={`${styles.btn} ${styles.btn_border_light}`}>Fale com a gente</Link>
+                            <p>Montamos um plano sob medida para atender às suas necessidades.</p>
+                            <Link to="" class={`${styles.btn} ${styles.btn_border_light}`}>Fale conosco</Link>
                         </div>
                         <img src={imgFoguete} />
                     </div>

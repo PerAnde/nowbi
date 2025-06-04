@@ -166,6 +166,7 @@ class CreateUsuarioService {
                 dataFimPeriodoTeste: addMinutes(new Date(), 1),
                 isPeriodoTesteAtivo: true,
                 isPlanoAtivo: false,
+                plano_id: 4,
             },
             select: {
                 id: true,
@@ -174,10 +175,10 @@ class CreateUsuarioService {
             }
         })
 
-        const createCategoriasService = new CreateCategoriasNovoUsuarioService();
-        await createCategoriasService.execute({
-            usuario_id: usuario.id
-        })
+        // const createCategoriasService = new CreateCategoriasNovoUsuarioService();
+        // await createCategoriasService.execute({
+        //     usuario_id: usuario.id
+        // })
 
 
         return usuario

@@ -6,6 +6,8 @@ import { Input } from '../../../components/Input/Input';
 import { buscarCategorias, excluirCategoria } from '../../../services/categorias';
 import { excluirSubcategoria } from '../../../services/subcategorias';
 
+import { capitalizeFirstLetter } from '../../../utils/formatUtils'
+
 import { CriarCategoria } from '../../../components/Modal/Categorias/CriarCategoria/CriarCategoria';
 import { EditarCategoria } from '../../../components/Modal/Categorias/EditarCategoria/EditarCategoria';
 import { ExcluirCategoria } from '../../../components/Modal/Categorias/ExcluirCategoria/ExcluirCategoria';
@@ -199,7 +201,7 @@ export const Categorias = () => {
 
                         {categoriasFiltradas.map((categoria, index) => (
                             <div key={categoria.id} className={`${styles.box_categoria} ${mostrarSubcategorias === index ? styles.ativo : ''}`}>
-                                <div className={styles.categoria_nome}>{categoria.name}</div>
+                                <div className={styles.categoria_nome}>{capitalizeFirstLetter(categoria.name)}</div>
 
                                 <div className={styles.btn_subcategorias}>
                                     {categoria.subcategorias.length > 0 ? (
@@ -238,7 +240,7 @@ export const Categorias = () => {
                                     <div className={styles.box_subcategorias}>
                                         {categoria.subcategorias.map((subcategoria) => (
                                             <div className={styles.dados_subcategoria} key={subcategoria.id}>
-                                                <p>{subcategoria.name}</p>
+                                                <p>{capitalizeFirstLetter(subcategoria.name)}</p>
                                                 <Link className={styles.btn_editar_subcategoria}
                                                     onClick={() => {
                                                         setSubCategoriaSelecionada(subcategoria)

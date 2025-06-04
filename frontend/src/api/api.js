@@ -37,10 +37,24 @@ api.interceptors.response.use(
         return response; // Retorna a resposta normalmente se não houver erro
     },
     (error) => {
-        if (error.response && error.response.status === 401) {
-            // Token expirado ou não autorizado
-            logout(); // Remove os dados do usuário do localStorage
-            window.location.replace = '/'; // Redireciona para a página de login
+        if (error.response) {
+            const status = error.response.status;
+
+            if (status === 401) {
+                // Token expirado ou não autorizado
+                logout(); // Remove os dados do usuário do localStorage
+                window.location.href = '/'; // Redireciona para a página de login
+            } else if (status === 403) {
+                if (typeof window.setPlanoExpiradoExternamente === 'function') {
+                    window.setPlanoExpiradoExternamente(true);
+                }
+                // Plano expirado ou acesso negado
+                // Você pode limpar o localStorage ou manter os dados, depende da sua lógica
+                // Exemplo simples de redirecionamento:
+                if (window.location.pathname !== '/planos') {
+                    window.location.href = '/planos';
+                }
+            }
         }
         return Promise.reject(error);
     }

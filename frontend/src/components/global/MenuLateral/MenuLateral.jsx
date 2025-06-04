@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { buscarUsuario } from '../../../services/usuario';
+import { getUsuarioLocalStorage } from '../../../contexts/util'
 
 import styles from './MenuLateral.module.scss';
 import * as PiIcons from 'react-icons/pi';
@@ -8,7 +8,10 @@ import iconeLogo from '../../../assets/images/icone-logo.png';
 
 export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
 
+    const usuario = getUsuarioLocalStorage();
     const menuLateralRef = useRef(null);
+
+    console.log(usuario)
 
     // // Fechar o menu ao clicar fora dele
     useEffect(() => {

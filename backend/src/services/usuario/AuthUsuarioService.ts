@@ -49,6 +49,7 @@ class AuthUsuarioService {
             token: token,
             isPeriodoTesteAtivo: usuario.isPeriodoTesteAtivo,
             isPlanoAtivo: usuario.isPlanoAtivo,
+            dataFimPeriodoTeste: usuario.dataFimPeriodoTeste,
         }
     }
 }

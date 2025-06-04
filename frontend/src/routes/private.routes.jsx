@@ -9,6 +9,8 @@ export const PrivateRoutes = ({ children }) => {
     const navigate = useNavigate()
     const location = useLocation()
 
+    const planoExpirado = !auth.isPeriodoTesteAtivo && !auth.isPlanoAtivo;
+
     useEffect(() => {
 
         // Verificando se não existe token dentro do Auth e redirecionando para /login
@@ -18,13 +20,13 @@ export const PrivateRoutes = ({ children }) => {
         }
 
         // Se não tiver periodo de teste ou plano ativo redireciona para /planos
-        if (!auth.isPeriodoTesteAtivo && !auth.isPlanoAtivo && location.pathname !== "/planos") {
-            return navigate("/planos")
+        if (planoExpirado && location.pathname !== "/planos") {
+            navigate("/planos");
         }
 
-    }, [auth.token, auth.isPeriodoTesteAtivo, auth.isPlanoAtivo, location.pathname, navigate])
+    }, [auth.token, planoExpirado, location.pathname, navigate])
 
-    if (!auth.token || (!auth.isPeriodoTesteAtivo && !auth.isPlanoAtivo && location.pathname !== "/planos")) {
+    if (!auth.token || (planoExpirado && location.pathname !== "/planos")) {
         return null
     }
 

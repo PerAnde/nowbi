@@ -18,6 +18,20 @@ class CreateCategoriaService {
             throw new Error("Tipo inválido!")
         }
 
+        const nomeFormatado = name.trim().toLowerCase();
+
+        const categoriaNomeJaExiste = await prismaClient.categoria.findFirst({
+            where: {
+                name: nomeFormatado,
+                tipo,
+                usuario_id
+            }
+        })
+
+        if (categoriaNomeJaExiste) {
+            throw new Error(`Já existe uma categoria chamada "${name}".`);
+        }
+
         const categoria = await prismaClient.categoria.create({
             data: {
                 name: name,

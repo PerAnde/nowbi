@@ -19,10 +19,27 @@ class UpdateSubCategoriaService {
             throw new Error("Subcategoria não encontrada!");
         }
 
+        const nomeFormatado = name.trim().toLowerCase();
+
+        // Verifica se já existe outra subcategoria com o mesmo nome na mesma categoria
+        const subcategoriaDuplicada = await prismaClient.subCategoria.findFirst({
+            where: {
+                categoria_id: subCategoriaExiste.categoria_id,
+                name: nomeFormatado,
+                NOT: {
+                    id: subCategoriaExiste.id,
+                },
+            },
+        });
+
+        if (subcategoriaDuplicada) {
+            throw new Error(`Já existe uma subcategoria chamada "${name}" nesta categoria.`);
+        }
+
         const updateSubCategoria = await prismaClient.subCategoria.update({
             where: { id },
             data: {
-                name,
+                name: nomeFormatado,
             },
             select: {
                 id: true,

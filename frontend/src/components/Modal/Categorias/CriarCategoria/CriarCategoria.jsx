@@ -40,7 +40,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
                     <h3>Nova Categoria</h3>
-                    <span onClick={() => { setTrigger(false); setName(""); setTipo(""); setGrupoDre(""); }}>
+                    <span onClick={() => { setTrigger(false); setName(""); setTipo(""); setGrupoDre("NAO_EXIBIR_NO_DRE"); }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>

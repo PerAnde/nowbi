@@ -6,16 +6,19 @@ interface UpdateCategoriaRequest {
     name: string;
     tipo: 'RECEITA' | 'DESPESA';
     grupoDre: GrupoDre;
+    usuario_id: string;
 }
 
 // Grupos permitidos por tipo
 const gruposPermitidos = {
     RECEITA: [
+        "NAO_EXIBIR_NO_DRE",
         "RECEITA_OPERACIONAL_BRUTA",
         "RECEITA_FINANCEIRA",
         "OUTRAS_RECEITAS",
     ] as GrupoDre[],
     DESPESA: [
+        "NAO_EXIBIR_NO_DRE",
         "DEDUCOES_DA_RECEITA_BRUTA",
         "CUSTO_VARIAVEL",
         "DESPESAS_OPERACIONAIS",
@@ -27,7 +30,7 @@ const gruposPermitidos = {
 };
 
 class UpdateCategoriaService {
-    async execute({ id, name, tipo, grupoDre }: UpdateCategoriaRequest) {
+    async execute({ id, name, tipo, grupoDre, usuario_id }: UpdateCategoriaRequest) {
         if (!id) {
             throw new Error("Id inválido!")
         }
@@ -59,6 +62,21 @@ class UpdateCategoriaService {
             throw new Error(
                 `O grupo DRE "${grupoDre}" não é permitido para o tipo "${tipoFinal}".`
             );
+        }
+
+        const nomeFormatado = name.trim().toLowerCase();
+
+        const categoriaNomeJaExiste = await prismaClient.categoria.findFirst({
+            where: {
+                name: nomeFormatado,
+                tipo,
+                usuario_id,
+                NOT: { id },
+            }
+        })
+
+        if (categoriaNomeJaExiste) {
+            throw new Error(`Já existe uma categoria chamada "${name}".`);
         }
 
         const updateCategoria = await prismaClient.categoria.update({

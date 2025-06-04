@@ -79,6 +79,11 @@
 .box_infos_fatura div {
     display: flex;
     justify-content: space-between;
+    font-size: 1.6rem;
+}
+
+.box_infos_fatura div p span {
+    font-size: 1.8rem;
 }
 
 .box_btn_fatura {

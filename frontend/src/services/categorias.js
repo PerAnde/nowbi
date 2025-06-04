@@ -42,7 +42,7 @@ export const criarCategoria = async (name, tipo, grupoDre) => {
         toast.success('Categoria cadastrada com sucesso!');
         return true;  // Indica sucesso
     } catch (error) {
-        toast.error('Erro ao criar categoria, tente novamente mais tarde!');
+        toast.error(error.response.data.error);
         return false; // Indica erro
     }
 };

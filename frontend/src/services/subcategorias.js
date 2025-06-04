@@ -55,7 +55,7 @@ export const criarSubcategoria = async (name, categoriaId) => {
 
     } catch (error) {
 
-        toast.error("Erro ao criar subcategoria!")
+        toast.error(error.response.data.error)
         return false; // Indica erro
     }
 

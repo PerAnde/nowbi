@@ -154,7 +154,7 @@ export const Cadastro = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
                                 {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
@@ -178,7 +178,7 @@ export const Cadastro = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
                                 {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
@@ -202,7 +202,7 @@ export const Cadastro = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
                                 {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
@@ -226,7 +226,7 @@ export const Cadastro = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    <PiIcons.PiQuotesFill className={styles.icone_aspas} />
+                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
                                 {/* <div className={styles.descricao_depoimento}>
                                     <p>Lorem ipsum dolor sit amet...</p>
