@@ -757,14 +757,14 @@ export const DashboardBi = () => {
                                             .map(([categoria, dados]) => (
                                                 <React.Fragment key={categoria}>
                                                     <div key={categoria} className="box_categorias_dre">
-                                                        <p>{categoria}</p>
+                                                        <p>{capitalizeFirstLetter(categoria)}</p>
                                                         <p>{dados.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                                         <p>{((dados.total / summary.receitas) * 100).toFixed(2)}%</p>
                                                     </div>
                                                     {/* Subcategorias */}
                                                     {Object.entries(dados.subcategorias).map(([sub, valor]) => (
                                                         <div key={sub} className="box_subcategorias_dre">
-                                                            <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {sub}</p>
+                                                            <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {capitalizeFirstLetter(sub)}</p>
                                                             <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                                         </div>
                                                     ))}

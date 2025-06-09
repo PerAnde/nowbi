@@ -309,7 +309,7 @@ export const Bi = () => {
                                 <p>R$ {parseFloat(lancamento.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                 <p className={`${styles.tipo} ${lancamento.tipo === "RECEITA" ? styles.tipo_receita : styles.tipo_despesa}`}>{capitalizeFirstLetter(lancamento.tipo)}</p>
                                 <p>{lancamento.categoria.name}</p>
-                                <p>{lancamento.subcategoria ? lancamento.subcategoria.name : <span>Sem subcategoria</span>}</p>
+                                <p>{lancamento.subcategoria ? capitalizeFirstLetter(lancamento.subcategoria.name) : <span>Sem subcategoria</span>}</p>
                                 <div className={styles.box_btns_opcoes_lancamento}>
                                     <Link className={styles.btn_editar_lancamento} onClick={() => {
                                         setLancamentoSelecionado(lancamento.id)

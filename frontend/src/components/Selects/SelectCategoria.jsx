@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
 import { customSelectStyles } from './customSelectStyles'
 import { buscarCategorias } from '../../services/categorias'
+import { capitalizeFirstLetter } from '../../utils/formatUtils'
 
 export const SelectCategoria = ({ tipo, categoriaSelecionada, setCategoriaSelecionada }) => {
 
@@ -16,7 +17,7 @@ export const SelectCategoria = ({ tipo, categoriaSelecionada, setCategoriaSeleci
 
     const categoriaOptions = categoriasFiltradosPorTipo.map((categoria) => ({
         value: categoria.id,
-        label: categoria.name
+        label: capitalizeFirstLetter(categoria.name)
     }))
 
     const selectedOpctionCategoria = categoriaOptions.find(e => e.value === categoriaSelecionada) || null;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
 import { customSelectStyles } from './customSelectStyles'
 import { buscarSubcategorias } from '../../services/subcategorias'
+import { capitalizeFirstLetter } from '../../utils/formatUtils'
 
 export const SelectSubcategoria = ({ categoriaSelecionada, subcategoriaSelecionada, setSubcategoriaSelecionada }) => {
 
@@ -30,7 +31,7 @@ export const SelectSubcategoria = ({ categoriaSelecionada, subcategoriaSeleciona
 
     const subcategoriaOptions = (subcategorias || []).map((subcategoria) => ({
         value: subcategoria.id,
-        label: subcategoria.name
+        label: capitalizeFirstLetter(subcategoria.name)
     }))
 
     const selectedOpctionSubcategoria = subcategoriaOptions.find(e => e.value === subcategoriaSelecionada)
