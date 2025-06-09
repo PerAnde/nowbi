@@ -1,15 +1,20 @@
 // Formatar valor dos inputs
 export const formatarValor = (valor) => {
-    // Remove tudo que não é número
-    valor = valor.replace(/\D/g, "");
+    if (typeof valor === 'number') {
+        // Valor vindo direto do banco (número decimal)
+        return valor.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+        });
+    }
 
-    // Converte para número e formata para reais
-    valor = (Number(valor) / 100).toLocaleString("pt-BR", {
+    // Valor vindo de input do usuário (string formatada ou digitada)
+    valor = valor.replace(/\D/g, "");
+    return (Number(valor) / 100).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
     });
-
-    return valor;
 };
 
 // Formatar valor do banco

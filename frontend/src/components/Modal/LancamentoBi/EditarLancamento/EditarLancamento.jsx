@@ -25,7 +25,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
             const responseLancamento = await buscarLancamento(lancamento);
 
             if (responseLancamento) {
-                setValor(formatarValor(responseLancamento.valor || ''));
+                setValor(formatarValor(Number(responseLancamento.valor)));
                 setTipo(responseLancamento.tipo || '');
                 setCategoriaSelecionada(responseLancamento.categoria?.id || '');
                 setSubcategoriaSelecionada(responseLancamento.subcategoria?.id || '');
