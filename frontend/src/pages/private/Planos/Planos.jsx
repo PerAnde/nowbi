@@ -26,20 +26,20 @@ export const Planos = () => {
                 </div>
 
                 <div className={styles.box_conteudo_planos}>
-                    <div class={styles.box_cards_planos}>
+                    <div className={styles.box_cards_planos}>
 
-                        <div class={`${styles.card_plano} ${styles.plano_essencial}`}>
-                            <div class={styles.box_info_oferta}>
+                        <div className={`${styles.card_plano} ${styles.plano_essencial}`}>
+                            <div className={styles.box_info_oferta}>
                                 <img src={imgFoguinho} />
                                 <p>Por tempo limitado</p>
                             </div>
-                            <div class={styles.descricao_plano}>
+                            <div className={styles.descricao_plano}>
                                 <h3>Essencial</h3>
                                 <p>Perfeito para quem está começando</p>
                                 <h4>R$ 19,90<span>/mês</span></h4>
                             </div>
-                            <Link to="" class={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
-                            <div class={styles.detalhes_plano}>
+                            <Link to="" className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
+                            <div className={styles.detalhes_plano}>
                                 <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>1 empresa</strong></p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Lançamentos ilimitados</p>
@@ -47,18 +47,18 @@ export const Planos = () => {
                             </div>
                         </div>
 
-                        <div class={`${styles.card_plano} ${styles.plano_premium}`}>
-                            <div class={styles.box_info_oferta}>
+                        <div className={`${styles.card_plano} ${styles.plano_premium}`}>
+                            <div className={styles.box_info_oferta}>
                                 <img src={imgFoguinho} />
                                 <p>Por tempo limitado</p>
                             </div>
-                            <div class={styles.descricao_plano}>
+                            <div className={styles.descricao_plano}>
                                 <h3>Premium</h3>
                                 <p>Mais gestão e escalabilidade</p>
                                 <h4>R$ 184,90<span>/mês</span></h4>
                             </div>
-                            <Link to="" class={`${styles.btn} ${styles.btn_full}`}>Começar agora</Link>
-                            <div class={styles.detalhes_plano}>
+                            <Link to="" className={`${styles.btn} ${styles.btn_full}`}>Começar agora</Link>
+                            <div className={styles.detalhes_plano}>
                                 <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>10 empresas</strong></p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Lançamentos ilimitados</p>
@@ -66,18 +66,18 @@ export const Planos = () => {
                             </div>
                         </div>
 
-                        <div class={`${styles.card_plano} ${styles.plano_pro}`}>
-                            <div class={styles.box_info_oferta}>
+                        <div className={`${styles.card_plano} ${styles.plano_pro}`}>
+                            <div className={styles.box_info_oferta}>
                                 <img src={imgFoguinho} />
                                 <p>Por tempo limitado</p>
                             </div>
-                            <div class={styles.descricao_plano}>
+                            <div className={styles.descricao_plano}>
                                 <h3>Pro</h3>
                                 <p>Mais espaço para organizar e crescer</p>
                                 <h4>R$ 95,90<span>/mês</span></h4>
                             </div>
-                            <Link to="" class={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
-                            <div class={styles.detalhes_plano}>
+                            <Link to="" className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
+                            <div className={styles.detalhes_plano}>
                                 <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>5 empresas</strong></p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Lançamentos ilimitados</p>
@@ -87,11 +87,11 @@ export const Planos = () => {
 
                     </div>
 
-                    <div class={styles.box_plano_personalizado}>
-                        <div class={styles.detalhes_plano_personalizado}>
+                    <div className={styles.box_plano_personalizado}>
+                        <div className={styles.detalhes_plano_personalizado}>
                             <h3>Seu negócio vai além dos nossos planos?</h3>
                             <p>Montamos um plano sob medida para atender às suas necessidades.</p>
-                            <Link to="" class={`${styles.btn} ${styles.btn_border_light}`}>Fale conosco</Link>
+                            <Link to="" className={`${styles.btn} ${styles.btn_border_light}`}>Fale conosco</Link>
                         </div>
                         <img src={imgFoguete} />
                     </div>
