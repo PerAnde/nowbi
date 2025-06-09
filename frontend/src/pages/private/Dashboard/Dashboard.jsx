@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../../../api/api';
 import { Link } from 'react-router-dom';
 import { formatarValorExibicao, capitalizeFirstLetter } from '../../../utils/formatUtils'
+import { getUsuarioLocalStorage } from '../../../contexts/util';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -14,6 +15,7 @@ import * as PiIcons from 'react-icons/pi';
 
 export const Dashboard = () => {
 
+    const dadosUsuario = getUsuarioLocalStorage();
     const [usuario, setUsuario] = useState(null);
     const [totalEmpresas, setTotalEmpresas] = useState(null);
     const [totalBis, setTotalBis] = useState(0);
@@ -61,6 +63,8 @@ export const Dashboard = () => {
         buscarEmpresas();
     }, [])
 
+    console.log(usuario?.isPlanoAtivo)
+
     return (
         <Layout>
             <div className='box_conteudo_paginas'>
@@ -87,16 +91,20 @@ export const Dashboard = () => {
                         <span>{usuario?.plano?.nome}</span>
                     </div>
 
-                    <div className={styles.box_infos_fatura}>
-                        <div>
-                            <p>Valor</p>
-                            <p><span>{formatarValorExibicao(usuario?.plano?.valor)}</span></p>
+                    {!usuario?.isPlanoAtivo ? (
+                        ''
+                    ) : (
+                        <div className={styles.box_infos_fatura}>
+                            <div>
+                                <p>Valor</p>
+                                <p><span>{formatarValorExibicao(usuario?.plano?.valor)}</span></p>
+                            </div>
+                            <div>
+                                <p>Total de empresas</p>
+                                <p><span>{usuario?.plano?.limiteEmpresas}</span></p>
+                            </div>
                         </div>
-                        <div>
-                            <p>Total de empresas</p>
-                            <p><span>{usuario?.plano?.limiteEmpresas}</span></p>
-                        </div>
-                    </div>
+                    )}
 
                     <div className={styles.box_btn_fatura}>
                         {/* <Link to='/financeiro' className={styles.btn_fatura}>Fazer upgrade</Link> */}

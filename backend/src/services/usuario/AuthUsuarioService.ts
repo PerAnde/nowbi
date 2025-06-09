@@ -43,8 +43,6 @@ class AuthUsuarioService {
         )
 
         return {
-            id: usuario.id,
-            name: usuario.name,
             email: usuario.email,
             token: token,
             isPeriodoTesteAtivo: usuario.isPeriodoTesteAtivo,

@@ -163,7 +163,7 @@ class CreateUsuarioService {
                 email: email,
                 cpf_cnpj: cpfCnpjNumerico,
                 password: senhaCriptografada,
-                dataFimPeriodoTeste: addMinutes(new Date(), 1),
+                dataFimPeriodoTeste: addDays(new Date(), 7),
                 isPeriodoTesteAtivo: true,
                 isPlanoAtivo: false,
                 plano_id: 4,

@@ -30,8 +30,17 @@ export const AuthProvider = ({ children }) => {
         const response = await LoginRequest(email, password)
 
         // const para armazenar dados recebidos da const response
-        const payload = { token: response.token, email: response.email, isPeriodoTesteAtivo: response.isPeriodoTesteAtivo, isPlanoAtivo: response.isPlanoAtivo }
+        const payload = {
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            token: response.token,
+            isPeriodoTesteAtivo: response.isPeriodoTesteAtivo,
+            isPlanoAtivo: response.isPlanoAtivo,
+            dataFimPeriodoTeste: response.dataFimPeriodoTeste
+        }
 
+        console.log(payload)
         // Por fim setUsuario recebe os dados armazenados no payload
         setUsuario(payload)
         // E a funcao setUsuarioLocalStorage armazena as informacoes no localStorage

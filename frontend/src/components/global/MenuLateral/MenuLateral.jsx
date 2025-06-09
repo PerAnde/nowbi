@@ -11,7 +11,16 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
     const usuario = getUsuarioLocalStorage();
     const menuLateralRef = useRef(null);
 
-    console.log(usuario)
+    let diasRestantes = null;
+
+    if (usuario?.isPeriodoTesteAtivo && usuario.dataFimPeriodoTeste) {
+        const hoje = new Date();
+        const fimTeste = new Date(usuario.dataFimPeriodoTeste);
+        const diffEmMs = fimTeste - hoje;
+        diasRestantes = Math.max(Math.ceil(diffEmMs / (1000 * 60 * 60 * 24)), 0);
+    }
+
+    console.log(diasRestantes)
 
     // // Fechar o menu ao clicar fora dele
     useEffect(() => {
@@ -68,11 +77,19 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         </Link>
                     </div>
 
-                    <div className={styles.box_mensagem_menu_lateral}>
-                        <p>Período experimental</p>
-                        <span>7 dias restantes</span>
-                        <Link className={styles.btn_ativar_conta}>Ativar conta</Link>
-                    </div>
+                    {!usuario.isPlanoAtivo && (
+                        <div className={styles.box_mensagem_menu_lateral}>
+                            <p>Período experimental</p>
+                            <span>
+                                {diasRestantes > 0
+                                    ? `${diasRestantes} ${diasRestantes === 1 ? 'dia' : 'dias'} restantes`
+                                    : 'Período expirado'}
+                            </span>
+                            <Link className={styles.btn_ativar_conta}>
+                                {diasRestantes > 0 ? 'Ativar conta' : 'Escolher plano'}
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 
