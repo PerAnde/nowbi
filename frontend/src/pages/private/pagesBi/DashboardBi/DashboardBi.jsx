@@ -677,7 +677,7 @@ export const DashboardBi = () => {
                                             >
                                                 {pieDataDespesas.map((entry, index) => (
                                                     <Cell
-                                                        key={entry.name}
+                                                        key={capitalizeFirstLetter(entry.name)}
                                                         fill={CoresGraficos[index % CoresGraficos.length]}
                                                         opacity={dadoHoverGrafico === null || dadoHoverGrafico === index ? 1 : 0.6}
                                                         onMouseEnter={() => handlePieEnter(null, index)}
@@ -698,7 +698,7 @@ export const DashboardBi = () => {
                                                         className={styles.bolinha}
                                                         style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
                                                     ></div>
-                                                    <span>{entry.name}</span>
+                                                    <span>{capitalizeFirstLetter(entry.name)}</span>
                                                 </div>
                                                 <div>
                                                     <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
