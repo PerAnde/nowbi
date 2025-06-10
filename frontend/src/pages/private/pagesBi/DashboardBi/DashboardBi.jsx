@@ -611,7 +611,7 @@ export const DashboardBi = () => {
                                             >
                                                 {pieDataReceitas.map((entry, index) => (
                                                     <Cell
-                                                        key={entry.name}
+                                                        key={capitalizeFirstLetter(entry.name)}
                                                         fill={CoresGraficos[index % CoresGraficos.length]}
                                                         opacity={dadoHoverGrafico === null || dadoHoverGrafico === index ? 1 : 0.6}
                                                         onMouseEnter={() => handlePieEnter(null, index)}
@@ -627,13 +627,13 @@ export const DashboardBi = () => {
                                 <div className={styles.box_infos_legendas}>
                                     <div className={styles.box_legendas}>
                                         {pieDataReceitas.map((entry) => (
-                                            <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
+                                            <div key={capitalizeFirstLetter(entry.name)} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
                                                 <div className={styles.box_nome_subcategoria}>
                                                     <div
                                                         className={styles.bolinha}
                                                         style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
                                                     ></div>
-                                                    <span>{entry.name}</span>
+                                                    <span>{capitalizeFirstLetter(entry.name)}</span>
                                                 </div>
                                                 <div>
                                                     <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
@@ -692,7 +692,7 @@ export const DashboardBi = () => {
                                 <div className={styles.box_infos_legendas}>
                                     <div className={styles.box_legendas}>
                                         {pieDataDespesas.map((entry) => (
-                                            <div key={entry.name} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
+                                            <div key={capitalizeFirstLetter(entry.name)} className={styles.legendas} style={{ borderLeft: `1px solid ${CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length]}` }}>
                                                 <div className={styles.box_nome_subcategoria}>
                                                     <div
                                                         className={styles.bolinha}
