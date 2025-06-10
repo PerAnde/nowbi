@@ -4,7 +4,7 @@ import { api } from '../../../api/api';
 import { buscarEmpresas, excluirEmpresa } from '../../../services/empresas';
 import { buscarGrupo, buscarGrupos, excluirGrupo } from '../../../services/grupoEmpresas';
 import { Input } from '../../../components/Input/Input';
-import { SelectGrupoEmpresa } from '../../../components/Selects/SelectGrupoEmpresa';
+// import { SelectGrupoEmpresa } from '../../../components/Selects/SelectGrupoEmpresa';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -24,6 +24,7 @@ import styles from './Empresas.module.scss'
 import { EditarGrupo } from '../../../components/Modal/GrupoDeEmpresas/EditarGrupo';
 import { ExcluirGrupo } from '../../../components/Modal/GrupoDeEmpresas/ExcluirGrupo';
 import { AddEmpresaGrupo } from '../../../components/Modal/GrupoDeEmpresas/AddEmpresaGrupo';
+import { capitalizeFirstLetter } from '../../../utils/formatUtils'
 import { toast } from 'sonner';
 
 export const Empresas = () => {
@@ -264,7 +265,7 @@ export const Empresas = () => {
 
                                         <div className={styles.infos_empresa}>
                                             <div>
-                                                <h3>{empresa.name}</h3>
+                                                <h3>{capitalizeFirstLetter(empresa.name)}</h3>
                                             </div>
                                             <div>
                                                 {empresa.cnpj_empresa ? <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p> : ''}
