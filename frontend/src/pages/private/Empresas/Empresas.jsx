@@ -343,7 +343,7 @@ export const Empresas = () => {
 
                                         <div className={styles.infos_empresa}>
                                             <div>
-                                                <h3>{empresa.name}</h3>
+                                                <h3>{capitalizeFirstLetter(empresa.name)}</h3>
                                             </div>
                                             <div>
                                                 {empresa.cnpj_empresa ? <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p> : ''}
