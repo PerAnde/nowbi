@@ -157,9 +157,8 @@
 .box_metricas_mes {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .card_metrica_mes {
@@ -225,9 +224,9 @@
     }
 }
 
-@media screen and (max-width: 1070px) {
+@media screen and (max-width: 830px) {
     .box_metricas_mes{
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
     }
 }
 

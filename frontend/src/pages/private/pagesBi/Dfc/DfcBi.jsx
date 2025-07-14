@@ -28,7 +28,7 @@ export const DfcBi = () => {
 
     if (loading || !dashboardData) return <p>Carregando...</p>
 
-    const { summary, diferencaPercentualReceita } = dashboardData
+    const { summary } = dashboardData
 
     // Filtro grupos de DRE
     const gruposDeDRE = [
@@ -199,6 +199,43 @@ export const DfcBi = () => {
 
     const dadosFiltrados = agruparDados(dashboardData.summary.detalhes);
 
+    // Dados para gerar calculos
+    const dadosAgrupados = agruparPorGrupo(dashboardData.summary.detalhes);
+    const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
+
+    const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
+    const deducoesImpostos = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
+    const custoVariavel = getTotal('CUSTO_VARIAVEL');
+    const despesasVariaveis = getTotal('DESPESAS_VARIAVEIS');
+    const despesasOperacionais = getTotal('DESPESAS_OPERACIONAIS');
+    const despesasFinanceiras = getTotal('DESPESAS_FINANCEIRAS');
+    const outrasDespesas = getTotal('OUTRAS_DESPESAS');
+    const outrasReceitas = getTotal('OUTRAS_RECEITAS');
+
+    const receitaOperacionalLiquida = receitaBruta - deducoesImpostos
+
+    // Calculo margem de contribuicao
+    const resultadoBruto = receitaBruta - deducoesImpostos - custoVariavel
+    const margemDeContribuicao = resultadoBruto - despesasVariaveis;
+    const margemDeContribuicaoDecimal = receitaBruta > 0 ? (margemDeContribuicao / receitaBruta) : 0;
+    const margemDeContribuicaoPercentual = (margemDeContribuicaoDecimal * 100).toFixed(2);
+    const margemDeContribuicaoArredondadaDecimal = Number(margemDeContribuicaoPercentual) / 100;
+
+    // const saldoFinal = resultadoBruto - despesasOperacionais - despesasVariaveis - despesasFinanceiras - outrasDespesas;
+    const receitaLiquida = receitaBruta - deducoesImpostos;
+    const lucroBruto = receitaLiquida - custoVariavel;
+    const saldoDeCaixaOperacional = lucroBruto - despesasOperacionais - despesasVariaveis - despesasFinanceiras - outrasDespesas;
+    const saldoDeCaixa = saldoDeCaixaOperacional + outrasReceitas
+
+    // Calculo ponto de equilibrio operacional
+    const pontoDeEquilibrioOperacional = margemDeContribuicaoDecimal > 0
+        ? (despesasOperacionais / margemDeContribuicaoArredondadaDecimal)
+        : 0;
+
+    // Calceulo ponto de equilibrio financeiro
+    const somaDepesasOperacionaisEFinanceiras = despesasOperacionais + despesasFinanceiras;
+    const pontoDeEquilibrioFinanceiro = somaDepesasOperacionaisEFinanceiras / margemDeContribuicaoArredondadaDecimal;
+
     return (
         <div className={styles.box_dashboard_bi}>
 
@@ -214,6 +251,40 @@ export const DfcBi = () => {
             </div>
 
             <div className={styles.box_pagina_bi}>
+
+                <div className={styles.box_metricas_mes}>
+
+                    <div className={styles.card_metrica_mes}>
+                        <div className={styles.infos_metricas_mes}>
+                            <p className={styles.titulo_card_mes}>Margem de contribuição</p>
+                            <h3>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({margemDeContribuicaoPercentual}%)</span></h3>
+                        </div>
+                        {/* <div className={styles.box_btn_mais_infos}>
+                                            <PiIcons.PiInfo /> Mais informações
+                                        </div> */}
+                    </div>
+
+                    <div className={styles.card_metrica_mes}>
+                        <div className={styles.infos_metricas_mes}>
+                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional</p>
+                            <h3>{pontoDeEquilibrioOperacional.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
+                        </div>
+                        {/* <div className={styles.box_btn_mais_infos}>
+                                            <PiIcons.PiInfo /> Mais informações
+                                        </div> */}
+                    </div>
+
+                    <div className={styles.card_metrica_mes}>
+                        <div className={styles.infos_metricas_mes}>
+                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro</p>
+                            <h3>{pontoDeEquilibrioFinanceiro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
+                        </div>
+                        {/* <div className={styles.box_btn_mais_infos}>
+                                            <PiIcons.PiInfo /> Mais informações
+                                        </div> */}
+                    </div>
+
+                </div>
 
                 <div className="dreContainer">
 
