@@ -1,0 +1,376 @@
+.header_pagina_dashboardBi {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.filtros_mes_ano {
+    display: grid;
+    grid-template-columns: 135px 90px;
+    gap: 1rem;
+}
+
+.box_pagina_bi {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.box_resumo_detalhes_mes {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.card_resumo_detalhes_mes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--branco);
+    border-top: 2px solid var(--branco);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+    transition: .3s;
+}
+
+
+.card_resumo_detalhes_mes.card_receitas {
+    border-top: 2px solid var(--verde);
+}
+
+.card_resumo_detalhes_mes.card_despesas {
+    border-top: 2px solid var(--vermelho);
+    transition: .3s;
+}
+
+.infos_detalhes_mes {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.titulo_card_mes {
+    font-size: 1.3rem;
+}
+
+.infos_detalhes_mes span {
+    font-size: 2.5rem;
+    font-weight: var(--bold);
+}
+
+.infos_mes_anterior {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.3rem;
+}
+
+.infos_mes_anterior i {
+    display: flex;
+}
+
+.infos_mes_anterior.positivo i {
+    color: var(--verde);
+}
+
+.infos_mes_anterior.negativo i {
+    color: var(--vermelho);
+}
+
+.infos_mes_anterior.positivo p,
+.infos_mes_anterior.negativo p {
+    color: var(--texto-secundario);
+}
+
+.infos_mes_anterior.positivo p span,
+.infos_mes_anterior.negativo p span {
+    color: var(--texto-secundario);
+    font-size: 1.3rem;
+    font-weight: var(--light);
+}
+
+.infos_mes_anterior.positivo p span {
+    color: var(--verde);
+}
+
+.infos_mes_anterior.negativo p span {
+    color: var(--vermelho);
+}
+
+.infos_card_mes {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    color: var(--texto-secundario);
+    cursor: pointer;
+}
+
+.infos_card_mes p {
+    display: flex;
+    gap: .3rem;
+}
+
+.infos_card_mes p i {
+    display: flex;
+    align-items: center;
+}
+
+.icone_card_mes {
+    display: flex;
+    align-items: center;
+    font-size: 2.5rem;
+    padding: 2rem;
+    border-radius: 50%;
+}
+
+.icone_card_mes.icone_receitas {
+    background-color: var(--verde-15);
+    color: var(--verde);
+}
+
+.icone_card_mes.icone_despesas {
+    background-color: var(--vermelho-15);
+    color: var(--vermelho);
+}
+
+.box_detalhes_mes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.box_cards_detalhes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.box_cards_detalhes>div:last-child {
+    grid-column: 1 / -1;
+}
+
+.card_metrica_mes {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--branco);
+    border-top: 2px solid var(--branco);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+    transition: .3s;
+}
+
+.infos_metricas_mes h3 {
+    font-size: 2.5rem;
+    font-weight: var(--bold);
+}
+
+.infos_metricas_mes h3 span {
+    font-size: 1.5rem;
+    font-weight: var(--regular);
+    color: var(--texto-secundario);
+}
+
+.box_btn_mais_infos {
+    display: flex;
+    align-items: flex-end;
+    gap: .3rem;
+    bottom: 0;
+    font-size: 1.2rem;
+    color: var(--texto-secundario);
+    cursor: pointer;
+}
+
+.box_grafico_receitas_despesas {
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+}
+
+.header_grafico_receitas_despesas p span {
+    color: var(--texto-secundario);
+}
+
+.grafico_receitas_despesas {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.box_grafico_ultimos_12_meses {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius-componente);
+    margin-bottom: 2rem;
+}
+
+.header_grafico_ultimos_12_meses>p {
+    margin-bottom: 2rem;
+}
+
+.header_grafico_ultimos_12_meses p span {
+    color: var(--texto-secundario);
+}
+
+.header_descricao {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+}
+
+.descricao_header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.descricao_header span {
+    display: flex;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.descricao_header.descricao_receita span {
+    background-color: var(--cor-primaria);
+}
+
+.descricao_header.descricao_despesa span {
+    background-color: var(--cor-grafico);
+}
+
+.box_graficos_subcategorias {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.box_grafico_pizza {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.header_grafico_subcategorias{
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.header_grafico_subcategorias p span {
+    color: var(--texto-secundario);
+}
+
+.box_btn_ordem{
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--texto-secundario);
+}
+
+.box_btn_ordem:hover{
+    color: var(--cor-primaria);
+    transition: .3s;
+}
+
+.grafico_subcategorias {
+    display: flex;
+    align-items: center;
+}
+
+.box_legendas {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    overflow-y: auto;
+    gap: .5rem;
+}
+
+.legendas {
+    display: grid;
+    grid-template-columns: 1fr 150px 60px;
+    padding: 1.5rem;
+}
+
+.box_nome_subcategoria {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.box_nome_subcategoria div.bolinha {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+}
+
+.item_valor,
+.item_percentual {
+    color: var(--texto-secundario);
+}
+
+@media screen and (max-width: 1310px){
+    .box_detalhes_mes{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 1120px){
+    .box_graficos_subcategorias{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 870px){
+    .box_resumo_detalhes_mes{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 670px){
+    .box_cards_detalhes{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 595px) {
+    .box_infos_legendas {
+        width: 100%;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        gap: .5rem;
+    }
+
+    .box_legendas {
+        width: 100%;
+    }
+
+    .legendas {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "nome nome"
+            "valor percentual";
+        gap: 2rem;
+    }
+
+    .legendas div:nth-child(1) {
+        grid-area: nome;
+    }
+
+    .legendas div:nth-child(2) {
+        grid-area: valor;
+    }
+
+    .legendas div:nth-child(3) {
+        grid-area: percentual;
+    }
+
+}

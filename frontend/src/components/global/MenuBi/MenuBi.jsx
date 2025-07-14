@@ -1,22 +1,35 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
-
+import { Link, useLocation, useParams } from 'react-router-dom'
 import styles from './MenuBi.module.scss'
 
-import * as PiIcons from 'react-icons/pi';
+export const MenuBi = () => {
+    const { link_bi } = useParams()
+    const location = useLocation()
 
-export const MenuBi = ({ abaAtiva, setViewMode }) => {
+    const isAtiva = (rota) => location.pathname.includes(`/dashboardbi/${link_bi}/${rota}`)
+
     return (
         <div className={styles.menu_bi}>
             <div className={styles.links_menu}>
-                <Link className={`${styles.btn_menu} ${abaAtiva === "resumo" ? styles.ativo : ""}`} onClick={() => setViewMode("resumo")} >
-                    <PiIcons.PiChartPieSlice /> Resumo
+                <Link
+                    className={`${styles.btn_menu} ${isAtiva('resumo') ? styles.ativo : ''}`}
+                    to={`/dashboardbi/${link_bi}/resumo`}
+                >
+                    Dashboard
                 </Link>
-                <Link className={`${styles.btn_menu} ${abaAtiva === "dre" ? styles.ativo : ""}`} onClick={() => setViewMode("dre")} >
-                    <PiIcons.PiRowsBold /> DFC
+
+                <Link
+                    className={`${styles.btn_menu} ${isAtiva('detalhes') ? styles.ativo : ''}`}
+                    to={`/dashboardbi/${link_bi}/detalhes`}
+                >
+                    Detalhes
                 </Link>
-                <Link className={`${styles.btn_menu} ${styles.disable}`} >
-                    <PiIcons.PiListDashesBold /> Detalhes <span>Em breve</span>
+
+                <Link
+                    className={`${styles.btn_menu} ${isAtiva('dre') ? styles.ativo : ''}`}
+                    to={`/dashboardbi/${link_bi}/dre`}
+                >
+                    DFC
                 </Link>
             </div>
         </div>

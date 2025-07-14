@@ -1,9 +1,18 @@
 import React from 'react'
-import { useMeses } from '../../hooks/useMeses';
-import Select from 'react-select'
-import { customSelectStyles } from './customSelectStyles'
+import Select, { components } from 'react-select'
+import { customSelectBiStyles } from './customSelectBiStyles'
+import { PiCalendarDots } from 'react-icons/pi'
 
-export const SelectMesEmpresa = ({ mesSelecionado, setMesSelecionado, mesesDisponiveis }) => {
+const SingleValueWithIcon = (props) => (
+    <components.SingleValue {...props}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <PiCalendarDots size={16} />
+            {props.data.label}
+        </div>
+    </components.SingleValue>
+)
+
+export const SelectMesBi = ({ mesSelecionado, setMesSelecionado, mesesDisponiveis }) => {
 
     const handleMes = (e) => {
         setMesSelecionado(e.value);
@@ -15,7 +24,7 @@ export const SelectMesEmpresa = ({ mesSelecionado, setMesSelecionado, mesesDispo
     }));
 
     const selectedOptionMes = mesOptions.find(e => e.value === mesSelecionado);
-    
+
     return (
         <Select
             options={mesOptions}
@@ -23,10 +32,11 @@ export const SelectMesEmpresa = ({ mesSelecionado, setMesSelecionado, mesesDispo
             onChange={handleMes}
             placeholder="Selecione um mês"
             unstyled
-            styles={customSelectStyles}
+            styles={customSelectBiStyles}
             menuPortalTarget={document.body}
             menuPosition="absolute"
             menuPlacement="auto"
+            components={{ SingleValue: SingleValueWithIcon }}
         />
     )
 }

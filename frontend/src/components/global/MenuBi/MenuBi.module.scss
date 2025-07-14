@@ -1,12 +1,12 @@
 .menu_bi {
-    width: 100%;
     background-color: var(--background-menu-bi);
+    border-radius: var(--border-radius-componente);
 }
 
 .links_menu {
     display: flex;
     gap: .5rem;
-    padding: 1.5rem;
+    padding: 0.7rem;
     overflow-x: auto;
     white-space: nowrap;
     scroll-behavior: smooth;
@@ -33,19 +33,19 @@
     display: flex;
     align-items: center;
     gap: .7rem;
-    padding: 1rem;
+    padding: 1.2rem 1.7rem;
     border-radius: var(--border-radius-button);
     color: var(--texto-secundario);
 }
 
 .btn_menu:hover {
-    background-color: var(--button-painel-cor-secundaria-hover);
+    background-color: var(--branco);
     transition: .3s;
 }
 
 .btn_menu.ativo {
-    background-color: var(--cor-primaria-15);
-    color: var(--cor-primaria-claro);
+    background-color: var(--branco);
+    color: var(--texto-primario);
 }
 
 .btn_menu.disable {
@@ -68,5 +68,11 @@
     .links_menu a {
         display: flex;
         justify-content: center;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    .menu_bi {
+        width: 100%;
     }
 }

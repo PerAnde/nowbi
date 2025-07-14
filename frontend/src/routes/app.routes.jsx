@@ -18,7 +18,7 @@ import { Empresa } from '../pages/private/Empresa/Empresa';
 import { Categorias } from '../pages/private/Categorias/Categorias';
 import { Bi } from '../pages/private/Bi/Bi';
 // Rotas Dashboard BI
-import { DashboardBi } from '../pages/private/pagesBi/DashboardBi/DashboardBi';
+import { DashboardBiRoutes } from './dashboardbi.routes'
 // Rotas Erros
 import { NotFound } from '../pages/private/errors/NotFound';
 
@@ -42,10 +42,7 @@ export const AppRoutes = () => {
                 <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
                 <Route path='/bi/:id' element={<PrivateRoutes><Bi /></PrivateRoutes>} />
                 {/* Rotas Dashboard BI */}
-                <Route path='/dashboardbi/:link_bi' element={<DashboardBi />} />
-                <Route path='/entradasbi' element={<DashboardBi />} />
-                <Route path='/saidasbi' element={<DashboardBi />} />
-                <Route path='/detalhesbi' element={<DashboardBi />} />
+                {DashboardBiRoutes()}
                 {/* Rotas Erros */}
                 <Route path='/notfound' element={<PrivateRoutes><NotFound /></PrivateRoutes>} />
                 <Route path='*' element={<Navigate to="/notfound" />} />

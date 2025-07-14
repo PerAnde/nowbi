@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { buscarDashboardBi } from '../../../../services/dashboardBi';
 import { processaDadosBi } from '../../../../utils/processaDadosBi';
 import { CoresGraficos } from '../../../../utils/coresGraficos';
-import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
 import styles from './DashboardBi.module.scss';
 import './dre.css'
 import { LayoutBi } from '../../../../layout/LayoutBi/LayoutBi';

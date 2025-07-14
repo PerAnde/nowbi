@@ -12,7 +12,7 @@ export const LayoutBi = ({ children, empresa, abaAtiva, setViewMode }) => {
             <HeaderBi empresa={empresa} />
             <MenuBi abaAtiva={abaAtiva} setViewMode={setViewMode} />
 
-            <section className={styles.section}>
+            <section className={styles.sectionBi}>
                 {children}
             </section>
 

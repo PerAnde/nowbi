@@ -1,9 +1,9 @@
 import React from 'react'
 import { useAnos } from '../../hooks/useAnos';
 import Select from 'react-select'
-import { customSelectStyles } from './customSelectStyles'
+import { customSelectBiStyles } from './customSelectBiStyles'
 
-export const SelectAnoEmpresa = ({ anoSelecionado, setAnoSelecionado, anosDisponiveis }) => {
+export const SelectAnoBi = ({ anoSelecionado, setAnoSelecionado, anosDisponiveis }) => {
 
     const handleAno = (e) => {
         setAnoSelecionado(e.value);
@@ -23,7 +23,7 @@ export const SelectAnoEmpresa = ({ anoSelecionado, setAnoSelecionado, anosDispon
             onChange={handleAno}
             placeholder="Selecione um ano"
             unstyled
-            styles={customSelectStyles}
+            styles={customSelectBiStyles}
             menuPortalTarget={document.body}
             menuPosition="absolute"
             menuPlacement="auto"
