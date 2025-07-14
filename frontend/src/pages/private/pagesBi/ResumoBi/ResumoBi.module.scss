@@ -6,9 +6,30 @@
 }
 
 .filtros_mes_ano {
+    display: flex;
+    gap: 1rem;
+}
+
+.mes_ano {
     display: grid;
     grid-template-columns: 135px 90px;
     gap: 1rem;
+}
+
+.btn_media{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 0 1.3rem;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn_media.btn_media_ativo{
+    background-color: var(--cor-primaria);
+    color: var(--branco);
+    transition: .3s;
 }
 
 .box_pagina_bi {
@@ -76,35 +97,35 @@
     font-size: 1.3rem;
 }
 
-.infos_mes_anterior i{
+.infos_mes_anterior i {
     display: flex;
 }
 
-.infos_mes_anterior.positivo i{
+.infos_mes_anterior.positivo i {
     color: var(--verde);
-}   
+}
 
-.infos_mes_anterior.negativo i{
+.infos_mes_anterior.negativo i {
     color: var(--vermelho);
 }
 
 .infos_mes_anterior.positivo p,
-.infos_mes_anterior.negativo p{
+.infos_mes_anterior.negativo p {
     color: var(--texto-secundario);
 }
 
 .infos_mes_anterior.positivo p span,
-.infos_mes_anterior.negativo p span{
+.infos_mes_anterior.negativo p span {
     color: var(--texto-secundario);
     font-size: 1.3rem;
     font-weight: var(--light);
 }
 
-.infos_mes_anterior.positivo p span{
+.infos_mes_anterior.positivo p span {
     color: var(--verde);
 }
 
-.infos_mes_anterior.negativo p span{
+.infos_mes_anterior.negativo p span {
     color: var(--vermelho);
 }
 
@@ -116,12 +137,12 @@
     cursor: pointer;
 }
 
-.infos_card_mes p{
+.infos_card_mes p {
     display: flex;
     gap: .3rem;
 }
 
-.infos_card_mes p i{
+.infos_card_mes p i {
     display: flex;
     align-items: center;
 }
@@ -172,12 +193,16 @@
     transition: .3s;
 }
 
+.infos_metricas_mes p span{
+    color: var(--texto-secundario);
+}
+
 .infos_metricas_mes h3 {
     font-size: 2.5rem;
     font-weight: var(--bold);
 }
 
-.infos_metricas_mes h3 span{
+.infos_metricas_mes h3 span {
     font-size: 1.5rem;
     font-weight: var(--regular);
     color: var(--texto-secundario);
@@ -193,11 +218,11 @@
     cursor: pointer;
 }
 
-.header_historico_faturamento p span{   
+.header_historico_faturamento p span {
     color: var(--texto-secundario);
 }
 
-.header_historico_faturamento h3{
+.header_historico_faturamento h3 {
     font-size: 3rem;
     font-weight: var(--bold);
     margin-bottom: 1.5rem;
@@ -211,7 +236,7 @@
     font-size: 1.3rem;
 }
 
-.header_descricao span{
+.header_descricao span {
     display: flex;
     width: 12px;
     height: 12px;
@@ -220,31 +245,31 @@
 }
 
 @media screen and (max-width: 1370px) {
-    .box_resumo_mes{
+    .box_resumo_mes {
         grid-template-columns: 1fr 1fr;
     }
 }
 
 @media screen and (max-width: 1070px) {
-    .box_metricas_mes{
+    .box_metricas_mes {
         grid-template-columns: 1fr 1fr;
     }
 }
 
 @media screen and (max-width: 740px) {
-    .box_resumo_mes{
+    .box_resumo_mes {
         grid-template-columns: 1fr;
     }
 }
 
 @media screen and (max-width: 610px) {
-    .box_metricas_mes{
+    .box_metricas_mes {
         grid-template-columns: 1fr;
     }
 }
 
-@media screen and (max-width: 470px){
-    .header_pagina_dashboardBi{
+@media screen and (max-width: 470px) {
+    .header_pagina_dashboardBi {
         flex-direction: column-reverse;
         gap: 2rem;
     }

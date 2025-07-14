@@ -25,6 +25,7 @@ export const ResumoBi = () => {
     } = useBiPublic()
 
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
+    const [mostrarMedia, setMostrarMedia] = useState(false);
 
     useEffect(() => {
         const handleResize = () => setGraficoMobile(window.innerWidth < 800);
@@ -101,6 +102,55 @@ export const ResumoBi = () => {
     const somaDepesasOperacionaisEFinanceiras = despesasOperacionais + despesasFinanceiras;
     const pontoDeEquilibrioFinanceiro = somaDepesasOperacionaisEFinanceiras / margemDeContribuicaoArredondadaDecimal;
 
+    const bisRecentes = empresa.bis
+        .filter(bi => bi.status && Array.isArray(bi.lancamentoBi) && bi.lancamentoBi.length > 0)
+        .slice(-12);
+
+    const totaisParaMedia = bisRecentes.reduce((acc, bi) => {
+        console.log("bi.lancamentoBi:", bi.lancamentoBi);
+
+        const detalhesSimulados = bi.lancamentoBi.map(l => ({
+            grupoDre: l.categoria?.grupoDre || "NAO_EXIBIR_NO_DRE",
+            valor: parseFloat(l.valor),
+            categoria: l.categoria?.name || '',
+            subcategoria: l.subcategoria?.name || ''
+        }));
+
+        const agrupado = agruparPorGrupo(detalhesSimulados);
+
+        const receitaBruta = agrupado['RECEITA_OPERACIONAL_BRUTA']?.total || 0;
+        const deducoes = agrupado['DEDUCOES_DA_RECEITA_BRUTA']?.total || 0;
+        const custoVar = agrupado['CUSTO_VARIAVEL']?.total || 0;
+        const despesasVar = agrupado['DESPESAS_VARIAVEIS']?.total || 0;
+        const despesasOp = agrupado['DESPESAS_OPERACIONAIS']?.total || 0;
+        const despesasFin = agrupado['DESPESAS_FINANCEIRAS']?.total || 0;
+
+        const margemValor = receitaBruta - deducoes - custoVar - despesasVar;
+        const margemPercentual = receitaBruta > 0 ? margemValor / receitaBruta : 0;
+
+        const pontoEquilibrioOp = margemPercentual > 0 ? despesasOp / margemPercentual : 0;
+        const pontoEquilibrioFin = margemPercentual > 0 ? (despesasOp + despesasFin) / margemPercentual : 0;
+
+        acc.margemValorTotal += margemValor;
+        acc.margemPercentualTotal += margemPercentual;
+        acc.pontoEquilibrioOpTotal += pontoEquilibrioOp;
+        acc.pontoEquilibrioFinTotal += pontoEquilibrioFin;
+        acc.count++;
+
+        return acc;
+    }, {
+        margemValorTotal: 0,
+        margemPercentualTotal: 0,
+        pontoEquilibrioOpTotal: 0,
+        pontoEquilibrioFinTotal: 0,
+        count: 0
+    });
+
+    const mediaMargemValor = totaisParaMedia.count > 0 ? totaisParaMedia.margemValorTotal / totaisParaMedia.count : 0;
+    const mediaMargemPercentual = totaisParaMedia.count > 0 ? (totaisParaMedia.margemPercentualTotal / totaisParaMedia.count) * 100 : 0;
+    const mediaPontoEquilibrioOp = totaisParaMedia.count > 0 ? totaisParaMedia.pontoEquilibrioOpTotal / totaisParaMedia.count : 0;
+    const mediaPontoEquilibrioFin = totaisParaMedia.count > 0 ? totaisParaMedia.pontoEquilibrioFinTotal / totaisParaMedia.count : 0;
+
     //Media faturamento
     const bisAtivos = empresa.bis.filter(bi => bi.status)
 
@@ -139,8 +189,20 @@ export const ResumoBi = () => {
 
                 <div className={styles.box_filtro_mes_ano}>
                     <div className={styles.filtros_mes_ano}>
-                        <SelectMesBi mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
-                        <SelectAnoBi anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+                        <div className={styles.mes_ano}>
+                            <SelectMesBi mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
+                            <SelectAnoBi anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+                        </div>
+                        {mostrarMedia ?
+                            <div className={`${styles.btn_media} ${styles.btn_media_ativo}`} onClick={() => setMostrarMedia(prev => !prev)}>
+                                <PiIcons.PiFadersHorizontal />
+                                Média
+                            </div> :
+                            <div className={styles.btn_media} onClick={() => setMostrarMedia(prev => !prev)}>
+                                <PiIcons.PiFadersHorizontal />
+                                Mês Atual
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -207,8 +269,10 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Margem de contribuição</p>
-                            <h3>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({margemDeContribuicaoPercentual}%)</span></h3>
+                            <p className={styles.titulo_card_mes}>Margem de contribuição <span>{mostrarMedia ? '(Média)' : ''}</span></p>
+                            <h3>
+                                {(mostrarMedia ? mediaMargemValor : margemDeContribuicao).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({(mostrarMedia ? mediaMargemPercentual.toFixed(2) : margemDeContribuicaoPercentual)}%)</span>
+                            </h3>
                         </div>
                         {/* <div className={styles.box_btn_mais_infos}>
                             <PiIcons.PiInfo /> Mais informações
@@ -217,8 +281,12 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional</p>
-                            <h3>{pontoDeEquilibrioOperacional.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
+                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional <span>{mostrarMedia ? '(Média)' : ''}</span></p>
+                            <h3>
+                                {(mostrarMedia ? mediaPontoEquilibrioOp : pontoDeEquilibrioOperacional).toLocaleString('pt-BR', {
+                                    style: 'currency', currency: 'BRL'
+                                })}
+                            </h3>
                         </div>
                         {/* <div className={styles.box_btn_mais_infos}>
                             <PiIcons.PiInfo /> Mais informações
@@ -227,8 +295,12 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro</p>
-                            <h3>{pontoDeEquilibrioFinanceiro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
+                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro <span>{mostrarMedia ? '(Média)' : ''}</span></p>
+                            <h3>
+                                {(mostrarMedia ? mediaPontoEquilibrioFin : pontoDeEquilibrioFinanceiro).toLocaleString('pt-BR', {
+                                    style: 'currency', currency: 'BRL'
+                                })}
+                            </h3>
                         </div>
                         {/* <div className={styles.box_btn_mais_infos}>
                             <PiIcons.PiInfo /> Mais informações
