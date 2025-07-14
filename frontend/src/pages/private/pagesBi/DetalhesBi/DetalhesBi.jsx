@@ -340,9 +340,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Deduções e Impostos (-)</p>
                                 <h3>{deducoesImpostos.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -350,9 +350,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Custo Variável (CPV ou CMV)</p>
                                 <h3>{custoVariavel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -360,9 +360,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Despesas Operacionais</p>
                                 <h3>{despesasOperacionais.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -370,9 +370,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Despesas Variáveis</p>
                                 <h3>{despesasVariaveis.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -380,9 +380,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Despesas Financeiras</p>
                                 <h3>{despesasFinanceiras.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -390,9 +390,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Outras Despesas</p>
                                 <h3>{outrasDespesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -400,9 +400,9 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Saldo de Caixa</p>
                                 <h3>{saldoDeCaixa.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            <div className={styles.box_btn_mais_infos}>
+                            {/* <div className={styles.box_btn_mais_infos}>
                                 <PiIcons.PiInfo /> Mais informações
-                            </div>
+                            </div> */}
                         </div>
 
                     </div>
