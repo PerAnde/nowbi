@@ -200,7 +200,7 @@ export const ResumoBi = () => {
                             </div> :
                             <div className={styles.btn_media} onClick={() => setMostrarMedia(prev => !prev)}>
                                 <PiIcons.PiFadersHorizontal />
-                                Mês Atual
+                                Média
                             </div>
                         }
                     </div>
