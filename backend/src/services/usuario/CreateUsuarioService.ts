@@ -175,11 +175,10 @@ class CreateUsuarioService {
             }
         })
 
-        // const createCategoriasService = new CreateCategoriasNovoUsuarioService();
-        // await createCategoriasService.execute({
-        //     usuario_id: usuario.id
-        // })
-
+        const createCategoriasService = new CreateCategoriasNovoUsuarioService();
+        await createCategoriasService.execute({
+            usuario_id: usuario.id
+        })
 
         return usuario
     }

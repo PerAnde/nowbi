@@ -37,6 +37,13 @@ export const ResumoBi = () => {
 
     const { summary, diferencaPercentualReceita } = dashboardData
 
+    const monthOrder = {
+        "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
+        "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
+        "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
+        "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
+    };
+
     // Função para filtrar e organizar os dados
     const agruparPorGrupo = (dados) => {
         return dados.reduce((acc, item) => {
@@ -168,18 +175,24 @@ export const ResumoBi = () => {
     // Grafico anual faturamento
     const barData = empresa.bis
         .filter(bi => bi.status)
-        .slice(-12)
-        .reverse()
+        .sort((a, b) =>
+            a.ano - b.ano ||
+            monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num
+        )
+        .slice(-12) // Últimos 12 meses
         .map(({ mes, ano, lancamentoBi }) => {
-            let faturamento = 0
+            let faturamento = 0;
             lancamentoBi.forEach(({ valor, tipo }) => {
-                if (tipo === 'RECEITA') faturamento += parseFloat(valor)
-            })
-            return { mes: capitalizeFirstLetter(`${mes.slice(0, 3)}/${ano.toString().slice(-2)}`), faturamento }
-        })
+                if (tipo === 'RECEITA') faturamento += parseFloat(valor);
+            });
+            return {
+                mes: `${monthOrder[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
+                faturamento
+            };
+        });
 
-    // Total faturamento 12 meses
-    const totalFaturamento12Meses = barData.reduce((acc, item) => acc + item.faturamento, 0)
+    // Total faturamento dos últimos 12 meses
+    const totalFaturamento12Meses = barData.reduce((acc, item) => acc + item.faturamento, 0);
 
     return (
         <div className={styles.box_dashboard_bi}>
@@ -213,7 +226,7 @@ export const ResumoBi = () => {
 
                     <div className={`${styles.card_resumo_mes} ${styles.card_faturamento_bruto}`}>
                         <div className={styles.infos_resumo_mes}>
-                            <p className={styles.titulo_card_mes}>Faturamento Bruto</p>
+                            <p className={styles.titulo_card_mes}>Total de Receitas</p>
                             <span>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             {diferencaPercentualReceita >= 0 ?
                                 <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
