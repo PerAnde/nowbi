@@ -129,7 +129,7 @@ export const Header = ({ setMenuLateralAberto }) => {
                         <p className={styles.email_usuario}>{loading ? <Skeleton width={160} height={18} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : email}</p>
                         <div className={styles.box_menu_minha_conta}>
                             <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`}><PiIcons.PiUser className={styles.icon} /> Minha Conta</Link>
-                            <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollar className={styles.icon} /> Financeiro</Link>
+                            {/* <Link to='/financeiro' className={`${styles.btn_menu} ${location.pathname === '/financeiro' ? styles.ativo : ''}`}><PiIcons.PiCurrencyDollar className={styles.icon} /> Financeiro</Link> */}
                         </div>
 
                     </div>

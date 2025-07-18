@@ -33,16 +33,42 @@ export const ResumoBi = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    if (loading || !dashboardData) return <p>Carregando...</p>
-
-    const { summary, diferencaPercentualReceita } = dashboardData
-
     const monthOrder = {
         "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
         "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
         "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
         "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
     };
+
+    useEffect(() => {
+        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+
+        const biExiste = empresa.bis.some(bi =>
+            bi.status &&
+            bi.mes.toLowerCase() === mesSelecionado.toLowerCase() &&
+            Number(bi.ano) === Number(anoSelecionado)
+        );
+
+        if (!biExiste) {
+            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesSelecionado)}/${anoSelecionado}.`);
+            if (empresa.bis.length > 0) {
+                const ultimoBi = empresa.bis
+                    .filter(bi => bi.status)
+                    .sort((a, b) =>
+                        b.ano - a.ano ||
+                        monthOrder[b.mes.toLowerCase()].num - monthOrder[a.mes.toLowerCase()].num
+                    )[0];
+
+                setMesSelecionado(ultimoBi.mes);
+                setAnoSelecionado(ultimoBi.ano);
+                window.location.reload();
+            }
+        }
+    }, [empresa, mesSelecionado, anoSelecionado]);
+
+    if (loading || !dashboardData) return <p>Carregando...</p>
+
+    const { summary, diferencaPercentualReceita } = dashboardData
 
     // Função para filtrar e organizar os dados
     const agruparPorGrupo = (dados) => {
@@ -226,8 +252,8 @@ export const ResumoBi = () => {
 
                     <div className={`${styles.card_resumo_mes} ${styles.card_faturamento_bruto}`}>
                         <div className={styles.infos_resumo_mes}>
-                            <p className={styles.titulo_card_mes}>Total de Receitas</p>
-                            <span>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                            <p className={styles.titulo_card_mes}>Faturamento Bruto</p>
+                            <span>{receitaBruta.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             {diferencaPercentualReceita >= 0 ?
                                 <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
                                     <i><PiIcons.PiCaretDoubleUpDuotone /></i>

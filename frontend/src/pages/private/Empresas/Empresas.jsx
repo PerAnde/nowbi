@@ -130,9 +130,17 @@ export const Empresas = () => {
         }
     };
 
-    const handleLinkCopiado = () => {
-        toast.success("Link copiado para a área de transferência!")
-    }
+    const handleLinkCopiado = (empresa) => {
+        const linkCompleto = `${window.location.origin}/dashboardbi/${empresa.link_bi}`;
+        navigator.clipboard.writeText(linkCompleto)
+            .then(() => {
+                toast.success("Link copiado para a área de transferência!");
+            })
+            .catch((err) => {
+                toast.error("Erro ao copiar o link.");
+                console.error("Erro ao copiar o link: ", err);
+            });
+    };
 
     return (
         <Layout>
@@ -246,9 +254,9 @@ export const Empresas = () => {
                                                     <PiIcons.PiNotePencilBold />
                                                     <p>Editar</p>
                                                 </Link>
-                                                <Link onClick={handleLinkCopiado} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                                <Link onClick={() => handleLinkCopiado(empresa)} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
                                                     <PiIcons.PiLinkBold />
-                                                    <p>Link</p>
+                                                    <p>Compartilhar</p>
                                                 </Link>
                                                 <Link
                                                     className={styles.btn_excluir}
@@ -324,10 +332,6 @@ export const Empresas = () => {
                                                     <PiIcons.PiSquaresFourBold />
                                                     <p>Grupo</p>
                                                 </Link> */}
-                                                <Link onClick={handleLinkCopiado} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
-                                                    <PiIcons.PiLinkBold />
-                                                    <p>Link do BI</p>
-                                                </Link>
                                                 <Link
                                                     className={styles.btn_excluir}
                                                     onClick={() => modalExcluirEmpresa({ id: empresa.id })}>
@@ -364,6 +368,10 @@ export const Empresas = () => {
                                     </Link>
                                     <Link to={`/dashboardbi/${empresa.link_bi}`} target='_blank' className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
                                         Visualizar
+                                    </Link>
+                                    <Link onClick={() => handleLinkCopiado(empresa)} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                        <PiIcons.PiLinkBold />
+                                        <p>Compartilhar</p>
                                     </Link>
                                 </div>
                             </div>

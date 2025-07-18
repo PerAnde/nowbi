@@ -72,7 +72,7 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                             <PiIcons.PiSketchLogo className={styles.icon} /> Planos
                         </Link>
                         <p>Suporte</p>
-                        <Link to='/suporte' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link to='https://api.whatsapp.com/send?phone=5547984178977' target='_blank' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiQuestion className={styles.icon} /> Ajuda
                         </Link>
                     </div>

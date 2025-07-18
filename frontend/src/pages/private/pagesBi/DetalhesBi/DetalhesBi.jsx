@@ -13,17 +13,6 @@ import * as PiIcons from 'react-icons/pi'
 
 export const DetalhesBi = () => {
 
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [ordemDecrescenteReceitas, setOrdemDecrescenteReceitas] = useState(true);
-    const [ordemDecrescenteDespesas, setOrdemDecrescenteDespesas] = useState(true);
-    const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
-
-    useEffect(() => {
-        const handleResize = () => setGraficoMobile(window.innerWidth < 800);
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
     const {
         empresa,
         dashboardData,
@@ -35,6 +24,50 @@ export const DetalhesBi = () => {
         anosDisponiveis,
         loading
     } = useBiPublic()
+
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [ordemDecrescenteReceitas, setOrdemDecrescenteReceitas] = useState(true);
+    const [ordemDecrescenteDespesas, setOrdemDecrescenteDespesas] = useState(true);
+    const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
+
+    useEffect(() => {
+        const handleResize = () => setGraficoMobile(window.innerWidth < 800);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const monthOrder = {
+        "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
+        "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
+        "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
+        "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
+    };
+
+    useEffect(() => {
+        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+
+        const biExiste = empresa.bis.some(bi =>
+            bi.status &&
+            bi.mes.toLowerCase() === mesSelecionado.toLowerCase() &&
+            Number(bi.ano) === Number(anoSelecionado)
+        );
+
+        if (!biExiste) {
+            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesSelecionado)}/${anoSelecionado}.`);
+            if (empresa.bis.length > 0) {
+                const ultimoBi = empresa.bis
+                    .filter(bi => bi.status)
+                    .sort((a, b) =>
+                        b.ano - a.ano ||
+                        monthOrder[b.mes.toLowerCase()].num - monthOrder[a.mes.toLowerCase()].num
+                    )[0];
+
+                setMesSelecionado(ultimoBi.mes);
+                setAnoSelecionado(ultimoBi.ano);
+                window.location.reload();
+            }
+        }
+    }, [empresa, mesSelecionado, anoSelecionado]);
 
     if (loading || !dashboardData) return <p>Carregando...</p>
 

@@ -22,7 +22,7 @@ export const SelectGrupoDre = ({ tipo, grupoDre, setGrupoDre }) => {
     if (!tipo) return null;
 
     const options = [
-        { label: 'Não exibir na DRE', value: 'NAO_EXIBIR_NO_DRE' },
+        { label: 'Não exibir na DFC', value: 'NAO_EXIBIR_NO_DRE' },
         ...(tipo === 'RECEITA' ? gruposReceita : gruposDespesa)
     ];
 
@@ -34,7 +34,7 @@ export const SelectGrupoDre = ({ tipo, grupoDre, setGrupoDre }) => {
 
     return (
         <Select
-            placeholder="Selecione o grupo da DRE"
+            placeholder="Selecione o grupo da DFC"
             options={options}
             value={selectedOption}
             onChange={handleChange}

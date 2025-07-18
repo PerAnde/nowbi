@@ -38,7 +38,7 @@ export const Planos = () => {
                                 <p>Perfeito para quem está começando</p>
                                 <h4>R$ 19,90<span>/mês</span></h4>
                             </div>
-                            <Link to="" className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
                             <div className={styles.detalhes_plano}>
                                 <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>1 empresa</strong></p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
@@ -57,7 +57,7 @@ export const Planos = () => {
                                 <p>Mais gestão e escalabilidade</p>
                                 <h4>R$ 184,90<span>/mês</span></h4>
                             </div>
-                            <Link to="" className={`${styles.btn} ${styles.btn_full}`}>Começar agora</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_full}`}>Começar agora</Link>
                             <div className={styles.detalhes_plano}>
                                 <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>10 empresas</strong></p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
@@ -76,7 +76,7 @@ export const Planos = () => {
                                 <p>Mais espaço para organizar e crescer</p>
                                 <h4>R$ 95,90<span>/mês</span></h4>
                             </div>
-                            <Link to="" className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
                             <div className={styles.detalhes_plano}>
                                 <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>5 empresas</strong></p>
                                 <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
@@ -91,7 +91,7 @@ export const Planos = () => {
                         <div className={styles.detalhes_plano_personalizado}>
                             <h3>Seu negócio vai além dos nossos planos?</h3>
                             <p>Montamos um plano sob medida para atender às suas necessidades.</p>
-                            <Link to="" className={`${styles.btn} ${styles.btn_border_light}`}>Fale conosco</Link>
+                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_border_light}`}>Fale conosco</Link>
                         </div>
                         <img src={imgFoguete} />
                     </div>
