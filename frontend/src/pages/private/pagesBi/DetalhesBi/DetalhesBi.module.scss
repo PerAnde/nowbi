@@ -181,6 +181,12 @@
     font-size: 1.2rem;
     color: var(--texto-secundario);
     cursor: pointer;
+    transition: .3s;
+}
+
+.box_btn_mais_infos:hover{
+    color: var(--cor-primaria);
+    transition: .3s;
 }
 
 .box_grafico_receitas_despesas {

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import { AreaChart, CartesianGrid, XAxis, Tooltip, Area, Cell, Sector, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
 import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
 import { SelectAnoBi } from '../../../../components/Selects/SelectAnoBi'
+import { agruparPorGrupo } from '../../../../utils/agruparPorGrupo'
+import { gruposDeDRE } from '../../../../utils/gruposDeDRE'
+import { frasesPorGrupo } from '../../../../utils/frasesPorGrupo'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { CoresGraficos } from '../../../../utils/coresGraficos';
+
+import { InfosDetalhesBi } from '../../../../components/Modal/InfosDetalhesBi/InfosDetalhesBi'
 
 import styles from './DetalhesBi.module.scss'
 import * as PiIcons from 'react-icons/pi'
@@ -29,6 +35,10 @@ export const DetalhesBi = () => {
     const [ordemDecrescenteReceitas, setOrdemDecrescenteReceitas] = useState(true);
     const [ordemDecrescenteDespesas, setOrdemDecrescenteDespesas] = useState(true);
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
+
+    const [popUpInfosDetalhesBi, setPopUpInfosDetalhesBi] = useState(false)
+    const [dadosParaPopup, setDadosParaPopup] = useState(null);
+    const [fraseCardSelecionado, setFraseCardSelecionado] = useState('');
 
     useEffect(() => {
         const handleResize = () => setGraficoMobile(window.innerWidth < 800);
@@ -88,34 +98,6 @@ export const DetalhesBi = () => {
         }
     });
 
-    // Função para filtrar e organizar os dados
-    const agruparPorGrupo = (dados) => {
-        return dados.reduce((acc, item) => {
-            if (!acc[item.grupoDre]) {
-                acc[item.grupoDre] = { total: 0, categorias: {} };
-            }
-
-            acc[item.grupoDre].total += item.valor;
-
-            if (item.categoria) {
-                if (!acc[item.grupoDre].categorias[item.categoria]) {
-                    acc[item.grupoDre].categorias[item.categoria] = { total: 0, subcategorias: {} };
-                }
-
-                acc[item.grupoDre].categorias[item.categoria].total += item.valor;
-
-                if (item.subcategoria) {
-                    if (!acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria]) {
-                        acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] = 0;
-                    }
-                    acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] += item.valor;
-                }
-            }
-
-            return acc;
-        }, {});
-    };
-
     // Dados para gerar calculos
     const dadosAgrupados = agruparPorGrupo(dashboardData.summary.detalhes);
     const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
@@ -139,6 +121,26 @@ export const DetalhesBi = () => {
         { name: 'Receitas', value: summary.receitas },
         { name: 'Despesas', value: summary.despesas },
     ];
+
+    // Filtra e organiza os dados
+    const agruparDados = (dados) => {
+        const dadosAgrupados = agruparPorGrupo(dados);
+        const resultado = [];
+
+        gruposDeDRE.forEach((grupo, index) => {
+            const grupoDados = dadosAgrupados[grupo.grupo];
+            if (grupoDados) {
+                resultado.push({
+                    ...grupo,
+                    dados: grupoDados
+                });
+            }
+        });
+
+        return resultado;
+    }
+
+    const dadosFiltrados = agruparDados(dashboardData.summary.detalhes);
 
     const onPieEnter = (_, index) => setActiveIndex(index);
 
@@ -373,9 +375,20 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Deduções e Impostos (-)</p>
                                 <h3>{deducoesImpostos.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
+                            {deducoesImpostos > 0 ? (
+                                <Link className={styles.box_btn_mais_infos}
+                                    onClick={() => {
+                                        const grupoSelecionado = dadosFiltrados.find(g => g.grupo === 'DEDUCOES_DA_RECEITA_BRUTA');
+
+                                        if (grupoSelecionado) {
+                                            setDadosParaPopup(grupoSelecionado);
+                                            setFraseCardSelecionado(frasesPorGrupo[grupoSelecionado.grupo] || '');
+                                            setPopUpInfosDetalhesBi(true);
+                                        }
+                                    }}>
+                                    <PiIcons.PiInfo /> Mais informações
+                                </Link>
+                            ) : ('')}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -383,9 +396,20 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Custo Variável (CPV ou CMV)</p>
                                 <h3>{custoVariavel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
+                            {custoVariavel > 0 ? (
+                                <Link className={styles.box_btn_mais_infos}
+                                    onClick={() => {
+                                        const grupoSelecionado = dadosFiltrados.find(g => g.grupo === 'CUSTO_VARIAVEL');
+
+                                        if (grupoSelecionado) {
+                                            setDadosParaPopup(grupoSelecionado);
+                                            setFraseCardSelecionado(frasesPorGrupo[grupoSelecionado.grupo] || '');
+                                            setPopUpInfosDetalhesBi(true);
+                                        }
+                                    }}>
+                                    <PiIcons.PiInfo /> Mais informações
+                                </Link>
+                            ) : ('')}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -393,9 +417,20 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Despesas Operacionais</p>
                                 <h3>{despesasOperacionais.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
+                            {despesasOperacionais > 0 ? (
+                                <Link className={styles.box_btn_mais_infos}
+                                    onClick={() => {
+                                        const grupoSelecionado = dadosFiltrados.find(g => g.grupo === 'DESPESAS_OPERACIONAIS');
+
+                                        if (grupoSelecionado) {
+                                            setDadosParaPopup(grupoSelecionado);
+                                            setFraseCardSelecionado(frasesPorGrupo[grupoSelecionado.grupo] || '');
+                                            setPopUpInfosDetalhesBi(true);
+                                        }
+                                    }}>
+                                    <PiIcons.PiInfo /> Mais informações
+                                </Link>
+                            ) : ('')}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -403,9 +438,20 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Despesas Variáveis</p>
                                 <h3>{despesasVariaveis.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
+                            {despesasVariaveis > 0 ? (
+                                <Link className={styles.box_btn_mais_infos}
+                                    onClick={() => {
+                                        const grupoSelecionado = dadosFiltrados.find(g => g.grupo === 'DESPESAS_VARIAVEIS');
+
+                                        if (grupoSelecionado) {
+                                            setDadosParaPopup(grupoSelecionado);
+                                            setFraseCardSelecionado(frasesPorGrupo[grupoSelecionado.grupo] || '');
+                                            setPopUpInfosDetalhesBi(true);
+                                        }
+                                    }}>
+                                    <PiIcons.PiInfo /> Mais informações
+                                </Link>
+                            ) : ('')}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -413,9 +459,20 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Despesas Financeiras</p>
                                 <h3>{despesasFinanceiras.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
+                            {despesasFinanceiras > 0 ? (
+                                <Link className={styles.box_btn_mais_infos}
+                                    onClick={() => {
+                                        const grupoSelecionado = dadosFiltrados.find(g => g.grupo === 'DESPESAS_FINANCEIRAS');
+
+                                        if (grupoSelecionado) {
+                                            setDadosParaPopup(grupoSelecionado);
+                                            setFraseCardSelecionado(frasesPorGrupo[grupoSelecionado.grupo] || '');
+                                            setPopUpInfosDetalhesBi(true);
+                                        }
+                                    }}>
+                                    <PiIcons.PiInfo /> Mais informações
+                                </Link>
+                            ) : ('')}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -423,9 +480,20 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Outras Despesas</p>
                                 <h3>{outrasDespesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
+                            {outrasDespesas > 0 ? (
+                                <Link className={styles.box_btn_mais_infos}
+                                    onClick={() => {
+                                        const grupoSelecionado = dadosFiltrados.find(g => g.grupo === 'OUTRAS_DESPESAS');
+
+                                        if (grupoSelecionado) {
+                                            setDadosParaPopup(grupoSelecionado);
+                                            setFraseCardSelecionado(frasesPorGrupo[grupoSelecionado.grupo] || '');
+                                            setPopUpInfosDetalhesBi(true);
+                                        }
+                                    }}>
+                                    <PiIcons.PiInfo /> Mais informações
+                                </Link>
+                            ) : ('')}
                         </div>
 
                         <div className={styles.card_metrica_mes}>
@@ -433,9 +501,6 @@ export const DetalhesBi = () => {
                                 <p className={styles.titulo_card_mes}>Saldo de Caixa</p>
                                 <h3>{saldoDeCaixa.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                             </div>
-                            {/* <div className={styles.box_btn_mais_infos}>
-                                <PiIcons.PiInfo /> Mais informações
-                            </div> */}
                         </div>
 
                     </div>
@@ -646,6 +711,13 @@ export const DetalhesBi = () => {
                 </div>
 
             </div>
+
+            <InfosDetalhesBi
+                trigger={popUpInfosDetalhesBi}
+                setTrigger={setPopUpInfosDetalhesBi}
+                dadosCard={dadosParaPopup}
+                frase={fraseCardSelecionado}
+            />
         </div>
     )
 }

@@ -7,6 +7,8 @@ import * as PiIcons from 'react-icons/pi'
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
 import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
 import { SelectAnoBi } from '../../../../components/Selects/SelectAnoBi'
+import { agruparPorGrupo } from '../../../../utils/agruparPorGrupo'
+import { gruposDeDRE } from '../../../../utils/gruposDeDRE'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { salvarDRE } from '../../../../utils/salvarPDF'
 
@@ -62,47 +64,6 @@ export const DfcBi = () => {
     if (loading || !dashboardData) return <p>Carregando...</p>
 
     const { summary } = dashboardData
-
-    // Filtro grupos de DRE
-    const gruposDeDRE = [
-        { titulo: 'Receita Operacional Bruta (+)', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
-        { titulo: 'Deduções e Impostos (-)', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
-        { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
-        { titulo: 'Custo Variável (CPV ou CMV)', grupo: 'CUSTO_VARIAVEL' },
-        { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
-        { titulo: 'Despesas Variáveis', grupo: 'DESPESAS_VARIAVEIS' },
-        { titulo: 'Despesas Financeiras', grupo: 'DESPESAS_FINANCEIRAS' },
-        { titulo: 'Outras Despesas', grupo: 'OUTRAS_DESPESAS' },
-        { titulo: 'Saldo de Caixa (+/-)', grupo: 'SALDO_DE_CAIXA' },
-    ];
-
-    // Função para filtrar e organizar os dados
-    const agruparPorGrupo = (dados) => {
-        return dados.reduce((acc, item) => {
-            if (!acc[item.grupoDre]) {
-                acc[item.grupoDre] = { total: 0, categorias: {} };
-            }
-
-            acc[item.grupoDre].total += item.valor;
-
-            if (item.categoria) {
-                if (!acc[item.grupoDre].categorias[item.categoria]) {
-                    acc[item.grupoDre].categorias[item.categoria] = { total: 0, subcategorias: {} };
-                }
-
-                acc[item.grupoDre].categorias[item.categoria].total += item.valor;
-
-                if (item.subcategoria) {
-                    if (!acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria]) {
-                        acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] = 0;
-                    }
-                    acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] += item.valor;
-                }
-            }
-
-            return acc;
-        }, {});
-    };
 
     // Filtra e organiza os dados
     const agruparDados = (dados) => {
