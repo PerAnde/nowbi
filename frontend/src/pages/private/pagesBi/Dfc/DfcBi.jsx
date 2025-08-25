@@ -321,12 +321,14 @@ export const DfcBi = () => {
                                                     <p>{((dados.total / summary.receitas) * 100).toFixed(2)}%</p>
                                                 </div>
                                                 {/* Subcategorias */}
-                                                {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                                                    <div key={sub} className="box_subcategorias_dre">
-                                                        <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {capitalizeFirstLetter(sub)}</p>
-                                                        <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                                    </div>
-                                                ))}
+                                                {Object.entries(dados.subcategorias)
+                                                    .sort(([a], [b]) => a.localeCompare(b))
+                                                    .map(([sub, valor]) => (
+                                                        <div key={sub} className="box_subcategorias_dre">
+                                                            <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {capitalizeFirstLetter(sub)}</p>
+                                                            <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                                        </div>
+                                                    ))}
 
                                             </React.Fragment>
                                         ))}
