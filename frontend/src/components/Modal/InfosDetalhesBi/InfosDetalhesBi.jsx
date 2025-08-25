@@ -72,12 +72,14 @@ export const InfosDetalhesBi = ({ trigger, setTrigger, dadosCard, frase }) => {
                                     </div>
 
                                     {/* Subcategorias */}
-                                    {Object.entries(dados.subcategorias).map(([sub, valor]) => (
-                                        <div key={sub} className={styles.box_subcategorias}>
-                                            <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {capitalizeFirstLetter(sub)}</p>
-                                            <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                        </div>
-                                    ))}
+                                    {Object.entries(dados.subcategorias)
+                                        .sort(([a], [b]) => a.localeCompare(b))
+                                        .map(([sub, valor]) => (
+                                            <div key={sub} className={styles.box_subcategorias}>
+                                                <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {capitalizeFirstLetter(sub)}</p>
+                                                <p>{valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                            </div>
+                                        ))}
                                 </React.Fragment>
                             ))}
                     </div>
