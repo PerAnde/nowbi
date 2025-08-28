@@ -199,65 +199,69 @@ export const Categorias = () => {
                 ) : categoriasFiltradas.length > 0 ? (
                     <div className={styles.box_categorias}>
 
-                        {categoriasFiltradas.map((categoria, index) => (
-                            <div key={categoria.id} className={`${styles.box_categoria} ${mostrarSubcategorias === index ? styles.ativo : ''}`}>
-                                <div className={styles.categoria_nome}>{capitalizeFirstLetter(categoria.name)}</div>
+                        {categoriasFiltradas
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map((categoria, index) => (
+                                <div key={categoria.id} className={`${styles.box_categoria} ${mostrarSubcategorias === index ? styles.ativo : ''}`}>
+                                    <div className={styles.categoria_nome}>{capitalizeFirstLetter(categoria.name)}</div>
 
-                                <div className={styles.btn_subcategorias}>
-                                    {categoria.subcategorias.length > 0 ? (
-                                        <span onClick={() => handleMenuSubcategoriasClick(index)}>
-                                            <PiIcons.PiCaretDownBold />
+                                    <div className={styles.btn_subcategorias}>
+                                        {categoria.subcategorias.length > 0 ? (
+                                            <span onClick={() => handleMenuSubcategoriasClick(index)}>
+                                                <PiIcons.PiCaretDownBold />
+                                            </span>
+                                        ) : ('')}
+                                    </div>
+                                    <div className={styles.btn_opcoes_categoria} ref={(el) => (menuCategoriaRefs.current[index] = el)}>
+                                        <span onClick={() => handleMenuClick(index)}>
+                                            <PiIcons.PiDotsThreeVerticalBold />
                                         </span>
-                                    ) : ('')}
-                                </div>
-                                <div className={styles.btn_opcoes_categoria} ref={(el) => (menuCategoriaRefs.current[index] = el)}>
-                                    <span onClick={() => handleMenuClick(index)}>
-                                        <PiIcons.PiDotsThreeVerticalBold />
-                                    </span>
-                                    <div className={`${styles.box_opcoes_categorias} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
-                                        <Link onClick={() => {
-                                            setCategoriaSelecionada(categoria)
-                                            setPopUpCriarSubCategoria(true)
-                                        }}>
-                                            <PiIcons.PiPlusBold className={styles.icone_box_opcoes} />
-                                            <p>Incluir subcategoria</p>
-                                        </Link>
-                                        <Link onClick={() => {
-                                            setCategoriaSelecionada(categoria)
-                                            setPopUpEditarCategoria(true)
-                                        }}>
-                                            <PiIcons.PiNotePencilBold />
-                                            <p>Editar</p>
-                                        </Link>
-                                        <hr />
-                                        <Link className={styles.btn_excluir} onClick={() => handleExcluirCategoria({ id: categoria.id })}>
-                                            <PiIcons.PiTrashBold />
-                                            <p>Excluir</p>
-                                        </Link>
+                                        <div className={`${styles.box_opcoes_categorias} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
+                                            <Link onClick={() => {
+                                                setCategoriaSelecionada(categoria)
+                                                setPopUpCriarSubCategoria(true)
+                                            }}>
+                                                <PiIcons.PiPlusBold className={styles.icone_box_opcoes} />
+                                                <p>Incluir subcategoria</p>
+                                            </Link>
+                                            <Link onClick={() => {
+                                                setCategoriaSelecionada(categoria)
+                                                setPopUpEditarCategoria(true)
+                                            }}>
+                                                <PiIcons.PiNotePencilBold />
+                                                <p>Editar</p>
+                                            </Link>
+                                            <hr />
+                                            <Link className={styles.btn_excluir} onClick={() => handleExcluirCategoria({ id: categoria.id })}>
+                                                <PiIcons.PiTrashBold />
+                                                <p>Excluir</p>
+                                            </Link>
+                                        </div>
                                     </div>
+                                    {mostrarSubcategorias === index && (
+                                        <div className={styles.box_subcategorias}>
+                                            {categoria.subcategorias
+                                                .sort((a, b) => a.name.localeCompare(b.name))
+                                                .map((subcategoria) => (
+                                                    <div className={styles.dados_subcategoria} key={subcategoria.id}>
+                                                        <p>{capitalizeFirstLetter(subcategoria.name)}</p>
+                                                        <Link className={styles.btn_editar_subcategoria}
+                                                            onClick={() => {
+                                                                setSubCategoriaSelecionada(subcategoria)
+                                                                setPopUpEditarSubCategoria(true)
+                                                            }}
+                                                        ><PiIcons.PiNotePencilBold /> Editar</Link>
+                                                        <Link className={styles.btn_excluir_subcategoria}
+                                                            onClick={() => handleExcluirSubCategoria({
+                                                                id: subcategoria.id
+                                                            })}
+                                                        ><PiIcons.PiTrashBold /> Excluir</Link>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    )}
                                 </div>
-                                {mostrarSubcategorias === index && (
-                                    <div className={styles.box_subcategorias}>
-                                        {categoria.subcategorias.map((subcategoria) => (
-                                            <div className={styles.dados_subcategoria} key={subcategoria.id}>
-                                                <p>{capitalizeFirstLetter(subcategoria.name)}</p>
-                                                <Link className={styles.btn_editar_subcategoria}
-                                                    onClick={() => {
-                                                        setSubCategoriaSelecionada(subcategoria)
-                                                        setPopUpEditarSubCategoria(true)
-                                                    }}
-                                                ><PiIcons.PiNotePencilBold /> Editar</Link>
-                                                <Link className={styles.btn_excluir_subcategoria}
-                                                    onClick={() => handleExcluirSubCategoria({
-                                                        id: subcategoria.id
-                                                    })}
-                                                ><PiIcons.PiTrashBold /> Excluir</Link>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 ) : (
                     <div className={styles.box_sem_categorias}>
