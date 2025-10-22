@@ -263,10 +263,10 @@ export const Bi = () => {
                             <PiIcons.PiArrowDownRightBold />
                             Despesas
                         </Link>
-                        <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
+                        {/* <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
                             <PiIcons.PiArticleNyTimes />
                             Obs
-                        </Link>
+                        </Link> */}
                     </div>
 
                     {filtro === "OBS" ? (
