@@ -23,7 +23,7 @@
     --branco: #ffffff;
     --cinza-escuro: #1c252e;
     --verde: #00b276;
-    --verde-15: rgba(0, 178, 118, .15); 
+    --verde-15: rgba(0, 178, 118, .15);
     --verde-claro: #39e0a9;
     --verde-hover: #009b67;
     --amarelo: #ffab00;
@@ -200,16 +200,72 @@ h3 {
 .box-header-btns {
     grid-column: 1/5;
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .box-btns-pagina-bi {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 #picture_input {
     display: none;
+}
+
+/*CSS React-Quill*/
+.quill .ql-toolbar.ql-snow {
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius-button);
+    border: 1px solid var(--border-input);
+    background-color: var(--branco);
+}
+
+.quill .ql-toolbar.ql-snow+.ql-container.ql-snow {
+    border: 1px solid var(--border-input);
+    border-radius: var(--border-radius-button);
+    height: 500px;
+    min-height: 500px;
+}
+
+.ql-editor {
+    background-color: var(--branco);
+    border-radius: var(--border-radius-button);
+    background-color: var(--branco);
+    border: none;
+}
+
+/* Tradução do seletor de tamanho */
+.quill .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+    content: 'Pequeno';
+}
+
+.quill .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+    content: 'Grande';
+}
+
+.quill .ql-snow .ql-picker.ql-size .ql-picker-item:not([data-value])::before {
+    content: 'Normal';
+}
+
+.quill .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+    content: 'Gigante';
+}
+
+/* Também traduz o item selecionado no botão */
+.quill .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before {
+    content: 'Pequeno';
+}
+
+.quill .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before {
+    content: 'Grande';
+}
+
+.quill .ql-snow .ql-picker.ql-size .ql-picker-label:not([data-value])::before {
+    content: 'Normal';
+}
+
+.quill .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before {
+    content: 'Gigante';
 }
 
 @media screen and (max-width: 650px) {
@@ -224,6 +280,15 @@ h3 {
     .box-btns-pagina-bi {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+
+@media screen and (max-width: 420px) {
+    .box-btns-pagina-bi {
+        display: grid;
+        grid-template-columns: 50px 50px 1fr;
         gap: 1.5rem;
     }
 }

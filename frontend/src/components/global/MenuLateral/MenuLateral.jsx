@@ -20,8 +20,6 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
         diasRestantes = Math.max(Math.ceil(diffEmMs / (1000 * 60 * 60 * 24)), 0);
     }
 
-    console.log(diasRestantes)
-
     // // Fechar o menu ao clicar fora dele
     useEffect(() => {
         const handleClickOutside = (event) => {

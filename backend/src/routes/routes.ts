@@ -29,6 +29,9 @@ import { ListEmpresasController } from '../controllers/empresas/ListEmpresasCont
 import { ListEmpresaController } from '../controllers/empresas/ListEmpresaController';
 import { UpdateEmpresaController } from '../controllers/empresas/UpdateEmpresaController';
 import { DeleteEmpresaController } from '../controllers/empresas/DeleteEmpresaController';
+import { GetPinAcessoController } from '../controllers/empresas/GetPinAcessoController';
+import { UpdatePinAcessoController } from '../controllers/empresas/UpdatePinAcessoController';
+import { ValidarPinController } from '../controllers/empresas/ValidarPinController';
 
 // Controllers Categorias
 import { CreateCategoriaController } from '../controllers/categorias/CreateCategoriaController';
@@ -86,6 +89,9 @@ router.get('/empresas', isAuthenticated, verificaStatusConta, new ListEmpresasCo
 router.get('/empresas/:id', isAuthenticated, verificaStatusConta, new ListEmpresaController().handle)
 router.put('/empresas/:id', isAuthenticated, verificaStatusConta, upload.single('file'), new UpdateEmpresaController().handle)
 router.delete('/empresas/:id', isAuthenticated, verificaStatusConta, new DeleteEmpresaController().handle)
+router.get('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new GetPinAcessoController().handle);
+router.patch('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new UpdatePinAcessoController().handle)
+router.post('/empresas/:id/validar-pin', isAuthenticated, verificaStatusConta, new ValidarPinController().handle)
 
 // Rotas Categorias
 router.post('/categorias', isAuthenticated, verificaStatusConta, new CreateCategoriaController().handle)

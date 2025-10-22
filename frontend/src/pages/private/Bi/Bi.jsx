@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { capitalizeFirstLetter } from '../../../utils/formatUtils'
 
 import { Layout } from '../../../layout/Layout'
+import { EditorObservacoes } from "../../../components/EditorObs/EditorObs";
 
 import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
@@ -175,7 +176,7 @@ export const Bi = () => {
                             <Skeleton width={200} height={25} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                         ) : (
                             <h2>
-                                <span>{capitalizeFirstLetter(bi.mes)} / {bi.ano}</span>
+                                <span>{capitalizeFirstLetter(bi.mes)}/{bi.ano}</span>
                                 <p className={`${styles.box_status_bi} ${bi.status ? styles.bi_concluido : styles.bi_em_progresso}`}>{bi.status ? "Concluído" : "Em progresso"}</p>
                             </h2>
                         )}
@@ -195,7 +196,7 @@ export const Bi = () => {
                                 {loading ? (
                                     <Skeleton width={80} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                                 ) : (
-                                    <span>{capitalizeFirstLetter(bi.mes)} / {bi.ano}</span>
+                                    <span>{capitalizeFirstLetter(bi.mes)}/{bi.ano}</span>
                                 )}
                             </p>
                         </div>
@@ -204,21 +205,31 @@ export const Bi = () => {
                     <div className="box-header">
                         <div className="box-header-btns">
                             <div className="box-btns-pagina-bi">
-                                <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)}><PiIcons.PiNotePencilBold /> Editar Bi</Link>
-                                <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)}><PiIcons.PiTrashBold />Excluir Bi</Link>
+                                {bi.status ?
+                                    ''
+                                    :
+                                    <>
+                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)} title="Editar BI"><PiIcons.PiNotePencilBold /></Link>
+                                        <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)} title="Excluir BI"><PiIcons.PiTrashBold /></Link>
+                                    </>
+                                }
                                 {bi.status ? (
                                     <Link
                                         className={`${styles.btn_link_principal} ${styles.btn_reabrir}`}
                                         onClick={() => atualizarStatusBi()}
+                                        title="Reabrir o BI para edição"
                                     >
-                                        <PiIcons.PiArrowArcLeftBold /> Reabrir BI
+                                        <PiIcons.PiArrowArcLeftBold />
+                                        Reabrir BI
                                     </Link>
                                 ) : (
                                     <Link
                                         className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
                                         onClick={() => atualizarStatusBi()}
+                                        title="Finalizar BI"
                                     >
-                                        <PiIcons.PiCheckBold /> Finalizar BI
+                                        <PiIcons.PiCheckBold />
+                                        Finalizar BI
                                     </Link>
                                 )}
 
@@ -227,7 +238,10 @@ export const Bi = () => {
                             {bi.status ? (
                                 ''
                             ) : (
-                                <Link className={styles.btn_link_principal} onClick={(e) => setPopUpNovoLancamento(true)}><PiIcons.PiPlusBold /> Novo lançamento</Link>
+                                <Link className={styles.btn_link_principal}
+                                    onClick={(e) => setPopUpNovoLancamento(true)}
+                                    title="Adicionar lançamento"
+                                ><PiIcons.PiPlusBold /> Add</Link>
                             )}
 
                         </div>
@@ -249,11 +263,21 @@ export const Bi = () => {
                             <PiIcons.PiArrowDownRightBold />
                             Despesas
                         </Link>
+                        <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
+                            <PiIcons.PiArticleNyTimes />
+                            Obs
+                        </Link>
                     </div>
 
-                    <div className={styles.filtro_busca_categoria}>
-                        <Input type="text" placeholder="Buscar lançamento..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
-                    </div>
+                    {filtro === "OBS" ? (
+                        <Link className={styles.btn_link_principal}
+                            title="Salvar observações"
+                        >Salvar observações</Link>
+                    ) : (
+                        <div className={styles.filtro_busca_categoria}>
+                            <Input type="text" placeholder="Buscar lançamento..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
+                        </div>
+                    )}
                 </div>
 
                 {lancamentosSelecionados.length > 0 ? (
@@ -275,7 +299,16 @@ export const Bi = () => {
                             <span>Opções</span>
                         </div>
                     ) : (
-                        ''
+                        filtro === "OBS" ? (
+                            <div className={styles.box_header_obs}>
+                                <div className={styles.texto_header_obs}>
+                                    <p>Digite suas observações para o mês de {capitalizeFirstLetter(bi.mes)}/{bi.ano}</p>
+                                    <p><span>Se não houver observações, deixe o campo em branco.</span></p>
+                                </div>
+                            </div>
+                        )
+                            :
+                            ('')
                     )
                 )}
 
@@ -326,28 +359,32 @@ export const Bi = () => {
                             </div>
                         ))
                     ) : (
-                        <div className={styles.box_sem_bi}>
+                        <div>
                             {filtro === "TODOS" ? (
-                                <>
+                                <div className={styles.box_sem_bi}>
                                     <span>
                                         <PiIcons.PiListMagnifyingGlassDuotone />
                                     </span>
                                     <p>Nenhum lançamento!</p>
-                                </>
+                                </div>
                             ) : filtro === "RECEITA" ? (
-                                <>
+                                <div className={styles.box_sem_bi}>
                                     <span>
                                         <PiIcons.PiListMagnifyingGlassDuotone />
                                     </span>
                                     <p>Nenhum lançamento em receita!</p>
-                                </>
-                            ) : (
-                                <>
+                                </div>
+                            ) : filtro === "DESPESA" ? (
+                                <div className={styles.box_sem_bi}>
                                     <span>
                                         <PiIcons.PiListMagnifyingGlassDuotone />
                                     </span>
                                     <p>Nenhum lançamento em despesa!</p>
-                                </>
+                                </div>
+                            ) : (
+                                <div className={styles.box_editor_obs}>
+                                    <EditorObservacoes />
+                                </div>
                             )}
                         </div>
                     )}

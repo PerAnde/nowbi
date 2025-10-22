@@ -61,6 +61,8 @@ class CreateEmpresaService {
 
         const link_bi = crypto.randomBytes(20).toString("hex");
 
+        const pin_acesso = Math.floor(1000 + Math.random() * 9000);
+
         const empresa = await prismaClient.empresa.create({
             data: {
                 name: name,
@@ -69,6 +71,7 @@ class CreateEmpresaService {
                 email_empresa: email_empresa,
                 usuario_id: usuario_id,
                 link_bi: link_bi,
+                pin_acesso,
             },
             select: {
                 id: true,
@@ -78,6 +81,7 @@ class CreateEmpresaService {
                 email_empresa: true,
                 usuario_id: true,
                 link_bi: true,
+                pin_acesso: true,
             }
         })
 

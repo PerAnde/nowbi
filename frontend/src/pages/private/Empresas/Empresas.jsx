@@ -11,6 +11,7 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
 import { CriarEmpresa } from '../../../components/Modal/Empresa/CriarEmpresa/CriarEmpresa'
 import { EditarEmpresa } from '../../../components/Modal/Empresa/EditarEmpresa/EditarEmpresa'
+import { PinAcesso } from '../../../components/Modal/Empresa/PinAcesso/PinAcess';
 import { ExcluirEmpresa } from '../../../components/Modal/Empresa/ExcluirEmpresa/ExcluirEmpresa';
 import { CriarGrupo } from '../../../components/Modal/GrupoDeEmpresas/CriarGrupo'
 
@@ -38,6 +39,7 @@ export const Empresas = () => {
     const [menuAberto, setMenuAberto] = useState(null);
     const [popUpCriarEmpresa, setPopUpCriarEmpresa] = useState(false);
     const [popUpEditarEmpresa, setPopUpEditarEmpresa] = useState(false)
+    const [popUpPin, setPopUpPin] = useState(false)
     const [popUpExcluirEmpresa, setPopUpExcluirEmpresa] = useState(false)
     const [popUpCriarGrupo, setPopUpCriarGrupo] = useState(false);
     const [popUpEditarGrupo, setPopUpEditarGrupo] = useState(false);
@@ -324,6 +326,13 @@ export const Empresas = () => {
                                                     <PiIcons.PiNotePencilBold />
                                                     <p>Editar</p>
                                                 </Link>
+                                                <Link onClick={() => {
+                                                    setEmpresaSelecionada(empresa)
+                                                    setPopUpPin(true)
+                                                }}>
+                                                    <PiIcons.PiPasswordBold />
+                                                    <p>PIN de acesso</p>
+                                                </Link>
                                                 {/* <Link
                                                     onClick={() => {
                                                         setEmpresaSelecionada(empresa.id)
@@ -396,6 +405,10 @@ export const Empresas = () => {
                 setTrigger={setPopUpEditarEmpresa}
                 empresa={empresaSelecionada}
                 empresaEditada={atualizarEmpresas} />
+            <PinAcesso
+                trigger={popUpPin}
+                setTrigger={setPopUpPin}
+                empresa={empresaSelecionada} />
             <ExcluirEmpresa
                 trigger={popUpExcluirEmpresa}
                 setTrigger={setPopUpExcluirEmpresa}

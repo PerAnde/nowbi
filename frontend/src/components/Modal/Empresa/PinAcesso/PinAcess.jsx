@@ -1,0 +1,123 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { buscarPin, atualizarPin } from '../../../../services/loginBi';
+import { Button } from '../../../Button/Button';
+import * as PiIcons from 'react-icons/pi';
+import { toast } from 'sonner';
+import styles from './PinAcesso.module.scss';
+
+export const PinAcesso = ({ trigger, setTrigger, empresa }) => {
+    const [pin, setPin] = useState(["", "", "", ""]);
+    const inputsRef = useRef([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!trigger || !empresa?.id) return;
+
+        const fetchPin = async () => {
+            try {
+                setLoading(true);
+                const response = await buscarPin(empresa.id);
+                if (response?.pin_acesso) {
+                    const pinString = response.pin_acesso.toString().padStart(4, "0");
+                    setPin(pinString.split(""));
+                } else {
+                    setPin(["", "", "", ""]);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar PIN:", error);
+                toast.error("Erro ao buscar o PIN.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPin();
+    }, [trigger, empresa]);
+
+    const handleChange = (value, index) => {
+        if (!/^[0-9]*$/.test(value)) return;
+
+        const newPin = [...pin];
+        newPin[index] = value;
+        setPin(newPin);
+
+        if (value && index < inputsRef.current.length - 1) {
+            inputsRef.current[index + 1].focus();
+        }
+    };
+
+    const handleKeyDown = (e, index) => {
+        if (e.key === "Backspace" && !pin[index] && index > 0) {
+            inputsRef.current[index - 1].focus();
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (pin.some((digit) => digit === "")) {
+            toast.warning("Preencha todos os campos!");
+            return;
+        }
+
+        if (!empresa?.id) {
+            toast.error("ID da empresa não encontrado!");
+            return;
+        }
+
+        const newPin = pin.join("");
+
+        try {
+            setLoading(true);
+            await atualizarPin(empresa.id, newPin);
+            toast.success("PIN atualizado com sucesso!");
+            setTrigger(false);
+        } catch (error) {
+            console.error("Erro ao atualizar PIN:", error);
+            toast.error("Erro ao atualizar o PIN.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return trigger ? (
+        <div className={styles.popup}>
+            <div className={styles.popupInfos}>
+                <div className={styles.box_btn_fechar}>
+                    <h3>PIN de Acesso</h3>
+                    <span onClick={() => setTrigger(false)}>
+                        <PiIcons.PiXBold className={styles.close} />
+                    </span>
+                </div>
+
+                <div className={styles.box_observacoes}>
+                    <p>Configure um PIN para proteger o acesso ao BI.</p>
+                    <p>*Caso deixe o campo em branco, o acesso será liberado sem verificação.</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
+                    <div className={styles.box_input_pin}>
+                        {pin.map((value, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                maxLength={1}
+                                placeholder="•"
+                                value={value}
+                                ref={(el) => (inputsRef.current[index] = el)}
+                                onChange={(e) => handleChange(e.target.value, index)}
+                                onKeyDown={(e) => handleKeyDown(e, index)}
+                                className={styles.input_pin}
+                                disabled={loading}
+                            />
+                        ))}
+                    </div>
+
+                    <div className={styles.box_btn_button}>
+                        <Button type="submit" loading={loading}>Salvar PIN</Button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    ) : null;
+};

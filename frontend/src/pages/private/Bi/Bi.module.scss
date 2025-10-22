@@ -166,7 +166,8 @@ a.btn_link_principal.btn_reabrir {
 
     a.filtro_todos,
     a.filtro_receitas,
-    a.filtro_despesas {
+    a.filtro_despesas,
+    a.filtro_obs {
         border-radius: var(--border-radius-componente);
         padding: 1rem;
     }
@@ -189,6 +190,15 @@ a.btn_link_principal.btn_reabrir {
         transition: .3s;
     }
 
+    a.filtro_obs.ativo {
+        font-weight: var(--medium);
+        color: var(--laranja);
+        transition: .3s;
+    }
+}
+
+.filtro_pagina div {
+    display: flex;
 }
 
 .filtro_busca_categoria {
@@ -224,7 +234,7 @@ a.btn_link_principal.btn_reabrir {
     transition: all .3s;
 }
 
-.box_excluir_lancamentos > p span {
+.box_excluir_lancamentos>p span {
     font-weight: var(--semi-bold);
 }
 
@@ -257,6 +267,22 @@ a.btn_excluir_lancamentos:hover {
 
 .categoria_header span:nth-child(6) {
     text-align: center;
+}
+
+.box_header_obs {
+    grid-column: 1/5;
+    display: flex;
+    justify-content: space-between;
+}
+
+.texto_header_obs {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.texto_header_obs p span {
+    color: var(--texto-secundario);
 }
 
 .box_categorias {
@@ -371,7 +397,7 @@ a.btn_excluir_lancamentos:hover {
     transition: .3s;
 }
 
-.box_categoria:has(.input_checkbox:checked)  {
+.box_categoria:has(.input_checkbox:checked) {
     color: var(--texto-primario);
     background-color: var(--cor-componente);
     box-shadow: var(--box-shadow-table);
@@ -430,7 +456,7 @@ a.btn_excluir_lancamento:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 5rem 0;
+    // margin: 5rem 0;
     color: var(--texto-secundario);
 
     span {
@@ -523,6 +549,29 @@ a.btn_excluir_lancamento:hover {
     .filtro_busca_categoria {
         width: 100%;
         grid-column: 1/5;
+    }
+
+    .btn_link_principal {
+        width: 100%;
+    }
+
+    .filtro_pagina {
+        margin-bottom: 1.5rem;
+    }
+
+}
+
+@media screen and (max-width: 425px) {
+
+.filtro_pagina{
+    gap: 0rem;
+}
+
+    .filtro_pagina a.filtro_todos,
+    .filtro_pagina a.filtro_receitas,
+    .filtro_pagina a.filtro_despesas,
+    .filtro_pagina a.filtro_obs {
+        padding: .5rem;
     }
 }
 
