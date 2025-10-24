@@ -91,7 +91,7 @@ router.put('/empresas/:id', isAuthenticated, verificaStatusConta, upload.single(
 router.delete('/empresas/:id', isAuthenticated, verificaStatusConta, new DeleteEmpresaController().handle)
 router.get('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new GetPinAcessoController().handle);
 router.patch('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new UpdatePinAcessoController().handle)
-router.post('/empresas/:id/validar-pin', isAuthenticated, verificaStatusConta, new ValidarPinController().handle)
+router.post('/empresas/:id/validar-pin', new ValidarPinController().handle)
 
 // Rotas Categorias
 router.post('/categorias', isAuthenticated, verificaStatusConta, new CreateCategoriaController().handle)
