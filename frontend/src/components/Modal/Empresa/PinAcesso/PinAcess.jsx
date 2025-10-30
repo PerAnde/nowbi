@@ -80,6 +80,28 @@ export const PinAcesso = ({ trigger, setTrigger, empresa }) => {
         }
     };
 
+    const handlePinCopiado = () => {
+        if (!empresa) {
+            toast.error("Empresa não disponível.");
+            return;
+        }
+
+        const codigoPin = pin.join("");
+        if (!codigoPin || codigoPin.length < 4) {
+            toast.error("PIN incompleto.");
+            return;
+        }
+
+        navigator.clipboard.writeText(codigoPin)
+            .then(() => {
+                toast.success("PIN copiado para a área de transferência!");
+            })
+            .catch((err) => {
+                toast.error("Erro ao copiar o PIN.");
+                console.error("Erro ao copiar o PIN:", err);
+            });
+    };
+
     return trigger ? (
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
@@ -92,7 +114,6 @@ export const PinAcesso = ({ trigger, setTrigger, empresa }) => {
 
                 <div className={styles.box_observacoes}>
                     <p>Configure um PIN para proteger o acesso ao BI.</p>
-                    <p>*Caso deixe o campo em branco, o acesso será liberado sem verificação.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
@@ -111,6 +132,9 @@ export const PinAcesso = ({ trigger, setTrigger, empresa }) => {
                                 disabled={loading}
                             />
                         ))}
+                        <div onClick={handlePinCopiado} className={styles.btn_copiar_pin}>
+                            <PiIcons.PiCopyBold />
+                        </div>
                     </div>
 
                     <div className={styles.box_btn_button}>

@@ -133,14 +133,18 @@ export const Empresas = () => {
     };
 
     const handleLinkCopiado = (empresa) => {
-        const linkCompleto = `${window.location.origin}/dashboardbi/${empresa.link_bi}`;
-        navigator.clipboard.writeText(linkCompleto)
+        console.log(empresa)
+
+        const linkCompleto = `${window.location.origin}/dashboardbi/${empresa.link_bi}/login`;
+        const mensagem = `*Acesse seu BI!*\n\n📊 Confira os dados aqui: ${linkCompleto}\n\n🔐 Código: *${empresa.pin_acesso}*`;
+
+        navigator.clipboard.writeText(mensagem)
             .then(() => {
                 toast.success("Link copiado para a área de transferência!");
             })
             .catch((err) => {
-                toast.error("Erro ao copiar o link.");
-                console.error("Erro ao copiar o link: ", err);
+                toast.error("Erro ao copiar a mensagem.");
+                console.error("Erro ao copiar a mensagem: ", err);
             });
     };
 

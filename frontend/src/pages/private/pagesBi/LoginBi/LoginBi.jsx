@@ -74,7 +74,6 @@ export const LoginBi = () => {
     return (
         <div className={styles.container_login_bi}>
             <div className={styles.box_login_bi}>
-                {/* <div className={styles.img_login_bi}>Conta8 Soluções</div> */}
 
                 <div className={styles.box_titulo_login_bi}>
                     <h2>Seja bem-vindo</h2>
@@ -86,7 +85,7 @@ export const LoginBi = () => {
                         {pin.map((value, index) => (
                             <input
                                 key={index}
-                                type="password"
+                                type="text"
                                 maxLength={1}
                                 placeholder="•"
                                 value={value}

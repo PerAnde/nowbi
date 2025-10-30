@@ -17,6 +17,7 @@ class ListEmpresasService {
                 link_bi: true,
                 created_at: true,
                 updated_at: true,
+                pin_acesso: true,
             }
         })
 
