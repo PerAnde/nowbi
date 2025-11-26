@@ -350,12 +350,12 @@ export const DetalhesBi = () => {
                             <p className={styles.titulo_card_mes}>Despesas</p>
                             <span>{summary.despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             {diferencaPercentualDespesa >= 0 ?
-                                <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
+                                <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
                                     <i><PiIcons.PiCaretDoubleUpDuotone /></i>
                                     <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
                                 </div>
                                 :
-                                <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
+                                <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
                                     <i><PiIcons.PiCaretDoubleDownDuotone /></i>
                                     <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
                                 </div>

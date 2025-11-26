@@ -1,4 +1,4 @@
-export const salvarDRE = () => {
+export const salvarDFC = () => {
     const dreContainer = document.querySelector(".box_resultados_dre");
 
     if (!dreContainer) return;
@@ -21,7 +21,7 @@ export const salvarDRE = () => {
     novaAba.document.write(`
             <html>
                 <head>
-                    <title>DRE</title>
+                    <title>DFC</title>
                     <style>${styles}</style>
                 </head>
                 <body>

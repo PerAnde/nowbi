@@ -5,153 +5,69 @@
     margin-bottom: 2rem;
 }
 
-.filtros_mes_ano {
+.box_filtro_mes_ano {
+    display: flex;
+    gap: 1rem;
+}
+
+.mes_ano {
     display: grid;
     grid-template-columns: 135px 90px;
     gap: 1rem;
+}
+
+.btn_ultimos_12_meses {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 1.3rem;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn_ultimos_12_meses span {
+    font-size: 1rem;
+}
+
+.btn_ultimos_12_meses.btn_ultimos_12_meses_ativo {
+    background-color: var(--cor-primaria);
+    color: var(--branco);
+    transition: .3s;
+}
+
+.box_topo_dre {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--texto-secundario);
+    padding: .5rem 0;
+    font-size: 1.6rem;
+}
+
+.box_btns_salvar {
+    display: flex;
+    gap: 1rem;
+}
+
+.box_btns_salvar button {
+    border: none;
+    background-color: transparent;
+    color: var(--texto-secundario);
+    cursor: pointer;
+    padding: .5rem 1.5rem;
+}
+
+.box_btns_salvar button:hover {
+    color: var(--cor-primaria);
+    transition: .3s;
 }
 
 .box_pagina_bi {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.box_resumo_mes {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 1.5rem;
-}
-
-.card_resumo_mes {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: var(--branco);
-    border-top: 2px solid var(--branco);
-    border-radius: var(--border-radius-componente);
-    padding: 2rem;
-    transition: .3s;
-}
-
-.card_resumo_mes.card_faturamento_bruto {
-    border-top: 2px solid var(--cor-primaria);
-}
-
-.card_resumo_mes.card_resultado_liquido:hover {
-    border-top: 2px solid var(--laranja);
-    transition: .3s;
-}
-
-.card_resumo_mes.card_lucro_bruto:hover {
-    border-top: 2px solid var(--roxo);
-    transition: .3s;
-}
-
-.card_resumo_mes.card_saldo_final:hover {
-    border-top: 2px solid var(--verde);
-    transition: .3s;
-}
-
-.infos_resumo_mes {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.titulo_card_mes {
-    font-size: 1.3rem;
-}
-
-.infos_resumo_mes span {
-    font-size: 2.5rem;
-    font-weight: var(--bold);
-}
-
-.infos_mes_anterior {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    font-size: 1.3rem;
-}
-
-.infos_mes_anterior i{
-    display: flex;
-}
-
-.infos_mes_anterior.positivo i{
-    color: var(--verde);
-}   
-
-.infos_mes_anterior.negativo i{
-    color: var(--vermelho);
-}
-
-.infos_mes_anterior.positivo p,
-.infos_mes_anterior.negativo p{
-    color: var(--texto-secundario);
-}
-
-.infos_mes_anterior.positivo p span,
-.infos_mes_anterior.negativo p span{
-    color: var(--texto-secundario);
-    font-size: 1.3rem;
-    font-weight: var(--light);
-}
-
-.infos_mes_anterior.positivo p span{
-    color: var(--verde);
-}
-
-.infos_mes_anterior.negativo p span{
-    color: var(--vermelho);
-}
-
-.infos_card_mes {
-    display: flex;
-    align-items: center;
-    font-size: 1.3rem;
-    color: var(--texto-secundario);
-    cursor: pointer;
-}
-
-.infos_card_mes p{
-    display: flex;
-    gap: .3rem;
-}
-
-.infos_card_mes p i{
-    display: flex;
-    align-items: center;
-}
-
-.icone_card_mes {
-    display: flex;
-    align-items: center;
-    font-size: 2.5rem;
-    padding: 2rem;
-    border-radius: 50%;
-}
-
-.icone_card_mes.icone_faturamento_bruto {
-    background-color: var(--cor-primaria-15);
-    color: var(--cor-primaria);
-}
-
-.icone_card_mes.icone_resultado_liquido {
-    background-color: var(--laranja-15);
-    color: var(--laranja);
-}
-
-.icone_card_mes.icone_lucro_bruto {
-    background-color: var(--roxo-15);
-    color: var(--roxo);
-}
-
-.icone_card_mes.icone_saldo_final {
-    background-color: var(--verde-15);
-    color: var(--verde);
 }
 
 .box_metricas_mes {
@@ -176,74 +92,38 @@
     font-weight: var(--bold);
 }
 
-.infos_metricas_mes h3 span{
+.infos_metricas_mes h3 span {
     font-size: 1.5rem;
     font-weight: var(--regular);
     color: var(--texto-secundario);
 }
 
-.box_btn_mais_infos {
-    display: flex;
-    align-items: flex-end;
-    gap: .3rem;
-    bottom: 0;
-    font-size: 1.2rem;
-    color: var(--texto-secundario);
-    cursor: pointer;
-}
-
-.header_historico_faturamento p span{   
-    color: var(--texto-secundario);
-}
-
-.header_historico_faturamento h3{
-    font-size: 3rem;
-    font-weight: var(--bold);
-    margin-bottom: 1.5rem;
-}
-
-.header_descricao {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin-bottom: 2rem;
-    font-size: 1.3rem;
-}
-
-.header_descricao span{
-    display: flex;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--cor-primaria);
-}
-
 @media screen and (max-width: 1370px) {
-    .box_resumo_mes{
+    .box_resumo_mes {
         grid-template-columns: 1fr 1fr;
     }
 }
 
 @media screen and (max-width: 830px) {
-    .box_metricas_mes{
+    .box_metricas_mes {
         grid-template-columns: 1fr;
     }
 }
 
 @media screen and (max-width: 740px) {
-    .box_resumo_mes{
+    .box_resumo_mes {
         grid-template-columns: 1fr;
     }
 }
 
 @media screen and (max-width: 610px) {
-    .box_metricas_mes{
+    .box_metricas_mes {
         grid-template-columns: 1fr;
     }
 }
 
-@media screen and (max-width: 470px){
-    .header_pagina_dashboardBi{
+@media screen and (max-width: 470px) {
+    .header_pagina_dashboardBi {
         flex-direction: column-reverse;
         gap: 2rem;
     }

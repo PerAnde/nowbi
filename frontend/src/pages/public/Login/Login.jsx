@@ -134,7 +134,7 @@ export const Login = () => {
             </div>
 
             <div className={styles.box_img_auth}>
-                <div className={styles.slide_auth}>
+                {/* <div className={styles.slide_auth}>
                     <Swiper
                         modules={[Autoplay, Pagination]}
                         autoplay={{
@@ -152,11 +152,7 @@ export const Login = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
-                                {/* <div className={styles.descricao_depoimento}>
-                                    <p>Lorem ipsum dolor sit amet...</p>
-                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Juan Kuester</h3>
@@ -176,11 +172,7 @@ export const Login = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
-                                {/* <div className={styles.descricao_depoimento}>
-                                    <p>Lorem ipsum dolor sit amet...</p>
-                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Naiara Tiesen</h3>
@@ -200,11 +192,7 @@ export const Login = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
-                                {/* <div className={styles.descricao_depoimento}>
-                                    <p>Lorem ipsum dolor sit amet...</p>
-                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Bruna Galperin</h3>
@@ -224,11 +212,7 @@ export const Login = () => {
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                         <PiIcons.PiStarFill className={styles.estrela_ok} />
                                     </div>
-                                    {/* <PiIcons.PiQuotesFill className={styles.icone_aspas} /> */}
                                 </div>
-                                {/* <div className={styles.descricao_depoimento}>
-                                    <p>Lorem ipsum dolor sit amet...</p>
-                                </div> */}
                                 <div className={styles.infos_usuario_depoimento}>
                                     <div className={styles.nome_depoimento}>
                                         <h3>Vitor</h3>
@@ -239,7 +223,7 @@ export const Login = () => {
                             </div>
                         </SwiperSlide>
                     </Swiper>
-                </div>
+                </div> */}
                 <img src={imgAuth} alt="" />
             </div>
 
