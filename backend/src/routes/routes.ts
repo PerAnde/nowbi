@@ -119,7 +119,7 @@ router.put("/observacoes/:bi_id", isAuthenticated, new UpdateObsBiController().h
 router.delete('/bi/:id', isAuthenticated, verificaStatusConta, new DeleteBiController().handle)
 
 // Controller OpenAi
-// router.post("/bi/:bi_id/gerar-relatorio", isAuthenticated, new GenerateReportBiController().handle);
+router.post("/bi/:bi_id/gerar-relatorio", isAuthenticated, new GenerateReportBiController().handle);
 
 // Rotas Lancamento BI
 router.post('/lancamentos/:id', isAuthenticated, verificaStatusConta, new CreateLancamentoBiController().handle)
