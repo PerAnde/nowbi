@@ -355,7 +355,7 @@ export const Bi = () => {
                             <div className={styles.box_header_obs}>
                                 <div className={styles.texto_header_obs}>
                                     <p>Insira suas observações ou utilize a I.A para gerar um relatório completo.</p>
-                                    <p><span>A I.A pode cometer ao gerar o relatório, revise as informações com atenção.</span></p>
+                                    <p><span>A I.A pode cometer erros ao gerar o relatório, portanto revise todas as informações.</span></p>
                                 </div>
                             </div>
                         )
