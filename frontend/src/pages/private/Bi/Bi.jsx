@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-import { buscarBi, atualizarStatus, buscarObservacoes, salvarObservacoes, excluirBi } from '../../../services/bis';
+import { buscarBi, atualizarStatus, gerarRelatorioAI, buscarObservacoes, salvarObservacoes, excluirBi } from '../../../services/bis';
 import { excluirLancamento, excluirLancamentos } from '../../../services/lancamentos';
 import { toast } from 'sonner';
 import { capitalizeFirstLetter } from '../../../utils/formatUtils'
@@ -49,6 +49,8 @@ export const Bi = () => {
 
     // Lancamento selecionado
     const [lancamentoSelecionado, setLancamentoSelecionado] = useState(null);
+
+    const [loadingRelatorio, setLoadingRelatorio] = useState(false);
 
     // Estado lancamentos selecionados
     const [lancamentosSelecionados, setLancamentosSelecionados] = useState([]);
@@ -174,6 +176,27 @@ export const Bi = () => {
         atualizarBi();
     };
 
+    const handleGerarRelatorio = async () => {
+        if (!id) return;
+
+        let toastId;
+        try {
+            setLoadingRelatorio(true);
+            toastId = toast.loading("Gerando relatório com I.A...");
+
+            const response = await gerarRelatorioAI(id);
+
+            setObservacoes(response.conteudo);
+
+            toast.success("Relatório gerado com sucesso!", { id: toastId });
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao gerar relatório com I.A.", { id: toastId });
+        } finally {
+            setLoadingRelatorio(false);
+        }
+    };
+
     const handleSalvarObservacoes = async () => {
         const sucesso = await salvarObservacoes(id, observacoes);
 
@@ -288,10 +311,20 @@ export const Bi = () => {
                     </div>
 
                     {filtro === "OBS" ? (
-                        <Link className={styles.btn_link_principal}
-                            title="Salvar observações"
-                            onClick={handleSalvarObservacoes}
-                        >Salvar observações</Link>
+                        <div className={styles.box_btns_obs}>
+                            <button className={styles.btn_gerar_relatorio}
+                                onClick={handleGerarRelatorio}
+                                disabled={loadingRelatorio}
+                            >
+                                {loadingRelatorio ? "Gerando..." : "Gerar com I.A"}
+                                <span>
+                                    <PiIcons.PiSparkleDuotone />
+                                </span>
+                            </button>
+                            <Link className={styles.btn_link_principal}
+                                onClick={handleSalvarObservacoes}
+                            >Salvar observações</Link>
+                        </div>
                     ) : (
                         <div className={styles.filtro_busca_categoria}>
                             <Input type="text" placeholder="Buscar lançamento..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
@@ -321,8 +354,8 @@ export const Bi = () => {
                         filtro === "OBS" ? (
                             <div className={styles.box_header_obs}>
                                 <div className={styles.texto_header_obs}>
-                                    <p>Digite suas observações para o mês de {capitalizeFirstLetter(bi.mes)}/{bi.ano}</p>
-                                    <p><span>Se não houver observações, deixe o campo em branco.</span></p>
+                                    <p>Insira suas observações ou utilize a I.A para gerar um relatório completo.</p>
+                                    <p><span>A I.A pode cometer ao gerar o relatório, revise as informações com atenção.</span></p>
                                 </div>
                             </div>
                         )

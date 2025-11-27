@@ -105,6 +105,11 @@ export const atualizarStatus = async (id, status) => {
     }
 };
 
+export const gerarRelatorioAI = async (bi_id) => {
+    const response = await api.post(`/bi/${bi_id}/gerar-relatorio`);
+    return response.data; // { conteudo: "<p>...</p>" }
+};
+
 export const buscarObservacoes = async (id) => {
     try {
         const response = await api.get(`/observacoes/${id}`);
