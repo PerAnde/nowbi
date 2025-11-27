@@ -105,6 +105,25 @@ export const atualizarStatus = async (id, status) => {
     }
 };
 
+export const buscarObservacoes = async (id) => {
+    try {
+        const response = await api.get(`/observacoes/${id}`);
+        return response.data; // pode ser null
+    } catch (error) {
+        console.error("Erro ao buscar observações do BI:", error);
+        return null;
+    }
+};
+
+export const salvarObservacoes = async (id, conteudo) => {
+    try {
+        await api.put(`/observacoes/${id}`, { conteudo });
+        return true;
+    } catch (error) {
+        console.error("Erro ao salvar observações do BI:", error);
+        return false;
+    }
+}
 
 // Excluir Bi
 export const excluirBi = async (id, idEmpresa, navigate) => {

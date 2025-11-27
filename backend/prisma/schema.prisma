@@ -127,8 +127,23 @@ model BusinessIntelligence {
     empresa      Empresa        @relation(fields: [empresa_id], references: [id])
     lancamentoBi LancamentoBi[]
 
+    observacoes_bi String?         @db.Text
+    observacoes    ObservacoesBi[]
+
     @@index([empresa_id], map: "business_intelligence_empresa_id_fkey")
     @@map("business_intelligence")
+}
+
+model ObservacoesBi {
+    id                      String   @id @default(uuid())
+    conteudo                String   @db.LongText
+    businessIntelligence_id String   @unique
+    created_at              DateTime @default(now())
+    updated_at              DateTime @updatedAt
+
+    businessIntelligence BusinessIntelligence @relation(fields: [businessIntelligence_id], references: [id])
+
+    @@map("observacoes_bi")
 }
 
 model LancamentoBi {

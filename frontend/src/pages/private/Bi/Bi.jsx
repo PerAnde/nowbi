@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-import { buscarBi, atualizarStatus, excluirBi } from '../../../services/bis';
+import { buscarBi, atualizarStatus, buscarObservacoes, salvarObservacoes, excluirBi } from '../../../services/bis';
 import { excluirLancamento, excluirLancamentos } from '../../../services/lancamentos';
 import { toast } from 'sonner';
 import { capitalizeFirstLetter } from '../../../utils/formatUtils'
@@ -34,6 +34,7 @@ export const Bi = () => {
     const [filtro, setFiltro] = useState("TODOS");
     // Busca
     const [busca, setBusca] = useState('');
+    const [observacoes, setObservacoes] = useState('');
 
     // Modais
     const [popUpEditarBi, setPopUpEditarBi] = useState(false);
@@ -63,16 +64,25 @@ export const Bi = () => {
     }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
 
     useEffect(() => {
-        buscarBi(id, setBi, setLoading, navigate)
-    }, [id])
+        buscarBi(id, (data) => {
+            console.log(data)
+            setBi(data);
+            setObservacoes(data.observacoes?.[0]?.conteudo || "");
+            setLoading(false);
+        }, navigate);
+    }, [id]);
 
     // Pegando id da empresa
     const idEmpresa = bi?.empresa?.id;
 
     // Atualizar BI
     const atualizarBi = () => {
-        buscarBi(id, setBi, setLoading);
-    }
+        buscarBi(id, (data) => {
+            setBi(data);
+            setObservacoes(data.observacoes?.[0]?.conteudo || "");
+            setLoading(false);
+        }, navigate);
+    };
 
     // Atualziar status bi
     const atualizarStatusBi = async () => {
@@ -162,7 +172,15 @@ export const Bi = () => {
         setPopUpExclusaoLancamentos(false);
         setLancamentosSelecionados([]);
         atualizarBi();
+    };
 
+    const handleSalvarObservacoes = async () => {
+        const sucesso = await salvarObservacoes(id, observacoes);
+
+        if (sucesso) {
+            toast.success("Observações salvas com sucesso!");
+            atualizarBi();
+        }
     };
 
     return (
@@ -263,15 +281,16 @@ export const Bi = () => {
                             <PiIcons.PiArrowDownRightBold />
                             Despesas
                         </Link>
-                        {/* <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
+                        <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
                             <PiIcons.PiArticleNyTimes />
-                            Obs
-                        </Link> */}
+                            Observações
+                        </Link>
                     </div>
 
                     {filtro === "OBS" ? (
                         <Link className={styles.btn_link_principal}
                             title="Salvar observações"
+                            onClick={handleSalvarObservacoes}
                         >Salvar observações</Link>
                     ) : (
                         <div className={styles.filtro_busca_categoria}>
@@ -383,7 +402,10 @@ export const Bi = () => {
                                 </div>
                             ) : (
                                 <div className={styles.box_editor_obs}>
-                                    <EditorObservacoes />
+                                    <EditorObservacoes
+                                        value={observacoes}
+                                        onChange={setObservacoes}
+                                    />
                                 </div>
                             )}
                         </div>

@@ -50,7 +50,11 @@ import { CreateBiController } from '../controllers/bis/CreateBiController';
 import { ListBiController } from '../controllers/bis/ListBiController';
 import { UpdateBiController } from '../controllers/bis/UpdateBiController';
 import { UpdateStatusBiController } from '../controllers/bis/UpdateStatusBiController';
+import { ListObsBiController } from '../controllers/bis/ListObsBiController';
+import { UpdateObsBiController } from '../controllers/bis/UpdateObsBiController';
 import { DeleteBiController } from '../controllers/bis/DeleteBiController';
+
+import { GenerateReportBiController } from '../controllers/bis/GenerateReportBiController';
 
 // Controllers Lancamento BI
 import { CreateLancamentoBiController } from '../controllers/lancamentosBi/CreateLancamentoBiController';
@@ -110,7 +114,12 @@ router.post('/bi/:id', isAuthenticated, verificaStatusConta, new CreateBiControl
 router.get('/bi/:id', isAuthenticated, verificaStatusConta, new ListBiController().handle)
 router.put('/bi/:id', isAuthenticated, verificaStatusConta, new UpdateBiController().handle)
 router.put('/bi/status/:id', isAuthenticated, verificaStatusConta, new UpdateStatusBiController().handle)
+router.get("/observacoes/:bi_id", isAuthenticated, new ListObsBiController().handle);
+router.put("/observacoes/:bi_id", isAuthenticated, new UpdateObsBiController().handle);
 router.delete('/bi/:id', isAuthenticated, verificaStatusConta, new DeleteBiController().handle)
+
+// Controller OpenAi
+router.post("/bi/:bi_id/gerar-relatorio", isAuthenticated, new GenerateReportBiController().handle);
 
 // Rotas Lancamento BI
 router.post('/lancamentos/:id', isAuthenticated, verificaStatusConta, new CreateLancamentoBiController().handle)

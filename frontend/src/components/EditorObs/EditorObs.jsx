@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-export const EditorObservacoes = () => {
-    const [valor, setValor] = useState('');
+export const EditorObservacoes = ({ value, onChange }) => {
     const quillRef = useRef(null);
 
     useEffect(() => {
@@ -19,7 +18,7 @@ export const EditorObservacoes = () => {
             [{ font: [] }],
             [{ size: ['small', false, 'large', 'huge'] }],
             [{ align: [] }],
-            ['bold', 'italic', 'strike'],
+            ['bold'], // italic strike
             [{ color: [] }],
             [{ list: 'ordered' }, { list: 'bullet' }],
         ],
@@ -30,8 +29,6 @@ export const EditorObservacoes = () => {
         'size',
         'align',
         'bold',
-        'italic',
-        'strike',
         'color',
         'list',
     ];
@@ -40,8 +37,8 @@ export const EditorObservacoes = () => {
         <ReactQuill
             ref={quillRef}
             theme="snow"
-            value={valor}
-            onChange={setValor}
+            value={value}
+            onChange={onChange}
             modules={modules}
             formats={formats}
         />
