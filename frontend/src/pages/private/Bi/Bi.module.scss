@@ -43,13 +43,13 @@
     color: var(--laranja);
 }
 
-.box_btns_obs{
+.box_btns_obs {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-button.btn_gerar_relatorio{
+button.btn_gerar_relatorio {
     display: flex;
     align-items: center;
     gap: .5rem;
@@ -70,11 +70,25 @@ button.btn_gerar_relatorio span {
 }
 
 @keyframes alternarCores {
-    0% { color: var(--texto-secundario); }
-    25% { color: var(--cor-primaria); }
-    50% { color: var(--texto-secundario); }
-    75% { color: var(--cor-primaria); }
-    100% { color: var(--texto-secundario); }
+    0% {
+        color: var(--texto-secundario);
+    }
+
+    25% {
+        color: var(--cor-primaria);
+    }
+
+    50% {
+        color: var(--texto-secundario);
+    }
+
+    75% {
+        color: var(--cor-primaria);
+    }
+
+    100% {
+        color: var(--texto-secundario);
+    }
 }
 
 button.btn_gerar_relatorio:hover span {
@@ -82,11 +96,11 @@ button.btn_gerar_relatorio:hover span {
     transition: .5s;
 }
 
-button.btn_gerar_relatorio:disabled{
+button.btn_gerar_relatorio:disabled {
     cursor: not-allowed;
 }
 
-button.btn_gerar_relatorio:disabled span{
+button.btn_gerar_relatorio:disabled span {
     animation: none;
 }
 
@@ -555,6 +569,39 @@ a.btn_excluir_lancamento:hover {
     }
 }
 
+@media screen and (max-width: 785px) {
+    .box_menu_lancamentos {
+        flex-direction: column;
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .filtro_busca_categoria {
+        width: 100%;
+        grid-column: 1/5;
+    }
+
+    .btn_link_principal {
+        width: 100%;
+    }
+
+    .filtro_pagina {
+        margin-bottom: 1.5rem;
+    }
+
+    .box_btns_obs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    button.btn_gerar_relatorio{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 @media screen and (max-width: 700px) {
     .categoria_header {
         display: none;
@@ -586,26 +633,10 @@ a.btn_excluir_lancamento:hover {
     }
 }
 
-@media screen and (max-width: 550px) {
-    .box_menu_lancamentos {
-        flex-direction: column;
-        justify-content: start;
-        align-items: flex-start;
-    }
-
-    .filtro_busca_categoria {
-        width: 100%;
-        grid-column: 1/5;
-    }
-
-    .btn_link_principal {
-        width: 100%;
-    }
-
+@media screen and (max-width: 500px) {
     .filtro_pagina {
-        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
     }
-
 }
 
 @media screen and (max-width: 425px) {

@@ -261,7 +261,6 @@ export const Bi = () => {
                                         title="Reabrir o BI para edição"
                                     >
                                         <PiIcons.PiArrowArcLeftBold />
-                                        Reabrir BI
                                     </Link>
                                 ) : (
                                     <Link
@@ -269,8 +268,7 @@ export const Bi = () => {
                                         onClick={() => atualizarStatusBi()}
                                         title="Finalizar BI"
                                     >
-                                        <PiIcons.PiCheckBold />
-                                        Finalizar BI
+                                        <PiIcons.PiChecksBold />
                                     </Link>
                                 )}
 
