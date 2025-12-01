@@ -67,7 +67,6 @@ export const Bi = () => {
 
     useEffect(() => {
         buscarBi(id, (data) => {
-            console.log(data)
             setBi(data);
             setObservacoes(data.observacoes?.[0]?.conteudo || "");
             setLoading(false);
@@ -177,6 +176,8 @@ export const Bi = () => {
     };
 
     const handleGerarRelatorio = async () => {
+        if (loadingRelatorio) return;
+        
         if (!id) return;
 
         let toastId;
@@ -190,7 +191,7 @@ export const Bi = () => {
 
             toast.success("Relatório gerado com sucesso!", { id: toastId });
         } catch (error) {
-            console.error(error);
+            console.log("ERRO AO GERAR RELATÓRIO:", error.response?.data || error.message);
             toast.error("Erro ao gerar relatório com I.A.", { id: toastId });
         } finally {
             setLoadingRelatorio(false);
@@ -201,7 +202,7 @@ export const Bi = () => {
         const sucesso = await salvarObservacoes(id, observacoes);
 
         if (sucesso) {
-            toast.success("Observações salvas com sucesso!");
+            toast.success("Relatório salvo com sucesso!");
             atualizarBi();
         }
     };
@@ -304,7 +305,7 @@ export const Bi = () => {
                         </Link>
                         <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
                             <PiIcons.PiArticleNyTimes />
-                            Observações
+                            Relatório
                         </Link>
                     </div>
 
@@ -321,7 +322,7 @@ export const Bi = () => {
                             </button>
                             <Link className={styles.btn_link_principal}
                                 onClick={handleSalvarObservacoes}
-                            >Salvar observações</Link>
+                            >Salvar relatório</Link>
                         </div>
                     ) : (
                         <div className={styles.filtro_busca_categoria}>

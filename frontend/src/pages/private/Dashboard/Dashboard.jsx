@@ -63,8 +63,6 @@ export const Dashboard = () => {
         buscarEmpresas();
     }, [])
 
-    console.log(usuario?.isPlanoAtivo)
-
     return (
         <Layout>
             <div className='box_conteudo_paginas'>
