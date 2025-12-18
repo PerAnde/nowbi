@@ -239,8 +239,12 @@ export const DetalhesBi = () => {
 
     const dataAnual = empresa.bis
         .filter(bi => bi.status)
+        .sort((a, b) =>
+            a.ano - b.ano ||
+            monthOrder[a.mes.toLowerCase()].num -
+            monthOrder[b.mes.toLowerCase()].num
+        )
         .slice(-12)
-        .reverse()
         .map(({ mes, ano, lancamentoBi }) => {
             let receitas = 0;
             let despesas = 0;
@@ -252,7 +256,7 @@ export const DetalhesBi = () => {
             });
 
             return {
-                mes: capitalizeFirstLetter(`${mes.slice(0, 3)}/${ano.toString().slice(-2)}`),
+                mes: `${monthOrder[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
                 receitas,
                 despesas
             };

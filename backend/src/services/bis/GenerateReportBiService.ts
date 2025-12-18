@@ -59,141 +59,118 @@ class GenerateReportBiService {
 
         // 3) Prompt
         const prompt = `
-Você é um analista financeiro sênior. Gere um relatório profissional e completo baseado exclusivamente nos dados fornecidos a seguir.
+Retorne a resposta EXATAMENTE igual ao conteudo abaixo inclusive as div e classes:
+Não precisa mostrar colocar marcação para mostrar que é um HTML.
 
-O relatório deve ser profundo, como uma consultoria financeira real, mantendo um tom profissional, porém acessível, sem excesso de termos técnicos difíceis, e totalmente realista, sem suavizar problemas e sem ser excessivamente otimista quando a saúde financeira não for boa.
+<div class="container">
 
-REGRAS DE FORMATAÇÃO
+        <header>
+            <div class="brand">
+                <h1>Água Marinha</h1>
+                <small>Relatório Financeiro</small>
+            </div>
+            <div class="periodo">Outubro / 2025</div>
+        </header>
 
-O texto deve ser entregue com formatação HTML, as seguintes classes e propriedades podem ser utilizadas:
-Utilize apenas as propriedades e classes abaixo, não é necessário informações sobre o conteúdo ser ou não em HTML, não utilize marcação para indicar que é um arquivo HTML não utiliza
+        <h2>Resumo Executivo</h2>
+        <p>O mês apresentou desempenho que requer atenção: receitas totais de R$ 396.670,06 e despesas totais de R$
+            341.451,98, resultando em lucro líquido de <strong>R$ 55.218,08</strong>. A saúde financeira é classificada
+            como moderada.</p>
 
-Tags permitidas:
+        <div class="metrics">
+            <div class="metric">
+                <h3>Receitas Totais</h3>
+                <div class="value green">R$ 396.670,06</div>
+            </div>
+            <div class="metric">
+                <h3>Despesas Totais</h3>
+                <div class="value red">R$ 341.451,98</div>
+            </div>
+            <div class="metric">
+                <h3>Lucro Líquido</h3>
+                <div class="value">R$ 55.218,08</div>
+            </div>
+        </div>
 
-<p> — parágrafos
-<br> — quebras de linha
-<strong> — negrito
-<ul><li></li></ul> — listas pontuadas
-<span> — para aplicar cor em trechos específicos
+        <h2>Principais Destaques</h2>
 
-Tamanhos de fonte (aplicados em <p>):
+        <h3 style="margin-top:20px;color:var(--azul)">Receitas</h3>
+        <p>Recebimentos a prazo foram o maior contribuidor, enquanto receitas à vista apresentaram liquidez moderada.
+        </p>
 
-Tamanho normal → <p> sem classe
-Fonte grande → <p class="ql-size-large">
+        <h3 style="margin-top:20px;color:var(--azul)">Despesas</h3>
+        <p>Custos de mercadorias e despesas com pessoal foram os principais gastos do mês.</p>
 
-Alinhamento (aplicados em <p>):
 
-Esquerda → sem classe
-Centro → <p class="ql-align-center">
-Direita → <p class="ql-align-right">
+        <h2>Análise de Receitas</h2>
+        <table>
+            <tr>
+                <th>Categorias</th>
+                <th>Valor (R$)</th>
+            </tr>
+            <tr>
+                <td>Recebimento a Prazo</td>
+                <td>R$ 293.634,98</td>
+            </tr>
+            <tr>
+                <td>Recebimentos à Vista</td>
+                <td>R$ 41.151,30</td>
+            </tr>
+            <tr>
+                <td>Outras Receitas</td>
+                <td>R$ 330,14</td>
+            </tr>
+        </table>
+        <p style="margin-top:8px;">As receitas foram impulsionadas principalmente pelos recebimentos a prazo, indicando
+            dependência considerável desse canal.</p>
 
-Cores (aplicadas somente dentro de <span> dentro de <p>):
 
-Preto padrão → <span> (sem style)
-Cinza → <span style="color: rgb(136, 136, 136)">
-Vermelho (informações negativas) → <span style="color: rgb(161, 0, 0)">
-Laranja (informações moderadas) → <span style="color: rgb(178, 107, 0)">
-Verde (informações positivas) → <span style="color: rgb(0, 97, 0)">
+        <h2>Análise de Despesas</h2>
+        <table>
+            <tr>
+                <th>Categorias</th>
+                <th>Valor (R$)</th>
+            </tr>
+            <tr>
+                <td>Custos (compra de mercadorias)</td>
+                <td>R$ 214.593,19</td>
+            </tr>
+            <tr>
+                <td>Despesas com Pessoal</td>
+                <td>R$ 41.745,32</td>
+            </tr>
+            <tr>
+                <td>Despesas Administrativas</td>
+                <td>R$ 22.002,56</td>
+            </tr>
+        </table>
+        <p style="margin-top:8px;">Os custos de mercadorias foram os mais altos e demandam controle mais rigoroso.
+            Despesas administrativas e de pessoal também requerem revisão.</p>
 
-Regras gerais de formatação:
 
-Use negrito para:
+        <h2>Pontos de Atenção</h2>
+        <p class="lista-alertas">
+        <p>• Crescimento das despesas com pessoal reduzindo margem.</p>
+        <p>• Dependência excessiva de recebimentos a prazo.</p>
+        <p>• Despesas administrativas em alta sugerem ineficiência operacional.</p>
+        <p>• Gastos com brindes e patrocínios sem retorno mensurável.</p>
+        </p>
 
-título
-nome da empresa
-mês e ano
-números relevantes
-conclusões
-termos como saúde financeira boa/moderada/ruim
 
-Use listas pontuadas quando necessário
+        <h2>Recomendações</h2>
+        <ul>
+            <li>Revisar quadro de pessoal e analisar redistribuição de funções.</li>
+            <li>Fortalecer negociação com fornecedores e gestão de estoque.</li>
+            <li>Buscar diversificação das fontes de receita.</li>
+            <li>Rever gastos com patrocínios e priorizar ações com retorno real.</li>
+        </ul>
 
-Sempre separar títulos, parágrafos e listas com quebras de linha: <br>
 
-ESTRUTURA OBRIGATÓRIA DO RELATÓRIO
+        <h2>Conclusão</h2>
+        <p class="conclusao">O lucro de R$ 55.218,08 demonstra resultado positivo, porém com margem apertada.
+            Recomenda-se a implementação das ações acima para reforçar a saúde financeira da empresa.</p>
 
-Siga rigorosamente esta estrutura:
-
-1) Título do Relatório
-
-Deve ser centralizado, em fonte grande, com negrito, linha única.
-Exemplo:
-<p class="ql-align-center ql-size-large"><strong>Relatório de Análise Financeira — Janeiro/2025</strong></p>
-<br>
-
-2) Visão Geral
-
-Conteúdo esperado:
-Resumo claro do mês analisado
-Principais destaques financeiros
-Indicação da saúde financeira utilizando expressões como:
-boa (use verde)
-moderada (use laranja)
-preocupante (use vermelho)
-Não exagere nem positivamente nem negativamente
-Evite frases vagas — seja direto
-
-<br>
-
-3) Análise de Receitas
-
-Receitas que mais contribuíram
-Ocorrência de crescimento ou queda
-Comparações internas entre categorias
-Identificação de sazonalidade, dependência de poucas fontes ou inconsistências
-
-<br>
-
-4) Análise de Despesas
-
-Principais categorias de gastos
-Quais tiveram aumento significativo
-Gastos anormais
-Possíveis ineficiências
-Diferenciar despesas fixas e variáveis quando os dados permitirem
-Impacto das despesas no resultado final
-
-<br>
-
-5) Pontos de Atenção (lista pontuada)
-
-Coloque apenas itens realmente relevantes:
-Gastos incomuns
-Receitas irregulares
-Queda inesperada em algum grupo
-Problemas que podem impactar meses futuros
-Indicadores preocupantes
-
-<br>
-
-6) Recomendações (consultoria prática e realista)
-
-Sugestões de melhorias concretas
-Ações rápidas que o gestor pode tomar
-Estratégias para redução de custos
-Orientações para o próximo mês
-Escreva como uma consultoria profissional paga
-
-<br>
-
-REGRAS DE ESTILO
-
-Texto claro, profissional e acessível
-Pode criticar, alertar e recomendar ações sem medo
-Seja específico — nada de frases genéricas como “deve-se avaliar”
-NUNCA invente dados
-Baseie tudo no que foi fornecido
-Relatório longo: equivalente a 2 a 5 minutos de leitura
-
-SAÍDA
-
-Entregue somente o texto final em HTML conforme as regras acima.
-Não inclua:
-JSON
-explicações
-comentários
-markdown
-nada além do texto final
+    </div>
 
 Dados base:
 \`\`\`json
