@@ -13,6 +13,8 @@ import multer from 'multer';
 
 // Importando rotas
 import { router } from './routes/routes';
+// Rota Bling
+import blingRoutes from './integrations/bling/bling.routes';
 
 const app = express();
 // Tratando dados como JSON
@@ -52,6 +54,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
     return res.status(500).json({ error: 'Erro interno, tente novamente mais tarde!' });
 });
+
+// Integracao Bling
+app.use('/integrations/bling', blingRoutes);
 
 const port = process.env.PORT
 
