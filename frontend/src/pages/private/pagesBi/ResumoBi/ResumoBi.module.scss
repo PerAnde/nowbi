@@ -7,7 +7,6 @@
 
 .filtros_mes_ano {
     display: flex;
-    gap: 1rem;
 }
 
 .mes_ano {
@@ -16,11 +15,24 @@
     gap: 1rem;
 }
 
+.box_btn_filtro{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--texto-secundario);
+    padding: 1.5rem;
+}
+
+.box_btn_filtro:hover{
+    color: var(--cor-primaria);
+    transition: .3s;
+}
+
 .btn_media{
     display: flex;
     align-items: center;
     gap: .5rem;
-    padding: 0 1.3rem;
+    padding: 1.2rem;
     border-radius: var(--border-radius-button);
     cursor: pointer;
     transition: .3s;

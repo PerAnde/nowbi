@@ -31,6 +31,9 @@ export const DetalhesBi = () => {
         loading
     } = useBiPublic()
 
+    const [mesTemp, setMesTemp] = useState(mesSelecionado);
+    const [anoTemp, setAnoTemp] = useState(anoSelecionado);
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [ordemDecrescenteReceitas, setOrdemDecrescenteReceitas] = useState(true);
     const [ordemDecrescenteDespesas, setOrdemDecrescenteDespesas] = useState(true);
@@ -53,30 +56,30 @@ export const DetalhesBi = () => {
         "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
     };
 
-    useEffect(() => {
-        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+    const aplicarFiltro = () => {
+        if (!empresa) return;
 
         const biExiste = empresa.bis.some(bi =>
             bi.status &&
-            bi.mes.toLowerCase() === mesSelecionado.toLowerCase() &&
-            Number(bi.ano) === Number(anoSelecionado)
+            bi.mes.toLowerCase() === mesTemp.toLowerCase() &&
+            Number(bi.ano) === Number(anoTemp)
         );
 
         if (!biExiste) {
-            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesSelecionado)}/${anoSelecionado}.`);
-            if (empresa.bis.length > 0) {
-                const ultimoBi = empresa.bis
-                    .filter(bi => bi.status)
-                    .sort((a, b) =>
-                        b.ano - a.ano ||
-                        monthOrder[b.mes.toLowerCase()].num - monthOrder[a.mes.toLowerCase()].num
-                    )[0];
-
-                setMesSelecionado(ultimoBi.mes);
-                setAnoSelecionado(ultimoBi.ano);
-                window.location.reload();
-            }
+            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesTemp)}/${anoTemp}.`);
+            return;
         }
+
+        setMesSelecionado(mesTemp);
+        setAnoSelecionado(anoTemp);
+    };
+
+    useEffect(() => {
+        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+
+        setMesTemp(mesSelecionado);
+        setAnoTemp(anoSelecionado);
+
     }, [empresa, mesSelecionado, anoSelecionado]);
 
     if (loading || !dashboardData) return <p>Carregando...</p>
@@ -318,10 +321,13 @@ export const DetalhesBi = () => {
             <div className={styles.header_pagina_dashboardBi}>
                 <h3>Detalhes {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <div className={styles.box_filtro_mes_ano}>
-                    <div className={styles.filtros_mes_ano}>
-                        <SelectMesBi mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
-                        <SelectAnoBi anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+                <div className={styles.filtros_mes_ano}>
+                    <div className={styles.mes_ano}>
+                        <SelectMesBi mesSelecionado={mesTemp} setMesSelecionado={setMesTemp} mesesDisponiveis={mesesDisponiveis} />
+                        <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
+                    </div>
+                    <div className={styles.box_btn_filtro}>
+                        <PiIcons.PiFunnelFill className={styles.btn_filtro} onClick={aplicarFiltro} />
                     </div>
                 </div>
             </div>

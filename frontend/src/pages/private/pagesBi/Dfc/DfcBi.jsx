@@ -33,39 +33,33 @@ export const DfcBi = () => {
 
     if (!empresa) return null
 
-    const monthOrder = {
-        "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
-        "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
-        "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
-        "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
-    };
+    const [mesTemp, setMesTemp] = useState(mesSelecionado);
+    const [anoTemp, setAnoTemp] = useState(anoSelecionado);
 
-    const [ultimos12Meses, setUltimos12Meses] = useState(false);
+    const aplicarFiltro = () => {
+        if (!empresa) return;
+
+        const biExiste = empresa.bis.some(bi =>
+            bi.status &&
+            bi.mes.toLowerCase() === mesTemp.toLowerCase() &&
+            Number(bi.ano) === Number(anoTemp)
+        );
+
+        if (!biExiste) {
+            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesTemp)}/${anoTemp}.`);
+            return;
+        }
+
+        setMesSelecionado(mesTemp);
+        setAnoSelecionado(anoTemp);
+    };
 
     useEffect(() => {
         if (!empresa || !mesSelecionado || !anoSelecionado) return;
 
-        const biExiste = empresa.bis.some(bi =>
-            bi.status &&
-            bi.mes.toLowerCase() === mesSelecionado.toLowerCase() &&
-            Number(bi.ano) === Number(anoSelecionado)
-        );
+        setMesTemp(mesSelecionado);
+        setAnoTemp(anoSelecionado);
 
-        if (!biExiste) {
-            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesSelecionado)}/${anoSelecionado}.`);
-            if (empresa.bis.length > 0) {
-                const ultimoBi = empresa.bis
-                    .filter(bi => bi.status)
-                    .sort((a, b) =>
-                        b.ano - a.ano ||
-                        monthOrder[b.mes.toLowerCase()].num - monthOrder[a.mes.toLowerCase()].num
-                    )[0];
-
-                setMesSelecionado(ultimoBi.mes);
-                setAnoSelecionado(ultimoBi.ano);
-                window.location.reload();
-            }
-        }
     }, [empresa, mesSelecionado, anoSelecionado]);
 
     if (loading || !dashboardData) return <p>Carregando...</p>
@@ -243,22 +237,14 @@ export const DfcBi = () => {
             <div className={styles.header_pagina_dashboardBi}>
                 <h3>DFC {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <div className={styles.box_filtro_mes_ano}>
+                <div className={styles.filtros_mes_ano}>
                     <div className={styles.mes_ano}>
-                        <SelectMesBi mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
-                        <SelectAnoBi anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+                        <SelectMesBi mesSelecionado={mesTemp} setMesSelecionado={setMesTemp} mesesDisponiveis={mesesDisponiveis} />
+                        <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
                     </div>
-                    {/* {ultimos12Meses ?
-                        <div className={`${styles.btn_ultimos_12_meses} ${styles.btn_ultimos_12_meses_ativo}`} onClick={() => setUltimos12Meses(prev => !prev)}>
-                            <span>Últimos</span>
-                            <p>12 Meses</p>
-                        </div>
-                        :
-                        <div className={styles.btn_ultimos_12_meses} onClick={() => setUltimos12Meses(prev => !prev)}>
-                            <span>Últimos</span>
-                            <p>12 Meses</p>
-                        </div>
-                    } */}
+                    <div className={styles.box_btn_filtro}>
+                        <PiIcons.PiFunnelFill className={styles.btn_filtro} onClick={aplicarFiltro} />
+                    </div>
                 </div>
             </div>
 

@@ -21,7 +21,7 @@ export const SelectAnoBi = ({ anoSelecionado, setAnoSelecionado, anosDisponiveis
             options={anoOptions}
             value={selectedOptionAno}
             onChange={handleAno}
-            placeholder="Selecione um ano"
+            placeholder="Ano"
             unstyled
             styles={customSelectBiStyles}
             menuPortalTarget={document.body}

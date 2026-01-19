@@ -30,7 +30,7 @@ export const SelectMesBi = ({ mesSelecionado, setMesSelecionado, mesesDisponivei
             options={mesOptions}
             value={selectedOptionMes}
             onChange={handleMes}
-            placeholder="Selecione um mês"
+            placeholder="Mês"
             unstyled
             styles={customSelectBiStyles}
             menuPortalTarget={document.body}

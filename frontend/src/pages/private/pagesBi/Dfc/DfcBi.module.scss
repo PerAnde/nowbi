@@ -10,30 +10,26 @@
     gap: 1rem;
 }
 
+.filtros_mes_ano {
+    display: flex;
+}
+
 .mes_ano {
     display: grid;
     grid-template-columns: 135px 90px;
     gap: 1rem;
 }
 
-.btn_ultimos_12_meses {
+.box_btn_filtro {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 1.3rem;
-    border-radius: var(--border-radius-button);
     cursor: pointer;
-    transition: .3s;
+    color: var(--texto-secundario);
+    padding: 1.5rem;
 }
 
-.btn_ultimos_12_meses span {
-    font-size: 1rem;
-}
-
-.btn_ultimos_12_meses.btn_ultimos_12_meses_ativo {
-    background-color: var(--cor-primaria);
-    color: var(--branco);
+.box_btn_filtro:hover {
+    color: var(--cor-primaria);
     transition: .3s;
 }
 

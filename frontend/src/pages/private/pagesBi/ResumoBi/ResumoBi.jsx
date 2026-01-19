@@ -24,6 +24,9 @@ export const ResumoBi = () => {
         loading
     } = useBiPublic()
 
+    const [mesTemp, setMesTemp] = useState(mesSelecionado);
+    const [anoTemp, setAnoTemp] = useState(anoSelecionado);
+
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
     const [mostrarMedia, setMostrarMedia] = useState(false);
 
@@ -40,35 +43,35 @@ export const ResumoBi = () => {
         "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
     };
 
-    useEffect(() => {
-        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+    const aplicarFiltro = () => {
+        if (!empresa) return;
 
         const biExiste = empresa.bis.some(bi =>
             bi.status &&
-            bi.mes.toLowerCase() === mesSelecionado.toLowerCase() &&
-            Number(bi.ano) === Number(anoSelecionado)
+            bi.mes.toLowerCase() === mesTemp.toLowerCase() &&
+            Number(bi.ano) === Number(anoTemp)
         );
 
         if (!biExiste) {
-            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesSelecionado)}/${anoSelecionado}.`);
-            if (empresa.bis.length > 0) {
-                const ultimoBi = empresa.bis
-                    .filter(bi => bi.status)
-                    .sort((a, b) =>
-                        b.ano - a.ano ||
-                        monthOrder[b.mes.toLowerCase()].num - monthOrder[a.mes.toLowerCase()].num
-                    )[0];
-
-                setMesSelecionado(ultimoBi.mes);
-                setAnoSelecionado(ultimoBi.ano);
-                window.location.reload();
-            }
+            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesTemp)}/${anoTemp}.`);
+            return;
         }
+
+        setMesSelecionado(mesTemp);
+        setAnoSelecionado(anoTemp);
+    };
+
+    useEffect(() => {
+        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+
+        setMesTemp(mesSelecionado);
+        setAnoTemp(anoSelecionado);
+
     }, [empresa, mesSelecionado, anoSelecionado]);
 
     if (loading || !dashboardData) return <p>Carregando...</p>
 
-    const { summary, diferencaPercentualReceita } = dashboardData
+    const { diferencaPercentualReceita } = dashboardData
 
     // Função para filtrar e organizar os dados
     const agruparPorGrupo = (dados) => {
@@ -140,8 +143,6 @@ export const ResumoBi = () => {
         .slice(-12);
 
     const totaisParaMedia = bisRecentes.reduce((acc, bi) => {
-        console.log("bi.lancamentoBi:", bi.lancamentoBi);
-
         const detalhesSimulados = bi.lancamentoBi.map(l => ({
             grupoDre: l.categoria?.grupoDre || "NAO_EXIBIR_NO_DRE",
             valor: parseFloat(l.valor),
@@ -229,8 +230,11 @@ export const ResumoBi = () => {
                 <div className={styles.box_filtro_mes_ano}>
                     <div className={styles.filtros_mes_ano}>
                         <div className={styles.mes_ano}>
-                            <SelectMesBi mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} mesesDisponiveis={mesesDisponiveis} />
-                            <SelectAnoBi anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} anosDisponiveis={anosDisponiveis} />
+                            <SelectMesBi mesSelecionado={mesTemp} setMesSelecionado={setMesTemp} mesesDisponiveis={mesesDisponiveis} />
+                            <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
+                        </div>
+                        <div className={styles.box_btn_filtro}>
+                            <PiIcons.PiFunnelFill className={styles.btn_filtro} onClick={aplicarFiltro} />
                         </div>
                         {mostrarMedia ?
                             <div className={`${styles.btn_media} ${styles.btn_media_ativo}`} onClick={() => setMostrarMedia(prev => !prev)}>

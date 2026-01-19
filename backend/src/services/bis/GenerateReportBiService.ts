@@ -1,17 +1,31 @@
 import prismaClient from "../../prisma";
 import OpenAI from "openai";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY as string
+});
 
 interface RequestData {
     bi_id: string;
     usuario_id: string;
 }
 
+function getMesAnterior(mes: number, ano: number) {
+    if (mes === 1) {
+        return { mes: 12, ano: ano - 1 };
+    }
+    return { mes: mes - 1, ano };
+}
+
+function variacaoPercentual(atual: number, anterior: number) {
+    if (!anterior || anterior === 0) return null;
+    return Number((((atual - anterior) / anterior) * 100).toFixed(2));
+}
+
 class GenerateReportBiService {
     async execute({ bi_id, usuario_id }: RequestData) {
 
-        // 1) Buscar BI
+        // 1) Buscar BI ATUAL
         const bi = await prismaClient.businessIntelligence.findUnique({
             where: { id: bi_id },
             select: {
@@ -19,8 +33,13 @@ class GenerateReportBiService {
                 mes: true,
                 ano: true,
                 status: true,
-                observacoes: { select: { conteudo: true } },
-                empresa: { select: { id: true, name: true, usuario_id: true } },
+                empresa: {
+                    select: {
+                        id: true,
+                        name: true,
+                        usuario_id: true
+                    }
+                },
                 lancamentoBi: {
                     select: {
                         valor: true,
@@ -34,143 +53,123 @@ class GenerateReportBiService {
         });
 
         if (!bi) throw new Error("BI não encontrado");
+        if (bi.empresa.usuario_id !== usuario_id) throw new Error("Acesso negado");
 
-        if (bi.empresa.usuario_id !== usuario_id)
-            throw new Error("Acesso negado");
+        // 2) Buscar BI MÊS ANTERIOR
+        const mesAtual = Number(bi.mes);
 
-        // 2) Processar dados
-        const receitas = bi.lancamentoBi.filter(l => l.tipo === "RECEITA");
-        const despesas = bi.lancamentoBi.filter(l => l.tipo === "DESPESA");
+        if (isNaN(mesAtual)) {
+            throw new Error("Mês inválido no BI");
+        }
 
+        const { mes: mesAnterior, ano: anoAnterior } = getMesAnterior(mesAtual, bi.ano);
+
+        const biAnterior = await prismaClient.businessIntelligence.findFirst({
+            where: {
+                mes: String(mesAnterior),
+                ano: anoAnterior,
+                empresa_id: bi.empresa.id,
+                status: true
+            },
+            select: {
+                lancamentoBi: {
+                    select: {
+                        valor: true,
+                        tipo: true
+                    }
+                }
+            }
+        });
+
+        // 3) Processar dados - MÊS ATUAL
+        const receitasAtual = bi.lancamentoBi.filter(l => l.tipo === "RECEITA");
+        const despesasAtual = bi.lancamentoBi.filter(l => l.tipo === "DESPESA");
+
+        const totalReceitasAtual = receitasAtual.reduce((acc, r) => acc + Number(r.valor), 0);
+        const totalDespesasAtual = despesasAtual.reduce((acc, d) => acc + Number(d.valor), 0);
+        const lucroAtual = totalReceitasAtual - totalDespesasAtual;
+
+        // 4) Processar dados - MÊS ANTERIOR
+        const receitasAnterior = biAnterior?.lancamentoBi.filter(l => l.tipo === "RECEITA") ?? [];
+        const despesasAnterior = biAnterior?.lancamentoBi.filter(l => l.tipo === "DESPESA") ?? [];
+
+        const totalReceitasAnterior = receitasAnterior.reduce((acc, r) => acc + Number(r.valor), 0);
+        const totalDespesasAnterior = despesasAnterior.reduce((acc, d) => acc + Number(d.valor), 0);
+        const lucroAnterior = totalReceitasAnterior - totalDespesasAnterior;
+
+        // 5) Dados estruturados para IA
         const dadosParaIA = {
-            mes: bi.mes,
-            ano: bi.ano,
             empresa: bi.empresa.name,
-            totalReceitas: receitas.reduce((acc, r) => acc + Number(r.valor), 0),
-            totalDespesas: despesas.reduce((acc, d) => acc + Number(d.valor), 0),
-            lancamentos: bi.lancamentoBi.map(l => ({
-                valor: Number(l.valor),
-                tipo: l.tipo,
-                categoria: l.categoria?.name,
-                subcategoria: l.subcategoria?.name,
-                data: l.created_at.toLocaleDateString("pt-BR")
-            }))
+
+            periodoAtual: {
+                mes: bi.mes,
+                ano: bi.ano,
+                receitas: totalReceitasAtual,
+                despesas: totalDespesasAtual,
+                lucro: lucroAtual
+            },
+
+            periodoAnterior: biAnterior ? {
+                mes: mesAnterior,
+                ano: anoAnterior,
+                receitas: totalReceitasAnterior,
+                despesas: totalDespesasAnterior,
+                lucro: lucroAnterior
+            } : null,
+
+            comparativos: {
+                variacaoReceitas: variacaoPercentual(totalReceitasAtual, totalReceitasAnterior),
+                variacaoDespesas: variacaoPercentual(totalDespesasAtual, totalDespesasAnterior),
+                variacaoLucro: variacaoPercentual(lucroAtual, lucroAnterior)
+            }
         };
 
-        // 3) Prompt
+        // 6) Prompt
         const prompt = `
-Retorne a resposta EXATAMENTE igual ao conteudo abaixo inclusive as div e classes:
-Não precisa mostrar colocar marcação para mostrar que é um HTML.
+Gere um relatório de análise financeira referente ao mês atual.
 
-<div class="container">
+Requisitos (DEVE CONTER):
 
-        <header>
-            <div class="brand">
-                <h1>Água Marinha</h1>
-                <small>Relatório Financeiro</small>
-            </div>
-            <div class="periodo">Outubro / 2025</div>
-        </header>
+- Destaque os principais dados financeiros
+- Compare com o mês anterior
+- Análise de receitas
+- Análise de despesas
+- Avalie o lucro
+- Identifique tendências
+- Aponte pontos de atenção
+- Sugira recomendações práticas
+- Faça um conclusão objetiva sobre o mês
 
-        <h2>Resumo Executivo</h2>
-        <p>O mês apresentou desempenho que requer atenção: receitas totais de R$ 396.670,06 e despesas totais de R$
-            341.451,98, resultando em lucro líquido de <strong>R$ 55.218,08</strong>. A saúde financeira é classificada
-            como moderada.</p>
+Formato do relatório:
 
-        <div class="metrics">
-            <div class="metric">
-                <h3>Receitas Totais</h3>
-                <div class="value green">R$ 396.670,06</div>
-            </div>
-            <div class="metric">
-                <h3>Despesas Totais</h3>
-                <div class="value red">R$ 341.451,98</div>
-            </div>
-            <div class="metric">
-                <h3>Lucro Líquido</h3>
-                <div class="value">R$ 55.218,08</div>
-            </div>
-        </div>
+# Relatório Financeiro - [Mês/Ano]
 
-        <h2>Principais Destaques</h2>
+## Resumo Executivo
 
-        <h3 style="margin-top:20px;color:var(--azul)">Receitas</h3>
-        <p>Recebimentos a prazo foram o maior contribuidor, enquanto receitas à vista apresentaram liquidez moderada.
-        </p>
+[Texto]
 
-        <h3 style="margin-top:20px;color:var(--azul)">Despesas</h3>
-        <p>Custos de mercadorias e despesas com pessoal foram os principais gastos do mês.</p>
+## Análise Detalhada
 
+### Receitas
+[Texto]
 
-        <h2>Análise de Receitas</h2>
-        <table>
-            <tr>
-                <th>Categorias</th>
-                <th>Valor (R$)</th>
-            </tr>
-            <tr>
-                <td>Recebimento a Prazo</td>
-                <td>R$ 293.634,98</td>
-            </tr>
-            <tr>
-                <td>Recebimentos à Vista</td>
-                <td>R$ 41.151,30</td>
-            </tr>
-            <tr>
-                <td>Outras Receitas</td>
-                <td>R$ 330,14</td>
-            </tr>
-        </table>
-        <p style="margin-top:8px;">As receitas foram impulsionadas principalmente pelos recebimentos a prazo, indicando
-            dependência considerável desse canal.</p>
+### Despesas
+[Texto]
 
+### Lucro
+[Texto]
 
-        <h2>Análise de Despesas</h2>
-        <table>
-            <tr>
-                <th>Categorias</th>
-                <th>Valor (R$)</th>
-            </tr>
-            <tr>
-                <td>Custos (compra de mercadorias)</td>
-                <td>R$ 214.593,19</td>
-            </tr>
-            <tr>
-                <td>Despesas com Pessoal</td>
-                <td>R$ 41.745,32</td>
-            </tr>
-            <tr>
-                <td>Despesas Administrativas</td>
-                <td>R$ 22.002,56</td>
-            </tr>
-        </table>
-        <p style="margin-top:8px;">Os custos de mercadorias foram os mais altos e demandam controle mais rigoroso.
-            Despesas administrativas e de pessoal também requerem revisão.</p>
+## Tendências e Pontos de Atenção
+[Texto]
 
+## Recomendações
+[Texto]
 
-        <h2>Pontos de Atenção</h2>
-        <p class="lista-alertas">
-        <p>• Crescimento das despesas com pessoal reduzindo margem.</p>
-        <p>• Dependência excessiva de recebimentos a prazo.</p>
-        <p>• Despesas administrativas em alta sugerem ineficiência operacional.</p>
-        <p>• Gastos com brindes e patrocínios sem retorno mensurável.</p>
-        </p>
+## Conclusão
+[Texto]
 
-
-        <h2>Recomendações</h2>
-        <ul>
-            <li>Revisar quadro de pessoal e analisar redistribuição de funções.</li>
-            <li>Fortalecer negociação com fornecedores e gestão de estoque.</li>
-            <li>Buscar diversificação das fontes de receita.</li>
-            <li>Rever gastos com patrocínios e priorizar ações com retorno real.</li>
-        </ul>
-
-
-        <h2>Conclusão</h2>
-        <p class="conclusao">O lucro de R$ 55.218,08 demonstra resultado positivo, porém com margem apertada.
-            Recomenda-se a implementação das ações acima para reforçar a saúde financeira da empresa.</p>
-
-    </div>
+NUNCA INVENTE dados ou informações adicionais.
+Utilize EXCLUSIVAMENTE os dados abaixo como base.
 
 Dados base:
 \`\`\`json
@@ -178,7 +177,7 @@ ${JSON.stringify(dadosParaIA, null, 2)}
 \`\`\`
         `;
 
-        // 4) OpenAI
+        // 7) OpenAI
         const response = await client.responses.create({
             model: "gpt-4o-mini",
             input: prompt
@@ -186,7 +185,7 @@ ${JSON.stringify(dadosParaIA, null, 2)}
 
         const textoGerado = response.output_text;
 
-        // 5) Salvar no banco
+        // 8) Salvar no banco
         const atualizado = await prismaClient.observacoesBi.upsert({
             where: { businessIntelligence_id: bi_id },
             update: { conteudo: textoGerado },
