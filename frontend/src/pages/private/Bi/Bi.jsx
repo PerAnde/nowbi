@@ -177,7 +177,7 @@ export const Bi = () => {
 
     const handleGerarRelatorio = async () => {
         if (loadingRelatorio) return;
-        
+
         if (!id) return;
 
         let toastId;
@@ -285,6 +285,11 @@ export const Bi = () => {
                             )}
 
                         </div>
+
+                        <a className={styles.box_btn_integrar}>
+                            <PiIcons.PiDownload />
+                            Importar com o Bling!
+                        </a>
                     </div>
 
                 </div>

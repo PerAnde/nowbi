@@ -12,6 +12,7 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 import { CriarEmpresa } from '../../../components/Modal/Empresa/CriarEmpresa/CriarEmpresa'
 import { EditarEmpresa } from '../../../components/Modal/Empresa/EditarEmpresa/EditarEmpresa'
 import { PinAcesso } from '../../../components/Modal/Empresa/PinAcesso/PinAcess';
+import { Integracao } from '../../../components/Modal/Empresa/Integracao/Integracao';
 import { ExcluirEmpresa } from '../../../components/Modal/Empresa/ExcluirEmpresa/ExcluirEmpresa';
 import { CriarGrupo } from '../../../components/Modal/GrupoDeEmpresas/CriarGrupo'
 
@@ -20,6 +21,7 @@ import { Layout } from '../../../layout/Layout'
 import * as PiIcons from 'react-icons/pi';
 
 import imgEmpresaSemLogo from '../../../assets/images/imgEmpresaSemLogo.jpg'
+import imgBling from '../../../assets/images/logo-bling.png';
 
 import styles from './Empresas.module.scss'
 import { EditarGrupo } from '../../../components/Modal/GrupoDeEmpresas/EditarGrupo';
@@ -40,6 +42,7 @@ export const Empresas = () => {
     const [popUpCriarEmpresa, setPopUpCriarEmpresa] = useState(false);
     const [popUpEditarEmpresa, setPopUpEditarEmpresa] = useState(false)
     const [popUpPin, setPopUpPin] = useState(false)
+    const [popupIntegracao, setPopUpIntegracao] = useState(false)
     const [popUpExcluirEmpresa, setPopUpExcluirEmpresa] = useState(false)
     const [popUpCriarGrupo, setPopUpCriarGrupo] = useState(false);
     const [popUpEditarGrupo, setPopUpEditarGrupo] = useState(false);
@@ -327,15 +330,22 @@ export const Empresas = () => {
                                                     setEmpresaSelecionada(empresa)
                                                     setPopUpEditarEmpresa(true)
                                                 }}>
-                                                    <PiIcons.PiNotePencilBold />
+                                                    <PiIcons.PiNotePencil />
                                                     <p>Editar</p>
                                                 </Link>
                                                 <Link onClick={() => {
                                                     setEmpresaSelecionada(empresa)
                                                     setPopUpPin(true)
                                                 }}>
-                                                    <PiIcons.PiPasswordBold />
+                                                    <PiIcons.PiPassword />
                                                     <p>PIN de acesso</p>
+                                                </Link>
+                                                <Link onClick={() => {
+                                                    setEmpresaSelecionada(empresa)
+                                                    setPopUpIntegracao(true)
+                                                }}>
+                                                    <PiIcons.PiPlugsConnected />
+                                                    <p>Integrar</p>
                                                 </Link>
                                                 {/* <Link
                                                     onClick={() => {
@@ -348,7 +358,7 @@ export const Empresas = () => {
                                                 <Link
                                                     className={styles.btn_excluir}
                                                     onClick={() => modalExcluirEmpresa({ id: empresa.id })}>
-                                                    <PiIcons.PiTrashBold />
+                                                    <PiIcons.PiTrash />
                                                     <p>Excluir</p>
                                                 </Link>
                                             </div>
@@ -372,6 +382,13 @@ export const Empresas = () => {
                                             </div>
                                         </div>
 
+                                    </div>
+
+                                </div>
+
+                                <div className={styles.box_integrado}>
+                                    <div className={styles.box_integracoes}>
+                                        <img src={imgBling} alt="" />
                                     </div>
                                 </div>
 
@@ -412,6 +429,10 @@ export const Empresas = () => {
             <PinAcesso
                 trigger={popUpPin}
                 setTrigger={setPopUpPin}
+                empresa={empresaSelecionada} />
+            <Integracao
+                trigger={popupIntegracao}
+                setTrigger={setPopUpIntegracao}
                 empresa={empresaSelecionada} />
             <ExcluirEmpresa
                 trigger={popUpExcluirEmpresa}

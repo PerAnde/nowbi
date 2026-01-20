@@ -157,6 +157,21 @@ a.btn_link_principal.btn_reabrir {
     color: var(--texto-primario);
 }
 
+a.box_btn_integrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    color: var(--cor-primaria-claro);
+    gap: .5rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+a.box_btn_integrar:hover {
+    color: var(--cor-primaria);
+}
+
 .box_bis {
     grid-column: 1/5;
     display: grid;
@@ -595,7 +610,7 @@ a.btn_excluir_lancamento:hover {
         width: 100%;
     }
 
-    button.btn_gerar_relatorio{
+    button.btn_gerar_relatorio {
         display: flex;
         align-items: center;
         justify-content: center;

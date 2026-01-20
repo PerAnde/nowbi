@@ -261,6 +261,20 @@ a.btn_link_principal.btn_excluir:hover {
     }
 }
 
+.box_integrado {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    font-size: 1.3rem;
+    color: var(--verde);
+    margin: 0 3rem 1rem;
+}
+
+.box_integracoes img {
+    width: 30px;
+    border-radius: .5rem;
+}
+
 .box_btns_empresa {
     display: flex;
     flex-wrap: wrap;

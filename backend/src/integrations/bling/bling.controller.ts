@@ -12,6 +12,7 @@ export const connectBling = (req: Request, res: Response) => {
         client_id: process.env.BLING_CLIENT_ID!,
         redirect_uri: process.env.BLING_REDIRECT_URI!,
         state: String(empresaId),
+        scope:'contas categorias'
     });
 
     const authUrl = `https://www.bling.com.br/Api/v3/oauth/authorize?${params.toString()}`;
