@@ -65,7 +65,7 @@ export const homologarBling = async (req: Request, res: Response) => {
     }
 
     try {
-        await BlingHomologacaoService.executar(integracao.accessToken);
+        await BlingHomologacaoService.executar(integracao);
 
         return res.json({
             message: 'Homologação do Bling executada com sucesso',
