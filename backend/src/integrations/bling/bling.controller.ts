@@ -31,13 +31,15 @@ export const callbackBling = async (req: Request, res: Response) => {
     try {
         const tokenData = await BlingService.trocarCodePorToken(String(code));
 
-        const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
+        await BlingService.salvarIntegracao({
+            empresaId: String(empresaId),
+            tokenData,
+        });
 
         return res.status(200).json({
-            message: 'Integração com Bling realizada com sucesso',
+            message: 'Integração com Bling realizada com sucesso!',
             empresaId,
             tokenData,
-            expiresAt,
         });
     } catch (error: any) {
         console.error('[BLING ERROR]', error.response?.data || error.message);
