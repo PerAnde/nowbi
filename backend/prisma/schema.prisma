@@ -81,10 +81,33 @@ model Empresa {
     bis              BusinessIntelligence[]
     grupo_empresa    GrupoEmpresa?          @relation(fields: [grupo_empresa_id], references: [id])
     usuario          Usuario                @relation(fields: [usuario_id], references: [id])
+    blingIntegration BlingIntegration?
 
     @@index([usuario_id], map: "empresas_usuario_id_fkey")
     @@index([grupo_empresa_id], map: "empresas_grupo_empresa_id_fkey")
     @@map("empresas")
+}
+
+model BlingIntegration {
+    id String @id @default(uuid())
+
+    empresaId String  @unique
+    empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+
+    accessToken  String @db.Text
+    refreshToken String @db.Text
+
+    scope       String?
+    blingUserId Int?
+
+    expiresAt DateTime
+
+    isActive Boolean @default(true)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("integracao_bling")
 }
 
 model Categoria {
