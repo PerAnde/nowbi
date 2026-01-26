@@ -1,4 +1,5 @@
 import axios from 'axios';
+import prismaClient from '../../prisma';
 
 interface BlingTokenResponse {
     access_token: string;
@@ -10,6 +11,7 @@ interface BlingTokenResponse {
 }
 
 export class BlingService {
+
     static async trocarCodePorToken(code: string): Promise<BlingTokenResponse> {
         const clientId = process.env.BLING_CLIENT_ID!;
         const clientSecret = process.env.BLING_CLIENT_SECRET!;
@@ -35,5 +37,35 @@ export class BlingService {
         );
 
         return response.data;
+    }
+
+    static async salvarIntegracao(params: {
+        empresaId: string;
+        tokenData: BlingTokenResponse;
+    }) {
+        const { empresaId, tokenData } = params;
+
+        const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
+
+        return prismaClient.blingIntegration.upsert({
+            where: { empresaId },
+            create: {
+                empresaId,
+                accessToken: tokenData.access_token,
+                refreshToken: tokenData.refresh_token,
+                scope: tokenData.scope,
+                blingUserId: tokenData.user_id,
+                expiresAt,
+                isActive: true,
+            },
+            update: {
+                accessToken: tokenData.access_token,
+                refreshToken: tokenData.refresh_token,
+                scope: tokenData.scope,
+                blingUserId: tokenData.user_id,
+                expiresAt,
+                isActive: true,
+            }
+        })
     }
 }

@@ -24,16 +24,14 @@ export const connectBling = (req: Request, res: Response) => {
 export const callbackBling = async (req: Request, res: Response) => {
     const { code, state: empresaId } = req.query;
 
-    if (!code) {
-        return res.status(400).json({ error: 'Code não informado pelo Bling' });
+    if (!code || !empresaId) {
+        return res.status(400).json({ error: 'Code ou empresa não informado!' });
     }
 
     try {
         const tokenData = await BlingService.trocarCodePorToken(String(code));
 
         const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
-
-        console.log('[BLING TOKEN]', tokenData);
 
         return res.status(200).json({
             message: 'Integração com Bling realizada com sucesso',
