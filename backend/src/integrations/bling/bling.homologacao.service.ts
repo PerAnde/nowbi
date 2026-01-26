@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import prismaClient from '../../prisma';
+import qs from 'qs';
 
 const api = axios.create({
     baseURL: 'https://api.bling.com.br/Api/v3/homologacao',
@@ -97,11 +98,13 @@ export class BlingHomologacaoService {
     }) {
         const response = await axios.post(
             'https://api.bling.com.br/Api/v3/oauth/token',
-            null,
+            qs.stringify({
+                grant_type: 'refresh_token',
+                refresh_token: integracao.refreshToken,
+            }),
             {
-                params: {
-                    grant_type: 'refresh_token',
-                    refresh_token: integracao.refreshToken,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 auth: {
                     username: process.env.BLING_CLIENT_ID!,
