@@ -10,7 +10,6 @@ export class BlingHomologacaoService {
 
         let homologacaoHash: string | undefined;
 
-        // 1️⃣ GET produto
         const getProduto = await api.get('/produtos', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -21,7 +20,6 @@ export class BlingHomologacaoService {
 
         const produto = getProduto.data.data;
 
-        // 2️⃣ POST produto
         const postProduto = await api.post(
             '/produtos',
             produto,
@@ -37,7 +35,6 @@ export class BlingHomologacaoService {
 
         const produtoId = postProduto.data.data.id;
 
-        // 3️⃣ PUT produto (alterar nome para "Copo")
         const putProduto = await api.put(
             `/produtos/${produtoId}`,
             {
@@ -55,7 +52,6 @@ export class BlingHomologacaoService {
 
         homologacaoHash = putProduto.headers['x-bling-homologacao'];
 
-        // 4️⃣ PATCH situação
         await api.patch(
             `/produtos/${produtoId}/situacoes`,
             { situacao: 'I' },
