@@ -243,7 +243,7 @@ export const DfcBi = () => {
                         <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
                     </div>
                     <div className={styles.box_btn_filtro}>
-                        <PiIcons.PiFunnelFill className={styles.btn_filtro} onClick={aplicarFiltro} />
+                        <button onClick={aplicarFiltro}>Filtrar</button>
                     </div>
                 </div>
             </div>

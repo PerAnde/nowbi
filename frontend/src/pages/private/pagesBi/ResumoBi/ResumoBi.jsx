@@ -234,7 +234,7 @@ export const ResumoBi = () => {
                             <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
                         </div>
                         <div className={styles.box_btn_filtro}>
-                            <PiIcons.PiFunnelFill className={styles.btn_filtro} onClick={aplicarFiltro} />
+                            <button onClick={aplicarFiltro}>Filtrar</button>
                         </div>
                         {mostrarMedia ?
                             <div className={`${styles.btn_media} ${styles.btn_media_ativo}`} onClick={() => setMostrarMedia(prev => !prev)}>

@@ -7,6 +7,7 @@
 
 .filtros_mes_ano {
     display: flex;
+    gap: 1rem;
 }
 
 .mes_ano {
@@ -17,22 +18,26 @@
 
 .box_btn_filtro{
     display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: var(--texto-secundario);
-    padding: 1.5rem;
 }
 
-.box_btn_filtro:hover{
-    color: var(--cor-primaria);
+.box_btn_filtro button{
+    border: none;
+    background-color: var(--button-cor-primaria);
+    color: var(--branco);
+    padding: 1.1rem;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+}
+
+.box_btn_filtro button:hover{
+    background-color: var(--button-cor-primaria-hover);
     transition: .3s;
 }
 
 .btn_media{
     display: flex;
     align-items: center;
-    gap: .5rem;
-    padding: 1.2rem;
+    padding: 1.1rem;
     border-radius: var(--border-radius-button);
     cursor: pointer;
     transition: .3s;
