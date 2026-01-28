@@ -11,6 +11,7 @@ class ListEmpresaService {
             select: {
                 name: true,
                 bis: true,
+                blingIntegration: true,
             }
         });
 

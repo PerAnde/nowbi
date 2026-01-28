@@ -22,6 +22,7 @@ class ListBiService {
                     select: {
                         id: true,
                         name: true,
+                        blingIntegration: true,
                     }
                 },
                 lancamentoBi: {

@@ -386,13 +386,14 @@ export const Empresas = () => {
 
                                 </div>
 
-                                {empresa.bling_integrado ? (''
-                                ) : (
+                                {empresa.bling_integrado ? (
                                     <div className={styles.box_integrado}>
                                         <div className={styles.box_integracoes}>
                                             <img src={imgBling} alt="" />
                                         </div>
-                                    </div>)
+                                    </div>
+                                ) :
+                                    ('')
                                 }
 
                                 <div className={styles.box_btns_empresa}>

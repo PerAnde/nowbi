@@ -286,10 +286,14 @@ export const Bi = () => {
 
                         </div>
 
-                        <a className={styles.box_btn_integrar}>
-                            <PiIcons.PiDownload />
-                            Importar do Bling
-                        </a>
+                        {bi.empresa?.bling_integrado ? (
+                            <a className={styles.box_btn_integrar}>
+                                <PiIcons.PiDownload />
+                                Importar do Bling
+                            </a>
+                        ) :
+                            ('')}
+
                     </div>
 
                 </div>
