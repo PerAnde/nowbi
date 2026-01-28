@@ -1,21 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '../../../Button/Button';
 import * as PiIcons from 'react-icons/pi';
-import { toast } from 'sonner';
 import styles from './Integracao.module.scss';
 import imgBling from '../../../../assets/images/logo-bling.png';
 
 export const Integracao = ({ trigger, setTrigger, empresa }) => {
-    const [pin, setPin] = useState(["", "", "", ""]);
-    const inputsRef = useRef([]);
-    const [loading, setLoading] = useState(false);
-
     useEffect(() => {
         if (!trigger || !empresa?.id) return;
 
     }, [trigger, empresa]);
-
-    console.log(empresa)
 
     return trigger ? (
         <div className={styles.popup}>

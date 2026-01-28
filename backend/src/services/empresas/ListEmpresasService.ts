@@ -18,6 +18,7 @@ class ListEmpresasService {
                 created_at: true,
                 updated_at: true,
                 pin_acesso: true,
+                blingIntegration: true,
             }
         })
 

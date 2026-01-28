@@ -311,6 +311,8 @@ export const Empresas = () => {
                         buscaEmpresa.map((empresa, index) => (
                             <div key={empresa.id} className={styles.box_componente}>
 
+                                {console.log(empresa)}
+
                                 <div>
                                     <div className={styles.box_header_empresa}>
 
@@ -393,7 +395,7 @@ export const Empresas = () => {
                                         </div>
                                     </div>
                                 ) :
-                                    ('')
+                                    null
                                 }
 
                                 <div className={styles.box_btns_empresa}>
