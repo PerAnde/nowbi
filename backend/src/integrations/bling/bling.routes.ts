@@ -5,6 +5,6 @@ const router = Router();
 
 router.get('/connect', connectBling);
 router.get('/callback', callbackBling);
-// router.post('/homologar/:empresaId', homologarBling);
+router.post('/homologar/:empresaId', homologarBling);
 
 export default router;

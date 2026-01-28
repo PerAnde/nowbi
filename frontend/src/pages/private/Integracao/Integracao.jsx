@@ -24,16 +24,12 @@ export const Integracao = () => {
                     <>
                         <PiIcons.PiCheckCircleFill className={styles.iconSuccess} />
                         <h1>Integração Concluída!</h1>
-                        <p>O {provider} agora está enviando dados para o <strong>NowBi</strong>.</p>
+                        <p>Agora você pode importar os dados do {provider} para a empresa <strong>NowBi</strong>.</p>
                     </>
                 )}
                 
-                <button onClick={() => navigate('/dashboard')} className={styles.btnPrimary}>
+                <button onClick={() => navigate('/empresas')} className={styles.btnPrimary}>
                     Ir para o Painel Principal
-                </button>
-                
-                <button onClick={() => navigate('/configuracoes/integracoes')} className={styles.btnSecondary}>
-                    Gerenciar Integrações
                 </button>
             </div>
         </div>

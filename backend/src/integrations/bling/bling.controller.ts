@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { BlingService } from './bling.service';
 
 import prismaClient from '../../prisma';
-// import { BlingHomologacaoService } from './bling.homologacao.service';
+import { BlingHomologacaoService } from './bling.homologacao.service';
 
 export const connectBling = (req: Request, res: Response) => {
     const { empresaId } = req.query;
@@ -47,28 +47,28 @@ export const callbackBling = async (req: Request, res: Response) => {
     }
 };
 
-// export const homologarBling = async (req: Request, res: Response) => {
-//     const { empresaId } = req.params;
+export const homologarBling = async (req: Request, res: Response) => {
+    const { empresaId } = req.params;
 
-//     const integracao = await prismaClient.blingIntegration.findUnique({
-//         where: { empresaId },
-//     });
+    const integracao = await prismaClient.blingIntegration.findUnique({
+        where: { empresaId },
+    });
 
-//     if (!integracao) {
-//         return res.status(404).json({ error: 'Integração não encontrada' });
-//     }
+    if (!integracao) {
+        return res.status(404).json({ error: 'Integração não encontrada' });
+    }
 
-//     try {
-//         await BlingHomologacaoService.executar(integracao);
+    try {
+        await BlingHomologacaoService.executar(integracao);
 
-//         return res.json({
-//             message: 'Homologação do Bling executada com sucesso',
-//         });
+        return res.json({
+            message: 'Homologação do Bling executada com sucesso',
+        });
 
-//     } catch (error: any) {
-//         console.error('[BLING HOMOLOGAÇÃO ERROR]', error.response?.data || error);
-//         return res.status(500).json({
-//             error: 'Erro ao executar homologação do Bling',
-//         });
-//     }
-// };
+    } catch (error: any) {
+        console.error('[BLING HOMOLOGAÇÃO ERROR]', error.response?.data || error);
+        return res.status(500).json({
+            error: 'Erro ao executar homologação do Bling',
+        });
+    }
+};
