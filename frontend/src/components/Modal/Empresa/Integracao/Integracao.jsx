@@ -15,6 +15,8 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
 
     }, [trigger, empresa]);
 
+    console.log(empresa)
+
     return trigger ? (
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
@@ -30,12 +32,10 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                 </div>
 
                 <div className={styles.box_integracoes}>
-                    <img src={imgBling} alt="" />
+                    <a href={`https://api.nowbi.com.br/integrations/bling/connect?empresaId=${empresa.id}`}>
+                        <img src={imgBling} alt="" />
+                    </a>
                 </div>
-
-                {/* <div className={styles.box_btn_button}>
-                    <Button type="submit" loading={loading}>Integrar</Button>
-                </div> */}
             </div>
         </div>
     ) : null;

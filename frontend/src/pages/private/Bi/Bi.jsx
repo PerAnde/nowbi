@@ -288,7 +288,7 @@ export const Bi = () => {
 
                         <a className={styles.box_btn_integrar}>
                             <PiIcons.PiDownload />
-                            Importar com o Bling!
+                            Importar do Bling
                         </a>
                     </div>
 

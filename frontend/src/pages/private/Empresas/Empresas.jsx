@@ -338,7 +338,7 @@ export const Empresas = () => {
                                                     setPopUpPin(true)
                                                 }}>
                                                     <PiIcons.PiPassword />
-                                                    <p>PIN de acesso</p>
+                                                    <p>Código de acesso</p>
                                                 </Link>
                                                 <Link onClick={() => {
                                                     setEmpresaSelecionada(empresa)
@@ -386,11 +386,14 @@ export const Empresas = () => {
 
                                 </div>
 
-                                <div className={styles.box_integrado}>
-                                    <div className={styles.box_integracoes}>
-                                        <img src={imgBling} alt="" />
+                                {empresa.bling_integrado ? (
+                                    <div className={styles.box_integrado}>
+                                        <div className={styles.box_integracoes}>
+                                            <img src={imgBling} alt="" />
+                                        </div>
                                     </div>
-                                </div>
+                                ) : ('')
+                                }
 
                                 <div className={styles.box_btns_empresa}>
                                     <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
