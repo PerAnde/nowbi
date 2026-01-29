@@ -24,7 +24,7 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                 </div>
 
                 <div className={styles.box_integracoes}>
-                    <a href={`https://api.nowbi.com.br/integrations/bling/bling/test?empresaId=${empresa.id}`}>
+                    <a href={`https://api.nowbi.com.br/integrations/bling/integrar?empresaId=${empresa.id}`}>
                         <img src={imgBling} alt="" />
                     </a>
                 </div>
