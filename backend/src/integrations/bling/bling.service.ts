@@ -7,7 +7,9 @@ interface BlingTokenResponse {
     expires_in: number;
     refresh_token: string;
     scope: string;
-    user_id: string;
+    user: {
+        id: string;
+    };
 }
 
 export class BlingService {
@@ -47,6 +49,8 @@ export class BlingService {
 
         const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
 
+        const blingUserId = tokenData.user?.id ? String(tokenData.user.id) : null;
+
         return prismaClient.blingIntegration.upsert({
             where: { empresaId },
             create: {
@@ -54,7 +58,7 @@ export class BlingService {
                 accessToken: tokenData.access_token,
                 refreshToken: tokenData.refresh_token,
                 scope: tokenData.scope,
-                blingUserId: tokenData.user_id,
+                blingUserId: blingUserId,
                 expiresAt,
                 isActive: true,
             },
@@ -62,7 +66,7 @@ export class BlingService {
                 accessToken: tokenData.access_token,
                 refreshToken: tokenData.refresh_token,
                 scope: tokenData.scope,
-                blingUserId: tokenData.user_id,
+                blingUserId: blingUserId,
                 expiresAt,
                 isActive: true,
             }
