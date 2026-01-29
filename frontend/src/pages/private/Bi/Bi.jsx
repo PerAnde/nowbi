@@ -286,7 +286,7 @@ export const Bi = () => {
 
                         </div>
 
-                        {bi.empresa?.bling_integrado ? (
+                        {bi.empresa?.blingIntegration?.isActive ? (
                             <a className={styles.box_btn_integrar}>
                                 <PiIcons.PiDownload />
                                 Importar do Bling

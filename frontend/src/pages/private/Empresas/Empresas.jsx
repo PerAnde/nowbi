@@ -311,8 +311,6 @@ export const Empresas = () => {
                         buscaEmpresa.map((empresa, index) => (
                             <div key={empresa.id} className={styles.box_componente}>
 
-                                {console.log(empresa)}
-
                                 <div>
                                     <div className={styles.box_header_empresa}>
 
@@ -388,7 +386,7 @@ export const Empresas = () => {
 
                                 </div>
 
-                                {empresa.bling_integrado ? (
+                                {empresa?.blingIntegration?.isActive ? (
                                     <div className={styles.box_integrado}>
                                         <div className={styles.box_integracoes}>
                                             <img src={imgBling} alt="" />

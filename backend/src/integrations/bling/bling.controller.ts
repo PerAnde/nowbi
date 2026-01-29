@@ -39,6 +39,8 @@ export const callbackBling = async (req: Request, res: Response) => {
             tokenData,
         });
 
+        console.log('[BLING] Integração salva com sucesso para empresaId:', empresaId, code);
+
         return res.redirect(`https://app.nowbi.com.br/integracao-status?provider=Bling&status=success`);
     } catch (error: any) {
         console.error('[BLING ERROR]', error.response?.data || error.message);

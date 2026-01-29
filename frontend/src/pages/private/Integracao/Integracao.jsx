@@ -12,19 +12,18 @@ export const Integracao = () => {
     const isError = searchParams.get('error') === 'true';
 
     return (
-        <div className={styles.container}>
+        <div className={styles.containerSucesso}>
             <div className={styles.card}>
                 {isError ? (
                     <>
                         <PiIcons.PiXCircleFill className={styles.iconError} />
                         <h1>Ops! Algo deu errado</h1>
-                        <p>Não conseguimos concluir a integração com o {provider}.</p>
+                        <p>Não conseguimos concluir a integração.</p>
                     </>
                 ) : (
                     <>
                         <PiIcons.PiCheckCircleFill className={styles.iconSuccess} />
-                        <h1>Integração Concluída!</h1>
-                        <p>Agora você pode importar os dados do {provider} para a empresa <strong>NowBi</strong>.</p>
+                        <h1>Integração concluída com sucesso!</h1>
                     </>
                 )}
                 
