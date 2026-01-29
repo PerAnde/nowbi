@@ -98,7 +98,7 @@ model BlingIntegration {
     refreshToken String @db.Text
 
     scope       String?
-    blingUserId String
+    blingUserId String?
 
     expiresAt DateTime
 
