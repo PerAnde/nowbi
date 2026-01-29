@@ -72,4 +72,48 @@ export class BlingService {
             }
         })
     }
+
+    static async renovarToken(empresaId: string, refreshToken: string): Promise<BlingTokenResponse> {
+        const clientId = process.env.BLING_CLIENT_ID!;
+        const clientSecret = process.env.BLING_CLIENT_SECRET!;
+
+        const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+        const response = await axios.post<BlingTokenResponse>(
+            'https://www.bling.com.br/Api/v3/oauth/token',
+            new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+            }),
+            {
+                headers: {
+                    Authorization: `Basic ${basicAuth}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+
+        await this.salvarIntegracao({ empresaId, tokenData: response.data });
+
+        return response.data;
+    }
+
+    static async obterTokenValido(empresaId: string) {
+        const integracao = await prismaClient.blingIntegration.findUnique({
+            where: { empresaId }
+        });
+
+        if (!integracao) throw new Error("Integração não encontrada.");
+
+        const agora = new Date();
+        const cincoMinutosDepois = new Date(agora.getTime() + 5 * 60000);
+
+        if (integracao.expiresAt < cincoMinutosDepois) {
+            console.log(`Renovando token para empresa ${empresaId}...`);
+            const novosDados = await this.renovarToken(empresaId, integracao.refreshToken);
+            return novosDados.access_token;
+        }
+
+        return integracao.accessToken;
+    }
 }
