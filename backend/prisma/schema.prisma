@@ -107,7 +107,7 @@ model BlingIntegration {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@map("integracao_bling")
+    @@map("bling_integrations")
 }
 
 model Categoria {
