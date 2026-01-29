@@ -7,7 +7,7 @@ interface BlingTokenResponse {
     expires_in: number;
     refresh_token: string;
     scope: string;
-    user_id: string | number;
+    user_id: string;
 }
 
 export class BlingService {
