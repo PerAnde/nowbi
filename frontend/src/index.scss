@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
 
 * {
     margin: 0;
@@ -9,12 +9,34 @@
 
 :root {
 
+    --cor-principal: #76B2FE;
+    --cor-principal-hover: #5899E9;
+    --cor-secundaria: #252049;
+    --cor-secundaria-desfoque: rgb(37, 32, 73, .05);
+    --cor-secundaria-hover: #1C1838;
+    --background: #F6F8FA;
+
+    --border: #E2E7F1;
+
+    // Texto
+    --texto-primario: #121217;
+    --texto-secundario: #4C556C;
+
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semi-bold: 600;
+    --font-bold: 700;
+
+    --h1: 6.5rem;
+    --h2: 4.5rem;
+    --h3: 1.8rem;
+
     // Cores
     --cor-primaria: #008aee;
     --cor-primaria-claro: #50b3fa;
     --cor-primaria-15: rgba(0, 138, 238, .15);
 
-    --background: #f4f6f8;
+    // --background: #f4f6f8;
 
     --vermelho: #ff3030;
     --vermelho-claro: #ff6e6e;
@@ -64,8 +86,8 @@
     --hover-link-menu-minha-conta: #f4f6f8;
     --hover-link-menu-lateral: #1c252e;
 
-    --texto-primario: #121926;
-    --texto-secundario: #949eac;
+    // --texto-primario: #121926;
+    // --texto-secundario: #949eac;
     --cor-grafico: #e8ebef;
     --cor-grafico-anual: #d2d4d8;
     --texto-secundario-componente-escuro: #b9babd;
@@ -132,7 +154,7 @@ html {
 }
 
 body {
-    font-family: "Barlow", serif;
+    font-family: "Fustat", sans-serif;
     font-size: 1.6rem;
     background-color: var(--background);
     color: var(--texto-primario);
@@ -162,13 +184,22 @@ a {
     color: var(--texto-primario);
 }
 
+h1{
+    line-height: 6.5rem;
+}
+
 h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     grid-column: 1/4;
 }
 
 h3 {
+    font-size: var(--h3);
     font-weight: var(--semi-bold);
+}
+
+span{
+    font-size: var(--span);
 }
 
 .box_conteudo_paginas {

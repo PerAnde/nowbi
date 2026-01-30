@@ -2,14 +2,15 @@ button.button_principal {
     padding: 1.6rem;
     cursor: pointer;
     border: none;
-    background-color: var(--button-cor-secundaria);
-    color: var(--texto-primario-button);
-    border-radius: 5px;
+    background-color: var(--cor-principal);
+    color: var(--cor-secundaria);
+    border-radius: .5rem;
     transition: 0.5s;
 }
 
 button.button_principal:hover {
-    background-color: var(--button-cor-secundaria-hover);
+    background-color: var(--cor-secundaria);
+    color: var(--cor-principal);
 }
 
 button.button_principal.btn_loading {
