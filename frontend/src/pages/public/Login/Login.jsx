@@ -64,7 +64,7 @@ export const Login = () => {
                 <div className={styles.form}>
 
                     <div className={styles.box_header_form}>
-                        <h2>Bem vindo ao <br></br><span className={styles.logoText}>NowBi</span></h2>
+                        <h1>Bem vindo ao <br></br><span>NowBi</span></h1>
                         <p>Insira suas credenciais para continuar</p>
                     </div>
 
