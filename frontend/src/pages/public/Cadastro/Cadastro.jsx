@@ -73,7 +73,7 @@ export const Cadastro = () => {
                 <div className={styles.form}>
 
                     <div className={styles.box_header_form}>
-                        <h1>Bem vindo ao <br></br><span>NowBi</span></h1>
+                        <h2>Bem vindo ao <br></br><span className={styles.logoText}>NowBi</span></h2>
                         <p>Crie sua conta e teste gratuitamente</p>
                     </div>
 
