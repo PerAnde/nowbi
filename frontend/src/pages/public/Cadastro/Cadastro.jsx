@@ -9,8 +9,6 @@ import { ButtonAuth } from '../../../components/ButtonAuth/ButtonAuth'
 
 // Estilos
 import styles from '../Auth.module.scss'
-import 'swiper/css';
-import 'swiper/css/pagination';
 
 // Icones
 import * as PiIcons from "react-icons/pi";
@@ -73,7 +71,7 @@ export const Cadastro = () => {
                 <div className={styles.form}>
 
                     <div className={styles.box_header_form}>
-                        <h1>Bem vindo ao <br></br><span>NowBi</span></h1>
+                        <h2>Bem vindo ao <br></br><span className={styles.logo_text}>NowBi</span></h2>
                         <p>Crie sua conta e teste gratuitamente</p>
                     </div>
 

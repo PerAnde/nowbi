@@ -16,18 +16,58 @@
     align-items: center;
 }
 
+.form {
+    width: 100%;
+    max-width: 450px;
+}
+
 .box_header_form {
     margin-bottom: 2rem;
 }
 
-.box_header_form h1 {
-    font-size: var(--h1);
+.box_header_form h2 {
+    font-size: var(--h2);
     color: var(--cor-secundaria);
+    line-height: 5rem;
     margin-bottom: 2rem;
 }
 
-.box_header_form h1 span {
+.box_header_form h2 span {
+    font-size: var(--h2);
     color: var(--cor-principal);
+}
+
+.logo_text {
+    position: relative;
+    display: inline-block;
+    font-size: var(--h1);
+    font-weight: 700;
+    color: var(--cor-principal);
+    overflow: hidden;
+}
+
+.logo_text::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(120deg,
+            transparent 30%,
+            rgba(255, 255, 255, 1) 50%,
+            transparent 70%);
+    animation: shine 2.5s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -150%;
+    }
+
+    100% {
+        left: 150%;
+    }
 }
 
 .box_header_form p {
@@ -118,7 +158,7 @@ span.usuario_senha_invalido {
 
 .box_descricao {
     position: absolute;
-    width: 600px;
+    width: 93%;
     display: flex;
     flex-direction: column;
     bottom: 3rem;
@@ -155,10 +195,6 @@ span.usuario_senha_invalido {
     .container_auth {
         gap: 2rem;
     }
-
-    .box_descricao {
-        width: 550px;
-    }
 }
 
 @media screen and (max-width: 1300px) {
@@ -166,30 +202,14 @@ span.usuario_senha_invalido {
         grid-template-columns: minmax(550px, 1fr) 2fr;
     }
 
-    .form {
-        width: 100%;
-        max-width: 450px;
-    }
-
     .box_descricao {
-        width: 500px;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .box_descricao {
-        width: 400px;
+        width: 90%;
     }
 }
 
 @media screen and (max-width: 1100px) {
     .container_auth {
         grid-template-columns: 1fr;
-    }
-
-    .form {
-        width: 100%;
-        max-width: 450px;
     }
 
     .box_img_auth {
@@ -202,29 +222,7 @@ span.usuario_senha_invalido {
         padding: 2rem;
     }
 
-    .box_header_form h1 {
-        font-size: 5.5rem;
-    }
-
-    .form {
-        padding: 3rem;
-    }
-
     .box_dados_cadastro {
         grid-template-columns: 1fr;
-    }
-}
-
-@media screen and (max-width: 460px) {
-    .box_header_form h1 {
-        font-size: 4.5rem;
-        line-height: 4.5rem;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .box_header_form h1 {
-        font-size: 4rem;
-        line-height: 4rem;
     }
 }
