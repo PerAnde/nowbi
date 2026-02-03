@@ -31,8 +31,6 @@ export const DfcBi = () => {
         loading
     } = useBiPublic()
 
-    if (!empresa) return null
-
     const [mesTemp, setMesTemp] = useState(mesSelecionado);
     const [anoTemp, setAnoTemp] = useState(anoSelecionado);
 
@@ -62,6 +60,7 @@ export const DfcBi = () => {
 
     }, [empresa, mesSelecionado, anoSelecionado]);
 
+    if (!empresa) return null
     if (loading || !dashboardData) return <p>Carregando...</p>
 
     const { summary } = dashboardData
@@ -155,16 +154,6 @@ export const DfcBi = () => {
 
                 // Lucro Líquido Antes do IR = Operacional + Outras Receitas
                 const lucroAntesIR = totalLucroPrejuizoOperacional + totalOutrasReceitas;
-
-                // resultado.push({
-                //     titulo: 'Lucro Líquido Antes IR',
-                //     grupo: 'LUCRO_LIQUIDO_ANTES_IR',
-                //     dados: {
-                //         total: lucroAntesIR,
-                //         categorias: {}
-                //     },
-                //     isResultado: true
-                // });
 
                 if (irCsll) {
                     resultado.push({

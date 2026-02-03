@@ -396,7 +396,7 @@ export const DetalhesBi = () => {
                                             setPopUpInfosDetalhesBi(true);
                                         }
                                     }}>
-                                    <PiIcons.PiInfo /> Mais informações
+                                    <span><PiIcons.PiInfo /> Mais informações</span>
                                 </Link>
                             ) : ('')}
                         </div>
@@ -417,7 +417,7 @@ export const DetalhesBi = () => {
                                             setPopUpInfosDetalhesBi(true);
                                         }
                                     }}>
-                                    <PiIcons.PiInfo /> Mais informações
+                                    <span><PiIcons.PiInfo /> Mais informações</span>
                                 </Link>
                             ) : ('')}
                         </div>
@@ -438,7 +438,7 @@ export const DetalhesBi = () => {
                                             setPopUpInfosDetalhesBi(true);
                                         }
                                     }}>
-                                    <PiIcons.PiInfo /> Mais informações
+                                    <span><PiIcons.PiInfo /> Mais informações</span>
                                 </Link>
                             ) : ('')}
                         </div>
@@ -459,7 +459,7 @@ export const DetalhesBi = () => {
                                             setPopUpInfosDetalhesBi(true);
                                         }
                                     }}>
-                                    <PiIcons.PiInfo /> Mais informações
+                                    <span><PiIcons.PiInfo /> Mais informações</span>
                                 </Link>
                             ) : ('')}
                         </div>
@@ -480,7 +480,7 @@ export const DetalhesBi = () => {
                                             setPopUpInfosDetalhesBi(true);
                                         }
                                     }}>
-                                    <PiIcons.PiInfo /> Mais informações
+                                    <span><PiIcons.PiInfo /> Mais informações</span>
                                 </Link>
                             ) : ('')}
                         </div>
@@ -501,7 +501,7 @@ export const DetalhesBi = () => {
                                             setPopUpInfosDetalhesBi(true);
                                         }
                                     }}>
-                                    <PiIcons.PiInfo /> Mais informações
+                                    <span><PiIcons.PiInfo /> Mais informações</span>
                                 </Link>
                             ) : ('')}
                         </div>

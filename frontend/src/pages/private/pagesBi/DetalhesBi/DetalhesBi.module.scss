@@ -16,11 +16,11 @@
     gap: 1rem;
 }
 
-.box_btn_filtro{
+.box_btn_filtro {
     display: flex;
 }
 
-.box_btn_filtro button{
+.box_btn_filtro button {
     border: none;
     background-color: var(--button-cor-primaria);
     color: var(--branco);
@@ -200,6 +200,12 @@
     color: var(--texto-secundario);
     cursor: pointer;
     transition: .3s;
+}
+
+.box_btn_mais_infos span {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
 }
 
 .box_btn_mais_infos:hover {
