@@ -9,28 +9,55 @@
 
 :root {
 
+    // Novo Layout Sistema
+
+    // Cores principais
     --cor-principal: #76B2FE;
     --cor-principal-hover: #5899E9;
-    --cor-secundaria: #252049;
-    --cor-secundaria-desfoque: rgb(37, 32, 73, .05);
-    --cor-secundaria-hover: #1C1838;
-    --background: #F6F8FA;
 
+    --cor-secundaria: #252049;
+    --cor-secundaria--background-desfoque: rgb(37, 32, 73, .05);
+    --cor-secundaria-hover: #1C1838;
+
+    // Backgrounds
+    --background-geral: #F6F8FA;
+
+    // Bordas e linhas
     --border: #E2E7F1;
 
-    // Texto
+    // Cpr texto
     --texto-primario: #121217;
     --texto-secundario: #4C556C;
 
+    // Font Weigth
     --font-regular: 400;
     --font-medium: 500;
     --font-semi-bold: 600;
     --font-bold: 700;
 
+    // Font Sizes
     --h1: 6.5rem;
     --h2: 4.5rem;
     --h3: 1.8rem;
 
+    // Cores botões
+    --btn-principal: #76B3FE;
+    --btn-principal-hover: #5899E9;
+
+    --btn-secundario: #252049;
+    --btn-secundario-hover: #1C1838;
+
+    --btn-branco: #ffffff;
+    --btn-branco-hover: #E2E7F1;
+
+    // Sombras
+    --box-shadow-menu: 0 0 50px rgba(0, 0, 0, .1);
+    --box-shadow-select: 0 0 15px rgba(0, 0, 0, .1);
+
+    // Scroll
+    --scroll-menu-lateral: #E2E7F1;
+
+    // -------------------------------------------- ANTIGO LAYOUT DO SISTEMA --------------------------------------------
     // Cores
     --cor-primaria: #008aee;
     --cor-primaria-claro: #50b3fa;
@@ -69,8 +96,6 @@
     --background-header-bi: #141a21;
     --background-menu-bi: #E8EAED;
 
-    --scroll-menu-lateral: #293541;
-
     --scroll-menu-minha-conta: #e8ebef;
 
     --border-input: #e8ebef;
@@ -79,9 +104,7 @@
     --hover-input: #e0e3e6;
 
     --box-shadow-componente: 0 0 15px rgba(0, 0, 0, .02);
-    --box-shadow-menu: 0 0 50px rgba(0, 0, 0, .1);
     --box-shadow-table: 0 20px 50px rgba(0, 0, 0, .05);
-    --box-shadow-select: 0 0 15px rgba(0, 0, 0, .2);
 
     --hover-link-menu-minha-conta: #f4f6f8;
     --hover-link-menu-lateral: #1c252e;
@@ -156,7 +179,7 @@ html {
 body {
     font-family: "Fustat", sans-serif;
     font-size: 1.6rem;
-    background-color: var(--background);
+    background-color: var(--background-geral);
     color: var(--texto-primario);
     font-weight: var(--light);
     letter-spacing: -.02rem;
@@ -175,8 +198,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--texto-secundario-componente-escuro);
-    border-radius: 10px;
+    background: var(--scroll-menu-lateral);
+    border-radius: .5rem;
 }
 
 a {
@@ -184,7 +207,7 @@ a {
     color: var(--texto-primario);
 }
 
-h1{
+h1 {
     line-height: 6.5rem;
 }
 
@@ -198,7 +221,7 @@ h3 {
     font-weight: var(--semi-bold);
 }
 
-span{
+span {
     font-size: var(--span);
 }
 

@@ -164,7 +164,7 @@ span.usuario_senha_invalido {
     display: flex;
     flex-direction: column;
     bottom: 3rem;
-    background-color: var(--cor-secundaria-desfoque);
+    background-color: var(--cor-secundaria--background-desfoque);
     backdrop-filter: blur(10px);
     border-radius: var(--border-radius-componente);
     gap: 2rem;

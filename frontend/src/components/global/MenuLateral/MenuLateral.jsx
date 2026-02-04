@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getUsuarioLocalStorage } from '../../../contexts/util'
 
 import styles from './MenuLateral.module.scss';
 import * as PiIcons from 'react-icons/pi';
 import iconeLogo from '../../../assets/images/icone-logo.png';
+
+import { SelectEmpresas } from '../../Selects/SelectEmpresas';
 
 export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
 
@@ -50,28 +52,36 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                     <p>NowBI</p>
                 </div>
 
+                <hr />
+
+                <div className={styles.box_select_empresas}>
+                    <SelectEmpresas />
+                </div>
+
+                <hr />
+
                 <div className={styles.menu_lateral}>
                     <div className={styles.links_menu}>
                         <p>Visão Geral</p>
                         <Link to='/dashboard' className={`${styles.btn_menu} ${location.pathname === '/dashboard' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiAlignLeft className={styles.icon} /> Dashboard
+                            <PiIcons.PiChartBarLight className={styles.icon} /> Dashboard
                         </Link>
                         <Link to='/empresas' className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiBuildings className={styles.icon} /> Empresas
+                            <PiIcons.PiBuildingLight className={styles.icon} /> Empresas
                         </Link>
                         <Link to='/categorias' className={`${styles.btn_menu} ${location.pathname === '/categorias' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiListPlus className={styles.icon} /> Categorias
+                            <PiIcons.PiListChecksLight className={styles.icon} /> Categorias
                         </Link>
                         <p>Conta</p>
                         <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiUser className={styles.icon} /> Minha conta
+                            <PiIcons.PiUserLight className={styles.icon} /> Minha conta
                         </Link>
                         <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiSketchLogo className={styles.icon} /> Planos
+                            <PiIcons.PiSketchLogoLight className={styles.icon} /> Planos
                         </Link>
                         <p>Suporte</p>
                         <Link to='https://api.whatsapp.com/send?phone=5547984178977' target='_blank' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
-                            <PiIcons.PiQuestion className={styles.icon} /> Ajuda
+                            <PiIcons.PiQuestionLight className={styles.icon} /> Ajuda
                         </Link>
                     </div>
 

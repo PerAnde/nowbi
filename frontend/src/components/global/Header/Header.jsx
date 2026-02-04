@@ -135,10 +135,10 @@ export const Header = ({ setMenuLateralAberto }) => {
                     </div>
 
                     <div className={styles.box_footer_conta}>
-                        <div className={styles.box_btn_tema}>
+                        {/* <div className={styles.box_btn_tema}>
                             <p>Tema</p>
                             <Theme />
-                        </div>
+                        </div> */}
                         <Link className={`${styles.btn_menu} ${styles.btn_logout}`} onClick={logout}><PiIcons.PiSignIn className={styles.icon} /> Sair</Link>
                     </div>
 

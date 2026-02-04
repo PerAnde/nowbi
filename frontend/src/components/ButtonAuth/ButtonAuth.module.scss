@@ -2,19 +2,19 @@ button.button_principal {
     padding: 1.6rem;
     cursor: pointer;
     border: none;
-    background-color: var(--cor-principal);
-    color: var(--cor-secundaria);
+    background-color: var(--btn-principal);
+    color: var(--btn-secundario);
     border-radius: .5rem;
     transition: 0.5s;
 }
 
 button.button_principal:hover {
-    background-color: var(--cor-secundaria);
-    color: var(--cor-principal);
+    background-color: var(--btn-secundario-hover);
+    color: var(--btn-principal);
 }
 
 button.button_principal.btn_loading {
-    background-color: var(--border-input);
+    background-color: var(--E2E7F1);
     color: var(--texto-secundario);
     cursor: default;
 }

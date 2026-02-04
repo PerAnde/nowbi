@@ -2,7 +2,7 @@
     position: fixed;
     width: 300px;
     height: 100vh;
-    background-color: var(--cor-componente-principal);
+    background-color: var(--background-geral);
     box-shadow: var(--box-shadow-menu);
 }
 
@@ -17,8 +17,12 @@
     overflow: auto;
 }
 
-.conteudo_menu_lateral::-webkit-scrollbar-thumb{
+.conteudo_menu_lateral::-webkit-scrollbar-thumb {
     background-color: var(--scroll-menu-lateral);
+}
+
+.conteudo_menu_lateral hr {
+    border: 1px solid var(--border);
 }
 
 .box_logo_now_bi {
@@ -26,21 +30,21 @@
     grid-area: nav;
     align-items: center;
     gap: 1rem;
-    font-weight: var(--bold);
+    font-weight: var(--font-medium);
     margin: 1rem 0 2rem 1rem;
 
     p {
         font-size: 2rem;
-        color: var(--branco);
-    }
-
-    p span {
-        color: var(--cor-primaria);
+        color: var(--cor-principal);
     }
 
     img {
         width: 25px;
     }
+}
+
+.box_select_empresas{
+    margin: 1rem 0;
 }
 
 .menu_lateral {
@@ -49,6 +53,8 @@
     justify-content: space-between;
     gap: 2rem;
     height: 100%;
+    // border: 1px solid red;
+    padding: 2rem 0;
 }
 
 .links_menu {
@@ -57,11 +63,14 @@
     gap: .3rem;
 }
 
+.links_menu .btn_menu:nth-child(4),
+.links_menu .btn_menu:nth-child(7) {
+    margin-bottom: 2rem;
+}
+
 .links_menu p {
-    margin: 2rem 0 1rem;
     color: var(--texto-secundario);
     font-size: 1.4rem;
-    padding: 0 1.5rem;
 }
 
 .box_mensagem_menu_lateral {
@@ -108,7 +117,6 @@ a.btn_ativar_conta:hover {
 .btn_menu {
     width: 100%;
     display: flex;
-    align-items: center;
     gap: 1rem;
     padding: 1.5rem;
     border-radius: .5rem;
@@ -116,13 +124,18 @@ a.btn_ativar_conta:hover {
 }
 
 .btn_menu:hover {
-    background-color: var(--hover-link-menu-lateral);
-    color: var(--branco);
+    background-color: var(--branco);
+    color: var(--texto-principal);
 }
 
 .btn_menu.ativo {
-    background-color: var(--cor-primaria-15);
-    color: var(--cor-primaria-claro);
+    background-color: var(--branco);
+    border-left: 3px solid var(--cor-principal);
+    color: var(--texto-principal);
+}
+
+.btn_menu.ativo .icon{
+    color: var(--cor-principal);
 }
 
 .icon {
