@@ -3,7 +3,7 @@
     width: 300px;
     height: 100vh;
     background-color: var(--background-geral);
-    box-shadow: var(--box-shadow-menu);
+    border-right: 1px solid var(--border);
 }
 
 .conteudo_menu_lateral {
@@ -31,7 +31,7 @@
     align-items: center;
     gap: 1rem;
     font-weight: var(--font-medium);
-    margin: 1rem 0 2rem 1rem;
+    padding: 1rem 0;
 
     p {
         font-size: 2rem;

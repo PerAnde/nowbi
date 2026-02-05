@@ -39,13 +39,13 @@ export const callbackBling = async (req: Request, res: Response) => {
             tokenData,
         });
 
-        return res.status(200).json({
-            message: "Debug: Verificando dados do Bling",
-            empresaVinculada: empresaId,
-            dadosRecebidosDoBling: tokenData
-        });
+        // return res.status(200).json({
+        //     message: "Debug: Verificando dados do Bling",
+        //     empresaVinculada: empresaId,
+        //     dadosRecebidosDoBling: tokenData
+        // });
 
-        // return res.redirect(`https://app.nowbi.com.br/integracao-status?provider=Bling&status=success`);
+        return res.redirect(`https://app.nowbi.com.br/integracao-status?provider=Bling&status=success`);
     } catch (error: any) {
         console.error('[BLING ERROR]', error.response?.data || error.message);
 

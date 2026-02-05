@@ -3,9 +3,9 @@ import { buscarPin, atualizarPin } from '../../../../services/loginBi';
 import { Button } from '../../../Button/Button';
 import * as PiIcons from 'react-icons/pi';
 import { toast } from 'sonner';
-import styles from './PinAcesso.module.scss';
+import styles from './CodigoAcesso.module.scss';
 
-export const PinAcesso = ({ trigger, setTrigger, empresa }) => {
+export const CodigoAcesso = ({ trigger, setTrigger, empresa }) => {
     const [pin, setPin] = useState(["", "", "", ""]);
     const inputsRef = useRef([]);
     const [loading, setLoading] = useState(false);
@@ -106,7 +106,7 @@ export const PinAcesso = ({ trigger, setTrigger, empresa }) => {
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
-                    <h3>PIN de Acesso</h3>
+                    <h3>Código de acesso</h3>
                     <span onClick={() => setTrigger(false)}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
