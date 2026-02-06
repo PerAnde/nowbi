@@ -157,6 +157,7 @@ a.btn_link_principal.btn_excluir:hover {
     justify-content: space-between;
     background-color: var(--cor-componente);
     border-radius: var(--border-radius-componente);
+    border: 1px solid var(--border);
     padding: 3rem;
     gap: 1.5rem;
 }
@@ -336,14 +337,19 @@ a.btn_link_principal.btn_excluir:hover {
 
 .box_integrado {
     display: flex;
-    flex-direction: column;
     gap: .5rem;
     font-size: 1.3rem;
-    color: var(--verde);
+    margin: .5rem 0;
+}
+
+.box_integracoes{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
 }
 
 .box_integracoes img {
-    width: 30px;
+    width: 22px;
     border-radius: .5rem;
 }
 
@@ -450,7 +456,7 @@ a.btn_link_principal.btn_excluir:hover {
 
     .box_buscas {
         grid-column: 1/5;
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .box_input_busca {

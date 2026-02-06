@@ -97,6 +97,8 @@ export const Categorias = () => {
         return correspondeFiltro && (correspondeBuscaCategoria || correspondeBuscaSubcategoria);
     });
 
+    console.log(categoriasFiltradas)
+
     // Buscar categorias
     useEffect(() => {
         buscarCategorias(setCategorias, setLoading);
@@ -151,10 +153,13 @@ export const Categorias = () => {
                         </div>
                     </div>
 
-                    <div className="box-header">
+                </div>
+
+                <div className={styles.box_busca_e_btn}>
+                    <Input type="text" placeholder="Buscar categoria..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
+                    <div className={styles.box_opces_nova_categoria}>
                         <Link className={styles.btn_link_principal} onClick={() => criarCategoria()} ><PiIcons.PiPlusBold /> Nova categoria</Link>
                     </div>
-
                 </div>
 
                 <div className={styles.box_menu_categorias}>
@@ -173,15 +178,13 @@ export const Categorias = () => {
                             Despesas
                         </Link>
                     </div>
-
-                    <div className={styles.filtro_busca_categoria}>
-                        <Input type="text" placeholder="Buscar categoria..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
-                    </div>
                 </div>
 
                 <div className={styles.categoria_header}>
                     <span>Nome</span>
-                    <span>Subcategorias</span>
+                    <span title='Adicionado'>Adc...</span>
+                    <span>Criação</span>
+                    <span title='Subcategorias'>Sub...</span>
                     <span>Opções</span>
                 </div>
 
@@ -204,6 +207,12 @@ export const Categorias = () => {
                             .map((categoria, index) => (
                                 <div key={categoria.id} className={`${styles.box_categoria} ${mostrarSubcategorias === index ? styles.ativo : ''}`}>
                                     <div className={styles.categoria_nome}>{capitalizeFirstLetter(categoria.name)}</div>
+                                    <div className={styles.infos_adicionado}></div>
+                                    <div className={styles.info_data}>{new Date(categoria.created_at).toLocaleDateString('pt-BR', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    })}</div>
 
                                     <div className={styles.btn_subcategorias}>
                                         {categoria.subcategorias.length > 0 ? (
@@ -245,17 +254,29 @@ export const Categorias = () => {
                                                 .map((subcategoria) => (
                                                     <div className={styles.dados_subcategoria} key={subcategoria.id}>
                                                         <p>{capitalizeFirstLetter(subcategoria.name)}</p>
-                                                        <Link className={styles.btn_editar_subcategoria}
-                                                            onClick={() => {
-                                                                setSubCategoriaSelecionada(subcategoria)
-                                                                setPopUpEditarSubCategoria(true)
-                                                            }}
-                                                        ><PiIcons.PiNotePencilBold /> Editar</Link>
-                                                        <Link className={styles.btn_excluir_subcategoria}
-                                                            onClick={() => handleExcluirSubCategoria({
-                                                                id: subcategoria.id
-                                                            })}
-                                                        ><PiIcons.PiTrashBold /> Excluir</Link>
+                                                        <div className={styles.box_info_adicionado}>
+                                                            <span className={styles.manual}>Manual</span>
+                                                        </div>
+                                                        <div className={styles.info_data}>{new Date(subcategoria.created_at).toLocaleDateString('pt-BR', {
+                                                            day: '2-digit',
+                                                            month: '2-digit',
+                                                            year: 'numeric'
+                                                        })}
+                                                        </div>
+                                                        <span></span>
+                                                        <div className={styles.box_btns_subcategorias}>
+                                                            <Link className={styles.btn_editar_subcategoria}
+                                                                onClick={() => {
+                                                                    setSubCategoriaSelecionada(subcategoria)
+                                                                    setPopUpEditarSubCategoria(true)
+                                                                }}
+                                                            ><PiIcons.PiNotePencilBold /></Link>
+                                                            <Link className={styles.btn_excluir_subcategoria}
+                                                                onClick={() => handleExcluirSubCategoria({
+                                                                    id: subcategoria.id
+                                                                })}
+                                                            ><PiIcons.PiTrashBold /></Link>
+                                                        </div>
                                                     </div>
                                                 ))}
                                         </div>

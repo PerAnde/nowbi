@@ -3,16 +3,27 @@
 // --- Importe useLocation ---
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
-import { api } from '../../../../api/api'
-import styles from './LoginBi.module.scss'
-import { Button } from '../../../../components/Button/Button'
+
+import { api } from '../../../../api/api';
+import { useBiPublic } from '../../../../contexts/BiPublicContext';
+
+import { ButtonAuth } from '../../../../components/ButtonAuth/ButtonAuth'
 import { validarPinBi } from '../../../../services/loginBi';
+
+import styles from './LoginBi.module.scss'
 import { toast } from 'sonner'
+
+import imgEmpresaSemLogo from '../../../../assets/images/imgEmpresaSemLogo.jpg'
+
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export const LoginBi = () => {
     const { link_bi } = useParams()
     const navigate = useNavigate()
     const location = useLocation()
+
+    const { empresa, loading: loadingEmpresa } = useBiPublic()
 
     const [pin, setPin] = useState(["", "", "", ""])
     const [loading, setLoading] = useState(false)
@@ -35,7 +46,6 @@ export const LoginBi = () => {
     }
 
     const handleKeyDown = (e, index) => {
-        // ... (sem alterações aqui)
         if (e.key === "Backspace" && !pin[index] && index > 0) {
             inputsRef.current[index - 1].focus()
         }
@@ -75,32 +85,43 @@ export const LoginBi = () => {
         <div className={styles.container_login_bi}>
             <div className={styles.box_login_bi}>
 
-                <div className={styles.box_titulo_login_bi}>
-                    <h2>Seja bem-vindo</h2>
-                    <p>Digite o PIN para acessar seu BI.</p>
+                <div className={styles.header_branding}>
+                    <div className={styles.client_info}>
+                        {loadingEmpresa ? (
+                            <Skeleton height={80} width={80} borderRadius={10} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
+                        ) : (
+                            <img src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : imgEmpresaSemLogo} className={styles.logo_cliente} />
+                        )}
+                    </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
+                <div className={styles.box_bem_vindo}>
+                    <h3>Olá, <strong>{empresa?.name}</strong>!<br></br>Bem-vindo ao seu BI</h3>
+                </div>
+
+                <form onSubmit={handleSubmit} className={styles.form_pin}>
+                    <p className={styles.instrucao_pin}>Insira o seu código de acesso.</p>
                     <div className={styles.box_input_pin}>
                         {pin.map((value, index) => (
                             <input
                                 key={index}
+                                ref={(el) => (inputsRef.current[index] = el)}
                                 type="text"
                                 maxLength={1}
                                 placeholder="•"
                                 value={value}
-                                ref={(el) => (inputsRef.current[index] = el)}
                                 onChange={(e) => handleChange(e.target.value, index)}
                                 onKeyDown={(e) => handleKeyDown(e, index)}
                                 className={styles.input_pin}
+                                inputMode="numeric"
                             />
                         ))}
                     </div>
 
                     <div className={styles.box_btn_button}>
-                        <Button type="submit" loading={loading}>
-                            {loading ? 'Validando...' : 'Acessar'}
-                        </Button>
+                        <ButtonAuth type="submit" loading={loading}>
+                            {loading ? 'Autenticando...' : 'Acessar Dashboard'}
+                        </ButtonAuth>
                     </div>
                 </form>
             </div>

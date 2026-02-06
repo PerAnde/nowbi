@@ -233,6 +233,15 @@ export const Empresas = () => {
                                             <div>
                                                 {empresa.cnpj_empresa ? <p className={styles.info_empresa}>CNPJ: {empresa.cnpj_empresa}</p> : ''}
                                                 <p className={styles.info_empresa}>Criada: {empresa.created_at}</p>
+                                                <div className={styles.box_integrado}>
+                                                    {empresa?.blingIntegration?.isActive ? (
+                                                        <div className={styles.box_integracoes}>
+                                                            <img src={imgBling} alt="" />
+                                                            <span>Bling</span>
+                                                        </div>
+                                                    ) :
+                                                        null
+                                                    }</div>
                                             </div>
                                         </div>
 
@@ -243,16 +252,6 @@ export const Empresas = () => {
                                         <p><PiIcons.PiSpinnerGapLight /> <span className={styles.info_em_progresso}>{emProgresso}</span></p>
                                         <p><PiIcons.PiChecksLight /> <span className={styles.info_concluidos}>{concluidos}</span></p>
                                     </div>
-
-                                    {/* {empresa?.blingIntegration?.isActive ? (
-                                        <div className={styles.box_integrado}>
-                                            <div className={styles.box_integracoes}>
-                                                <img src={imgBling} alt="" />
-                                            </div>
-                                        </div>
-                                    ) :
-                                        null
-                                    } */}
 
                                     <div className={styles.box_btns_empresa}>
                                         <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
