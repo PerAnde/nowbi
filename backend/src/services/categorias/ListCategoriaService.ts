@@ -20,6 +20,7 @@ class ListCategoriaService {
                 tipo: true,
                 subcategorias: true,
                 grupoDre: true,
+                created_at: true,
             }
         });
 
