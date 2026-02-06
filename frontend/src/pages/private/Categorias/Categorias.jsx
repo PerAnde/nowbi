@@ -168,13 +168,13 @@ export const Categorias = () => {
                             setFiltro('RECEITA')
 
                         }}>
-                            <PiIcons.PiArrowUpRightBold />
+                            <PiIcons.PiArrowUpRightLight />
                             Receitas
                         </Link>
                         <Link className={`${styles.filtro_despesas} ${filtro === "DESPESA" ? styles.ativo : ''}`} onClick={() => {
                             setFiltro('DESPESA')
                         }}>
-                            <PiIcons.PiArrowDownRightBold />
+                            <PiIcons.PiArrowDownRightLight />
                             Despesas
                         </Link>
                     </div>
@@ -217,32 +217,32 @@ export const Categorias = () => {
                                     <div className={styles.btn_subcategorias}>
                                         {categoria.subcategorias.length > 0 ? (
                                             <span onClick={() => handleMenuSubcategoriasClick(index)}>
-                                                <PiIcons.PiCaretDownBold />
+                                                <PiIcons.PiCaretDownLight />
                                             </span>
                                         ) : ('')}
                                     </div>
                                     <div className={styles.btn_opcoes_categoria} ref={(el) => (menuCategoriaRefs.current[index] = el)}>
                                         <span onClick={() => handleMenuClick(index)}>
-                                            <PiIcons.PiDotsThreeVerticalBold />
+                                            <PiIcons.PiDotsThreeVertical />
                                         </span>
                                         <div className={`${styles.box_opcoes_categorias} ${menuAberto === index ? styles.ativo : styles.inativo}`}>
                                             <Link onClick={() => {
                                                 setCategoriaSelecionada(categoria)
                                                 setPopUpCriarSubCategoria(true)
                                             }}>
-                                                <PiIcons.PiPlusBold className={styles.icone_box_opcoes} />
+                                                <PiIcons.PiPlusLight className={styles.icone_box_opcoes} />
                                                 <p>Incluir subcategoria</p>
                                             </Link>
                                             <Link onClick={() => {
                                                 setCategoriaSelecionada(categoria)
                                                 setPopUpEditarCategoria(true)
                                             }}>
-                                                <PiIcons.PiNotePencilBold />
+                                                <PiIcons.PiNotePencilLight />
                                                 <p>Editar</p>
                                             </Link>
                                             <hr />
                                             <Link className={styles.btn_excluir} onClick={() => handleExcluirCategoria({ id: categoria.id })}>
-                                                <PiIcons.PiTrashBold />
+                                                <PiIcons.PiTrashLight />
                                                 <p>Excluir</p>
                                             </Link>
                                         </div>
@@ -270,12 +270,12 @@ export const Categorias = () => {
                                                                     setSubCategoriaSelecionada(subcategoria)
                                                                     setPopUpEditarSubCategoria(true)
                                                                 }}
-                                                            ><PiIcons.PiNotePencilBold /></Link>
+                                                            ><PiIcons.PiNotePencilLight /></Link>
                                                             <Link className={styles.btn_excluir_subcategoria}
                                                                 onClick={() => handleExcluirSubCategoria({
                                                                     id: subcategoria.id
                                                                 })}
-                                                            ><PiIcons.PiTrashBold /></Link>
+                                                            ><PiIcons.PiTrashLight /></Link>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -289,14 +289,14 @@ export const Categorias = () => {
                         {filtro === "RECEITA" ? (
                             <>
                                 <span>
-                                    <PiIcons.PiListMagnifyingGlassDuotone />
+                                    <PiIcons.PiListMagnifyingGlassLight />
                                 </span>
                                 <p>Nenhuma categoria em receita!</p>
                             </>
                         ) : (
                             <>
                                 <span>
-                                    <PiIcons.PiListMagnifyingGlassDuotone />
+                                    <PiIcons.PiListMagnifyingGlassLight />
                                 </span>
                                 <p>Nenhuma categoria em despesa!</p>
                             </>
