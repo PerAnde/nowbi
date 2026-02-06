@@ -11,6 +11,12 @@ class ListEmpresaDashboardBIService {
                 name: true,
                 cnpj_empresa: true,
                 logo_empresa: true,
+                usuario: {
+                    select: {
+                        name: true,
+                        img_usuario: true,
+                    },
+                },
                 bis: {
                     select: {
                         mes: true,
