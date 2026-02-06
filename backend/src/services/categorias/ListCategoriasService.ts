@@ -16,6 +16,7 @@ class ListCategoriasService {
                 tipo: true,
                 subcategorias: true,
                 grupoDre: true,
+                created_at: true,
             },
         });
 
