@@ -92,6 +92,7 @@ router.post('/empresas', isAuthenticated, verificaStatusConta, upload.single('fi
 router.get('/empresas', isAuthenticated, verificaStatusConta, new ListEmpresasController().handle)
 router.get('/empresas/:id', isAuthenticated, verificaStatusConta, new ListEmpresaController().handle)
 router.put('/empresas/:id', isAuthenticated, verificaStatusConta, upload.single('file'), new UpdateEmpresaController().handle)
+router.patch('/empresas/:id/config-dashboard', isAuthenticated, verificaStatusConta, new UpdateEmpresaController().handle)
 router.delete('/empresas/:id', isAuthenticated, verificaStatusConta, new DeleteEmpresaController().handle)
 router.get('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new GetPinAcessoController().handle);
 router.patch('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new UpdatePinAcessoController().handle)
