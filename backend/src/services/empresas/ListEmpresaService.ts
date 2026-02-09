@@ -12,6 +12,11 @@ class ListEmpresaService {
                 name: true,
                 bis: true,
                 blingIntegration: true,
+                mostrar_resumo: true,
+                mostrar_detalhes: true,
+                mostrar_dfc: true,
+                mostrar_dre: true,
+                mostrar_relatorio: true,
             }
         });
 
