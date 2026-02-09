@@ -131,6 +131,19 @@ export const editarEmpresa = async (id, name, cnpjEmpresa, emailAutenticaBi, fil
     }
 };
 
+// Atualizar configuracoes
+export const atualizarConfigDashboardBI = async (empresaId, config) => {
+    try {
+        await api.patch(`/empresas/${empresaId}/config-dashboard`, config);
+        toast.success("Configurações do Dashboard atualizadas!");
+        return true;
+    } catch (error) {
+        toast.error("Erro ao salvar configurações do Dashboard!");
+        console.error("Erro ao atualizar config do BI:", error);
+        return false;
+    }
+};
+
 // Excluir Empresa
 export const excluirEmpresa = async (empresaId) => {
 

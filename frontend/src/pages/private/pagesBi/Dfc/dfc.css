@@ -52,7 +52,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    background-color: var(--background);
+    background-color: var(--background-geral);
     border-radius: var(--border-radius-componente_dre);
     padding: 1rem;
     gap: 2rem;

@@ -21,11 +21,11 @@
     gap: 1rem;
 }
 
-.box_btn_filtro{
+.box_btn_filtro {
     display: flex;
 }
 
-.box_btn_filtro button{
+.box_btn_filtro button {
     border: none;
     background-color: var(--button-cor-primaria);
     color: var(--branco);
@@ -34,7 +34,7 @@
     cursor: pointer;
 }
 
-.box_btn_filtro button:hover{
+.box_btn_filtro button:hover {
     background-color: var(--button-cor-primaria-hover);
     transition: .3s;
 }
@@ -118,7 +118,12 @@
     }
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 650px) {
+    .header_pagina_dashboardBi {
+        flex-direction: column-reverse;
+        gap: 2rem;
+    }
+
     .box_metricas_mes {
         grid-template-columns: 1fr;
     }

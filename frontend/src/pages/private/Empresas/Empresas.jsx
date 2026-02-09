@@ -23,6 +23,7 @@ import imgBling from '../../../assets/images/logo-bling.png';
 import styles from './Empresas.module.scss'
 import { capitalizeFirstLetter } from '../../../utils/formatUtils'
 import { toast } from 'sonner';
+import { ConfigEmpresa } from '../../../components/Modal/Empresa/Configuracoes/ConfigEmpresa';
 
 export const Empresas = () => {
 
@@ -35,6 +36,7 @@ export const Empresas = () => {
     const [popUpEditarEmpresa, setPopUpEditarEmpresa] = useState(false)
     const [popUpPin, setPopUpPin] = useState(false);
     const [popupIntegracao, setPopUpIntegracao] = useState(false);
+    const [popUpConfigEmpresa, setPopUpConfigEmpresa] = useState(false);
     const [popUpExcluirEmpresa, setPopUpExcluirEmpresa] = useState(false);
     const [empresaSelecionada, setEmpresaSelecionada] = useState(null)
 
@@ -274,15 +276,22 @@ export const Empresas = () => {
                                                 setEmpresaSelecionada(empresa)
                                                 setPopUpEditarEmpresa(true)
                                             }}>
-                                                <PiIcons.PiNotePencil />
+                                                <PiIcons.PiNotePencilLight />
                                                 <p>Editar</p>
                                             </Link>
                                             <Link onClick={() => {
                                                 setEmpresaSelecionada(empresa)
                                                 setPopUpPin(true)
                                             }}>
-                                                <PiIcons.PiPassword />
+                                                <PiIcons.PiPasswordLight />
                                                 <p>Código de acesso</p>
+                                            </Link>
+                                            <Link onClick={() => {
+                                                setEmpresaSelecionada(empresa)
+                                                setPopUpConfigEmpresa(true)
+                                            }}>
+                                                <PiIcons.PiGearSixLight />
+                                                <p>Configurações</p>
                                             </Link>
                                             {/* <Link onClick={() => {
                                                 setEmpresaSelecionada(empresa)
@@ -294,7 +303,7 @@ export const Empresas = () => {
                                             <Link
                                                 className={styles.btn_excluir}
                                                 onClick={() => modalExcluirEmpresa({ id: empresa.id })}>
-                                                <PiIcons.PiTrash />
+                                                <PiIcons.PiTrashLight />
                                                 <p>Excluir</p>
                                             </Link>
                                         </div>
@@ -330,6 +339,11 @@ export const Empresas = () => {
                 trigger={popupIntegracao}
                 setTrigger={setPopUpIntegracao}
                 empresa={empresaSelecionada} />
+            <ConfigEmpresa
+                trigger={popUpConfigEmpresa}
+                setTrigger={setPopUpConfigEmpresa}
+                empresa={empresaSelecionada}
+            />
             <ExcluirEmpresa
                 trigger={popUpExcluirEmpresa}
                 setTrigger={setPopUpExcluirEmpresa}
