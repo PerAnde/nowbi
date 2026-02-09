@@ -133,7 +133,7 @@ export const CodigoAcesso = ({ trigger, setTrigger, empresa }) => {
                             />
                         ))}
                         <div onClick={handlePinCopiado} className={styles.btn_copiar_pin}>
-                            <PiIcons.PiCopyBold />
+                            Copiar
                         </div>
                     </div>
 

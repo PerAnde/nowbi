@@ -284,13 +284,13 @@ export const Empresas = () => {
                                                 <PiIcons.PiPassword />
                                                 <p>Código de acesso</p>
                                             </Link>
-                                            <Link onClick={() => {
+                                            {/* <Link onClick={() => {
                                                 setEmpresaSelecionada(empresa)
                                                 setPopUpIntegracao(true)
                                             }}>
                                                 <PiIcons.PiPlugsConnected />
                                                 <p>Integrar</p>
-                                            </Link>
+                                            </Link> */}
                                             <Link
                                                 className={styles.btn_excluir}
                                                 onClick={() => modalExcluirEmpresa({ id: empresa.id })}>

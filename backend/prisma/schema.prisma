@@ -67,17 +67,24 @@ model GrupoEmpresa {
 }
 
 model Empresa {
-    id               String                 @id @default(uuid())
+    id               String   @id @default(uuid())
     name             String
     cnpj_empresa     String?
     logo_empresa     String?
-    created_at       DateTime               @default(now())
-    updated_at       DateTime               @updatedAt
+    created_at       DateTime @default(now())
+    updated_at       DateTime @updatedAt
     usuario_id       String
     grupo_empresa_id String?
     email_empresa    String
-    link_bi          String                 @unique @db.VarChar(40)
+    link_bi          String   @unique @db.VarChar(40)
     pin_acesso       Int?
+
+    mostrar_resumo    Boolean @default(true)
+    mostrar_detalhes  Boolean @default(true)
+    mostrar_dfc       Boolean @default(true)
+    mostrar_dre       Boolean @default(true)
+    mostrar_relatorio Boolean @default(true)
+
     bis              BusinessIntelligence[]
     grupo_empresa    GrupoEmpresa?          @relation(fields: [grupo_empresa_id], references: [id])
     usuario          Usuario                @relation(fields: [usuario_id], references: [id])

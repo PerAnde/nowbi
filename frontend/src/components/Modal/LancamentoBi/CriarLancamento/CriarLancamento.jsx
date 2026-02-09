@@ -71,12 +71,12 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
                     <div className={styles.box_inputs}>
                         <label htmlFor="receita" className={`${styles.box_input_radio} ${styles.input_receita}`} >
                             <Input type="radio" name="tipo" id="receita" value="RECEITA" onChange={(e) => setTipo(e.target.value)} checked={tipo === "RECEITA"} />
-                            <label htmlFor="receita"><span><PiIcons.PiTrendUpBold /></span> Receita</label>
+                            <label htmlFor="receita"><span><PiIcons.PiTrendUpLight /></span> Receita</label>
                         </label>
 
                         <label htmlFor="despesa" className={`${styles.box_input_radio} ${styles.input_despesa}`}>
                             <Input type="radio" name="tipo" id="despesa" value="DESPESA" onChange={(e) => setTipo(e.target.value)} checked={tipo === "DESPESA"} />
-                            <label htmlFor="despesa"><span><PiIcons.PiTrendDownBold /></span> Despesa</label>
+                            <label htmlFor="despesa"><span><PiIcons.PiTrendDownLight /></span> Despesa</label>
                         </label>
                     </div>
 

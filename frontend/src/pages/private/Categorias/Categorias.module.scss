@@ -120,7 +120,7 @@ a.btn_link_principal:hover {
     grid-column: 1/6;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 1rem;
 }
 
 .categoria_header span:nth-child(2),
@@ -152,7 +152,7 @@ a.btn_link_principal:hover {
 
 .box_categoria:hover {
     color: var(--texto-primario);
-    background-color: var(--cor-componente);
+    background-color: var(--background-geral);
 }
 
 .box_categoria.ativo {

@@ -17,6 +17,11 @@ class ListEmpresaDashboardBIService {
                         img_usuario: true,
                     },
                 },
+                mostrar_resumo: true,
+                mostrar_detalhes: true,
+                mostrar_dfc: true,
+                mostrar_dre: true,
+                mostrar_relatorio: true,
                 bis: {
                     select: {
                         mes: true,

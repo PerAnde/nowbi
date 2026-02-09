@@ -81,7 +81,7 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
 
                         <input type='file' accept='image/jpeg, image/jpg, image/png' id="picture_input" onChange={handleImageChange} />
 
-                        <p>Permitido *.jpeg, *.jpg, *.png<br></br>tamanho máximo de 3 Mb</p>
+                        <p>Permitido *.jpeg, *.jpg, *.png<br></br>(máx 3 mb)</p>
                     </div>
 
                     <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>

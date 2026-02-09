@@ -47,7 +47,7 @@
     }
 
     span:hover {
-        background-color: var(--background);
+        background-color: var(--background-geral);
         transition: .3s;
     }
 }
@@ -86,7 +86,6 @@ input.input_pin:focus {
 }
 
 .btn_copiar_pin{
-    width: 25px;
     display: flex;
     align-items: center;
     justify-content: center;

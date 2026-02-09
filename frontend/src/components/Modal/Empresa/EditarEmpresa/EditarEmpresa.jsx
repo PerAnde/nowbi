@@ -101,7 +101,7 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
                             id="picture_input"
                             onChange={handleImageChange}
                         />
-                        <p>Permitido *.jpeg, *.jpg, *.png<br></br>tamanho máximo de 3 Mb</p>
+                        <p>Permitido *.jpeg, *.jpg, *.png<br></br>(máx 3 mb)</p>
                     </div>
 
 

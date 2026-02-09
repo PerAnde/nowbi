@@ -408,12 +408,10 @@ export const Bi = () => {
                                         setLancamentoSelecionado(lancamento.id)
                                         setPopUpEditarLancamento(true)
                                     }}>
-                                        <PiIcons.PiNotePencilBold />
-                                        <p>Editar</p>
+                                        <PiIcons.PiNotePencil />
                                     </Link>
                                     <Link className={styles.btn_excluir_lancamento} onClick={() => handleExcluirLancamento({ id: lancamento.id })}>
-                                        <PiIcons.PiTrashBold />
-                                        <p>Excluir</p>
+                                        <PiIcons.PiTrash />
                                     </Link>
                                 </div>
                             </div>

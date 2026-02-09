@@ -366,7 +366,7 @@ a.btn_excluir_lancamentos:hover {
     grid-column: 1/5;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .box_categoria {
@@ -376,16 +376,16 @@ a.btn_excluir_lancamentos:hover {
     align-items: center;
     border: 1px solid var(--border-input);
     border-radius: var(--border-radius-componente);
-    color: var(--texto-primario);
+    background-color: var(--cor-componente);
+    color: var(--texto-secundario);
     transition: .3s;
     padding: 2.2rem;
     gap: 0 3rem;
 }
 
 .box_categoria:hover {
-    color: var(--texto-primario);
-    background-color: var(--cor-componente);
-    box-shadow: var(--box-shadow-table);
+    color: var(--texto-principal);
+    background-color: var(--background-geral);
 }
 
 .box_categoria.ativo {
@@ -482,7 +482,8 @@ a.btn_excluir_lancamentos:hover {
 // Botoes Editar / Excluir
 .box_btns_opcoes_lancamento {
     display: flex;
-    gap: 1.5rem;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .box_btns_opcoes_lancamento a {
@@ -495,13 +496,13 @@ a.btn_excluir_lancamentos:hover {
 }
 
 a.btn_editar_lancamento {
-    border: 1px solid var(--border-input);
+    border: 1px solid var(--border);
     border-radius: var(--border-radius-button);
     color: var(--texto-secundario);
 }
 
 a.btn_editar_lancamento:hover {
-    background-color: var(--background);
+    background-color: var(--background-geral);
     color: var(--texto-primario);
 }
 
@@ -522,8 +523,7 @@ a.btn_excluir_lancamento:hover {
     width: 100%;
     bottom: 0;
     background-color: var(--cor-componente);
-    border-top-left-radius: var(--border-radius-componente);
-    border-top-right-radius: var(--border-radius-componente);
+    border-radius: var(--border-radius-componente);
     box-shadow: var(--box-shadow-menu);
     padding: 2rem;
 }

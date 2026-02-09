@@ -26,44 +26,50 @@
     cursor: default;
 }
 
+.box_btns {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
 a.btn_link_principal {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     gap: .5rem;
-    color: var(--texto-primario-button);
-    padding: 1.2rem;
+    color: var(--cor-principal);
+    padding: 1.3rem;
     border-radius: var(--border-radius-button);
-    background-color: var(--button-cor-secundaria);
+    background-color: var(--cor-secundaria);
     transition: .3s;
     font-size: 1.4rem;
 }
 
 a.btn_link_principal:hover {
-    background-color: var(--button-cor-secundaria-hover);
+    background-color: var(--cor-secundaria-hover);
 }
 
 .box_bis {
     grid-column: 1/5;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .box_componente {
     width: 100%;
     display: flex;
+    background-color: var(--cor-componente);
     border-radius: var(--border-radius-componente);
-    border: 1px solid var(--border-input);
-    padding: 3rem 2rem;
+    border: 1px solid var(--border);
+    padding: 2.5rem;
     cursor: pointer;
     transition: .3s;
 }
 
 .box_componente:hover {
-    background-color: var(--cor-componente);
-    box-shadow: var(--box-shadow-table);
+    background-color: var(--background-geral);
 }
 
 .box_header_componente {
@@ -168,11 +174,12 @@ a.btn_link_principal:hover {
     font-weight: var(--semi-bold);
 }
 
-.box_status_bi.bi_concluido{
+.box_status_bi.bi_concluido {
     background-color: var(--verde-15);
     color: var(--verde);
 }
-.box_status_bi.bi_em_progresso{
+
+.box_status_bi.bi_em_progresso {
     background-color: var(--laranja-15);
     color: var(--laranja);
 }
@@ -187,5 +194,23 @@ a.btn_link_principal:hover {
     .box_bis {
         grid-template-columns: 1fr;
     }
+}
 
+@media screen and (max-width: 600px) {
+    .box_menu_categorias {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .btn_link_principal {
+        width: 100%;
+        display: flex;
+    }
+
+    .box_btns {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
 }

@@ -10,6 +10,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 
 import { CriarBi } from '../../../components/Modal/BI/CriarBi/CriarBi';
+import { SelectAnoBi } from '../../../components/Selects/SelectAnoBi';
 
 import * as PiIcons from 'react-icons/pi';
 
@@ -22,6 +23,7 @@ export const Empresa = () => {
     const [empresa, setEmpresa] = useState({});
     const [loading, setLoading] = useState(true);
     const [filtro, setFiltro] = useState('todos');
+    const [filtroAno, setFiltroAno] = useState('');
 
     const [popUpNovBi, setPopUpNovBi] = useState(false);
 
@@ -44,6 +46,18 @@ export const Empresa = () => {
         buscarEmpresa(id, setEmpresa, setLoading, filtro);
     }
 
+    const anosDisponiveis = empresa?.bis
+        ? [...new Set(empresa.bis.map(bi => bi.ano))].sort((a, b) => b - a)
+        : [];
+
+    useEffect(() => {
+        if (anosDisponiveis.length > 0 && !filtroAno) {
+            setFiltroAno(String(anosDisponiveis[0]));
+        }
+    }, [anosDisponiveis, filtroAno]);
+
+    const anosParaOSelect = ['todos', ...anosDisponiveis];
+
     const meses = {
         janeiro: 1,
         fevereiro: 2,
@@ -61,16 +75,22 @@ export const Empresa = () => {
 
     const bisFiltrados = empresa?.bis
         ?.filter(bi => {
-            if (filtro === 'em_progresso') return !bi.status;
-            if (filtro === 'concluido') return bi.status;
-            return true;
+            const matchStatus = filtro === 'todos' ||
+                (filtro === 'em_progresso' && !bi.status) ||
+                (filtro === 'concluido' && bi.status);
+
+            const matchAno = bi.ano.toString() === filtroAno.toString();
+
+            return matchStatus && matchAno;
         })
         ?.sort((a, b) => {
-            const ano = b.ano - a.ano;
+            const mesesMap = {
+                janeiro: 1, fevereiro: 2, março: 3, abril: 4,
+                maio: 5, junho: 6, julho: 7, agosto: 8,
+                setembro: 9, outubro: 10, novembro: 11, dezembro: 12
+            };
 
-            if (ano !== 0) return ano;
-
-            return meses[b.mes.toLowerCase()] - meses[a.mes.toLowerCase()];
+            return mesesMap[b.mes.toLowerCase()] - mesesMap[a.mes.toLowerCase()];
         });
 
     return (
@@ -101,26 +121,31 @@ export const Empresa = () => {
                         </div>
                     </div>
 
-                    <div className="box-header">
-                        <Link className={styles.btn_link_principal} onClick={() => setPopUpNovBi(true)}><PiIcons.PiPlusBold /> Novo Bi</Link>
-                    </div>
-
                 </div>
 
                 <div className={styles.box_menu_categorias}>
                     <div className={styles.filtro_pagina}>
                         <Link className={`${styles.filtro_todos} ${filtro === 'todos' ? styles.ativo : ''}`} onClick={() => setFiltro('todos')}>
-                            <PiIcons.PiChartPieSlice />
+                            <PiIcons.PiChartPieSliceLight />
                             Todos
                         </Link>
                         <Link className={`${styles.filtro_em_progresso} ${filtro === 'em_progresso' ? styles.ativo : ''}`} onClick={() => setFiltro('em_progresso')}>
-                            <PiIcons.PiSpinnerGapBold />
+                            <PiIcons.PiSpinnerGapLight />
                             Em progresso
                         </Link>
                         <Link className={`${styles.filtro_concluido} ${filtro === 'concluido' ? styles.ativo : ''}`} onClick={() => setFiltro('concluido')}>
-                            <PiIcons.PiCheckBold />
+                            <PiIcons.PiChecksLight />
                             Concluído
                         </Link>
+                    </div>
+
+                    <div className={styles.box_btns}>
+                        <SelectAnoBi
+                            anoSelecionado={filtroAno}
+                            setAnoSelecionado={setFiltroAno}
+                            anosDisponiveis={anosDisponiveis}
+                        />
+                        <Link className={styles.btn_link_principal} onClick={() => setPopUpNovBi(true)}><PiIcons.PiPlusBold /> Novo Bi</Link>
                     </div>
                 </div>
 
@@ -150,7 +175,7 @@ export const Empresa = () => {
                             {filtro === "todos" ? (
                                 <>
                                     <span>
-                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                        <PiIcons.PiListMagnifyingGlassLight />
                                     </span>
                                     <p>Nenhum BI cadastrado!</p>
                                 </>
@@ -160,7 +185,7 @@ export const Empresa = () => {
                             {filtro === "em_progresso" ? (
                                 <>
                                     <span>
-                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                        <PiIcons.PiListMagnifyingGlassLight />
                                     </span>
                                     <p>Nenhum BI em progresso!</p>
                                 </>
@@ -170,7 +195,7 @@ export const Empresa = () => {
                             {filtro === "concluido" ? (
                                 <>
                                     <span>
-                                        <PiIcons.PiListMagnifyingGlassDuotone />
+                                        <PiIcons.PiListMagnifyingGlassLight />
                                     </span>
                                     <p>Nenhum BI concluído!</p>
                                 </>

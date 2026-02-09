@@ -113,29 +113,6 @@ a.btn_link_principal:hover {
     background-color: var(--cor-secundaria-hover);
 }
 
-a.btn_link_principal.btn_editar {
-    color: var(--texto-secundario);
-    border: 1px solid var(--texto-secundario);
-    background-color: var(--background);
-}
-
-a.btn_link_principal.btn_excluir {
-    color: var(--vermelho);
-    border: 1px solid var(--vermelho);
-    background-color: var(--background)
-}
-
-a.btn_link_principal.btn_editar:hover {
-    background-color: var(--button-cor-secundaria);
-    border: 1px solid var(--button-cor-secundaria);
-    color: var(--texto-primario-button);
-}
-
-a.btn_link_principal.btn_excluir:hover {
-    background-color: var(--vermelho);
-    color: var(--branco);
-}
-
 .box_empresas {
     grid-column: 1/5;
     display: grid;
@@ -191,7 +168,7 @@ a.btn_link_principal.btn_excluir:hover {
     max-width: 70px;
     min-width: 70px;
     height: 70px;
-    background-color: var(--background);
+    background-color: var(--background-geral);
     border-radius: var(--border-radius-componente);
     overflow: hidden;
 }
@@ -262,7 +239,7 @@ a.btn_link_principal.btn_excluir:hover {
     }
 
     a:hover {
-        background-color: var(--background);
+        background-color: var(--background-geral);
     }
 
     hr {
