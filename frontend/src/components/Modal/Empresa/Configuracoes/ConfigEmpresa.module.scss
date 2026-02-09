@@ -122,14 +122,5 @@ label.switch {
     display: flex;
     justify-content: flex-end;
     gap: 1.5rem;
-}
-
-.btn_cancelar {
-    padding: 1.2rem;
-    cursor: pointer;
-    border: none;
-    background-color: var(--background);
-    color: var(--texto-primario);
-    border-radius: var(--border-radius-button);
-    transition: 0.5s;
+    margin-top: 1.5rem;
 }
