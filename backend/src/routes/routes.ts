@@ -28,6 +28,7 @@ import { CreateEmpresaController } from '../controllers/empresas/CreateEmpresaCo
 import { ListEmpresasController } from '../controllers/empresas/ListEmpresasController';
 import { ListEmpresaController } from '../controllers/empresas/ListEmpresaController';
 import { UpdateEmpresaController } from '../controllers/empresas/UpdateEmpresaController';
+import { UpdateEmpresaDashboardConfigController } from '../controllers/empresas/UpdateEmpresaDashboardConfigController';
 import { DeleteEmpresaController } from '../controllers/empresas/DeleteEmpresaController';
 import { GetPinAcessoController } from '../controllers/empresas/GetPinAcessoController';
 import { UpdatePinAcessoController } from '../controllers/empresas/UpdatePinAcessoController';
@@ -92,7 +93,7 @@ router.post('/empresas', isAuthenticated, verificaStatusConta, upload.single('fi
 router.get('/empresas', isAuthenticated, verificaStatusConta, new ListEmpresasController().handle)
 router.get('/empresas/:id', isAuthenticated, verificaStatusConta, new ListEmpresaController().handle)
 router.put('/empresas/:id', isAuthenticated, verificaStatusConta, upload.single('file'), new UpdateEmpresaController().handle)
-router.patch('/empresas/:id/config-dashboard', isAuthenticated, verificaStatusConta, new UpdateEmpresaController().handle)
+router.patch('/empresas/:id/config-dashboard', isAuthenticated, verificaStatusConta, new UpdateEmpresaDashboardConfigController().handle)
 router.delete('/empresas/:id', isAuthenticated, verificaStatusConta, new DeleteEmpresaController().handle)
 router.get('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new GetPinAcessoController().handle);
 router.patch('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new UpdatePinAcessoController().handle)
