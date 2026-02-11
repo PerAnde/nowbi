@@ -184,7 +184,7 @@ model LancamentoBi {
     subcategoria_id         String?
     businessIntelligence_id String
 
-    id_externo_lancamento String @unique
+    id_externo_lancamento String? @unique
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
