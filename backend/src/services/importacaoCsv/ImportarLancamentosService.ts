@@ -20,6 +20,15 @@ export class ImportarLancamentosService {
 
     async execute(lancamentos: LancamentoImportado[], businessIntelligenceId: string): Promise<ResultadoImportacao> {
 
+        const bi = await prisma.businessIntelligence.findUnique({
+            where: { id: businessIntelligenceId },
+            select: { id: true, empresa_id: true }
+        });
+
+        if (!bi) {
+            throw new Error('Business Intelligence não encontrado ou inválido.');
+        }
+
         //  Pré-carrega todas as subcategorias cadastradas
         const subcategorias = await prisma.subCategoria.findMany()
         const subcategoriaMap = new Map(subcategorias.map(s => [this.normalizarParaComparacao(s.name), s]))
