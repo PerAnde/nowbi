@@ -12,14 +12,26 @@ class ImportacaoBlingCsvController {
 
         const service = new ImportarBlingCsvService()
 
-        const dados = await service.execute(req.file.path)
+        try {
+            const dados = await service.execute(req.file.path)
 
-        fs.unlinkSync(req.file.path)
+            return res.json({
+                total: dados.length,
+                dados
+            })
 
-        return res.json({
-            total: dados.length,
-            dados
-        })
+        } catch (error: any) {
+
+            return res.status(500).json({
+                error: error.message || 'Erro ao processar CSV'
+            })
+
+        } finally {
+            // Remove o arquivo mesmo se der erro
+            if (fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path)
+            }
+        }
     }
 }
 

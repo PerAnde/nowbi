@@ -75,19 +75,20 @@ const router = Router();
 
 // Upload para imagens (logo)
 const uploadImagem = multer(
-  uploadConfig.upload("images", [
-    'image/jpeg',
-    'image/jpg',
-    'image/png'
-  ])
+  uploadConfig.upload(
+    './images',
+    ['image/jpeg', 'image/jpg', 'image/png'],
+    ['.jpg', '.jpeg', '.png']
+  )
 );
 
 // Upload para CSV
 const uploadCsv = multer(
-  uploadConfig.upload("tmp", [
-    'text/csv',
-    'application/vnd.ms-excel'
-  ])
+  uploadConfig.upload(
+    './tmp',
+    ['text/csv', 'application/vnd.ms-excel'],
+    ['.csv']
+  )
 );
 
 // Rotas Usuario
