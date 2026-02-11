@@ -63,21 +63,38 @@ import { ListLancamentoBIController } from '../controllers/lancamentosBi/ListLan
 import { UpdateLancamentoBiController } from '../controllers/lancamentosBi/UpdateLancamentoBiController';
 import { DeleteLancamentoBiController } from '../controllers/lancamentosBi/DeleteLancamentoBiController';
 import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/DeleteLancamentosBiController';
+import { ImportacaoBlingCsvController } from '../controllers/importacaoCsv/ImportacaoBlingCsvController';
 
 // Controller DashboardBi
 import { ListEmpresaDashboardBIController } from '../controllers/empresas/ListEmpresaDashboardBIController';
 
 import uploadConfig from '../config/multer'
 
+
 const router = Router();
 
-const upload = multer(uploadConfig.upload("images"));
+// Upload para imagens (logo)
+const uploadImagem = multer(
+  uploadConfig.upload("images", [
+    'image/jpeg',
+    'image/jpg',
+    'image/png'
+  ])
+);
+
+// Upload para CSV
+const uploadCsv = multer(
+  uploadConfig.upload("tmp", [
+    'text/csv',
+    'application/vnd.ms-excel'
+  ])
+);
 
 // Rotas Usuario
 router.post('/register', new CreateUsuarioController().handle)
 router.post('/login', new AuthUsuarioController().handle)
 router.get('/user', isAuthenticated, verificaStatusConta, new DetailUsuarioController().handle)
-router.put('/user/:id', isAuthenticated, verificaStatusConta, upload.single('file'), new UpdateUsuarioController().handle)
+router.put('/user/:id', isAuthenticated, verificaStatusConta, uploadImagem.single('file'), new UpdateUsuarioController().handle)
 router.get('/planos', isAuthenticated, verificaStatusConta, new ListPlanosController().handle)
 
 // Rotas Grupo Empresas
@@ -89,10 +106,10 @@ router.patch('/empresas/grupo/:id', isAuthenticated, verificaStatusConta, new Up
 router.delete('/empresas/grupo/:id', isAuthenticated, verificaStatusConta, new DeleteGrupoController().handle)
 
 // Rotas Empresas
-router.post('/empresas', isAuthenticated, verificaStatusConta, upload.single('file'), new CreateEmpresaController().handle)
+router.post('/empresas', isAuthenticated, verificaStatusConta, uploadImagem.single('file'), new CreateEmpresaController().handle)
 router.get('/empresas', isAuthenticated, verificaStatusConta, new ListEmpresasController().handle)
 router.get('/empresas/:id', isAuthenticated, verificaStatusConta, new ListEmpresaController().handle)
-router.put('/empresas/:id', isAuthenticated, verificaStatusConta, upload.single('file'), new UpdateEmpresaController().handle)
+router.put('/empresas/:id', isAuthenticated, verificaStatusConta, uploadImagem.single('file'), new UpdateEmpresaController().handle)
 router.patch('/empresas/:id/config-dashboard', isAuthenticated, verificaStatusConta, new UpdateEmpresaDashboardConfigController().handle)
 router.delete('/empresas/:id', isAuthenticated, verificaStatusConta, new DeleteEmpresaController().handle)
 router.get('/empresas/:id/pin', isAuthenticated, verificaStatusConta, new GetPinAcessoController().handle);
@@ -129,6 +146,9 @@ router.get('/lancamentos/:id', isAuthenticated, verificaStatusConta, new ListLan
 router.put('/lancamentos/:id', isAuthenticated, verificaStatusConta, new UpdateLancamentoBiController().handle)
 router.delete('/lancamentos/:id', isAuthenticated, verificaStatusConta, new DeleteLancamentoBiController().handle)
 router.delete('/lancamentos', isAuthenticated, verificaStatusConta, new DeleteLancamentosBiController().handle)
+
+// Importacao via arquivo CSV
+router.post('/importacao-csv', isAuthenticated, verificaStatusConta, uploadCsv.single('file'), new ImportacaoBlingCsvController().handle)
 
 // Rotas Dashboard BI
 router.get('/dashboardbi/:link_bi', new ListEmpresaDashboardBIController().handle)
