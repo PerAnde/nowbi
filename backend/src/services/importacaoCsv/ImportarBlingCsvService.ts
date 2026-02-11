@@ -12,10 +12,16 @@ interface LancamentoImportado {
 
 export class ImportarBlingCsvService {
 
+    private palavrasIgnoradas = [
+        'TRANSFER'
+    ]
+
     private deveIgnorarLancamento(subcategoria: string): boolean {
         const texto = this.normalizarTexto(subcategoria)
 
-        return texto.includes('TRANSFER')
+        return this.palavrasIgnoradas.some(p =>
+            texto.includes(p)
+        )
     }
 
     async execute(caminhoArquivo: string): Promise<LancamentoImportado[]> {

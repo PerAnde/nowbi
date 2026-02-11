@@ -177,17 +177,21 @@ model ObservacoesBi {
 }
 
 model LancamentoBi {
-    id                      String               @id @default(uuid())
+    id                      String        @id @default(uuid())
     valor                   Decimal
     tipo                    TipoCategoria
     categoria_id            String
     subcategoria_id         String?
     businessIntelligence_id String
-    created_at              DateTime             @default(now())
-    updated_at              DateTime             @updatedAt
-    businessIntelligence    BusinessIntelligence @relation(fields: [businessIntelligence_id], references: [id])
-    categoria               Categoria            @relation(fields: [categoria_id], references: [id])
-    subcategoria            SubCategoria?        @relation(fields: [subcategoria_id], references: [id])
+
+    id_externo_lancamento String @unique
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    businessIntelligence BusinessIntelligence @relation(fields: [businessIntelligence_id], references: [id])
+    categoria            Categoria            @relation(fields: [categoria_id], references: [id])
+    subcategoria         SubCategoria?        @relation(fields: [subcategoria_id], references: [id])
 
     @@index([categoria_id], map: "lancamento_bi_categoria_id_fkey")
     @@index([subcategoria_id], map: "lancamento_bi_subcategoria_id_fkey")
