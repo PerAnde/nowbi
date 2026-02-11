@@ -12,6 +12,12 @@ interface LancamentoImportado {
 
 export class ImportarBlingCsvService {
 
+    private deveIgnorarLancamento(subcategoria: string): boolean {
+        const texto = this.normalizarTexto(subcategoria)
+
+        return texto.includes('TRANSFER')
+    }
+
     async execute(caminhoArquivo: string): Promise<LancamentoImportado[]> {
 
         const resultados: LancamentoImportado[] = []
@@ -29,6 +35,12 @@ export class ImportarBlingCsvService {
 
             if (!linha.Id) continue
 
+            const subcategoriaNormalizada = this.normalizarTexto(linha.Categoria || '')
+
+            if (this.deveIgnorarLancamento(subcategoriaNormalizada)) {
+                continue
+            }
+
             const dataConvertida = this.converterData(linha.Data)
             const valorConvertido = this.converterValor(linha.Valor)
             const tipoConvertido = linha.Tipo === 'C' ? 'RECEITA' : 'DESPESA'
@@ -37,7 +49,7 @@ export class ImportarBlingCsvService {
                 data: dataConvertida,
                 valor: valorConvertido,
                 tipo: tipoConvertido,
-                subcategoriaNome: this.normalizarTexto(linha.Categoria || ''),
+                subcategoriaNome: subcategoriaNormalizada,
                 descricao: linha.Histórico || '',
                 external_id: linha.Id
             })
