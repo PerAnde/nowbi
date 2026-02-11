@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { ImportarBlingCsvService } from '../../services/importacaoCsv/ImportarBlingCsvService'
+import { ImportarBlingCsvService, LancamentoImportado } from '../../services/importacaoCsv/ImportarBlingCsvService'
+import { ImportarLancamentosService } from '../../services/importacaoCsv/ImportarLancamentosService'
 import fs from 'fs'
 
 class ImportacaoBlingCsvController {
@@ -10,24 +11,27 @@ class ImportacaoBlingCsvController {
             return res.status(400).json({ error: 'Arquivo não enviado' })
         }
 
-        const service = new ImportarBlingCsvService()
+        const { businessIntelligenceId } = req.body
+        if (!businessIntelligenceId) {
+            return res.status(400).json({ error: 'BI não informado' })
+        }
+
+        const importarCsvService = new ImportarBlingCsvService()
+        const importarLancamentosService = new ImportarLancamentosService()
 
         try {
-            const dados = await service.execute(req.file.path)
+            const lancamentos: LancamentoImportado[] = await importarCsvService.execute(req.file.path)
 
-            return res.json({
-                total: dados.length,
-                dados
-            })
+            const resultado = await importarLancamentosService.execute(lancamentos, businessIntelligenceId)
+
+            return res.json(resultado)
 
         } catch (error: any) {
-
             return res.status(500).json({
                 error: error.message || 'Erro ao processar CSV'
             })
-
         } finally {
-            // Remove o arquivo mesmo se der erro
+            // Remove o arquivo temporário
             if (fs.existsSync(req.file.path)) {
                 fs.unlinkSync(req.file.path)
             }

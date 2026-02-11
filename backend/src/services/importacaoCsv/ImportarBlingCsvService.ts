@@ -1,12 +1,10 @@
 import fs from 'fs'
 import { parse } from 'csv-parse'
 
-interface LancamentoImportado {
-    data: string
+export interface LancamentoImportado {
     valor: number
     tipo: 'RECEITA' | 'DESPESA'
     subcategoriaNome: string
-    descricao: string
     external_id: string
 }
 
@@ -47,26 +45,18 @@ export class ImportarBlingCsvService {
                 continue
             }
 
-            const dataConvertida = this.converterData(linha.Data)
             const valorConvertido = this.converterValor(linha.Valor)
             const tipoConvertido = linha.Tipo === 'C' ? 'RECEITA' : 'DESPESA'
 
             resultados.push({
-                data: dataConvertida,
                 valor: valorConvertido,
                 tipo: tipoConvertido,
                 subcategoriaNome: subcategoriaNormalizada,
-                descricao: linha.Histórico || '',
                 external_id: linha.Id
             })
         }
 
         return resultados
-    }
-
-    private converterData(data: string): string {
-        const [dia, mes, ano] = data.split('/')
-        return `${ano}-${mes}-${dia}`
     }
 
     private converterValor(valor: string): number {
