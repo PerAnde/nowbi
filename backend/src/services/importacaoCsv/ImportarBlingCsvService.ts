@@ -67,8 +67,6 @@ export class ImportarBlingCsvService {
 
     private normalizarTexto(texto: string): string {
         return texto
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
             .trim()
             .toUpperCase()
     }

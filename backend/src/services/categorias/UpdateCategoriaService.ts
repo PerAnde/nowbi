@@ -82,7 +82,7 @@ class UpdateCategoriaService {
         const updateCategoria = await prismaClient.categoria.update({
             where: { id },
             data: {
-                name,
+                name: nomeFormatado,
                 tipo: estaVinculadoLancamento ? categoriaExiste.tipo : tipo,
                 grupoDre: grupoDre ?? categoriaExiste.grupoDre,
             },

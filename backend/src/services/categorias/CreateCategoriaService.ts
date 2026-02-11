@@ -34,7 +34,7 @@ class CreateCategoriaService {
 
         const categoria = await prismaClient.categoria.create({
             data: {
-                name: name,
+                name: nomeFormatado,
                 tipo: tipo,
                 usuario_id: usuario_id,
                 grupoDre
