@@ -6,11 +6,12 @@ interface LancamentoRequest {
     categoria: string;
     subcategoria?: string | null;
     id: string;
+    id_externo?: string | null;
 }
 
 class CreateLancamentoBiService {
 
-    async execute({ valor, tipo, categoria, subcategoria, id }: LancamentoRequest) {
+    async execute({ valor, tipo, categoria, subcategoria, id, id_externo }: LancamentoRequest) {
 
         if (!valor) {
             throw new Error("Valor inválido!")
@@ -36,6 +37,10 @@ class CreateLancamentoBiService {
             data.subcategoria_id = subcategoria;
         }
 
+        if (id_externo && id_externo.trim() !== "") {
+            data.id_externo_lancamento = id_externo;
+        }
+
         const lancamento = await prismaClient.lancamentoBi.create({
             data,
             select: {
@@ -45,6 +50,7 @@ class CreateLancamentoBiService {
                 categoria_id: true,
                 subcategoria_id: true,
                 businessIntelligence_id: true,
+                id_externo_lancamento: true,
             }
         })
 
