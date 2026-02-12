@@ -146,7 +146,6 @@ export const Bi = () => {
             ? totalDespesas
             : totalReceitas + totalDespesas;
 
-
     // Abrir modal excluir lancamento
     const handleExcluirLancamento = (lancamento) => {
         setLancamentoSelecionado(lancamento);
@@ -156,7 +155,7 @@ export const Bi = () => {
     // Excluir lancamento
     const confirmarExcluirLancamento = async () => {
         if (!lancamentoSelecionado) return;
-        await excluirLancamento(lancamentoSelecionado.id, setPopUpExclusaoLancamento);
+        await excluirLancamento(lancamentoSelecionado, setPopUpExclusaoLancamento);
         atualizarBi();
     }
 
@@ -410,7 +409,7 @@ export const Bi = () => {
                                     }}>
                                         <PiIcons.PiNotePencil />
                                     </Link>
-                                    <Link className={styles.btn_excluir_lancamento} onClick={() => handleExcluirLancamento({ id: lancamento.id })}>
+                                    <Link className={styles.btn_excluir_lancamento} onClick={() => handleExcluirLancamento(lancamento.id)}>
                                         <PiIcons.PiTrash />
                                     </Link>
                                 </div>
@@ -493,6 +492,7 @@ export const Bi = () => {
             <ExcluirLancamento
                 trigger={popUpExclusaoLancamento}
                 setTrigger={setPopUpExclusaoLancamento}
+                lancamento={lancamentoSelecionado}
                 mensagem={<>Tem certeza que deseja excluir esse lançamento?</>}
                 onConfirm={confirmarExcluirLancamento}
             />
