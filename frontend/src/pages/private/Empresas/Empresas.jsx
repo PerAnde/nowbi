@@ -120,6 +120,11 @@ export const Empresas = () => {
             });
     };
 
+    const handleBloqueado = (e) => {
+        e.preventDefault();
+        toast.warning("Finalize ao menos um BI para visualizar ou compartilhar o dashboard.");
+    };
+
     return (
         <Layout>
             <div className="box_conteudo_paginas">
@@ -214,6 +219,8 @@ export const Empresas = () => {
                             const emProgresso = bis.filter(bi => bi.status === false).length;
                             const concluidos = bis.filter(bi => bi.status === true).length;
 
+                            const isDesabilitado = concluidos === 0;
+
                             return (
                                 <div key={empresa.id} className={styles.box_componente}>
 
@@ -259,10 +266,16 @@ export const Empresas = () => {
                                         <Link to={`/empresas/${empresa.id}`} className={`${styles.btn_link} ${styles.btn_link_cor_primaria}`}>
                                             {modoVisualizacao === 'lista' ? <PiIcons.PiGear /> : 'Gerenciar'}
                                         </Link>
-                                        <Link to={`/dashboardbi/${empresa.link_bi}`} target='_blank' className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                        <Link
+                                            to={`/dashboardbi/${empresa.link_bi}`}
+                                            onClick={isDesabilitado ? handleBloqueado : undefined}
+                                            target='_blank'
+                                            className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
                                             {modoVisualizacao === 'lista' ? <PiIcons.PiArrowSquareInLight /> : 'Visualizar'}
                                         </Link>
-                                        <Link onClick={() => handleLinkCopiado(empresa)} className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
+                                        <Link
+                                            onClick={isDesabilitado ? handleBloqueado : () => handleLinkCopiado(empresa)}
+                                            className={`${styles.btn_link} ${styles.btn_link_cor_secundaria}`}>
                                             {modoVisualizacao === 'lista' ? (<PiIcons.PiLinkLight />) : (<><PiIcons.PiLinkBold /> Compartilhar</>)}
                                         </Link>
                                     </div>
