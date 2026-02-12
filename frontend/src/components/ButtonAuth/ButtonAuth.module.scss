@@ -20,7 +20,7 @@ button.button_principal.btn_loading {
 }
 
 button:disabled {
-    background-color: #ccc;
+    background-color: var(--border);
     cursor: not-allowed;
 }
 

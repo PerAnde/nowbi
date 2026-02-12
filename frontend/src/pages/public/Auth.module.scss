@@ -6,7 +6,6 @@
     height: 100vh;
     padding: 4rem;
     gap: 4rem;
-    background-color: var(--background-novo);
 }
 
 .box_form {
@@ -84,7 +83,7 @@ form {
 }
 
 .input_erro {
-    border: 1px solid #ff6e6e;
+    border: 1px solid var(--vermelho);
 }
 
 form label p {
@@ -100,14 +99,14 @@ form label input {
 
 span.preencher_campos {
     font-size: 1.4rem;
-    color: #ff6e6e;
+    color: var(--vermelho);
 }
 
 span.usuario_senha_invalido {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ff6e6e;
+    color: var(--vermelho);
 }
 
 // Form Cadastro
