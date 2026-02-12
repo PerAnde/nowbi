@@ -12,6 +12,7 @@ class ImportacaoBlingCsvController {
         }
 
         const { businessIntelligenceId } = req.body
+        const usuario_id = req.usuario_id;
         if (!businessIntelligenceId) {
             return res.status(400).json({ error: 'BI não informado' })
         }
@@ -22,7 +23,7 @@ class ImportacaoBlingCsvController {
         try {
             const lancamentos: LancamentoImportado[] = await importarCsvService.execute(req.file.path)
 
-            const resultado = await importarLancamentosService.execute(lancamentos, businessIntelligenceId)
+            const resultado = await importarLancamentosService.execute(lancamentos, businessIntelligenceId, usuario_id)
 
             return res.json(resultado)
 

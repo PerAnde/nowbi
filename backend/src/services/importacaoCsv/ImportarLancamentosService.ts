@@ -18,11 +18,16 @@ export class ImportarLancamentosService {
             .toUpperCase()
     }
 
-    async execute(lancamentos: LancamentoImportado[], businessIntelligenceId: string): Promise<ResultadoImportacao> {
+    async execute(lancamentos: LancamentoImportado[], businessIntelligenceId: string, usuario_id: string): Promise<ResultadoImportacao> {
 
-        const bi = await prisma.businessIntelligence.findUnique({
-            where: { id: businessIntelligenceId },
-            select: { id: true, empresa_id: true }
+        const bi = await prisma.businessIntelligence.findFirst({
+            where: {
+                id: businessIntelligenceId,
+                empresa: {
+                    usuario_id: usuario_id // O BI não tem usuario_id, mas a Empresa tem!
+                }
+            },
+            select: { id: true }
         });
 
         if (!bi) {
@@ -30,7 +35,17 @@ export class ImportarLancamentosService {
         }
 
         //  Pré-carrega todas as subcategorias cadastradas
-        const subcategorias = await prisma.subCategoria.findMany()
+        const subcategorias = await prisma.subCategoria.findMany({
+            where: {
+                categoria: {
+                    usuario_id: usuario_id
+                }
+            },
+            include: {
+                categoria: true // Necessário para pegar o categoria_id depois
+            }
+        });
+
         const subcategoriaMap = new Map(subcategorias.map(s => [this.normalizarParaComparacao(s.name), s]))
 
         const naoImportados: LancamentoImportado[] = []
