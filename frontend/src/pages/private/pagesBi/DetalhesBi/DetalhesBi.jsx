@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import { AreaChart, CartesianGrid, XAxis, Tooltip, Area, Cell, Sector, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { AreaChart, BarChart, Bar, CartesianGrid, XAxis, Tooltip, Area, Cell, Sector, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
 import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
@@ -43,18 +43,99 @@ export const DetalhesBi = () => {
     const [dadosParaPopup, setDadosParaPopup] = useState(null);
     const [fraseCardSelecionado, setFraseCardSelecionado] = useState('');
 
+    const [categoriaReceitaSelecionada, setCategoriaReceitaSelecionada] = useState(null);
+    const [categoriaDespesaSelecionada, setCategoriaDespesaSelecionada] = useState(null);
+
+    useEffect(() => {
+        if (!empresa || !mesSelecionado || !anoSelecionado) return;
+
+        setMesTemp(mesSelecionado);
+        setAnoTemp(anoSelecionado);
+
+    }, [empresa, mesSelecionado, anoSelecionado]);
+
     useEffect(() => {
         const handleResize = () => setGraficoMobile(window.innerWidth < 800);
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    const receitasSubcategorias = {};
+    const despesasSubcategorias = {};
     const monthOrder = {
         "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
         "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
         "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
         "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
     };
+
+    if (dashboardData?.summary?.detalhes) {
+        dashboardData.summary.detalhes.forEach(({ tipo, subcategoria, valor }) => {
+            if (!subcategoria) return;
+            const nome = typeof subcategoria === 'string' ? subcategoria : subcategoria?.nome;
+            if (tipo === 'RECEITA') {
+                receitasSubcategorias[nome] = (receitasSubcategorias[nome] || 0) + valor;
+            } else if (tipo === 'DESPESA') {
+                despesasSubcategorias[nome] = (despesasSubcategorias[nome] || 0) + valor;
+            }
+        });
+    }
+
+    const pieDataReceitas = Object.entries(receitasSubcategorias)
+        .map(([name, value], index) => ({
+            name,
+            value,
+            color: CoresGraficos[index % CoresGraficos.length]
+        }))
+        .sort((a, b) => ordemDecrescenteReceitas ? b.value - a.value : a.value - b.value);
+
+    const pieDataDespesas = Object.entries(despesasSubcategorias)
+        .map(([name, value], index) => ({
+            name,
+            value,
+            color: CoresGraficos[index % CoresGraficos.length]
+        }))
+        .sort((a, b) => ordemDecrescenteDespesas ? b.value - a.value : a.value - b.value);
+
+    useEffect(() => {
+        if (!loading && dashboardData) {
+            if (pieDataReceitas.length > 0 && !categoriaReceitaSelecionada) {
+                setCategoriaReceitaSelecionada(pieDataReceitas[0].name);
+            }
+            if (pieDataDespesas.length > 0 && !categoriaDespesaSelecionada) {
+                setCategoriaDespesaSelecionada(pieDataDespesas[0].name);
+            }
+        }
+    }, [pieDataReceitas, pieDataDespesas, loading, dashboardData]);
+
+    if (loading || !dashboardData) return <p>Carregando...</p>
+
+    const gerarEvolucao = (categoriaSelecionada, tipoFiltro) => {
+        if (!categoriaSelecionada || !empresa?.bis) return [];
+        return empresa.bis
+            .filter(bi => bi.status)
+            .sort((a, b) => a.ano - b.ano || monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num)
+            .slice(-12)
+            .map(({ mes, ano, lancamentoBi }) => {
+                let total = 0;
+                lancamentoBi.forEach(({ valor, tipo, subcategoria }) => {
+                    const nomeSub = typeof subcategoria === 'string' ? subcategoria : subcategoria?.name;
+                    if (tipo?.toUpperCase() === tipoFiltro && nomeSub?.trim().toLowerCase() === categoriaSelecionada.trim().toLowerCase()) {
+                        total += Number(valor);
+                    }
+                });
+                return {
+                    mes: `${monthOrder[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
+                    valor: total
+                };
+            });
+    };
+
+    const evolucaoReceita = gerarEvolucao(categoriaReceitaSelecionada, 'RECEITA');
+    const evolucaoDespesa = gerarEvolucao(categoriaDespesaSelecionada, 'DESPESA');
+
+    const corEvolucaoReceita = pieDataReceitas.find(item => item.name === categoriaReceitaSelecionada)?.color || 'var(--cor-primaria)';
+    const corEvolucaoDespesa = pieDataDespesas.find(item => item.name === categoriaDespesaSelecionada)?.color || 'var(--cor-primaria)';
 
     const aplicarFiltro = () => {
         if (!empresa) return;
@@ -74,30 +155,31 @@ export const DetalhesBi = () => {
         setAnoSelecionado(anoTemp);
     };
 
-    useEffect(() => {
-        if (!empresa || !mesSelecionado || !anoSelecionado) return;
-
-        setMesTemp(mesSelecionado);
-        setAnoTemp(anoSelecionado);
-
-    }, [empresa, mesSelecionado, anoSelecionado]);
-
-    if (loading || !dashboardData) return <p>Carregando...</p>
-
     const { summary, diferencaPercentualReceita, diferencaPercentualDespesa } = dashboardData
-
-    const receitasSubcategorias = {};
-    const despesasSubcategorias = {};
 
     summary.detalhes.forEach(({ tipo, subcategoria, valor }) => {
         if (!subcategoria) return;
 
         if (tipo === 'RECEITA') {
-            receitasSubcategorias[subcategoria] = (receitasSubcategorias[subcategoria] || 0) + valor;
+            const nome = typeof subcategoria === 'string'
+                ? subcategoria
+                : subcategoria?.nome;
+
+            receitasSubcategorias[nome] =
+                (receitasSubcategorias[nome] || 0) + valor;
+
+            // receitasSubcategorias[subcategoria] = (receitasSubcategorias[subcategoria] || 0) + valor;
         }
 
         if (tipo === 'DESPESA') {
-            despesasSubcategorias[subcategoria] = (despesasSubcategorias[subcategoria] || 0) + valor;
+            const nome = typeof subcategoria === 'string'
+                ? subcategoria
+                : subcategoria?.nome;
+
+            despesasSubcategorias[nome] =
+                (despesasSubcategorias[nome] || 0) + valor;
+
+            // despesasSubcategorias[subcategoria] = (despesasSubcategorias[subcategoria] || 0) + valor;
         }
     });
 
@@ -299,14 +381,6 @@ export const DetalhesBi = () => {
         return null;
     };
 
-    // Transformar os objetos em arrays para os gráficos
-    const pieDataReceitas = Object.entries(receitasSubcategorias)
-        .map(([name, value]) => ({ name, value }))
-        .sort((a, b) => ordemDecrescenteReceitas ? b.value - a.value : a.value - b.value);
-    const pieDataDespesas = Object.entries(despesasSubcategorias)
-        .map(([name, value]) => ({ name, value }))
-        .sort((a, b) => ordemDecrescenteDespesas ? b.value - a.value : a.value - b.value);
-
     // Funcao muda ordem dos dados, maior para menor e vice-versa
     const toggleOrdemReceitas = () => {
         setOrdemDecrescenteReceitas((prev) => !prev);
@@ -337,41 +411,103 @@ export const DetalhesBi = () => {
                 <div className={styles.box_resumo_detalhes_mes}>
 
                     <div className={`${styles.card_resumo_detalhes_mes} ${styles.card_receitas}`}>
-                        <div className={styles.infos_detalhes_mes}>
-                            <p className={styles.titulo_card_mes}>Receitas</p>
-                            <span>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                            {diferencaPercentualReceita >= 0 ?
-                                <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
-                                    <i><PiIcons.PiCaretDoubleUpDuotone /></i>
-                                    <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
-                                </div>
-                                :
-                                <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
-                                    <i><PiIcons.PiCaretDoubleDownDuotone /></i>
-                                    <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
-                                </div>
-                            }
+                        <div className={styles.box_infos_detalhes_mes}>
+                            <div className={styles.header_infos_card}>
+                                <p className={styles.titulo_card_mes}>Receitas</p>
+                                <span>{summary.receitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                {diferencaPercentualReceita >= 0 ?
+                                    <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
+                                        <i><PiIcons.PiCaretDoubleUpDuotone /></i>
+                                        <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                    </div>
+                                    :
+                                    <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
+                                        <i><PiIcons.PiCaretDoubleDownDuotone /></i>
+                                        <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                    </div>
+                                }
+                            </div>
+                            <span className={`${styles.icone_card_mes} ${styles.icone_receitas}`}><PiIcons.PiArrowUpRight /></span>
                         </div>
-                        <span className={`${styles.icone_card_mes} ${styles.icone_receitas}`}><PiIcons.PiArrowUpRight /></span>
+
+                        <div className={styles.grafico_card}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart
+                                    data={dataAnual}
+                                    margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+                                >
+                                    <XAxis dataKey="mes" hide />
+
+                                    <Tooltip
+                                        formatter={(value) =>
+                                            value.toLocaleString('pt-BR', {
+                                                style: 'currency',
+                                                currency: 'BRL'
+                                            })
+                                        }
+                                    />
+
+                                    <Area
+                                        type="monotone"
+                                        dataKey="receitas"
+                                        name="Receitas"
+                                        stroke="var(--verde)"
+                                        fill="var(--verde-15)"
+                                        strokeWidth={2}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                     <div className={`${styles.card_resumo_detalhes_mes} ${styles.card_despesas}`}>
-                        <div className={styles.infos_detalhes_mes}>
-                            <p className={styles.titulo_card_mes}>Despesas</p>
-                            <span>{summary.despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                            {diferencaPercentualDespesa >= 0 ?
-                                <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
-                                    <i><PiIcons.PiCaretDoubleUpDuotone /></i>
-                                    <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
-                                </div>
-                                :
-                                <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
-                                    <i><PiIcons.PiCaretDoubleDownDuotone /></i>
-                                    <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
-                                </div>
-                            }
+                        <div className={styles.box_infos_detalhes_mes}>
+                            <div className={styles.header_infos_card}>
+                                <p className={styles.titulo_card_mes}>Despesas</p>
+                                <span>{summary.despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                {diferencaPercentualDespesa >= 0 ?
+                                    <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
+                                        <i><PiIcons.PiCaretDoubleUpDuotone /></i>
+                                        <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                    </div>
+                                    :
+                                    <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
+                                        <i><PiIcons.PiCaretDoubleDownDuotone /></i>
+                                        <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                    </div>
+                                }
+                            </div>
+                            <span className={`${styles.icone_card_mes} ${styles.icone_despesas}`}><PiIcons.PiArrowDownRight /></span>
                         </div>
-                        <span className={`${styles.icone_card_mes} ${styles.icone_despesas}`}><PiIcons.PiArrowDownRight /></span>
+
+                        <div className={styles.grafico_card}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart
+                                    data={dataAnual}
+                                    margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+                                >
+                                    <XAxis dataKey="mes" hide />
+
+                                    <Tooltip
+                                        formatter={(value) =>
+                                            value.toLocaleString('pt-BR', {
+                                                style: 'currency',
+                                                currency: 'BRL'
+                                            })
+                                        }
+                                    />
+
+                                    <Area
+                                        type="monotone"
+                                        dataKey="despesas"
+                                        name="Deceitas"
+                                        stroke="var(--vermelho)"
+                                        fill="var(--vermelho-15)"
+                                        strokeWidth={2}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                 </div>
@@ -574,7 +710,13 @@ export const DetalhesBi = () => {
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--border-input)" />
                             <XAxis dataKey="mes"
                                 stroke="var(--border-input)"
-                                tick={{ fill: 'var(--texto-secundario)' }}
+                                tick={{
+                                    fill: 'var(--texto-secundario)',
+                                    fontSize: 14,
+                                }}
+                                angle={graficoMobile ? -80 : 0}
+                                textAnchor={graficoMobile ? "end" : "middle"}
+                                dy={graficoMobile ? 5 : 0}
                                 style={
                                     { fontSize: graficoMobile ? 12 : 16 }
                                 }
@@ -598,111 +740,57 @@ export const DetalhesBi = () => {
                     </ResponsiveContainer>
                 </div>
 
-                <div className={styles.box_graficos_subcategorias}>
+                <div className={styles.box_graficos_categorias}>
 
-                    <div className={styles.box_grafico_pizza}>
-                        <div className={styles.header_grafico_subcategorias}>
-                            <p>Receitas por Subcategorias <span>({capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado})</span></p>
+                    <div className={styles.box_graficos}>
 
-                            <div className={styles.box_btn_ordem} onClick={toggleOrdemReceitas}>
-                                {ordemDecrescenteReceitas ? <PiIcons.PiSortAscending /> : <PiIcons.PiSortDescending />}
-                            </div>
-                        </div>
+                        <div className={styles.box_grafico_pizza}>
+                            <div className={styles.header_grafico_categorias}>
+                                <p>Receitas por Categorias <span>({capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado})</span></p>
 
-                        <div className={styles.grafico_subcategorias}>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <PieChart>
-                                    <Pie
-                                        activeIndex={activeIndex}
-                                        activeShape={renderActiveShape}
-                                        data={pieDataReceitas}
-                                        dataKey="value"
-                                        nameKey="name"
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={70}
-                                        outerRadius={95}
-                                        startAngle={90}
-                                        endAngle={-270}
-                                        onMouseEnter={onPieEnter}
-                                    >
-                                        {pieDataReceitas.map((entry, index) => (
-                                            <Cell
-                                                key={`cell-${index}`}
-                                                fill={CoresGraficos[index % CoresGraficos.length]}
-                                            />
-                                        ))}
-                                    </Pie>
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        <div className={styles.box_legendas}>
-                            {pieDataReceitas.map((entry) => (
-                                <div key={capitalizeFirstLetter(entry.name)} className={styles.legendas}>
-                                    <div className={styles.box_nome_subcategoria}>
-                                        <div
-                                            className={styles.bolinha}
-                                            style={{ backgroundColor: CoresGraficos[pieDataReceitas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
-                                        ></div>
-                                        <span>{capitalizeFirstLetter(entry.name)}</span>
-                                    </div>
-                                    <div>
-                                        <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                                    </div>
-                                    <div>
-                                        <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
-                                    </div>
+                                <div className={styles.box_btn_ordem} onClick={toggleOrdemReceitas}>
+                                    {ordemDecrescenteReceitas ? <PiIcons.PiSortAscending /> : <PiIcons.PiSortDescending />}
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className={styles.box_grafico_pizza}>
-                        <div className={styles.header_grafico_subcategorias}>
-                            <p>Despesas por Subcategorias <span>({capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado})</span></p>
-
-                            <div className={styles.box_btn_ordem} onClick={toggleOrdemDespesas}>
-                                {ordemDecrescenteDespesas ? <PiIcons.PiSortAscending /> : <PiIcons.PiSortDescending />}
                             </div>
-                        </div>
 
-                        <div className={styles.grafico_subcategorias}>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <PieChart>
-                                    <Pie
-                                        activeIndex={activeIndex}
-                                        activeShape={renderActiveShape}
-                                        data={pieDataDespesas}
-                                        dataKey="value"
-                                        nameKey="name"
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={70}
-                                        outerRadius={95}
-                                        startAngle={90}
-                                        endAngle={-270}
-                                        onMouseEnter={onPieEnter}
-                                    >
-                                        {pieDataDespesas.map((entry, index) => (
-                                            <Cell
-                                                key={`cell-${index}`}
-                                                fill={CoresGraficos[index % CoresGraficos.length]}
-                                            />
-                                        ))}
-                                    </Pie>
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
+                            <div className={styles.grafico_categorias}>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <PieChart>
+                                        <Pie
+                                            activeIndex={activeIndex}
+                                            activeShape={renderActiveShape}
+                                            data={pieDataReceitas}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={70}
+                                            outerRadius={95}
+                                            startAngle={90}
+                                            endAngle={-270}
+                                            onMouseEnter={onPieEnter}
+                                            onClick={(data) => {
+                                                setCategoriaReceitaSelecionada(data.name);
+                                            }}
+                                        >
+                                            {pieDataReceitas.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                            ))}
+                                        </Pie>
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
 
-                        <div className={styles.box_legendas_grafico}>
                             <div className={styles.box_legendas}>
-                                {pieDataDespesas.map((entry) => (
-                                    <div key={capitalizeFirstLetter(entry.name)} className={styles.legendas}>
-                                        <div className={styles.box_nome_subcategoria}>
+                                {pieDataReceitas.map((entry) => (
+                                    <div key={capitalizeFirstLetter(entry.name)} className={styles.legendas} onClick={() => setCategoriaReceitaSelecionada(entry.name)}>
+                                        <div className={`${styles.box_nome_subcategoria} ${categoriaReceitaSelecionada === entry.name
+                                            ? styles.ativo
+                                            : ''
+                                            }`}>
                                             <div
                                                 className={styles.bolinha}
-                                                style={{ backgroundColor: CoresGraficos[pieDataDespesas.findIndex(e => e.name === entry.name) % CoresGraficos.length] }}
+                                                style={{ backgroundColor: entry.color }}
                                             ></div>
                                             <span>{capitalizeFirstLetter(entry.name)}</span>
                                         </div>
@@ -710,12 +798,157 @@ export const DetalhesBi = () => {
                                             <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                         </div>
                                         <div>
-                                            <span className={styles.item_percentual}>{((entry.value / summary.despesas) * 100).toFixed(2)}%</span>
+                                            <span className={styles.item_percentual}>{((entry.value / summary.receitas) * 100).toFixed(2)}%</span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
+
                         </div>
+
+                        {categoriaReceitaSelecionada && (
+                            <div className={styles.card_evolucao_categoria}>
+                                <h3>
+                                    <span>Histórico mensal:</span> <br></br>{capitalizeFirstLetter(categoriaReceitaSelecionada)}
+                                </h3>
+
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <BarChart data={evolucaoReceita}>
+                                        <XAxis dataKey="mes"
+                                            stroke="var(--border-input)"
+                                            tick={{
+                                                fill: 'var(--texto-secundario)',
+                                                fontSize: 14,
+                                            }}
+                                            angle={graficoMobile ? -80 : 0}
+                                            textAnchor={graficoMobile ? "end" : "middle"}
+                                            dy={graficoMobile ? 5 : 0}
+                                            style={
+                                                { fontSize: graficoMobile ? 12 : 16 }
+                                            }
+                                        />
+                                        <Tooltip
+                                            formatter={(value) =>
+                                                value.toLocaleString('pt-BR', {
+                                                    style: 'currency',
+                                                    currency: 'BRL'
+                                                })
+                                            }
+                                        />
+                                        <Bar
+                                            dataKey="valor"
+                                            fill={corEvolucaoReceita}
+                                            radius={[6, 6, 0, 0]}
+                                        />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        )}
+
+                    </div>
+
+                    <div className={styles.box_graficos}>
+
+                        <div className={styles.box_grafico_pizza}>
+                            <div className={styles.header_grafico_categorias}>
+                                <p>Despesas por Categorias <span>({capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado})</span></p>
+
+                                <div className={styles.box_btn_ordem} onClick={toggleOrdemDespesas}>
+                                    {ordemDecrescenteDespesas ? <PiIcons.PiSortAscending /> : <PiIcons.PiSortDescending />}
+                                </div>
+                            </div>
+
+                            <div className={styles.grafico_categorias}>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <PieChart>
+                                        <Pie
+                                            activeIndex={activeIndex}
+                                            activeShape={renderActiveShape}
+                                            data={pieDataDespesas}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={70}
+                                            outerRadius={95}
+                                            startAngle={90}
+                                            endAngle={-270}
+                                            onMouseEnter={onPieEnter}
+                                            onClick={(data) => {
+                                                setCategoriaDespesaSelecionada(data.name);
+                                            }}
+                                        >
+                                            {pieDataDespesas.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                            ))}
+                                        </Pie>
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+
+                            <div className={styles.box_legendas_grafico}>
+                                <div className={styles.box_legendas}>
+                                    {pieDataDespesas.map((entry) => (
+                                        <div key={capitalizeFirstLetter(entry.name)} className={styles.legendas} onClick={() => setCategoriaDespesaSelecionada(entry.name)}>
+                                            <div className={styles.box_nome_subcategoria} >
+                                                <div
+                                                    className={styles.bolinha}
+                                                    style={{ backgroundColor: entry.color }}
+                                                ></div>
+                                                <span>{capitalizeFirstLetter(entry.name)}</span>
+                                            </div>
+                                            <div>
+                                                <span className={styles.item_valor}>{entry.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                            <div>
+                                                <span className={styles.item_percentual}>{((entry.value / summary.despesas) * 100).toFixed(2)}%</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {categoriaDespesaSelecionada && (
+                            <div className={styles.card_evolucao_categoria}>
+                                <h3>
+                                    <span>Histórico mensal:</span> <br></br>{capitalizeFirstLetter(categoriaDespesaSelecionada)}
+                                </h3>
+
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <BarChart data={evolucaoDespesa}>
+                                        <XAxis dataKey="mes"
+                                            stroke="var(--border-input)"
+                                            tick={{
+                                                fill: 'var(--texto-secundario)',
+                                                fontSize: 14,
+                                            }}
+                                            angle={graficoMobile ? -80 : 0}
+                                            textAnchor={graficoMobile ? "end" : "middle"}
+                                            dy={graficoMobile ? 5 : 0}
+                                            style={
+                                                { fontSize: graficoMobile ? 12 : 16 }
+                                            }
+                                        />
+                                        <Tooltip
+                                            formatter={(value) =>
+                                                value.toLocaleString('pt-BR', {
+                                                    style: 'currency',
+                                                    currency: 'BRL'
+                                                })
+                                            }
+                                        />
+                                        <Bar
+                                            dataKey="valor"
+                                            fill={corEvolucaoDespesa}
+                                            radius={[6, 6, 0, 0]}
+                                        />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        )}
+
                     </div>
 
                 </div>

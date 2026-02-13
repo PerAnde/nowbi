@@ -45,11 +45,11 @@
 .card_resumo_detalhes_mes {
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: space-between;
     background-color: var(--branco);
     border-top: 2px solid var(--branco);
     border-radius: var(--border-radius-componente);
-    padding: 2rem;
     transition: .3s;
 }
 
@@ -63,17 +63,19 @@
     transition: .3s;
 }
 
-.infos_detalhes_mes {
+.box_infos_detalhes_mes {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     gap: 2rem;
+    padding: 2rem;
 }
 
 .titulo_card_mes {
     font-size: 1.3rem;
 }
 
-.infos_detalhes_mes span {
+.box_infos_detalhes_mes span {
     font-size: 2.5rem;
     font-weight: var(--bold);
 }
@@ -136,9 +138,10 @@
 }
 
 .icone_card_mes {
+    width: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
-    font-size: 2.5rem;
     padding: 2rem;
     border-radius: 50%;
 }
@@ -151,6 +154,13 @@
 .icone_card_mes.icone_despesas {
     background-color: var(--vermelho-15);
     color: var(--vermelho);
+}
+
+.grafico_card {
+    width: 100%;
+    height: 120px;
+    border-radius: var(--border-radius-componente);
+    overflow: hidden;
 }
 
 .box_detalhes_mes {
@@ -274,7 +284,7 @@
     background-color: var(--cor-grafico);
 }
 
-.box_graficos_subcategorias {
+.box_graficos_categorias {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
@@ -288,15 +298,16 @@
     border-radius: var(--border-radius-componente);
     padding: 2rem;
     gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-.header_grafico_subcategorias {
+.header_grafico_categorias {
     display: flex;
     justify-content: space-between;
     gap: 2rem;
 }
 
-.header_grafico_subcategorias p span {
+.header_grafico_categorias p span {
     color: var(--texto-secundario);
 }
 
@@ -311,7 +322,7 @@
     transition: .3s;
 }
 
-.grafico_subcategorias {
+.grafico_categorias {
     display: flex;
     align-items: center;
 }
@@ -322,12 +333,14 @@
     height: 300px;
     overflow-y: auto;
     gap: .5rem;
+    margin-bottom: 1.5rem;
 }
 
 .legendas {
     display: grid;
     grid-template-columns: 1fr 150px 60px;
     padding: 1.5rem;
+    cursor: pointer;
 }
 
 .box_nome_subcategoria {
@@ -335,6 +348,7 @@
     align-items: center;
     gap: 1rem;
 }
+
 
 .box_nome_subcategoria div.bolinha {
     width: 13px;
@@ -347,6 +361,27 @@
     color: var(--texto-secundario);
 }
 
+.card_evolucao_categoria {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.card_evolucao_categoria h3 {
+    font-weight: var(--font-regular);
+    line-height: 2rem;
+    margin-bottom: 2rem;
+}
+
+.card_evolucao_categoria h3 span {
+    font-size: 1.5rem;
+    color: var(--texto-secundario);
+}
+
 @media screen and (max-width: 1310px) {
     .box_detalhes_mes {
         grid-template-columns: 1fr;
@@ -354,7 +389,7 @@
 }
 
 @media screen and (max-width: 1120px) {
-    .box_graficos_subcategorias {
+    .box_graficos_categorias {
         grid-template-columns: 1fr;
     }
 }
