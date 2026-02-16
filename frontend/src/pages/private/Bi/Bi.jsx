@@ -13,6 +13,7 @@ import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
 
 import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
+import { ImportarCSV } from '../../../components/Modal/LancamentoBi/ImportarCSV/ImportarCSV'
 import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
 import { ExcluirLancamento } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
 import { ExcluirLancamentos } from '../../../components/Modal/LancamentoBi/ExcluirLancamentos/ExcluirLancamentos'
@@ -45,6 +46,8 @@ export const Bi = () => {
     const [popUpExclusaoLancamento, setPopUpExclusaoLancamento] = useState(false);
     const [popUpExclusaoLancamentos, setPopUpExclusaoLancamentos] = useState(false);
 
+    const [popUpImportarCSV, setPopUpImportarCSV] = useState(false);
+
     const navigate = useNavigate();
 
     // Lancamento selecionado
@@ -58,12 +61,12 @@ export const Bi = () => {
 
     // Desativa ou ativa scroll
     useEffect(() => {
-        if (popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpExclusaoLancamento || popUpExclusaoLancamentos) {
+        if (popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarCSV || popUpExclusaoLancamento || popUpExclusaoLancamentos) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
-    }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
+    }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarCSV || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
 
     useEffect(() => {
         buscarBi(id, (data) => {
@@ -295,8 +298,8 @@ export const Bi = () => {
                                             title="Adicionar lançamento"
                                         ><PiIcons.PiPlusBold /> Add</Link>
                                         {/* REATIVAR AQUI QUANDO ESTIVER PRONTO*/}
-                                        {/* <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
-                                        {bi?.empresa?.bling_integrations ? (
+                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
+                                        {/* {bi?.empresa?.bling_integrations ? (
                                             <>
                                                 <PiIcons.PiPlugsConnectedLight />
                                             </>) : (
@@ -477,6 +480,10 @@ export const Bi = () => {
                 trigger={popUpNovoLancamento}
                 setTrigger={setPopUpNovoLancamento}
                 lancamentoCriado={atualizarBi} />
+            <ImportarCSV
+                trigger={popUpImportarCSV}
+                setTrigger={setPopUpImportarCSV}
+            />
             <EditarLancamento
                 trigger={popUpEditarLancamento}
                 setTrigger={setPopUpEditarLancamento}

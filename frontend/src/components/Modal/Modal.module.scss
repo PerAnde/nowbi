@@ -140,20 +140,20 @@ img.picture_image {
     gap: 1.5rem;
 }
 
-.box_dados_empresa{
+.box_dados_empresa {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
 }
 
-.box_select_dre{
+.box_select_dre {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     justify-content: center;
 
-    p{
+    p {
         text-align: left;
     }
 }
@@ -175,7 +175,7 @@ img.picture_image {
     transition: 0.5s;
 }
 
-.btn_cancelar:hover{
+.btn_cancelar:hover {
     background-color: var(--background-geral);
     transition: .3s;
 }
@@ -185,7 +185,7 @@ img.picture_image {
     gap: 1.6rem;
 }
 
-.box_selects{
+.box_selects {
     display: flex;
 }
 
@@ -305,6 +305,36 @@ img.picture_image {
     background-color: var(--placeholder);
     color: var(--texto-primario);
     transition: 0.3s;
+}
+
+/*Popup CSV*/
+.dropArea {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 20px;
+}
+
+.dropArea:hover{
+    background-color: var(--background-geral);
+}
+
+.icone_csv{
+    font-size: 3rem;
+    color: var(--texto-secundario);
+}
+
+.dragActive {
+    border-color: #6366f1;
+    background: #f5f6ff;
+}
+
+.dropArea p {
+    margin: 0;
+    color: var(--texto-secundario);
 }
 
 @media screen and (max-width: 500px) {
