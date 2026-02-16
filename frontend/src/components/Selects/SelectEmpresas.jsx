@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select'
 import { customSelectStyles } from './customSelectEmpresasStyles'
 
@@ -14,9 +14,9 @@ import imgEmpresaSemLogo from '../../assets/images/imgEmpresaSemLogo.jpg'
 export const SelectEmpresas = () => {
 
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const [empresas, setEmpresas] = useState([]);
-    const [empresaSelecionada, setEmpresaSelecionada] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -29,13 +29,16 @@ export const SelectEmpresas = () => {
         logo: empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : null
     }));
 
-    const handleChangeEmpresa = (option) => {
-        setEmpresaSelecionada(option);
+    const empresaSelecionada = opcoesEmpresas.find(
+        emp => emp.value === id
+    ) || null;
 
-        if (option?.value) {
+    const handleChangeEmpresa = (option) => {
+        if (option?.value && option.value !== id) {
             navigate(`/empresas/${option.value}`);
         }
     };
+
     return (
         <Select
             options={opcoesEmpresas}

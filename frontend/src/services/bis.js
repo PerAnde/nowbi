@@ -22,7 +22,9 @@ export const buscarBi = async (id, setBi, setLoading, navigate) => {
     } catch (error) {
         console.log(error);
     }
-
+    finally {
+        setLoading(false);
+    }
 }
 
 // Criar BI

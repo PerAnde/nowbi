@@ -243,100 +243,94 @@ export const Bi = () => {
                         </div>
                     </div>
 
-                    <div className="box-header">
-                        <div className="box-header-btns">
-                            <div className="box-btns-pagina-bi">
-                                {bi.status ?
-                                    ''
-                                    :
-                                    <>
-                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)} title="Editar BI"><PiIcons.PiNotePencilBold /></Link>
-                                        <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)} title="Excluir BI"><PiIcons.PiTrashBold /></Link>
-                                    </>
-                                }
-                                {bi.status ? (
-                                    <Link
-                                        className={`${styles.btn_link_principal} ${styles.btn_reabrir}`}
-                                        onClick={() => atualizarStatusBi()}
-                                        title="Reabrir o BI para edição"
-                                    >
-                                        <PiIcons.PiArrowArcLeftBold />
-                                    </Link>
-                                ) : (
-                                    <Link
-                                        className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
-                                        onClick={() => atualizarStatusBi()}
-                                        title="Finalizar BI"
-                                    >
-                                        <PiIcons.PiChecksBold />
-                                    </Link>
-                                )}
+                </div>
 
-                            </div>
-
-                            {bi.status ? (
-                                ''
-                            ) : (
+                <div className={styles.filtro_busca_categoria}>
+                    {filtro === "OBS" ? ('') : (<Input type="text" placeholder="Buscar lançamento..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />)}
+                    <>
+                        {filtro === "OBS" ? (
+                            <div className={styles.box_btns_obs}>
+                                <button className={styles.btn_gerar_relatorio}
+                                    onClick={handleGerarRelatorio}
+                                    disabled={loadingRelatorio}
+                                >
+                                    <span className={styles.btn_gerar_relatorio_conteudo}>
+                                        {loadingRelatorio ? "Gerando..." : "Gerar"}
+                                        <PiIcons.PiSparkle className={styles.icone_ia} />
+                                    </span>
+                                </button>
                                 <Link className={styles.btn_link_principal}
-                                    onClick={(e) => setPopUpNovoLancamento(true)}
-                                    title="Adicionar lançamento"
-                                ><PiIcons.PiPlusBold /> Add</Link>
-                            )}
+                                    onClick={handleSalvarObservacoes}
+                                >Salvar relatório</Link>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={styles.box_btns_acao_bi}>
+                                    <div className={styles.box_gerenciar_bi}>
+                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)} title="Editar BI"><PiIcons.PiNotePencil /></Link>
+                                        <Link className={`${styles.btn_link_principal} ${styles.btn_excluir}`} onClick={() => setPopUpExcluirBi(true)} title="Excluir BI"><PiIcons.PiTrash /></Link>
 
-                        </div>
+                                        {bi.status ? (
+                                            <Link
+                                                className={`${styles.btn_link_principal} ${styles.btn_reabrir}`}
+                                                onClick={() => atualizarStatusBi()}
+                                                title="Manter em aberto"
+                                            >
+                                                <PiIcons.PiArrowArcLeftLight />
+                                            </Link>
+                                        ) : (
+                                            <Link
+                                                className={`${styles.btn_link_principal} ${styles.btn_concluir}`}
+                                                onClick={() => atualizarStatusBi()}
+                                                title="Finalizar BI"
+                                            >
+                                                <PiIcons.PiChecksLight />
+                                            </Link>
+                                        )}
+                                    </div>
 
-                        {bi.empresa?.blingIntegration?.isActive ? (
-                            <a className={styles.box_btn_integrar}>
-                                <PiIcons.PiDownload />
-                                Importar do Bling
-                            </a>
-                        ) :
-                            ('')}
+                                    <div className={styles.box_importacoes_bi}>
+                                        <Link className={styles.btn_link_principal}
+                                            onClick={(e) => setPopUpNovoLancamento(true)}
+                                            title="Adicionar lançamento"
+                                        ><PiIcons.PiPlusBold /> Add</Link>
+                                        {/* REATIVAR AQUI QUANDO ESTIVER PRONTO*/}
+                                        {/* <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpEditarBi(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
+                                        {bi?.empresa?.bling_integrations ? (
+                                            <>
+                                                <PiIcons.PiPlugsConnectedLight />
+                                            </>) : (
+                                            <>
+                                                <Link className={`${styles.btn_link_principal} ${styles.integrar}`} onClick={() => setPopUpEditarBi(true)} title="Importar dados"><PiIcons.PiPlugsConnected /></Link>
+                                            </>
+                                        )} */}
+                                    </div>
+                                </div>
 
-                    </div>
-
+                            </>)
+                        }
+                    </>
                 </div>
 
                 <div className={styles.box_menu_lancamentos}>
                     <div className={styles.filtro_pagina}>
                         <Link className={`${styles.filtro_todos} ${filtro === "TODOS" ? styles.ativo : ""}`} onClick={() => setFiltro("TODOS")}>
-                            <PiIcons.PiListBulletsBold />
+                            <PiIcons.PiListChecksLight />
                             Todos
                         </Link>
                         <Link className={`${styles.filtro_receitas} ${filtro === "RECEITA" ? styles.ativo : ""}`} onClick={() => setFiltro("RECEITA")}>
-                            <PiIcons.PiArrowUpRightBold />
+                            <PiIcons.PiArrowUpRightLight />
                             Receitas
                         </Link>
                         <Link className={`${styles.filtro_despesas} ${filtro === "DESPESA" ? styles.ativo : ""}`} onClick={() => setFiltro("DESPESA")}>
-                            <PiIcons.PiArrowDownRightBold />
+                            <PiIcons.PiArrowDownRightLight />
                             Despesas
                         </Link>
-                        <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
-                            <PiIcons.PiArticleNyTimes />
+                        {/* <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
+                            <PiIcons.PiTextIndentLight />
                             Relatório
-                        </Link>
+                        </Link> */}
                     </div>
-
-                    {filtro === "OBS" ? (
-                        <div className={styles.box_btns_obs}>
-                            <button className={styles.btn_gerar_relatorio}
-                                onClick={handleGerarRelatorio}
-                                disabled={loadingRelatorio}
-                            >
-                                {loadingRelatorio ? "Gerando..." : "Gerar com I.A"}
-                                <span>
-                                    <PiIcons.PiSparkleDuotone />
-                                </span>
-                            </button>
-                            <Link className={styles.btn_link_principal}
-                                onClick={handleSalvarObservacoes}
-                            >Salvar relatório</Link>
-                        </div>
-                    ) : (
-                        <div className={styles.filtro_busca_categoria}>
-                            <Input type="text" placeholder="Buscar lançamento..." value={busca} onChange={(e) => setBusca(e.target.value)} className={styles.input_busca} />
-                        </div>
-                    )}
                 </div>
 
                 {lancamentosSelecionados.length > 0 ? (
@@ -362,7 +356,7 @@ export const Bi = () => {
                             <div className={styles.box_header_obs}>
                                 <div className={styles.texto_header_obs}>
                                     <p>Insira suas observações ou utilize a I.A para gerar um relatório completo.</p>
-                                    <p><span>A I.A pode cometer erros ao gerar o relatório, portanto revise todas as informações.</span></p>
+                                    <p><span><PiIcons.PiInfoLight /></span> A I.A pode cometer erros ao gerar o relatório, portanto revise todas as informações.</p>
                                 </div>
                             </div>
                         )

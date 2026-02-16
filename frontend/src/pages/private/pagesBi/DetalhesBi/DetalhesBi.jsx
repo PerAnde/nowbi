@@ -837,6 +837,7 @@ export const DetalhesBi = () => {
                                         />
                                         <Bar
                                             dataKey="valor"
+                                            name="Valor"
                                             fill={corEvolucaoReceita}
                                             radius={[6, 6, 0, 0]}
                                         />
@@ -941,6 +942,7 @@ export const DetalhesBi = () => {
                                         />
                                         <Bar
                                             dataKey="valor"
+                                            name="Valor"
                                             fill={corEvolucaoDespesa}
                                             radius={[6, 6, 0, 0]}
                                         />

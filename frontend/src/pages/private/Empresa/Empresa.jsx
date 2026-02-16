@@ -38,6 +38,9 @@ export const Empresa = () => {
     }, [popUpNovBi]);
 
     useEffect(() => {
+        if (!id) return;
+
+        setLoading(true);
         buscarEmpresa(id, setEmpresa, setLoading, navigate)
     }, [id])
 
@@ -51,27 +54,10 @@ export const Empresa = () => {
         : [];
 
     useEffect(() => {
-        if (anosDisponiveis.length > 0 && !filtroAno) {
+        if (anosDisponiveis.length > 0) {
             setFiltroAno(String(anosDisponiveis[0]));
         }
-    }, [anosDisponiveis, filtroAno]);
-
-    const anosParaOSelect = ['todos', ...anosDisponiveis];
-
-    const meses = {
-        janeiro: 1,
-        fevereiro: 2,
-        março: 3,
-        abril: 4,
-        maio: 5,
-        junho: 6,
-        julho: 7,
-        agosto: 8,
-        setembro: 9,
-        outubro: 10,
-        novembro: 11,
-        dezembro: 12,
-    };
+    }, [anosDisponiveis]);
 
     const bisFiltrados = empresa?.bis
         ?.filter(bi => {

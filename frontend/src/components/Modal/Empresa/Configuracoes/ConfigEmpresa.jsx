@@ -12,7 +12,7 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
         mostrar_resumo: false,
         mostrar_detalhes: false,
         mostrar_dfc: false,
-        mostrar_dre: false,
+        // mostrar_dre: false,
         mostrar_relatorio: false,
     });
 
@@ -22,7 +22,7 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
                 mostrar_resumo: empresa.mostrar_resumo,
                 mostrar_detalhes: empresa.mostrar_detalhes,
                 mostrar_dfc: empresa.mostrar_dfc,
-                mostrar_dre: empresa.mostrar_dre,
+                // mostrar_dre: empresa.mostrar_dre,
                 mostrar_relatorio: empresa.mostrar_relatorio,
             });
         }
@@ -92,6 +92,7 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
                     <span className={styles.label}>Página DFC</span>
                 </label>
 
+                {/* 
                 <label className={styles.switch}>
                     <input
                         type="checkbox"
@@ -100,7 +101,7 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
                     />
                     <span className={styles.slider}></span>
                     <span className={styles.label}>Página DRE</span>
-                </label>
+                </label> */}
 
                 <label className={styles.switch}>
                     <input
