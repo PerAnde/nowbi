@@ -91,6 +91,7 @@ model Empresa {
     grupo_empresa    GrupoEmpresa?          @relation(fields: [grupo_empresa_id], references: [id])
     usuario          Usuario                @relation(fields: [usuario_id], references: [id])
     blingIntegration BlingIntegration?
+    subCategorias    SubCategoria[]
 
     @@index([usuario_id], map: "empresas_usuario_id_fkey")
     @@index([grupo_empresa_id], map: "empresas_grupo_empresa_id_fkey")
@@ -147,9 +148,13 @@ model Categoria {
 }
 
 model SubCategoria {
-    id           String         @id @default(uuid())
+    id           String @id @default(uuid())
     name         String
     categoria_id String
+
+    empresaId String?  @map("empresa_id")
+    empresa   Empresa? @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+
     created_at   DateTime       @default(now())
     updated_at   DateTime       @updatedAt
     lancamentoBi LancamentoBi[]
