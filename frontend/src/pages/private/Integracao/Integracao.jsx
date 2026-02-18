@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Button } from '../../../components/Button/Button';
 import * as PiIcons from 'react-icons/pi';
 import styles from './Integracao.module.scss';
 
@@ -16,20 +17,20 @@ export const Integracao = () => {
             <div className={styles.card}>
                 {isError ? (
                     <>
-                        <PiIcons.PiXCircleFill className={styles.iconError} />
-                        <h1>Ops! Algo deu errado</h1>
+                        <PiIcons.PiXCircle className={styles.iconError} />
+                        <h3>Ops! Algo deu errado!</h3>
                         <p>Não conseguimos concluir a integração.</p>
                     </>
                 ) : (
                     <>
-                        <PiIcons.PiCheckCircleFill className={styles.iconSuccess} />
-                        <h1>Integração concluída com sucesso!</h1>
+                        <PiIcons.PiCheckCircle className={styles.iconSuccess} />
+                        <h3>Integração concluída com sucesso!</h3>
                     </>
                 )}
                 
-                <button onClick={() => navigate('/empresas')} className={styles.btnPrimary}>
+                <Button onClick={() => navigate('/empresas')}>
                     Ir para o Painel Principal
-                </button>
+                </Button>
             </div>
         </div>
     );
