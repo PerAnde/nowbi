@@ -3,14 +3,23 @@ import prismaClient from "../../prisma";
 interface SubCategoriaRequest {
     name: string,
     categoria_id: string,
+    empresa_id: string,
 }
 
 class CreateSubCategoriaService {
 
-    async execute({ name, categoria_id }: SubCategoriaRequest) {
+    async execute({ name, categoria_id, empresa_id }: SubCategoriaRequest) {
 
-        if (!name || !categoria_id) {
-            throw new Error("Nome ou ID inválido!")
+        if (!name || !categoria_id || !empresa_id) {
+            throw new Error("Nome, ID da categoria ou ID da empresa inválido!")
+        }
+
+        const categoriaPai = await prismaClient.categoria.findUnique({
+            where: { id: categoria_id }
+        });
+
+        if (!categoriaPai || categoriaPai.empresaId !== empresa_id) {
+            throw new Error("Categoria pai não encontrada ou pertence a outra empresa.");
         }
 
         const nomeFormatado = name.trim().toLowerCase();
@@ -31,6 +40,7 @@ class CreateSubCategoriaService {
             data: {
                 name: nomeFormatado,
                 categoria_id: categoria_id,
+                empresaId: empresa_id,
             },
             select: {
                 id: true,

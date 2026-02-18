@@ -6,7 +6,7 @@ interface UpdateCategoriaRequest {
     name: string;
     tipo: 'RECEITA' | 'DESPESA';
     grupoDre: GrupoDre;
-    usuario_id: string;
+    empresa_id: string;
 }
 
 // Grupos permitidos por tipo
@@ -30,7 +30,7 @@ const gruposPermitidos = {
 };
 
 class UpdateCategoriaService {
-    async execute({ id, name, tipo, grupoDre, usuario_id }: UpdateCategoriaRequest) {
+    async execute({ id, name, tipo, grupoDre, empresa_id }: UpdateCategoriaRequest) {
         if (!id) {
             throw new Error("Id inválido!")
         }
@@ -41,6 +41,10 @@ class UpdateCategoriaService {
 
         if (!categoriaExiste) {
             throw new Error("Categoria não encontrada!");
+        }
+
+        if (categoriaExiste.empresaId !== empresa_id) {
+            throw new Error("Esta categoria não pertence à sua empresa.");
         }
 
         const estaVinculadoLancamento = await prismaClient.lancamentoBi.findFirst({
@@ -70,7 +74,7 @@ class UpdateCategoriaService {
             where: {
                 name: nomeFormatado,
                 tipo,
-                usuario_id,
+                empresaId: empresa_id,
                 NOT: { id },
             }
         })
@@ -83,7 +87,7 @@ class UpdateCategoriaService {
             where: { id },
             data: {
                 name: nomeFormatado,
-                tipo: estaVinculadoLancamento ? categoriaExiste.tipo : tipo,
+                tipo: tipoFinal,
                 grupoDre: grupoDre ?? categoriaExiste.grupoDre,
             },
             select: {

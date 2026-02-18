@@ -8,7 +8,7 @@ import { Button } from '../../../Button/Button';
 import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss';
 
-export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, subcategoriaEditada }) => {
+export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, empresaId, subcategoriaEditada }) => {
 
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false)
@@ -25,7 +25,7 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, subcateg
 
         setLoading(true)
 
-        const success = await editarSubcategoria(name, subcategoria, setTrigger);
+        const success = await editarSubcategoria(name, subcategoria, empresaId, setTrigger);
 
         if (success) {
             setName("");

@@ -5,7 +5,7 @@ class CreateCategoriaController {
 
     async handle(req: Request, res: Response) {
 
-        const { name, tipo, grupoDre } = req.body;
+        const { name, tipo, grupoDre, empresa_id } = req.body;
         const usuario_id = req.usuario_id;
 
         const createCategoriaService = new CreateCategoriaService();
@@ -14,7 +14,8 @@ class CreateCategoriaController {
             name,
             tipo,
             usuario_id,
-            grupoDre
+            grupoDre,
+            empresa_id
         })
 
         return res.json(categoria);

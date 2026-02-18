@@ -6,13 +6,17 @@ interface CategoriaRequest {
     tipo: 'RECEITA' | 'DESPESA';
     usuario_id: string;
     grupoDre: GrupoDre;
+    empresa_id: string;
 }
 
 class CreateCategoriaService {
 
-    async execute({ name, tipo, usuario_id, grupoDre }: CategoriaRequest) {
-        if (!name || !usuario_id) {
+    async execute({ name, tipo, usuario_id, grupoDre, empresa_id }: CategoriaRequest) {
+        if (!name) {
             throw new Error("Nome inválido!")
+        }
+        if (!empresa_id) {
+            throw new Error("O ID da empresa é obrigatório para criar uma categoria!");
         }
         if (!['RECEITA', 'DESPESA'].includes(tipo)) {
             throw new Error("Tipo inválido!")
@@ -24,7 +28,7 @@ class CreateCategoriaService {
             where: {
                 name: nomeFormatado,
                 tipo,
-                usuario_id
+                empresaId: empresa_id
             }
         })
 
@@ -37,7 +41,8 @@ class CreateCategoriaService {
                 name: nomeFormatado,
                 tipo: tipo,
                 usuario_id: usuario_id,
-                grupoDre
+                grupoDre,
+                empresaId: empresa_id
             },
             select: {
                 id: true,
@@ -45,6 +50,7 @@ class CreateCategoriaService {
                 tipo: true,
                 usuario_id: true,
                 grupoDre: true,
+                empresaId: true,
             }
         })
 

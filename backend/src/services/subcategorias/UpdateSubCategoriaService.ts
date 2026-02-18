@@ -3,11 +3,12 @@ import prismaClient from "../../prisma";
 interface UpdateSubCategoriaRequest {
     id: string;
     name: string;
+    empresa_id: string;
 }
 
 class UpdateSubCategoriaService {
-    async execute({ id, name }: UpdateSubCategoriaRequest) {
-        if (!id || !name) {
+    async execute({ id, name, empresa_id }: UpdateSubCategoriaRequest) {
+        if (!id || !name || !empresa_id) {
             throw new Error("Id ou nome inválido!")
         }
 
@@ -17,6 +18,10 @@ class UpdateSubCategoriaService {
 
         if (!subCategoriaExiste) {
             throw new Error("Subcategoria não encontrada!");
+        }
+
+        if (subCategoriaExiste.empresaId !== empresa_id) {
+            throw new Error("Ação não permitida.");
         }
 
         const nomeFormatado = name.trim().toLowerCase();

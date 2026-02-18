@@ -7,7 +7,7 @@
         "dev": "ts-node-dev src/server.ts",
         "build": "rimraf dist && tsc",
         "start": "npm run build && npx prisma migrate deploy && node dist/server.js",
-        "addPlano": "ts-node src/addPlano.ts"
+        "migrate-categorias": "ts-node ./src/scripts/migrateEmpresa.ts"
     },
     "keywords": [],
     "author": "",

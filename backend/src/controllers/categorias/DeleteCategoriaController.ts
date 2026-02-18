@@ -5,10 +5,11 @@ class DeleteCategoriaController {
     async handle(req: Request, res: Response) {
         try {
             const { id } = req.params;
+            const { empresa_id } = req.body;
 
             const deletarCategoriaService = new DeleteCategoriaService();
 
-            await deletarCategoriaService.execute(id);
+            await deletarCategoriaService.execute({ id, empresa_id });
 
             return res.status(200).json({ message: "Categoria deletada com sucesso!" });
         } catch (error) {

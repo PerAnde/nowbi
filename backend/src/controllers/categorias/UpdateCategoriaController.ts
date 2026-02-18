@@ -6,8 +6,7 @@ class UpdateCategoriaController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { name, tipo, grupoDre } = req.body;
-        const usuario_id = req.usuario_id;
+        const { name, tipo, grupoDre, empresa_id } = req.body;
 
         const updateCategoriaService = new UpdateCategoriaService();
 
@@ -17,7 +16,7 @@ class UpdateCategoriaController {
                 name,
                 tipo,
                 grupoDre,
-                usuario_id
+                empresa_id
             });
 
             return res.json(categoria);

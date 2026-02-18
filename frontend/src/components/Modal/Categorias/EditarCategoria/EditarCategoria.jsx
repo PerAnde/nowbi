@@ -8,7 +8,7 @@ import { SelectGrupoDre } from '../../../Selects/SelectGrupoDre';
 import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss';
 
-export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEditada }) => {
+export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEditada, empresaId }) => {
 
     const [name, setName] = useState('');
     const [tipo, setTipo] = useState('');
@@ -29,7 +29,7 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
 
         setLoading(true)
 
-        const success = await editarCategoria(name, tipo, categoria, setTrigger, grupoDre);
+        const success = await editarCategoria(name, tipo, categoria, setTrigger, grupoDre, empresaId);
 
         if (success) {
             setName("");

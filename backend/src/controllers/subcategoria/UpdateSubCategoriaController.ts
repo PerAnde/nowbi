@@ -6,7 +6,7 @@ class UpdateSubCategoriaController {
     async handle(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { name } = req.body;
+        const { name, empresa_id } = req.body;
 
         const updateSubCategoriaService = new UpdateSubCategoriaService();
 
@@ -14,6 +14,7 @@ class UpdateSubCategoriaController {
             const subcategoria = await updateSubCategoriaService.execute({
                 id,
                 name,
+                empresa_id,
             });
 
             return res.json(subcategoria);

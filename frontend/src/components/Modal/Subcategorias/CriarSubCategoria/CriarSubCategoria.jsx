@@ -8,7 +8,7 @@ import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss';
 
-export const CriarSubCategoria = ({ trigger, setTrigger, categoria, subcategoriaCriada }) => {
+export const CriarSubCategoria = ({ trigger, setTrigger, categoria, empresaId, subcategoriaCriada }) => {
 
     const [categoriaId, setCategoriaId] = useState('');
     const [name, setName] = useState('');
@@ -29,7 +29,7 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria, subcategoria
 
         setLoading(true)
 
-        const success = await criarSubcategoria(name, categoriaId)
+        const success = await criarSubcategoria(name, categoriaId, empresaId)
 
         if(success){
             setName("");

@@ -16,6 +16,7 @@ import { Dashboard } from '../pages/private/Dashboard/Dashboard';
 import { Empresas } from '../pages/private/Empresas/Empresas';
 import { Empresa } from '../pages/private/Empresa/Empresa';
 import { Categorias } from '../pages/private/Categorias/Categorias';
+import { CategoriasEmpresa } from '../pages/private/Categorias/CategoriasEmpresa/CategoriasEmpresa';
 import { Integracao } from '../pages/private/Integracao/Integracao';
 import { Bi } from '../pages/private/Bi/Bi';
 // Rotas Dashboard BI
@@ -41,6 +42,7 @@ export const AppRoutes = () => {
                 <Route path='/empresas/:id' element={<PrivateRoutes><Empresa /></PrivateRoutes>} />
                 <Route path='/empresas/grupo/:id' element={<PrivateRoutes><Empresa /></PrivateRoutes>} />
                 <Route path='/categorias' element={<PrivateRoutes><Categorias /></PrivateRoutes>} />
+                <Route path='/categorias/empresa/:id' element={<PrivateRoutes><CategoriasEmpresa /></PrivateRoutes>} />
                 <Route path='/integracao-status' element={<PrivateRoutes><Integracao /></PrivateRoutes>} />
                 <Route path='/bi/:id' element={<PrivateRoutes><Bi /></PrivateRoutes>} />
                 {/* Rotas Dashboard BI */}

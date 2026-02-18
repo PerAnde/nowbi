@@ -297,16 +297,15 @@ export const Bi = () => {
                                             onClick={(e) => setPopUpNovoLancamento(true)}
                                             title="Adicionar lançamento"
                                         ><PiIcons.PiPlusBold /> Add</Link>
-                                        {/* REATIVAR AQUI QUANDO ESTIVER PRONTO*/}
                                         <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
-                                        {/* {bi?.empresa?.bling_integrations ? (
+                                        {bi?.empresa?.bling_integrations ? (
                                             <>
                                                 <PiIcons.PiPlugsConnectedLight />
                                             </>) : (
                                             <>
                                                 <Link className={`${styles.btn_link_principal} ${styles.integrar}`} onClick={() => setPopUpEditarBi(true)} title="Importar dados"><PiIcons.PiPlugsConnected /></Link>
                                             </>
-                                        )} */}
+                                        )}
                                     </div>
                                 </div>
 
@@ -329,10 +328,10 @@ export const Bi = () => {
                             <PiIcons.PiArrowDownRightLight />
                             Despesas
                         </Link>
-                        {/* <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
+                        <Link className={`${styles.filtro_obs} ${filtro === "OBS" ? styles.ativo : ""}`} onClick={() => setFiltro("OBS")}>
                             <PiIcons.PiTextIndentLight />
                             Relatório
-                        </Link> */}
+                        </Link>
                     </div>
                 </div>
 
@@ -479,6 +478,7 @@ export const Bi = () => {
             <CriarLancamento
                 trigger={popUpNovoLancamento}
                 setTrigger={setPopUpNovoLancamento}
+                empresaId={idEmpresa}
                 lancamentoCriado={atualizarBi} />
             <ImportarCSV
                 trigger={popUpImportarCSV}
@@ -488,6 +488,7 @@ export const Bi = () => {
                 trigger={popUpEditarLancamento}
                 setTrigger={setPopUpEditarLancamento}
                 lancamento={lancamentoSelecionado}
+                empresaId={idEmpresa}
                 lancamentoEditado={atualizarBi}
             />
             <ExcluirLancamento

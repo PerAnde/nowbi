@@ -9,7 +9,7 @@ import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss'
 
-export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
+export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada, empresaId }) => {
 
     const [name, setName] = useState("");
     const [tipo, setTipo] = useState("");
@@ -21,7 +21,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
 
         setLoading(true)
 
-        const success = await criarCategoria(name, tipo, grupoDre);
+        const success = await criarCategoria(name, tipo, grupoDre, empresaId);
         if (success) {
             setName("");
             setTipo("");
@@ -29,9 +29,9 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada }) => {
             setGrupoDre("NAO_EXIBIR_NO_DRE"); // Padrao como Nao Exibir no DRE
             categoriaCriada();
         }
-    
+
         setLoading(false)
-        
+
     };
 
     return trigger ? (

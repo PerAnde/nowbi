@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Input } from '../../../Input/Input';
 import { Button } from '../../../Button/Button';
 import { SelectCategoria } from '../../../Selects/SelectCategoria';
@@ -9,7 +10,7 @@ import { buscarLancamento } from '../../../../services/lancamentos';
 import { editarLancamento } from '../../../../services/lancamentos';
 import { formatarValor, removerFormatacaoMoeda } from '../../../../utils/formatUtils'
 
-export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEditado }) => {
+export const EditarLancamento = ({ trigger, setTrigger, lancamento, empresaId, lancamentoEditado }) => {
 
     const [valor, setValor] = useState('');
     const [tipo, setTipo] = useState('');
@@ -20,21 +21,25 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
 
     useEffect(() => {
         const fetchLancamento = async () => {
-            if (!lancamento) return;
+            if (!trigger || !lancamento) return;
 
-            const responseLancamento = await buscarLancamento(lancamento);
+            const response = await buscarLancamento(lancamento);
 
-            if (responseLancamento) {
-                setValor(formatarValor(Number(responseLancamento.valor)));
-                setTipo(responseLancamento.tipo || '');
-                setCategoriaSelecionada(responseLancamento.categoria?.id || '');
-                setSubcategoriaSelecionada(responseLancamento.subcategoria?.id || '');
+            if (response) {
+                setValor(formatarValor(Number(response.valor)));
+                setTipo(response.tipo);
+                setCategoriaSelecionada(response.categoria_id);
+                setSubcategoriaSelecionada(response.subcategoria?.id || '');
+
+                setTimeout(() => {
+                    setSubcategoriaSelecionada(response.subcategoria_id);
+                }, 200);
             }
 
         };
 
         fetchLancamento();
-    }, [lancamento]);
+    }, [trigger, lancamento]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,14 +55,6 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
             subcategoriaSelecionada,
             lancamento
         );
-
-        console.log('Enviou dados:', {
-            valorNumerico,
-            tipo,
-            categoriaSelecionada,
-            subcategoriaSelecionada,
-            lancamento
-        });
 
         if (success) {
             setTrigger(false);
@@ -105,6 +102,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
                         <div className={styles.box_select}>
                             <SelectCategoria
                                 tipo={tipo}
+                                empresaId={empresaId}
                                 categoriaSelecionada={categoriaSelecionada}
                                 setCategoriaSelecionada={setCategoriaSelecionada}
                             />
@@ -113,6 +111,7 @@ export const EditarLancamento = ({ trigger, setTrigger, lancamento, lancamentoEd
                         <div className={styles.box_select}>
                             <SelectSubcategoria
                                 categoriaSelecionada={categoriaSelecionada}
+                                empresaId={empresaId}
                                 subcategoriaSelecionada={subcategoriaSelecionada}
                                 setSubcategoriaSelecionada={setSubcategoriaSelecionada}
                             />

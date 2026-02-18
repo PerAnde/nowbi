@@ -76,8 +76,6 @@ export const editarLancamento = async (valorNumerico, tipo, categoriaSelecionada
             delete data.subcategoria;
         }
 
-        console.log(data)
-
         await api.put(`/lancamentos/${lancamento}`, data);
         toast.success("Lançamento atualizado com sucesso!");
         return true;

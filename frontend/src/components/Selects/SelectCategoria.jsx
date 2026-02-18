@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
 import { customSelectStyles } from './customSelectStyles'
-import { buscarCategorias } from '../../services/categorias'
+import { buscarCategoriasPorEmpresa } from '../../services/categorias'
 import { capitalizeFirstLetter } from '../../utils/formatUtils'
 
-export const SelectCategoria = ({ tipo, categoriaSelecionada, setCategoriaSelecionada }) => {
+export const SelectCategoria = ({ tipo, empresaId, categoriaSelecionada, setCategoriaSelecionada }) => {
 
     const [categorias, setCategorias] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        buscarCategorias(setCategorias, setLoading);
-    }, []);
+        if (empresaId) {
+            buscarCategoriasPorEmpresa(empresaId, setCategorias, setLoading);
+        }
+    }, [empresaId]);
 
-    const categoriasFiltradosPorTipo = categorias.filter(categoria => categoria.tipo === tipo);
+    const categoriasFiltradas = categorias.filter(c => c.tipo === tipo);
 
-    const categoriaOptions = categoriasFiltradosPorTipo.map((categoria) => ({
-        value: categoria.id,
-        label: capitalizeFirstLetter(categoria.name)
-    }))
+    const categoriaOptions = categoriasFiltradas.map((cat) => ({
+        value: cat.id,
+        label: capitalizeFirstLetter(cat.name)
+    }));
 
-    const selectedOpctionCategoria = categoriaOptions.find(e => e.value === categoriaSelecionada) || null;
+    const selectedOption = categoriaOptions.find(opt => opt.value === categoriaSelecionada) || null;
 
     const handleCategoriaUpdate = (event) => {
         setCategoriaSelecionada(event.value);
@@ -28,9 +30,10 @@ export const SelectCategoria = ({ tipo, categoriaSelecionada, setCategoriaSeleci
 
     return (
         <Select
+            key={`select-cat-${categorias.length}-${tipo}`}
             placeholder="Selecione uma categoria"
             options={categoriaOptions}
-            value={selectedOpctionCategoria}
+            value={selectedOption}
             onChange={handleCategoriaUpdate}
             isLoading={loading}
             unstyled

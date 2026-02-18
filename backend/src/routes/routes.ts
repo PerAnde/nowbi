@@ -36,7 +36,8 @@ import { ValidarPinController } from '../controllers/empresas/ValidarPinControll
 
 // Controllers Categorias
 import { CreateCategoriaController } from '../controllers/categorias/CreateCategoriaController';
-import { ListCategoriasController } from '../controllers/categorias/ListCategoriasController';
+import { ListCategoriasEmpresasController } from '../controllers/categorias/ListCategoriasEmpresasController';
+import { ListCategoriasPorEmpresaController } from '../controllers/categorias/ListCategoriasPorEmpresaController';
 import { ListCategoriaController } from '../controllers/categorias/ListCategoriaController';
 import { UpdateCategoriaController } from '../controllers/categorias/UpdateCategoriaController';
 import { DeleteCategoriaController } from '../controllers/categorias/DeleteCategoriaController';
@@ -119,7 +120,8 @@ router.post('/empresas/:id/validar-pin', new ValidarPinController().handle)
 
 // Rotas Categorias
 router.post('/categorias', isAuthenticated, verificaStatusConta, new CreateCategoriaController().handle)
-router.get('/categorias', isAuthenticated, verificaStatusConta, new ListCategoriasController().handle)
+router.get('/categorias', isAuthenticated, verificaStatusConta, new ListCategoriasEmpresasController().handle)
+router.get('/categorias/empresa/:id', isAuthenticated, verificaStatusConta, new ListCategoriasPorEmpresaController().handle)
 router.get('/categorias/:id', isAuthenticated, verificaStatusConta, new ListCategoriaController().handle)
 router.put('/categorias/:id', isAuthenticated, verificaStatusConta, new UpdateCategoriaController().handle)
 router.delete('/categorias/:id', isAuthenticated, verificaStatusConta, new DeleteCategoriaController().handle)

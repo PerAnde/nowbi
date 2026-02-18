@@ -1,0 +1,412 @@
+.box_menu_pagina {
+    grid-column: 1/6;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-right: 2rem;
+    font-size: 1.4rem;
+}
+
+.link_menu_pagina:hover {
+    text-decoration: underline;
+}
+
+.link_menu_pagina_atual {
+    color: var(--texto-secundario);
+    cursor: default;
+}
+
+a.btn_link_principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: .5rem;
+    color: var(--cor-principal);
+    padding: 1.2rem;
+    border-radius: var(--border-radius-button);
+    background-color: var(--cor-secundaria);
+    transition: .3s;
+    font-size: 1.4rem;
+}
+
+a.btn_link_principal:hover {
+    background-color: var(--cor-secundaria-hover);
+}
+
+.box_menu_categorias {
+    grid-column: 1/6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filtro_pagina {
+    display: flex;
+    gap: .8rem;
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        padding-bottom: .8rem;
+        cursor: pointer;
+        color: var(--texto-secundario);
+    }
+
+    a span {
+        border-radius: var(--border-radius-button);
+        color: var(--branco);
+        padding: .4rem .8rem;
+    }
+
+    a.filtro_receitas,
+    a.filtro_despesas {
+        border-radius: var(--border-radius-componente);
+        padding: 1rem;
+    }
+
+    a.filtro_receitas.ativo {
+        font-weight: var(--medium);
+        color: var(--verde);
+        transition: .3s;
+    }
+
+    a.filtro_despesas.ativo {
+        font-weight: var(--medium);
+        color: var(--vermelho);
+        transition: .3s;
+    }
+
+}
+
+.box_busca_e_btn {
+    grid-column: 1/6;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.input_busca {
+    max-width: 200px;
+    border: none;
+    background-color: var(--cor-componente);
+    border: 1px solid var(--border);
+}
+
+.input_busca:hover,
+.input_busca:focus {
+    border-bottom: 1px solid var(--cor-principal);
+}
+
+.box_opces_nova_categoria {
+    display: flex;
+    gap: 1rem;
+}
+
+.categoria_header {
+    grid-column: 1/6;
+    display: grid;
+    grid-template-columns: 1fr 90px 95px 70px 100px;
+    gap: 1rem;
+    align-items: center;
+    padding: 2rem 2rem 0;
+    color: var(--texto-secundario);
+}
+
+.box_categorias {
+    grid-column: 1/6;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.categoria_header span:nth-child(2),
+.categoria_header span:nth-child(3),
+.categoria_header span:nth-child(4),
+.categoria_header span:nth-child(5) {
+    text-align: center;
+}
+
+.box_categoria {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 90px 95px 70px 100px;
+    gap: 1rem;
+    align-items: center;
+    background-color: var(--cor-componente);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-componente);
+    color: var(--texto-primario);
+    transition: .3s;
+    padding: 2rem;
+}
+
+.box_categoria div:nth-child(2),
+.box_categoria div:nth-child(3),
+.box_categoria div:nth-child(4) {
+    text-align: center;
+}
+
+.box_categoria:hover {
+    color: var(--texto-primario);
+    background-color: var(--background-geral);
+}
+
+.box_categoria.ativo {
+    color: var(--texto-primario);
+    background-color: var(--cor-componente);
+}
+
+.info_data {
+    color: var(--texto-secundario);
+}
+
+.btn_subcategorias,
+.btn_opcoes_categoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn_subcategorias span,
+.btn_opcoes_categoria span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.btn_opcoes_categoria span {
+    font-size: 2rem;
+}
+
+.btn_subcategorias:hover span,
+.btn_opcoes_categoria:hover span {
+    background-color: var(--background-geral);
+    color: var(--cor-principal);
+}
+
+.box_opcoes_categorias {
+    width: 235px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: var(--cor-componente);
+    box-shadow: var(--box-shadow-menu);
+    border-radius: var(--border-radius-componente);
+    gap: .5rem;
+    top: 1.6rem;
+    right: 9rem;
+    padding: .5rem;
+    z-index: 997;
+
+    a {
+        display: flex;
+        align-items: center;
+        padding: 1.3rem;
+        gap: 1rem;
+        border-radius: var(--border-radius-button);
+    }
+
+    a.btn_excluir {
+        color: var(--vermelho);
+    }
+
+    a:hover {
+        background-color: var(--background-geral);
+    }
+
+    hr {
+        border: 1px solid var(--border);
+    }
+}
+
+.box_opcoes_categorias.ativo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    transition: 0.3s ease;
+}
+
+.box_opcoes_categorias.inativo {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(40px);
+    transition: 0.3s ease;
+}
+
+.box_subcategorias {
+    grid-column: 1/6;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.box_subcategorias p {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dados_subcategoria {
+    grid-column: 1/6;
+    display: grid;
+    grid-template-columns: 1fr 90px 95px 70px 100px;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+
+    p {
+        color: var(--texto-secundario);
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-radius: var(--border-radius-button);
+        gap: 1rem;
+        transition: .3s;
+    }
+
+    a.btn_editar_subcategoria {
+        border: 1px solid var(--border-input);
+        border-radius: var(--border-radius-button);
+    }
+
+    a.btn_editar_subcategoria:hover {
+        background-color: var(--background-geral);
+        color: var(--texto-primario);
+    }
+
+    a.btn_excluir_subcategoria {
+        border: 1px solid var(--vermelho-15);
+    }
+
+    a.btn_excluir_subcategoria:hover {
+        background-color: var(--vermelho-15);
+        color: var(--vermelho);
+    }
+}
+
+.box_subcategorias .dados_subcategoria:last-child {
+    border: none;
+}
+
+.box_info_adicionado span {
+    width: 15px;
+    height: 40px;
+    font-size: 1.2rem;
+    padding: .7rem;
+    border-radius: var(--border-radius-button);
+    font-weight: var(--semi-bold);
+}
+
+.box_info_adicionado span.manual {
+    background-color: var(--cinza-15);
+    border: 1px solid var(--cinza);
+    color: var(--texto-secundario);
+}
+
+.dados_subcategoria .box_btns_subcategorias {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.btn_editar_subcategoria {
+    color: var(--texto-secundario);
+}
+
+.btn_excluir_subcategoria {
+    color: var(--vermelho);
+}
+
+.box_sem_categorias {
+    grid-column: 1/6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5rem 0;
+    color: var(--texto-secundario);
+
+    span {
+        font-size: 5rem;
+    }
+
+    p {
+        margin-bottom: 2.5rem;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .categoria_header {
+        grid-template-columns: 1fr 80px 75px;
+    }
+
+    .categoria_header span:nth-child(2) {
+        display: none;
+    }
+
+    .box_categoria {
+        grid-template-columns: 1fr 80px 60px;
+    }
+
+    .box_categoria .info_data,
+    .box_categoria .infos_adicionado {
+        display: none;
+    }
+
+    .dados_subcategoria {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dados_subcategoria .info_data {
+        display: none;
+    }
+
+    .box_btns_subcategoria {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .categoria_header span:nth-child(3) {
+        display: none;
+    }
+
+
+}
+
+@media screen and (max-width: 500px) {
+    .box_menu_categorias {
+        display: grid;
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .box_busca_e_btn {
+        flex-direction: column-reverse;
+    }
+
+    .input_busca,
+    .btn_link_principal {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .filtro_pagina {
+        margin-bottom: 1.5rem;
+    }
+}

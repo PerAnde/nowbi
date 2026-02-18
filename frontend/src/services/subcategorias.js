@@ -31,7 +31,7 @@ export const buscarSubcategorias = async (id, setSubcategorias, setLoadingSubcat
 }
 
 // Criar subcategoria
-export const criarSubcategoria = async (name, categoriaId) => {
+export const criarSubcategoria = async (name, categoriaId, empresaId) => {
     if (!name) {
         toast.warning("Preencha o nome da categoria!");
         return false;
@@ -47,6 +47,7 @@ export const criarSubcategoria = async (name, categoriaId) => {
         const data = {
             name: name,
             categoria_id: categoriaId,
+            empresa_id: empresaId,
         };
         await api.post('/subcategorias', data);
         toast.success("Subcategoria criada com sucesso!");
@@ -62,7 +63,7 @@ export const criarSubcategoria = async (name, categoriaId) => {
 };
 
 // Editar subcategoria
-export const editarSubcategoria = async (name, subcategoria, setTrigger) => {
+export const editarSubcategoria = async (name, subcategoria, empresaId, setTrigger) => {
 
     if (!name) {
         toast.warning("Preencha o nome da subcategoria!")
@@ -71,7 +72,7 @@ export const editarSubcategoria = async (name, subcategoria, setTrigger) => {
 
     try {
 
-        await api.put(`/subcategorias/${subcategoria.id}`, { name });
+        await api.put(`/subcategorias/${subcategoria.id}`, { name, empresa_id: empresaId });
         toast.success("Subcategoria atualizada com sucesso!")
         setTrigger(false);
 
@@ -85,17 +86,17 @@ export const editarSubcategoria = async (name, subcategoria, setTrigger) => {
 }
 
 // Excluir subcategorias
-export const excluirSubcategoria = async (categoriaId, buscarCategorias, setModalConfirmacaoSubcategoria) => {
+export const excluirSubcategoria = async (subcategoriaId, empresaId, buscarCategorias, setModalConfirmacaoSubcategoria) => {
 
     try {
 
-        await api.delete(`/subcategorias/${categoriaId}`);
+        await api.delete(`/subcategorias/${subcategoriaId}`, { data: { empresa_id: empresaId } });
         setModalConfirmacaoSubcategoria(false);
         toast.success("Subcategoria excluída com sucesso!")
         buscarCategorias();
 
     } catch (error) {
-        toast.error("Erro ao excluir a subcategoria!")
+        toast.error(error.response.data.error)
         console.error("Erro ao excluir a subcategoria!", error)
     }
 

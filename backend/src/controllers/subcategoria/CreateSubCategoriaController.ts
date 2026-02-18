@@ -5,13 +5,14 @@ class CreateSubCategoriaController {
 
     async handle(req: Request, res: Response) {
 
-        const { name, categoria_id } = req.body;
+        const { name, categoria_id, empresa_id } = req.body;
 
         const createSubCategoriaService = new CreateSubCategoriaService()
 
         const subcategoria = await createSubCategoriaService.execute({
             name,
             categoria_id,
+            empresa_id
         })
 
         return res.json(subcategoria)

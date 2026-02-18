@@ -12,7 +12,7 @@ import styles from '../../Modal.module.scss'
 import { SelectCategoria } from '../../../Selects/SelectCategoria';
 import { SelectSubcategoria } from '../../../Selects/SelectSubcategoria';
 
-export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
+export const CriarLancamento = ({ trigger, setTrigger, empresaId, lancamentoCriado }) => {
 
     // ID do BI
     const { id } = useParams();
@@ -84,6 +84,7 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
                         <div className={styles.box_select}>
                             <SelectCategoria
                                 tipo={tipo}
+                                empresaId={empresaId}
                                 categoriaSelecionada={categoriaSelecionada}
                                 setCategoriaSelecionada={setCategoriaSelecionada}
                             />
@@ -92,6 +93,7 @@ export const CriarLancamento = ({ trigger, setTrigger, lancamentoCriado }) => {
                         <div className={styles.box_select}>
                             <SelectSubcategoria
                                 categoriaSelecionada={categoriaSelecionada}
+                                empresaId={empresaId}
                                 subcategoriaSelecionada={subcategoriaSelecionada}
                                 setSubcategoriaSelecionada={setSubcategoriaSelecionada}
                             />

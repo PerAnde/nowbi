@@ -7,27 +7,28 @@ import { capitalizeFirstLetter } from '../../utils/formatUtils'
 export const SelectSubcategoria = ({ categoriaSelecionada, subcategoriaSelecionada, setSubcategoriaSelecionada }) => {
 
     const [subcategorias, setSubcategorias] = useState([]);
-    const [loadingSubcategorias, setLoadingSubcategorias] = useState("");
-
+    const [loadingSubcategorias, setLoadingSubcategorias] = useState(false);
+    
     // Buscando todas as categorias
     useEffect(() => {
         if (categoriaSelecionada) {
             setLoadingSubcategorias(true);
+            setSubcategoriaSelecionada('');
             buscarSubcategorias(categoriaSelecionada, setSubcategorias, setLoadingSubcategorias);
         } else {
             setSubcategorias([]);
+            setSubcategoriaSelecionada('');
         }
-    }, [categoriaSelecionada]);
+    }, [categoriaSelecionada, setSubcategoriaSelecionada]);
 
     useEffect(() => {
-        if (subcategoriaSelecionada && subcategorias.length > 0) {
+        if (!loadingSubcategorias && subcategoriaSelecionada && subcategorias.length > 0) {
             const existe = subcategorias.find(sc => sc.id === subcategoriaSelecionada);
             if (!existe) {
-                // resetar se for inválida
                 setSubcategoriaSelecionada('');
             }
         }
-    }, [subcategorias]);
+    }, [subcategorias, loadingSubcategorias]);
 
     const subcategoriaOptions = (subcategorias || []).map((subcategoria) => ({
         value: subcategoria.id,
@@ -49,6 +50,7 @@ export const SelectSubcategoria = ({ categoriaSelecionada, subcategoriaSeleciona
             placeholder="Selecione uma subcategoria"
             value={selectedOpctionSubcategoria || null}
             options={subcategoriaOptions}
+            isLoading={loadingSubcategorias}
             onChange={handleSubcategoriaUpdate}
             unstyled
             styles={customSelectStyles}
