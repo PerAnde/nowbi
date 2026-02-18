@@ -23,64 +23,54 @@ export class ImportarLancamentosService {
         const bi = await prisma.businessIntelligence.findFirst({
             where: {
                 id: businessIntelligenceId,
-                empresa: {
-                    usuario_id: usuario_id // O BI não tem usuario_id, mas a Empresa tem!
-                }
+                empresa: { usuario_id: usuario_id }
             },
-            select: { id: true }
+            select: { id: true, empresa_id: true }
         });
 
-        if (!bi) {
-            throw new Error('Business Intelligence não encontrado ou inválido.');
-        }
+        if (!bi) throw new Error('BI não encontrado ou inválido.');
 
-        //  Pré-carrega todas as subcategorias cadastradas
         const subcategorias = await prisma.subCategoria.findMany({
-            where: {
-                categoria: {
-                    usuario_id: usuario_id
-                }
-            },
-            include: {
-                categoria: true // Necessário para pegar o categoria_id depois
-            }
+            where: { empresaId: bi.empresa_id },
+            include: { categoria: true }
         });
 
-        const subcategoriaMap = new Map(subcategorias.map(s => [this.normalizarParaComparacao(s.name), s]))
+        const subcategoriaMap = new Map(subcategorias.map(s => [this.normalizarParaComparacao(s.name), s]));
 
-        const naoImportados: LancamentoImportado[] = []
-        let importados = 0
+        const naoImportados: LancamentoImportado[] = [];
+        const dadosParaInserir: any[] = [];
 
+        // 1. PRIMEIRO: Percorre todos os itens e separa o que pode ser inserido
         for (const lanc of lancamentos) {
-
-            // Verifica se a subcategoria existe
             const subcategoria = subcategoriaMap.get(this.normalizarParaComparacao(lanc.subcategoriaNome));
+
             if (!subcategoria) {
-                naoImportados.push(lanc)
-                continue
+                naoImportados.push(lanc);
+                continue;
             }
 
-            // Verifica duplicidade pelo external_id
-            const existente = await prisma.lancamentoBi.findUnique({
-                where: { id_externo_lancamento: lanc.external_id }
-            })
-            if (existente) continue
+            dadosParaInserir.push({
+                valor: lanc.valor,
+                tipo: lanc.tipo,
+                categoria_id: subcategoria.categoria_id,
+                subcategoria_id: subcategoria.id,
+                businessIntelligence_id: businessIntelligenceId,
+                id_externo_lancamento: lanc.external_id
+            });
+        } // <--- O loop termina aqui!
 
-            // Cria o lançamento
-            await prisma.lancamentoBi.create({
-                data: {
-                    valor: lanc.valor,
-                    tipo: lanc.tipo,
-                    categoria_id: subcategoria.categoria_id,
-                    subcategoria_id: subcategoria.id,
-                    businessIntelligence_id: businessIntelligenceId,
-                    id_externo_lancamento: lanc.external_id
-                }
-            })
+        // 2. DEPOIS: Faz a inserção em lote de uma vez só
+        let importados = 0;
 
-            importados++
+        if (dadosParaInserir.length > 0) {
+            const resultado = await prisma.lancamentoBi.createMany({
+                data: dadosParaInserir,
+                skipDuplicates: true
+            });
+            importados = resultado.count;
         }
 
-        return { importados, naoImportados }
+        // 3. POR FIM: Retorna o resultado final
+        return { importados, naoImportados };
     }
 }
