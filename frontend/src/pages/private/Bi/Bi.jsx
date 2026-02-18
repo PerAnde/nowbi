@@ -297,7 +297,7 @@ export const Bi = () => {
                                             onClick={(e) => setPopUpNovoLancamento(true)}
                                             title="Adicionar lançamento"
                                         ><PiIcons.PiPlusBold /> Add</Link>
-                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
+                                        {/* <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
                                         {bi?.empresa?.bling_integrations ? (
                                             <>
                                                 <PiIcons.PiPlugsConnectedLight />
@@ -305,7 +305,7 @@ export const Bi = () => {
                                             <>
                                                 <Link className={`${styles.btn_link_principal} ${styles.integrar}`} onClick={() => setPopUpEditarBi(true)} title="Importar dados"><PiIcons.PiPlugsConnected /></Link>
                                             </>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
 

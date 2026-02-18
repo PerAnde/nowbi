@@ -6,8 +6,7 @@
     "scripts": {
         "dev": "ts-node-dev src/server.ts",
         "build": "rimraf dist && tsc",
-        "start": "npm run build && npx prisma migrate deploy && node dist/server.js",
-        "migrate-categorias": "ts-node ./src/utils/migrateEmpresa.ts"
+        "start": "npm run build && npx prisma migrate deploy && node dist/server.js"
     },
     "keywords": [],
     "author": "",
