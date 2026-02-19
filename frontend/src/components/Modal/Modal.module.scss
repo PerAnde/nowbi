@@ -59,7 +59,7 @@
     }
 }
 
-.box_observacoes{
+.box_observacoes {
     margin-top: -2rem;
     color: var(--texto-secundario);
 }
@@ -316,23 +316,30 @@ img.picture_image {
 .containerResumo {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2rem;
     padding: 10px;
 
     .cardSucesso {
         display: flex;
-        gap: .5rem;
-        text-align: center;
+        flex-direction: column;
+        gap: 2rem;
+
+        .aviso {
+            display: flex;
+            gap: .5rem;
+        }
 
         p {
             color: var(--verde);
             font-size: 1.6rem;
         }
+
+        p.infoDuplicados {
+            color: var(--laranja);
+        }
     }
 
     .boxNaoImportados {
-        border-radius: 8px;
-
         .aviso {
             display: flex;
             gap: .5rem;
@@ -345,7 +352,7 @@ img.picture_image {
             max-height: 150px;
             overflow-y: auto;
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: var(--border-radius-componente);
 
             table {
                 width: 100%;

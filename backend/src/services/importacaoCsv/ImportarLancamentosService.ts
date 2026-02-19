@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 interface ResultadoImportacao {
     importados: number
     naoImportados: LancamentoImportado[]
+    duplicados: number
 }
 
 export class ImportarLancamentosService {
@@ -37,11 +38,29 @@ export class ImportarLancamentosService {
 
         const subcategoriaMap = new Map(subcategorias.map(s => [this.normalizarParaComparacao(s.name), s]));
 
+        const idsExternosNoArquivo = lancamentos.map(l => l.external_id.trim());
+
+        const lancamentosJaExistentes = await prisma.lancamentoBi.findMany({
+            where: {
+                id_externo_lancamento: { in: idsExternosNoArquivo }
+            },
+            select: { id_externo_lancamento: true }
+        });
+
+        const setIdsNoBanco = new Set(lancamentosJaExistentes.map(l => l.id_externo_lancamento));
+
         const naoImportados: LancamentoImportado[] = [];
         const dadosParaInserir: any[] = [];
+        let duplicados = 0;
 
-        // 1. PRIMEIRO: Percorre todos os itens e separa o que pode ser inserido
         for (const lanc of lancamentos) {
+            const idLimpo = lanc.external_id.trim();
+
+            if (setIdsNoBanco.has(idLimpo)) {
+                duplicados++;
+                continue;
+            }
+
             const subcategoria = subcategoriaMap.get(this.normalizarParaComparacao(lanc.subcategoriaNome));
 
             if (!subcategoria) {
@@ -55,11 +74,11 @@ export class ImportarLancamentosService {
                 categoria_id: subcategoria.categoria_id,
                 subcategoria_id: subcategoria.id,
                 businessIntelligence_id: businessIntelligenceId,
-                id_externo_lancamento: lanc.external_id
+                id_externo_lancamento: idLimpo
             });
-        } // <--- O loop termina aqui!
+            setIdsNoBanco.add(idLimpo);
+        }
 
-        // 2. DEPOIS: Faz a inserção em lote de uma vez só
         let importados = 0;
 
         if (dadosParaInserir.length > 0) {
@@ -70,7 +89,6 @@ export class ImportarLancamentosService {
             importados = resultado.count;
         }
 
-        // 3. POR FIM: Retorna o resultado final
-        return { importados, naoImportados };
+        return { importados, naoImportados, duplicados };
     }
 }

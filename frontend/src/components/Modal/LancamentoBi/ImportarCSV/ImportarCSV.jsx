@@ -104,15 +104,30 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                 {etapa === 4 && resultado ? (
                     <div className={styles.containerResumo}>
                         <div className={styles.cardSucesso}>
-                            <PiIcons.PiCheckCircle size={20} color="var(--verde)" />
-                            <p>{resultado.importados} Itens importados!</p>
+                            {resultado.duplicados > 0 ? (
+                                <>
+                                    <div className={styles.aviso}>
+                                        <PiIcons.PiCheckCircle size={20} color="var(--verde)" />
+                                        <p>{resultado.importados} Novos lançamentos importados!</p>
+                                    </div>
+                                    <div className={styles.aviso}>
+                                        <PiIcons.PiInfo size={20} color='var(--laranja)' />
+                                        <p className={styles.infoDuplicados}>{resultado.duplicados} Lançamentos ignorados (já existentes).</p>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className={styles.aviso}>
+                                    <PiIcons.PiCheckCircle size={20} color="var(--verde)" />
+                                    <p>{resultado.importados} Lançamentos importados!</p>
+                                </div>
+                            )}
                         </div>
 
                         {resultado.naoImportados.length > 0 && (
                             <div className={styles.boxNaoImportados}>
                                 <div className={styles.aviso}>
                                     <PiIcons.PiWarning size={20} />
-                                    <p>{resultado.naoImportados.length} itens não importados:</p>
+                                    <p>{resultado.naoImportados.length} Lançamentos não importados:</p>
                                 </div>
                                 <div className={styles.tabelaScroll}>
                                     <table>
@@ -132,7 +147,7 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                                         </tbody>
                                     </table>
                                 </div>
-                                <p className={styles.dica}>Dica: Cadastre essas categorias na empresa e tente importar o arquivo novamente.</p>
+                                <p className={styles.dica}>Dica: Cadastre essas subcategorias na empresa e tente importar o arquivo novamente.</p>
                             </div>
                         )}
 
