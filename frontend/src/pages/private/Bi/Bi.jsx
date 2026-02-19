@@ -35,7 +35,15 @@ export const Bi = () => {
     const [filtro, setFiltro] = useState("TODOS");
     // Busca
     const [busca, setBusca] = useState('');
-    const [observacoes, setObservacoes] = useState('');
+    const [observacoes, setObservacoes] = useState({
+        periodo_mes: "",
+        resumo_geral: "",
+        analise_receita: "",
+        analise_despesa: "",
+        pontos_atencao: "",
+        recomendacoes: "",
+        conclusao: "",
+    });
 
     // Modais
     const [popUpEditarBi, setPopUpEditarBi] = useState(false);
@@ -69,11 +77,33 @@ export const Bi = () => {
     }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarCSV || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
 
     useEffect(() => {
-        buscarBi(id, (data) => {
-            setBi(data);
-            setObservacoes(data.observacoes?.[0]?.conteudo || "");
-            setLoading(false);
-        }, navigate);
+        const carregarDadosIniciais = async () => {
+            setLoading(true);
+            try {
+                buscarBi(id, async (data) => {
+                    setBi(data);
+
+                    const obsData = await buscarObservacoes(id);
+
+                    if (obsData) {
+                        setObservacoes({
+                            periodo_mes: obsData.periodo_mes || '',
+                            resumo_geral: obsData.resumo_geral || '',
+                            analise_receita: obsData.analise_receita || '',
+                            analise_despesa: obsData.analise_despesa || '',
+                            pontos_atencao: obsData.pontos_atencao || '',
+                            recomendacoes: obsData.recomendacoes || '',
+                            conclusao: obsData.conclusao || ''
+                        });
+                    }
+                    setLoading(false);
+                }, navigate);
+            } catch (error) {
+                setLoading(false);
+            }
+        };
+
+        carregarDadosIniciais();
     }, [id]);
 
     // Pegando id da empresa
@@ -81,11 +111,28 @@ export const Bi = () => {
 
     // Atualizar BI
     const atualizarBi = () => {
-        buscarBi(id, (data) => {
-            setBi(data);
-            setObservacoes(data.observacoes?.[0]?.conteudo || "");
-            setLoading(false);
-        }, navigate);
+        try {
+            buscarBi(id, async (data) => {
+                setBi(data);
+
+                const obsData = await buscarObservacoes(id);
+
+                if (obsData) {
+                    setObservacoes({
+                        periodo_mes: obsData.periodo_mes || '',
+                        resumo_geral: obsData.resumo_geral || '',
+                        analise_receita: obsData.analise_receita || '',
+                        analise_despesa: obsData.analise_despesa || '',
+                        pontos_atencao: obsData.pontos_atencao || '',
+                        recomendacoes: obsData.recomendacoes || '',
+                        conclusao: obsData.conclusao || ''
+                    });
+                }
+                setLoading(false);
+            }, navigate);
+        } catch (error) {
+            console.error("Erro ao atualizar dados:", error);
+        }
     };
 
     // Atualziar status bi
@@ -178,22 +225,28 @@ export const Bi = () => {
     };
 
     const handleGerarRelatorio = async () => {
-        if (loadingRelatorio) return;
-
-        if (!id) return;
+        if (loadingRelatorio || !id) return;
 
         let toastId;
         try {
+
             setLoadingRelatorio(true);
             toastId = toast.loading("Gerando relatório com I.A...");
-
             const response = await gerarRelatorioAI(id);
+            const dados = response.conteudoIA || response;
 
-            setObservacoes(response.conteudo);
+            setObservacoes({
+                periodo_mes: dados.periodo_mes || "",
+                resumo_geral: dados.resumo_geral || "",
+                analise_receita: dados.analise_receita || "",
+                analise_despesa: dados.analise_despesa || "",
+                pontos_atencao: dados.pontos_atencao || "",
+                recomendacoes: dados.recomendacoes || "",
+                conclusao: dados.conclusao || ""
+            });
 
             toast.success("Relatório gerado com sucesso!", { id: toastId });
         } catch (error) {
-            console.log("ERRO AO GERAR RELATÓRIO:", error.response?.data || error.message);
             toast.error("Erro ao gerar relatório com I.A.", { id: toastId });
         } finally {
             setLoadingRelatorio(false);
@@ -207,6 +260,10 @@ export const Bi = () => {
             toast.success("Relatório salvo com sucesso!");
             atualizarBi();
         }
+    };
+
+    const handleFieldChange = (field, value) => {
+        setObservacoes(prev => ({ ...prev, [field]: value }));
     };
 
     return (
@@ -253,13 +310,13 @@ export const Bi = () => {
                     <>
                         {filtro === "OBS" ? (
                             <div className={styles.box_btns_obs}>
-                                <button className={styles.btn_gerar_relatorio}
+                                <button className={`${styles.btn_gerar_relatorio} ${loadingRelatorio ? styles.loading : ''}`}
                                     onClick={handleGerarRelatorio}
                                     disabled={loadingRelatorio}
                                 >
                                     <span className={styles.btn_gerar_relatorio_conteudo}>
-                                        {loadingRelatorio ? "Gerando..." : "Gerar"}
                                         <PiIcons.PiSparkle className={styles.icone_ia} />
+                                        {loadingRelatorio ? "Gerando relatório..." : "Gerar com IA"}
                                     </span>
                                 </button>
                                 <Link className={styles.btn_link_principal}
@@ -435,11 +492,116 @@ export const Bi = () => {
                                     <p>Nenhum lançamento em despesa!</p>
                                 </div>
                             ) : (
-                                <div className={styles.box_editor_obs}>
-                                    <EditorObservacoes
-                                        value={observacoes}
-                                        onChange={setObservacoes}
-                                    />
+                                <div className={styles.container_box_relatorio}>
+
+                                    <div className={styles.box_editores}>
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Período</p>
+                                            <EditorObservacoes
+                                                value={observacoes.periodo_mes}
+                                                onChange={(val) => handleFieldChange('periodo_mes', val)}
+                                            />
+                                        </div>
+
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Resumo Geral</p>
+                                            <EditorObservacoes
+                                                value={observacoes.resumo_geral}
+                                                onChange={(val) => handleFieldChange('resumo_geral', val)}
+                                            />
+                                        </div>
+
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Análise de Receitas</p>
+                                            <EditorObservacoes
+                                                value={observacoes.analise_receita}
+                                                onChange={(val) => handleFieldChange('analise_receita', val)}
+                                            />
+                                        </div>
+
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Análise de Despesas</p>
+                                            <EditorObservacoes
+                                                value={observacoes.analise_despesa}
+                                                onChange={(val) => handleFieldChange('analise_despesa', val)}
+                                            />
+                                        </div>
+
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Pontos de Atenção</p>
+                                            <EditorObservacoes
+                                                value={observacoes.pontos_atencao}
+                                                onChange={(val) => handleFieldChange('pontos_atencao', val)}
+                                            />
+                                        </div>
+
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Recomendações</p>
+                                            <EditorObservacoes
+                                                value={observacoes.recomendacoes}
+                                                onChange={(val) => handleFieldChange('recomendacoes', val)}
+                                            />
+                                        </div>
+
+                                        <div className={styles.box_editor_obs}>
+                                            <p>Conclusão</p>
+                                            <EditorObservacoes
+                                                value={observacoes.conclusao}
+                                                onChange={(val) => handleFieldChange('conclusao', val)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.box_preview_relatorio}>
+                                        <p className={styles.texto_preview}>Preview do relatório</p>
+
+                                        <section className={styles.box_periodo_mes}>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.periodo_mes }} />
+                                        </section>
+
+                                        <section className={styles.box_resumo_geral}>
+                                            <div className={styles.header_section}>
+                                                <h4>Resumo Geral</h4>
+                                            </div>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.resumo_geral }} />
+                                        </section>
+
+                                        <section className={styles.box_receitas}>
+                                            <div className={styles.header_section}>
+                                                <h4>Análise de Receitas</h4>
+                                            </div>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.analise_receita }} />
+                                        </section>
+
+                                        <section className={styles.box_despesas}>
+                                            <div className={styles.header_section}>
+                                                <h4>Análise de Despesas</h4>
+                                            </div>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.analise_despesa }} />
+                                        </section>
+
+                                        <section className={styles.box_pontos_atencao}>
+                                            <div className={styles.header_section}>
+                                                <h4>Pontos de Atenção</h4>
+                                            </div>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.pontos_atencao }} />
+                                        </section>
+
+                                        <section className={styles.box_recomendacoes}>
+                                            <div className={styles.header_section}>
+                                                <h4>Recomendações</h4>
+                                            </div>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.recomendacoes }} />
+                                        </section>
+
+                                        <section className={styles.box_conclusao}>
+                                            <div className={styles.header_section}>
+                                                <h4>Conclusão</h4>
+                                            </div>
+                                            <div dangerouslySetInnerHTML={{ __html: observacoes.conclusao }} />
+                                        </section>
+                                    </div>
+
                                 </div>
                             )}
                         </div>

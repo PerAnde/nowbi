@@ -6,22 +6,22 @@ export const EditorObservacoes = ({ value, onChange }) => {
     const quillRef = useRef(null);
 
     useEffect(() => {
-        // Exemplo de como acessar o editor sem usar findDOMNode
         if (quillRef.current) {
-            const editor = quillRef.current.getEditor(); // pega a instância do Quill
-            console.log(editor);
+            const editor = quillRef.current.getEditor();
         }
     }, []);
 
     const modules = {
-        toolbar: [
-            [{ font: [] }],
-            [{ size: ['small', false, 'large', 'huge'] }],
-            [{ align: [] }],
-            ['bold'], // italic strike
-            [{ color: [] }],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-        ],
+        toolbar:
+            // [
+            //     [{ font: [] }],
+            //     [{ size: ['small', false, 'large', 'huge'] }],
+            //     [{ align: [] }],
+            //     ['bold'], // italic strike
+            //     [{ color: [] }],
+            //     [{ list: 'ordered' }, { list: 'bullet' }],
+            // ],
+            false,
     };
 
     const formats = [
@@ -40,7 +40,7 @@ export const EditorObservacoes = ({ value, onChange }) => {
             value={value}
             onChange={onChange}
             modules={modules}
-            formats={formats}
+            // formats={formats}
         />
     );
 };

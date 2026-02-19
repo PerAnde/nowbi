@@ -136,9 +136,35 @@ class GenerateReportBiService {
         const totalDespesasAnterior = despesasAnterior.reduce((acc, d) => acc + Number(d.valor), 0);
         const lucroAnterior = totalReceitasAnterior - totalDespesasAnterior;
 
+        const agruparSubcategorias = (lancamentos: any[]) => {
+            const agrupado = lancamentos.reduce((acc, curr) => {
+                // Mudamos de .categoria para .subcategoria
+                const nomeSub = curr.subcategoria?.name || curr.categoria?.name || "Outros";
+                acc[nomeSub] = (acc[nomeSub] || 0) + Number(curr.valor);
+                return acc;
+            }, {});
+
+            return Object.entries(agrupado)
+                .map(([nome, valor]) => ({ nome, valor }))
+                .sort((a, b) => (b.valor as number) - (a.valor as number));
+        };
+
+        const rankingSubReceitas = agruparSubcategorias(receitasAtual);
+        const rankingSubDespesas = agruparSubcategorias(despesasAtual);
+
+        const formatarMoeda = (valor) => {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        };
+
         // 5) Dados estruturados para IA
         const dadosParaIA = {
             empresa: bi.empresa.name,
+
+            topSubReceitas: rankingSubReceitas.slice(0, 3),
+            topSubDespesas: rankingSubDespesas.slice(0, 3),
 
             periodoAtual: {
                 mes: bi.mes,
@@ -166,25 +192,28 @@ class GenerateReportBiService {
         // 6) Prompt
         const prompt = `
 # Persona
-Atue como um Analista Financeiro Sênior. Sua resposta deve ser EXCLUSIVAMENTE um objeto JSON válido.
+Atue como um Analista Financeiro Sênior especializado em gestão de fluxo de caixa. Sua resposta deve ser EXCLUSIVAMENTE um objeto JSON válido.
 
 # Objetivo
-Analise os dados financeiros fornecidos e preencha a estrutura abaixo.
+Analise os dados financeiros da empresa ${bi.empresa.name} e preencha os campos abaixo com análises realistas e diretas.
 
-# Regras de Negócio para o JSON:
-1. "status_geral": Se lucro < 0 use "critico". Se lucro > 0 mas menor que o mês anterior use "atencao". Se lucro cresceu use "positivo".
-2. "blocos": Crie um bloco para Receitas, um para Despesas e um para Lucro.
-3. "cor": Use "vermelho" para variações negativas/preocupantes e "verde" para positivas/saudáveis.
+# Regras de Escrita:
+1. CRITICALIDADE: Não seja genérico. Se o lucro caiu enquanto a receita subiu, aponte ineficiência operacional. Se as despesas fixas estão altas, alerte sobre o ponto de equilíbrio.
+2. NUNCA INVENTE NÚMEROS: Use apenas as informações fornecidas.
+3. FORMATAÇÃO HTML: Use <b> para ênfase e <ul>/<li> para listas, mas SEMPRE mantenha o formato JSON válido.
+4. FOCO: Seja direto e objetivo, evite rodeios. Vá direto ao ponto em cada análise.
+5. ATENÇÃO: Se os dados forem insuficientes para alguma análise, indique claramente que não há dados suficientes.
+6. Utilize <b> para destacar termos chave e itens de <li> para listar categorias ou recomendações.
 
-# Estrutura do JSON (Output):
+# Estrutura do JSON Obrigatória:
 {
-  "periodo": "MÊS/ANO",
-  "status_geral": "string",
-  "resumo_executivo": "string",
-  "blocos": [
-    { "id": "string", "titulo": "string", "cor": "string", "conteudo": "string" }
-  ],
-  "recomendacoes": ["string"]
+  "periodo_mes": "Relatório Financeiro - ${bi.mes}/${bi.ano}",
+  "resumo_geral": "Forneça um panorama de alto nível sobre a saúde financeira da ${bi.empresa.name}. Conecte o lucro de R$ ${formatarMoeda(lucroAtual)} com a eficiência do período. Use <b> para destacar termos chave.",
+  "analise_receita": "Analise o faturamento de R$ ${formatarMoeda(totalReceitasAtual)}. Explique o impacto da variação de ${dadosParaIA.comparativos.variacaoReceitas}%. Liste em <ul> as 3 categorias de maior peso com base nos dados e comente se há dependência excessiva de uma única fonte.",
+  "analise_despesa": "Analise o desembolso de R$ ${formatarMoeda(totalDespesasAtual)}. Foque na relação entre custo fixo vs variável. Identifique se o aumento de ${dadosParaIA.comparativos.variacaoDespesas}% na despesa é justificado pelo crescimento ou se é um sinal de alerta. Liste em <ul> as 3 categorias de maior peso com base nos dados.",
+  "pontos_atencao": "Liste riscos imediatos com base nos dados fornecidos. Use <li> para cada ponto crítico/atenção.",
+  "recomendacoes": "Se possível dê até 3 recomendaçãoes com base nos dados fornecidos. Use <li> para cada recomendação. Evite conselhos óbvios como 'monitore os dados'.",
+  "conclusao": "Conclusão final sobre a situação financeira deste mês e projeção de risco para o próximo período baseado na tendência atual."
 }
 
 # Dados Base:
@@ -194,28 +223,45 @@ ${JSON.stringify(dadosParaIA, null, 2)}
         `;
 
         // 7) OpenAI
-        const response = await client.responses.create({
-            model: "gpt-4o-mini",
-            input: prompt
+        const chatCompletion = await client.chat.completions.create({
+            model: "gpt-4o",
+            messages: [{ role: "user", content: prompt }],
+            response_format: { type: "json_object" }
         });
 
-        const textoGerado = response.output_text;
+        const dadosIA = JSON.parse(chatCompletion.choices[0].message.content || "{}");
 
-        if (!textoGerado) {
+        if (!dadosIA) {
             throw new Error("IA não retornou conteúdo.");
         }
 
         // 8) Salvar no banco
-        const atualizado = await prismaClient.observacoesBi.upsert({
+        const response = await prismaClient.observacoesBi.upsert({
             where: { businessIntelligence_id: bi_id },
-            update: { conteudo: textoGerado },
+            update: {
+                conteudo: chatCompletion.choices[0].message.content, // Backup do JSON
+                periodo_mes: dadosIA.periodo_mes,
+                resumo_geral: dadosIA.resumo_geral,
+                analise_receita: dadosIA.analise_receita,
+                analise_despesa: dadosIA.analise_despesa,
+                pontos_atencao: dadosIA.pontos_atencao,
+                recomendacoes: dadosIA.recomendacoes,
+                conclusao: dadosIA.conclusao
+            },
             create: {
                 businessIntelligence_id: bi_id,
-                conteudo: textoGerado
+                conteudo: chatCompletion.choices[0].message.content || "",
+                periodo_mes: dadosIA.periodo_mes,
+                resumo_geral: dadosIA.resumo_geral,
+                analise_receita: dadosIA.analise_receita,
+                analise_despesa: dadosIA.analise_despesa,
+                pontos_atencao: dadosIA.pontos_atencao,
+                recomendacoes: dadosIA.recomendacoes,
+                conclusao: dadosIA.conclusao
             }
         });
 
-        return { conteudo: atualizado.conteudo };
+        return response
     }
 }
 

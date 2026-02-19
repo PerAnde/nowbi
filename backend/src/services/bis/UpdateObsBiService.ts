@@ -2,17 +2,20 @@ import prismaClient from "../../prisma";
 
 interface UpdateObsBiRequest {
     bi_id: string;
-    conteudo: string;
     usuario_id: string;
+    periodo_mes?: string;
+    resumo_geral?: string;
+    analise_receita?: string;
+    analise_despesa?: string;
+    pontos_atencao?: string;
+    recomendacoes?: string;
+    conclusao?: string;
 }
 
 class UpdateObsBiService {
-    async execute({ bi_id, conteudo, usuario_id }: UpdateObsBiRequest) {
-
+    async execute({ bi_id, usuario_id, ...dados }: UpdateObsBiRequest) {
         if (!bi_id) throw new Error("ID inválido!");
-        if (conteudo === undefined) throw new Error("Conteúdo é obrigatório!");
 
-        // confirmar se o BI existe e pertence ao usuário
         const bi = await prismaClient.businessIntelligence.findUnique({
             where: { id: bi_id },
             include: { empresa: true }
@@ -20,36 +23,32 @@ class UpdateObsBiService {
 
         if (!bi) throw new Error("BI não encontrado!");
         if (bi.empresa.usuario_id !== usuario_id)
-            throw new Error("Sem permissão para editar este BI!");
+            throw new Error("Sem permissão!");
 
-        // verificar se já existe observação
-        const existente = await prismaClient.observacoesBi.findUnique({
-            where: { businessIntelligence_id: bi_id }
-        });
-
-        if (existente) {
-            // atualiza
-            return await prismaClient.observacoesBi.update({
-                where: { businessIntelligence_id: bi_id },
-                data: { conteudo },
-                select: {
-                    id: true,
-                    conteudo: true,
-                    updated_at: true
-                }
-            });
-        }
-
-        // cria caso não exista
-        return await prismaClient.observacoesBi.create({
-            data: {
-                businessIntelligence_id: bi_id,
-                conteudo
+        return await prismaClient.observacoesBi.upsert({
+            where: { businessIntelligence_id: bi_id },
+            update: {
+                periodo_mes: dados.periodo_mes,
+                resumo_geral: dados.resumo_geral,
+                analise_receita: dados.analise_receita,
+                analise_despesa: dados.analise_despesa,
+                pontos_atencao: dados.pontos_atencao,
+                recomendacoes: dados.recomendacoes,
+                conclusao: dados.conclusao,
+                conteudo: "",
             },
-            select: {
-                id: true,
-                conteudo: true,
-                created_at: true
+            create: {
+                businessIntelligence: {
+                    connect: { id: bi_id }
+                },
+                periodo_mes: dados.periodo_mes || '',
+                resumo_geral: dados.resumo_geral || '',
+                analise_receita: dados.analise_receita || '',
+                analise_despesa: dados.analise_despesa || '',
+                pontos_atencao: dados.pontos_atencao || '',
+                recomendacoes: dados.recomendacoes || '',
+                conclusao: dados.conclusao || '',
+                conteudo: "",
             }
         });
     }

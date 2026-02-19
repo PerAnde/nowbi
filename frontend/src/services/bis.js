@@ -122,9 +122,9 @@ export const buscarObservacoes = async (id) => {
     }
 };
 
-export const salvarObservacoes = async (id, conteudo) => {
+export const salvarObservacoes = async (id, observacoes) => {
     try {
-        await api.put(`/observacoes/${id}`, { conteudo });
+        await api.put(`/observacoes/${id}`, { ...observacoes });
         return true;
     } catch (error) {
         console.error("Erro ao salvar observações do BI:", error);

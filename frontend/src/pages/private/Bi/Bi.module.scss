@@ -55,6 +55,8 @@
 
 /* BTN GERAR RELATORIO */
 .btn_gerar_relatorio {
+    display: flex;
+    justify-content: center;
     position: relative;
     padding: 1.3rem;
     border: none;
@@ -71,23 +73,29 @@
     z-index: 2;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: .5rem;
 }
 
 .btn_gerar_relatorio_conteudo .icone_ia {
     font-size: 1.8rem;
+    fill: #5c7aff;
 }
 
 /* BORDA ANIMADA */
-.btn_gerar_relatorio::before {
+.btn_gerar_relatorio.disabled {
+    border: 1px solid var(--border);
+}
+
+.btn_gerar_relatorio:hover::before,
+.btn_gerar_relatorio.loading::before {
     content: "";
     position: absolute;
     inset: -2px;
     border-radius: var(--border-radius-button);
     background: linear-gradient(90deg,
             var(--cor-principal),
-            #7a5cff,
-            #00ffc8,
+            #5c7aff,
+            #00d9ff,
             var(--cor-principal));
     background-size: 300% 300%;
     animation: bordaAnimada 4s linear infinite;
@@ -102,6 +110,14 @@
     background: var(--background-geral);
     border-radius: var(--border-radius-button);
     z-index: 1;
+}
+
+.btn_gerar_relatorio:disabled:not(.loading) {
+    cursor: not-allowed;
+}
+
+.btn_gerar_relatorio.loading {
+    cursor: not-allowed;
 }
 
 @keyframes bordaAnimada {
@@ -366,6 +382,7 @@ a.btn_excluir_lancamentos:hover {
     text-align: center;
 }
 
+/*PAGINA EDITOR RELATORIO*/
 .box_header_obs {
     grid-column: 1/5;
     display: flex;
@@ -391,6 +408,97 @@ a.btn_excluir_lancamentos:hover {
     align-items: center;
     color: var(--laranja);
 }
+
+.container_box_relatorio {
+    display: grid;
+    grid-template-columns: 1fr minmax(400px, 400px);
+    gap: 1.5rem;
+}
+
+.box_editores {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    border: 1px solid var(--border);
+    padding: 2rem;
+}
+
+.box_editor_obs p {
+    font-size: 1.4rem;
+    color: var(--texto-secundario);
+}
+
+.box_preview_relatorio {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    border: 1px solid var(--border);
+    color: var(--texto-secundario);
+    padding: 3rem;
+    gap: 2rem;
+    font-size: 1.1rem;
+}
+
+.texto_preview{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: var(--bold);
+}
+
+.box_preview_relatorio section .header_section {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: var(--cor-secundaria);
+    margin-bottom: 1rem;
+}
+
+.box_preview_relatorio section.box_periodo_mes{
+    text-align: center;
+}
+
+.box_preview_relatorio section.box_receitas ul,
+.box_preview_relatorio section.box_despesas ul {
+    margin: 1.5rem;;
+}
+
+.box_preview_relatorio section.box_receitas li::marker {
+    font-size: 1.2rem;
+    color: var(--verde);
+}
+
+.box_preview_relatorio section.box_despesas li::marker {
+    font-size: 1.2rem;
+    color: var(--vermelho);
+}
+
+.box_preview_relatorio section.box_pontos_atencao div:last-child {
+    border-left: 2px solid var(--vermelho);
+    padding: 1.5rem 2.5rem;
+    border-radius: var(--border-radius-button);
+}
+
+.box_preview_relatorio section.box_pontos_atencao li::marker {
+    font-size: 1.2rem;
+    color: var(--vermelho);
+}
+
+
+.box_preview_relatorio section.box_recomendacoes div:last-child {
+    border-left: 2px solid var(--cor-principal);
+    padding: 1.5rem 2.5rem;
+    border-radius: var(--border-radius-button);
+}
+
+.box_preview_relatorio section.box_recomendacoes li::marker {
+    font-size: 1.2rem;
+    color: var(--cor-principal);
+}
+
+/*PAGINA EDITOR RELATORIO*/
 
 .box_categorias {
     position: relative;
@@ -590,6 +698,13 @@ a.btn_excluir_lancamento:hover {
 
     .box_btns_opcoes_lancamento a {
         justify-content: center;
+    }
+}
+
+@media screen and (max-width: 870px) {
+    .container_box_relatorio {
+    display: flex;
+    flex-direction: column;
     }
 }
 

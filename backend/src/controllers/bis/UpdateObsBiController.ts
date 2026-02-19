@@ -4,16 +4,17 @@ import { UpdateObsBiService } from "../../services/bis/UpdateObsBiService";
 class UpdateObsBiController {
     async handle(req: Request, res: Response) {
         const { bi_id } = req.params;
-        const { conteudo } = req.body;
         const { usuario_id } = req;
+
+        const dados = req.body;
 
         const service = new UpdateObsBiService();
 
         try {
             const result = await service.execute({
                 bi_id,
-                conteudo,
-                usuario_id
+                usuario_id,
+                ...dados
             });
 
             return res.json(result);
