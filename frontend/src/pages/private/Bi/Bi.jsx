@@ -310,10 +310,9 @@ export const Bi = () => {
                     <>
                         {filtro === "OBS" ? (
                             <div className={styles.box_btns_obs}>
-                                {!bi?.relatorio_ia_gerado ? (
-                                    ''
-                                ) : (
-                                    <button className={`${styles.btn_gerar_relatorio} ${loadingRelatorio ? styles.loading : ''}`}
+                                {!bi?.relatorio_ia_gerado && (
+                                    <button
+                                        className={`${styles.btn_gerar_relatorio} ${loadingRelatorio ? styles.loading : ''}`}
                                         onClick={handleGerarRelatorio}
                                         disabled={loadingRelatorio}
                                     >

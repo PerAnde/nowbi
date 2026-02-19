@@ -13,6 +13,7 @@ class ListBiService {
                 mes: true,
                 ano: true,
                 status: true,
+                relatorio_ia_gerado: true,
                 empresa: {
                     select: {
                         id: true,
