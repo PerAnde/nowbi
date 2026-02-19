@@ -22,6 +22,45 @@ function variacaoPercentual(atual: number, anterior: number) {
     return Number((((atual - anterior) / anterior) * 100).toFixed(2));
 }
 
+function mesTextoParaNumero(mes: string): number | null {
+    const mapa: Record<string, number> = {
+        "JANEIRO": 1,
+        "FEVEREIRO": 2,
+        "MARÇO": 3,
+        "MARCO": 3,
+        "ABRIL": 4,
+        "MAIO": 5,
+        "JUNHO": 6,
+        "JULHO": 7,
+        "AGOSTO": 8,
+        "SETEMBRO": 9,
+        "OUTUBRO": 10,
+        "NOVEMBRO": 11,
+        "DEZEMBRO": 12,
+    };
+
+    return mapa[mes.trim().toUpperCase()] ?? null;
+}
+
+function numeroParaMesTexto(numero: number): string {
+    const mapa: Record<number, string> = {
+        1: "JANEIRO",
+        2: "FEVEREIRO",
+        3: "MARÇO",
+        4: "ABRIL",
+        5: "MAIO",
+        6: "JUNHO",
+        7: "JULHO",
+        8: "AGOSTO",
+        9: "SETEMBRO",
+        10: "OUTUBRO",
+        11: "NOVEMBRO",
+        12: "DEZEMBRO",
+    };
+
+    return mapa[numero];
+}
+
 class GenerateReportBiService {
     async execute({ bi_id, usuario_id }: RequestData) {
 
@@ -55,10 +94,10 @@ class GenerateReportBiService {
         if (!bi) throw new Error("BI não encontrado");
         if (bi.empresa.usuario_id !== usuario_id) throw new Error("Acesso negado");
 
-        // 2) Buscar BI MÊS ANTERIOR
-        const mesAtual = Number(bi.mes);
+        const mesAtual = mesTextoParaNumero(bi.mes);
 
-        if (isNaN(mesAtual)) {
+        if (!mesAtual) {
+            console.log("Valor inválido recebido no campo mes:", bi.mes);
             throw new Error("Mês inválido no BI");
         }
 
@@ -66,7 +105,7 @@ class GenerateReportBiService {
 
         const biAnterior = await prismaClient.businessIntelligence.findFirst({
             where: {
-                mes: String(mesAnterior),
+                mes: numeroParaMesTexto(mesAnterior),
                 ano: anoAnterior,
                 empresa_id: bi.empresa.id,
                 status: true
@@ -126,52 +165,29 @@ class GenerateReportBiService {
 
         // 6) Prompt
         const prompt = `
-Gere um relatório de análise financeira referente ao mês atual.
+# Persona
+Atue como um Analista Financeiro Sênior. Sua resposta deve ser EXCLUSIVAMENTE um objeto JSON válido.
 
-Requisitos (DEVE CONTER):
+# Objetivo
+Analise os dados financeiros fornecidos e preencha a estrutura abaixo.
 
-- Destaque os principais dados financeiros
-- Compare com o mês anterior
-- Análise de receitas
-- Análise de despesas
-- Avalie o lucro
-- Identifique tendências
-- Aponte pontos de atenção
-- Sugira recomendações práticas
-- Faça um conclusão objetiva sobre o mês
+# Regras de Negócio para o JSON:
+1. "status_geral": Se lucro < 0 use "critico". Se lucro > 0 mas menor que o mês anterior use "atencao". Se lucro cresceu use "positivo".
+2. "blocos": Crie um bloco para Receitas, um para Despesas e um para Lucro.
+3. "cor": Use "vermelho" para variações negativas/preocupantes e "verde" para positivas/saudáveis.
 
-Formato do relatório:
+# Estrutura do JSON (Output):
+{
+  "periodo": "MÊS/ANO",
+  "status_geral": "string",
+  "resumo_executivo": "string",
+  "blocos": [
+    { "id": "string", "titulo": "string", "cor": "string", "conteudo": "string" }
+  ],
+  "recomendacoes": ["string"]
+}
 
-# Relatório Financeiro - [Mês/Ano]
-
-## Resumo Executivo
-
-[Texto]
-
-## Análise Detalhada
-
-### Receitas
-[Texto]
-
-### Despesas
-[Texto]
-
-### Lucro
-[Texto]
-
-## Tendências e Pontos de Atenção
-[Texto]
-
-## Recomendações
-[Texto]
-
-## Conclusão
-[Texto]
-
-NUNCA INVENTE dados ou informações adicionais.
-Utilize EXCLUSIVAMENTE os dados abaixo como base.
-
-Dados base:
+# Dados Base:
 \`\`\`json
 ${JSON.stringify(dadosParaIA, null, 2)}
 \`\`\`
@@ -184,6 +200,10 @@ ${JSON.stringify(dadosParaIA, null, 2)}
         });
 
         const textoGerado = response.output_text;
+
+        if (!textoGerado) {
+            throw new Error("IA não retornou conteúdo.");
+        }
 
         // 8) Salvar no banco
         const atualizado = await prismaClient.observacoesBi.upsert({

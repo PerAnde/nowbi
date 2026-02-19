@@ -183,8 +183,17 @@ model BusinessIntelligence {
 }
 
 model ObservacoesBi {
-    id                      String   @id @default(uuid())
-    conteudo                String   @db.LongText
+    id       String @id @default(uuid())
+    conteudo String @db.LongText
+
+    periodo_mes     String? @db.VarChar(255)
+    resumo_geral    String? @db.LongText
+    analise_receita String? @db.LongText
+    analise_despesa String? @db.LongText
+    pontos_atencao  String? @db.LongText
+    recomendacoes   String? @db.LongText
+    conclusao       String? @db.LongText
+
     businessIntelligence_id String   @unique
     created_at              DateTime @default(now())
     updated_at              DateTime @updatedAt
