@@ -24,9 +24,21 @@ class ListEmpresaDashboardBIService {
                 mostrar_relatorio: true,
                 bis: {
                     select: {
+                        id: true,
                         mes: true,
                         ano: true,
                         status: true,
+                        observacoes: {
+                            select: {
+                                periodo_mes: true,
+                                resumo_geral: true,
+                                analise_receita: true,
+                                analise_despesa: true,
+                                pontos_atencao: true,
+                                recomendacoes: true,
+                                conclusao: true,
+                            }
+                        },
                         lancamentoBi: {
                             select: {
                                 valor: true,

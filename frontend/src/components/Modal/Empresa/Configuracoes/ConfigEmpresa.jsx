@@ -103,7 +103,7 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
                     <span className={styles.label}>Página DRE</span>
                 </label> */}
 
-                {/* <label className={styles.switch}>
+                <label className={styles.switch}>
                     <input
                         type="checkbox"
                         checked={config.mostrar_relatorio}
@@ -111,7 +111,7 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
                     />
                     <span className={styles.slider}></span>
                     <span className={styles.label}>Página Relatório</span>
-                </label> */}
+                </label>
 
                 <div className={styles.box_btn_button}>
                     <Button onClick={salvarConfiguracoes} type="submit" loading={loading}>Salvar alterações</Button>

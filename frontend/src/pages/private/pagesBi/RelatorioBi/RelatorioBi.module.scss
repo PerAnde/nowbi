@@ -1,0 +1,129 @@
+.header_pagina_dashboardBi {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.filtros_mes_ano {
+    display: flex;
+    gap: 1rem;
+}
+
+.mes_ano {
+    display: grid;
+    grid-template-columns: 135px 90px;
+    gap: 1rem;
+}
+
+.box_btn_filtro {
+    display: flex;
+}
+
+.box_btn_filtro button {
+    border: none;
+    background-color: var(--button-cor-primaria);
+    color: var(--branco);
+    padding: 1.1rem;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+}
+
+.box_pagina_bi {
+    display: flex;
+}
+
+.box_topo_dre {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--texto-secundario);
+    padding: .5rem 0;
+    font-size: 1.6rem;
+}
+
+.box_btns_salvar {
+    display: flex;
+    gap: 1rem;
+}
+
+.box_btns_salvar button {
+    border: none;
+    background-color: transparent;
+    color: var(--texto-secundario);
+    cursor: pointer;
+    padding: .5rem 1.5rem;
+}
+
+.box_btns_salvar button:hover {
+    color: var(--cor-primaria);
+    transition: .3s;
+}
+
+.box_relatorio {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    color: var(--texto-secundario);
+    padding: 3rem;
+    gap: 2rem;
+}
+
+.texto_preview {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: var(--bold);
+}
+
+.box_relatorio section .header_section {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: var(--cor-secundaria);
+    margin-bottom: 1rem;
+}
+
+.box_relatorio section.box_periodo_mes {
+    text-align: center;
+    font-weight: var(--font-bold);
+}
+
+.box_relatorio section.box_receitas ul,
+.box_relatorio section.box_despesas ul {
+    margin: 1.5rem;
+    ;
+}
+
+.box_relatorio section.box_receitas li::marker {
+    font-size: 1.2rem;
+    color: var(--verde);
+}
+
+.box_relatorio section.box_despesas li::marker {
+    font-size: 1.2rem;
+    color: var(--vermelho);
+}
+
+.box_relatorio section.box_pontos_atencao div:last-child {
+    border-left: 2px solid var(--vermelho);
+    padding: 1.5rem 2.5rem;
+    border-radius: var(--border-radius-button);
+}
+
+.box_relatorio section.box_pontos_atencao li::marker {
+    font-size: 1.2rem;
+    color: var(--vermelho);
+}
+
+
+.box_relatorio section.box_recomendacoes div:last-child {
+    border-left: 2px solid var(--cor-principal);
+    padding: 1.5rem 2.5rem;
+    border-radius: var(--border-radius-button);
+}
+
+.box_relatorio section.box_recomendacoes li::marker {
+    font-size: 1.2rem;
+    color: var(--cor-principal);
+}

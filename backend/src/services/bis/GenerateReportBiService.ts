@@ -72,6 +72,7 @@ class GenerateReportBiService {
                 mes: true,
                 ano: true,
                 status: true,
+                relatorio_ia_gerado: true,
                 empresa: {
                     select: {
                         id: true,
@@ -92,6 +93,9 @@ class GenerateReportBiService {
         });
 
         if (!bi) throw new Error("BI não encontrado");
+        if (bi.relatorio_ia_gerado) {
+            throw new Error("O relatório de I.A já foi gerado para este mês.");
+        }
         if (bi.empresa.usuario_id !== usuario_id) throw new Error("Acesso negado");
 
         const mesAtual = mesTextoParaNumero(bi.mes);
@@ -204,6 +208,7 @@ Analise os dados financeiros da empresa ${bi.empresa.name} e preencha os campos 
 4. FOCO: Seja direto e objetivo, evite rodeios. Vá direto ao ponto em cada análise.
 5. ATENÇÃO: Se os dados forem insuficientes para alguma análise, indique claramente que não há dados suficientes.
 6. Utilize <b> para destacar termos chave e itens de <li> para listar categorias ou recomendações.
+7. Se precisar usar aspas dentro do texto HTML, use apenas aspas simples, nunca aspas duplas, para não quebrar o formato JSON.
 
 # Estrutura do JSON Obrigatória:
 {
@@ -259,6 +264,11 @@ ${JSON.stringify(dadosParaIA, null, 2)}
                 recomendacoes: dadosIA.recomendacoes,
                 conclusao: dadosIA.conclusao
             }
+        });
+
+        await prismaClient.businessIntelligence.update({
+            where: { id: bi_id },
+            data: { relatorio_ia_gerado: true }
         });
 
         return response

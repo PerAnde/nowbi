@@ -13,11 +13,6 @@ class ListBiService {
                 mes: true,
                 ano: true,
                 status: true,
-                observacoes: {
-                    select: {
-                        conteudo: true,
-                    }
-                },
                 empresa: {
                     select: {
                         id: true,

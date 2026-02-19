@@ -310,15 +310,19 @@ export const Bi = () => {
                     <>
                         {filtro === "OBS" ? (
                             <div className={styles.box_btns_obs}>
-                                <button className={`${styles.btn_gerar_relatorio} ${loadingRelatorio ? styles.loading : ''}`}
-                                    onClick={handleGerarRelatorio}
-                                    disabled={loadingRelatorio}
-                                >
-                                    <span className={styles.btn_gerar_relatorio_conteudo}>
-                                        <PiIcons.PiSparkle className={styles.icone_ia} />
-                                        {loadingRelatorio ? "Gerando relatório..." : "Gerar com IA"}
-                                    </span>
-                                </button>
+                                {!bi?.relatorio_ia_gerado ? (
+                                    ''
+                                ) : (
+                                    <button className={`${styles.btn_gerar_relatorio} ${loadingRelatorio ? styles.loading : ''}`}
+                                        onClick={handleGerarRelatorio}
+                                        disabled={loadingRelatorio}
+                                    >
+                                        <span className={styles.btn_gerar_relatorio_conteudo}>
+                                            <PiIcons.PiSparkle className={styles.icone_ia} />
+                                            {loadingRelatorio ? "Gerando relatório..." : "Gerar com IA"}
+                                        </span>
+                                    </button>
+                                )}
                                 <Link className={styles.btn_link_principal}
                                     onClick={handleSalvarObservacoes}
                                 >Salvar relatório</Link>
