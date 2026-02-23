@@ -45,6 +45,21 @@ export const Bi = () => {
         conclusao: "",
     });
 
+    const hasConteudoReal = (html) => {
+        if (!html) return false;
+
+        const texto = html
+            .replace(/<[^>]*>/g, '')
+            .replace(/&nbsp;/g, '')
+            .trim();
+
+        return texto.length > 0;
+    };
+
+    const isPreviewRelatorio = Object.values(observacoes).some(
+        campo => hasConteudoReal(campo)
+    );
+
     // Modais
     const [popUpEditarBi, setPopUpEditarBi] = useState(false);
     const [popUpExcluirBi, setPopUpExcluirBi] = useState(false);
@@ -495,7 +510,11 @@ export const Bi = () => {
                                     <p>Nenhum lançamento em despesa!</p>
                                 </div>
                             ) : (
-                                <div className={styles.container_box_relatorio}>
+                                <div className={styles.container_box_relatorio} style={{
+                                    gridTemplateColumns: isPreviewRelatorio
+                                        ? '1fr minmax(400px, 400px)'
+                                        : '1fr'
+                                }}>
 
                                     <div className={styles.box_editores}>
                                         <div className={styles.box_editor_obs}>
@@ -555,7 +574,7 @@ export const Bi = () => {
                                         </div>
                                     </div>
 
-                                    <div className={styles.box_preview_relatorio}>
+                                    <div className={styles.box_preview_relatorio} style={{ display: isPreviewRelatorio ? 'flex' : 'none' }}>
                                         <p className={styles.texto_preview}>Preview do relatório</p>
 
                                         <section className={styles.box_periodo_mes}>

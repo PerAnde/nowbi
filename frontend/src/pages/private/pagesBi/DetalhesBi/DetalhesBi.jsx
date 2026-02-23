@@ -453,7 +453,16 @@ export const DetalhesBi = () => {
                                         name="Receitas"
                                         stroke="var(--verde)"
                                         fill="var(--verde-15)"
-                                        strokeWidth={2}
+                                        strokeWidth={1}
+                                        dot={{
+                                            r: 5,
+                                            fill: "#fff",
+                                            stroke: "var(--verde)",
+                                            strokeWidth: 1
+                                        }}
+                                        activeDot={{
+                                            r: 6
+                                        }}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
@@ -500,10 +509,19 @@ export const DetalhesBi = () => {
                                     <Area
                                         type="monotone"
                                         dataKey="despesas"
-                                        name="Deceitas"
+                                        name="Despesas"
                                         stroke="var(--vermelho)"
                                         fill="var(--vermelho-15)"
-                                        strokeWidth={2}
+                                        strokeWidth={1}
+                                        dot={{
+                                            r: 5,
+                                            fill: "#fff",
+                                            stroke: "var(--vermelho)",
+                                            strokeWidth: 1
+                                        }}
+                                        activeDot={{
+                                            r: 6
+                                        }}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>

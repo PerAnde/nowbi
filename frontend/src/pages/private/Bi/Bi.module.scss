@@ -411,7 +411,6 @@ a.btn_excluir_lancamentos:hover {
 
 .container_box_relatorio {
     display: grid;
-    grid-template-columns: 1fr minmax(400px, 400px);
     gap: 1.5rem;
 }
 
@@ -431,7 +430,6 @@ a.btn_excluir_lancamentos:hover {
 }
 
 .box_preview_relatorio {
-    display: flex;
     flex-direction: column;
     background-color: var(--cor-componente);
     border-radius: var(--border-radius-componente);

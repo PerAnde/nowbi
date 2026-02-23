@@ -82,7 +82,13 @@ export const RelatorioBi = () => {
             </div>
 
             <div className={styles.box_pagina_bi}>
-                {dadosRelatorio ? (
+                {dadosRelatorio.periodo_mes &&
+                    dadosRelatorio.resumo_geral &&
+                    dadosRelatorio.analise_receita &&
+                    dadosRelatorio.analise_despesa &&
+                    dadosRelatorio.pontos_atencao &&
+                    dadosRelatorio.recomendacoes &&
+                    dadosRelatorio.conclusao ? (
                     <div className='box_gerar_relatorio'>
                         <div className={styles.box_relatorio}>
                             <div className="box_logo_empresa">
