@@ -104,10 +104,10 @@ export const Dashboard = () => {
                         </div>
                     )}
 
-                    <div className={styles.box_btn_fatura}>
-                        {/* <Link to='/financeiro' className={styles.btn_fatura}>Fazer upgrade</Link> */}
+                    {/* <div className={styles.box_btn_fatura}>
+                        <Link to='/financeiro' className={styles.btn_fatura}>Fazer upgrade</Link>
                         <Link to='/planos' className={`${styles.btn_fatura} ${styles.btn_pagar_fatura}`}>Fazer upgrade</Link>
-                    </div>
+                    </div> */}
 
                 </div>
 

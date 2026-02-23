@@ -76,9 +76,9 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiUserLight className={styles.icon} /> Minha conta
                         </Link>
-                        <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        {/* <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiSketchLogoLight className={styles.icon} /> Planos
-                        </Link>
+                        </Link> */}
                         <p>Suporte</p>
                         <Link to='https://api.whatsapp.com/send?phone=5547984178977' target='_blank' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiQuestionLight className={styles.icon} /> Ajuda
