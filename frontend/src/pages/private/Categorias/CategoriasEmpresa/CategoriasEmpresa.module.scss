@@ -63,17 +63,20 @@ a.btn_link_principal:hover {
 
     a.filtro_receitas,
     a.filtro_despesas {
-        border-radius: var(--border-radius-componente);
-        padding: 1rem;
+        border-radius: var(--border-radius-button);
+        border: 1px solid var(--border);
+        padding: .8rem 1rem;
     }
 
     a.filtro_receitas.ativo {
+    border: 1px solid var(--verde-15);
         font-weight: var(--medium);
         color: var(--verde);
         transition: .3s;
     }
 
     a.filtro_despesas.ativo {
+    border: 1px solid var(--vermelho-15);
         font-weight: var(--medium);
         color: var(--vermelho);
         transition: .3s;

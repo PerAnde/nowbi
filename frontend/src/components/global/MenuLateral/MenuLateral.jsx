@@ -80,7 +80,10 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                             <PiIcons.PiSketchLogoLight className={styles.icon} /> Planos
                         </Link> */}
                         <p>Suporte</p>
-                        <Link to='https://api.whatsapp.com/send?phone=5547984178977' target='_blank' className={`${styles.btn_menu} ${location.pathname === '/suporte' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        {/* <Link to='/tutoriais' className={`${styles.btn_menu} ${location.pathname === '/tutoriais' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                            <PiIcons.PiGraduationCap className={styles.icon} /> Tutoriais
+                        </Link> */}
+                        <Link to='/ajuda' className={`${styles.btn_menu} ${location.pathname === '/ajuda' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiQuestionLight className={styles.icon} /> Ajuda
                         </Link>
                     </div>

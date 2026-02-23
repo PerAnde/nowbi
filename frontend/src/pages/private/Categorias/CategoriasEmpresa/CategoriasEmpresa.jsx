@@ -18,7 +18,7 @@ import { EditarSubCategoria } from '../../../../components/Modal/Subcategorias/E
 import { ExcluirSubcategoria } from '../../../../components/Modal/Subcategorias/ExcluirSubcategoria/ExcluirSubcategoria';
 
 import * as PiIcons from 'react-icons/pi';
-import styles from '../PaginaCategoriasPorEmpresa.module.scss';
+import styles from './CategoriasEmpresa.module.scss';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton

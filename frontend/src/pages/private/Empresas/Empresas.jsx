@@ -327,7 +327,7 @@ export const Empresas = () => {
                     ) : (
                         <div className={styles.box_sem_empresas}>
                             <span>
-                                <PiIcons.PiListMagnifyingGlassDuotone />
+                                <PiIcons.PiListMagnifyingGlassLight />
                             </span>
                             <p>Nenhuma empresa!</p>
                         </div>

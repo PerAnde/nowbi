@@ -122,23 +122,27 @@ a.btn_link_principal:hover {
     a.filtro_em_progresso,
     a.filtro_concluido {
         border-radius: var(--border-radius-componente);
-        padding: 1rem;
+        border: 1px solid var(--border);
+        padding: .8rem 1rem;
     }
 
     a.filtro_todos.ativo {
         font-weight: var(--medium);
-        color: var(--cor-primaria);
+        border: 1px solid var(--cor-principal);
+        color: var(--cor-principal);
         transition: .3s;
     }
 
     a.filtro_em_progresso.ativo {
         font-weight: var(--medium);
+        border: 1px solid var(--laranja);
         color: var(--laranja);
         transition: .3s;
     }
 
     a.filtro_concluido.ativo {
         font-weight: var(--medium);
+        border: 1px solid var(--verde);
         color: var(--verde);
         transition: .3s;
     }
