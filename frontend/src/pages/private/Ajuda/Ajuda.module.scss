@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 2rem;
     padding: 2rem;
     background-color: var(--cor-componente);
     border: 1px solid var(--border);
@@ -42,6 +43,10 @@
 .box_texto_ajuda {
     display: flex;
     flex-direction: column;
+}
+
+.box_texto_ajuda p {
+    font-weight: var(--font-medium);
 }
 
 .box_texto_ajuda span {
@@ -69,14 +74,15 @@ a.btn_link_secundario:hover {
 }
 
 .box_redes_sociais {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
 }
 
 .rede_social {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1.5rem;
     padding: 2rem;
     background-color: var(--cor-componente);
@@ -92,4 +98,17 @@ a.btn_link_secundario:hover {
 hr {
     margin-bottom: 2rem;
     border: 1px solid var(--border);
+}
+
+@media screen and (max-width: 768px) {
+    .box_ajuda {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .box_redes_sociais {
+        grid-template-columns: 1fr;
+    }
+
 }

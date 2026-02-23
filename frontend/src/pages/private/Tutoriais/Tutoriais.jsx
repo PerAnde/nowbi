@@ -12,7 +12,7 @@ export const Tutoriais = () => {
             <div className="box_conteudo_paginas">
                 <div className="header-paginas">
                     <div className="box-header">
-                        <h2>Ajuda</h2>
+                        <h2>Tutoriais</h2>
                         <div className={styles.box_menu_pagina}>
                             <Link to="/dashboard" className={styles.link_menu_pagina}>
                                 Dashboard

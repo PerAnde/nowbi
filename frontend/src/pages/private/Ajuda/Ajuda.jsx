@@ -53,6 +53,14 @@ export const Ajuda = () => {
                             <span>@nowbi_oficial</span>
                         </div>
                     </div>
+                    <div className={styles.rede_social}>
+                        <PiIcons.PiYoutubeLogoLight  className={styles.icone_suporte} />
+
+                        <div className={styles.box_texto_ajuda}>
+                            <p>Youtube</p>
+                            <span>@nowbi_oficial</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </Layout>
