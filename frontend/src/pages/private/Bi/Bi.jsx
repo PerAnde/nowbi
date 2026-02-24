@@ -46,6 +46,8 @@ export const Bi = () => {
         conclusao: "",
     });
 
+    console.log(bi.empresa?.blingIntegration)
+
     const hasConteudoReal = (html) => {
         if (!html) return false;
 

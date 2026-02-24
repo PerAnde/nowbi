@@ -20,8 +20,10 @@ class ListBiService {
                         name: true,
                         blingIntegration: {
                             select: {
+                                id: true,
                                 accessToken: true,
                                 refreshToken: true,
+                                isActive: true,
                             }
                         },
                     }
