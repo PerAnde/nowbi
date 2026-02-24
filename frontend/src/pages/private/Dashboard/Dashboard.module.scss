@@ -35,7 +35,7 @@
 
     a.btn_cor_primaria {
         padding: 1.2rem;
-        background-color: var(--button-cor-primaria);
+        background-color: var(--cor-principal);
         border-radius: var(--border-radius-button);
         color: var(--branco);
         transition: .3s;
@@ -43,7 +43,7 @@
     }
 
     a.btn_cor_primaria:hover {
-        background-color: var(--button-cor-primaria-hover);
+        background-color: var(--cor-principal-hover);
         transition: .3s;
     }
 

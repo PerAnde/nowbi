@@ -95,11 +95,6 @@ a.btn_link_secundario:hover {
     font-size: 1.4rem;
 }
 
-hr {
-    margin-bottom: 2rem;
-    border: 1px solid var(--border);
-}
-
 @media screen and (max-width: 768px) {
     .box_ajuda {
         grid-template-columns: 1fr;

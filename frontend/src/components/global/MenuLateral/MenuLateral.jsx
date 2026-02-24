@@ -96,7 +96,7 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                                     ? `${diasRestantes} ${diasRestantes === 1 ? 'dia' : 'dias'} restantes`
                                     : 'Período expirado'}
                             </span>
-                            <Link className={styles.btn_ativar_conta}>
+                            <Link className={styles.btn_ativar_conta} to='https://api.whatsapp.com/send?phone=5547984178977' target='_blank'>
                                 {diasRestantes > 0 ? 'Ativar conta' : 'Escolher plano'}
                             </Link>
                         </div>

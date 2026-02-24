@@ -77,8 +77,8 @@
     display: flex;
     flex-direction: column;
     bottom: 0;
-    background: var(--gradient-azul);
-    color: var(--branco);
+    background: var(--cor-componente);
+    border: 1px solid var(--border);
     padding: 2rem;
     border-radius: var(--border-radius-componente);
     text-align: center;
@@ -86,8 +86,7 @@
 
 .box_mensagem_menu_lateral p {
     font-size: 1.4rem;
-    margin-bottom: .5rem;
-
+color: var(--texto-secundario);
 }
 
 .box_mensagem_menu_lateral span {
@@ -102,16 +101,17 @@
 
 a.btn_ativar_conta {
     padding: 1.2rem;
-    background-color: var(--branco);
+    background-color: var(--cor-principal);
     border-radius: var(--border-radius-button);
-    color: var(--cinza-escuro);
-    font-weight: var(--bold);
+    color: var(--branco);
+    border: 1px solid var(--cor-principal);
+    font-weight: var(--font-semi-bold);
     transition: .3s;
     font-size: 1.4rem;
 }
 
 a.btn_ativar_conta:hover {
-    background-color: var(--hover-input);
+    background-color: var(--cor-principal-hover);
 }
 
 .btn_menu {
