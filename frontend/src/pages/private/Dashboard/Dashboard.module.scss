@@ -3,16 +3,17 @@
     position: relative;
     width: 100%;
     height: 300px;
-    background: url("../../../assets/images/fundo-bem-vindo.jpg") center no-repeat;
+    background: url("../../../assets/images/fundo-bem-vindo.png") center no-repeat;
     background-size: cover;
     border-radius: var(--border-radius-componente);
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 
 .box_img_dashboard .degrade {
     width: 100%;
     height: 100%;
-    background: linear-gradient(80deg, var(--cor-componente-principal-85), var(--cor-componente-principal));
+    background: linear-gradient(80deg, transparent 50%, var(--cor-componente));
 }
 
 .texto_bem_vindo {
@@ -20,17 +21,18 @@
     width: 100%;
     top: 50%;
     transform: translateY(-50%);
-    padding: 2rem 4rem;
-    color: var(--branco);
+    padding: 3rem;
 
     h1 {
+        font-size: 3rem;
         margin-bottom: 1rem;
         line-height: 3rem;
+        font-weight: var(--font-semi-bold);
     }
 
     p {
-        color: var(--texto-secundario-componente-escuro);
         margin-bottom: 2.5rem;
+        color: var(--texto-secundario);
     }
 
     a.btn_cor_primaria {
@@ -57,11 +59,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 4rem;
+    padding: 3rem;
     gap: 2rem;
     background-color: var(--cor-componente);
     border-radius: var(--border-radius-componente);
     box-shadow: var(--box-shadow-componente);
+    border: 1px solid var(--border);
 }
 
 .box_info_financeiro span {
@@ -92,32 +95,35 @@
     gap: 2rem;
 }
 
-a.btn_fatura {
+a.btn_upgrade,
+a.btn_pagar_fatura {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     padding: 1.2rem;
-    background-color: var(--background);
     border-radius: var(--border-radius-button);
-    color: var(--texto-secundario);
     transition: .3s;
     font-size: 1.4rem;
     text-align: center;
 }
 
-a.btn_fatura:hover {
-    background-color: var(--hover-input);
-    color: var(--texto-primario);
+a.btn_upgrade{
+    border: 1px solid var(--border);
 }
 
-a.btn_fatura.btn_pagar_fatura {
-    background-color: var(--button-cor-primaria);
+a.btn_upgrade:hover{
+    background-color: var(--background-geral);
+}
+
+a.btn_pagar_fatura {
+    border: 1px solid var(--cor-principal);
+    background-color: var(--cor-principal);
     color: var(--branco);
 }
 
-a.btn_fatura.btn_pagar_fatura:hover {
-    background-color: var(--button-cor-primaria-hover);
+a.btn_pagar_fatura:hover {
+    background-color: var(--cor-principal-hover);
 }
 
 .box_info_dashboard {
@@ -131,6 +137,7 @@ a.btn_fatura.btn_pagar_fatura:hover {
     box-shadow: var(--box-shadow-componente);
     border-radius: var(--border-radius-componente);
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 
 .infos_card {
@@ -174,27 +181,24 @@ a.btn_fatura.btn_pagar_fatura:hover {
 .box_info_dashboard span.background_card {
     position: absolute;
     top: -1.5rem;
-    right: -6rem;
+    right: -6.5rem;
     width: 150px;
     height: 150px;
     border-radius: var(--border-radius-componente);
     transform: rotate(35deg);
 }
 
-// .box_info_dashboard.info_total_empresas span.background_card {
-//     background-image: linear-gradient(60deg, var(--cor-primaria-15), var(--cor-componente));
-//     border: 1px solid var(--cor-primaria-15);
-// }
+.box_info_dashboard.info_total_empresas span.background_card {
+    border: 2px solid var(--cor-primaria-15);
+}
 
-// .box_info_dashboard.info_total_bis span.background_card {
-//     background-image: linear-gradient(60deg, var(--laranja-15), var(--cor-componente));
-//     border: 1px solid var(--laranja-15);
-// }
+.box_info_dashboard.info_total_bis span.background_card {
+    border: 2px solid var(--laranja-15);
+}
 
-// .box_info_dashboard.info_total_concluido span.background_card {
-//     background-image: linear-gradient(60deg, var(--verde-15), var(--cor-componente));
-//     border: 1px solid var(--verde-15);
-// }
+.box_info_dashboard.info_total_concluido span.background_card {
+    border: 2px solid var(--verde-15);
+}
 
 @media screen and (max-width: 1520px) {
     .box_btn_fatura {

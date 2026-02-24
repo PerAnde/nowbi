@@ -23,7 +23,7 @@ a.btn_link_secundario {
     justify-content: center;
     text-align: center;
     gap: .5rem;
-    color: var(--cor-secundaria);
+    color: var(--branco);
     padding: 1.2rem;
     border-radius: var(--border-radius-button);
     background-color: var(--cor-principal);
@@ -92,7 +92,7 @@ a.btn_link_secundario:hover {
     min-width: 40px;
     height: 40px;
     background-color: var(--background-geral);
-    border-radius: var(--border-radius-componente);
+    border-radius: var(--border-radius-button);
     overflow: hidden;
 }
 

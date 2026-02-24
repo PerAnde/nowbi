@@ -18,7 +18,12 @@ class ListBiService {
                     select: {
                         id: true,
                         name: true,
-                        blingIntegration: true,
+                        blingIntegration: {
+                            select: {
+                                accessToken: true,
+                                refreshToken: true,
+                            }
+                        },
                     }
                 },
                 lancamentoBi: {

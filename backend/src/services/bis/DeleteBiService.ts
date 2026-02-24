@@ -20,6 +20,12 @@ class DeleteBiService {
             throw new Error("BI não encontrado!");
         }
 
+        await prismaClient.observacoesBi.deleteMany({
+            where: {
+                businessIntelligence_id: id,
+            }
+        })
+
         await prismaClient.lancamentoBi.deleteMany({
             where: {
                 businessIntelligence_id: id,

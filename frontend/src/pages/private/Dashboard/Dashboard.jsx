@@ -103,10 +103,10 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     )}
-
-                    {/* <div className={styles.box_btn_fatura}>
-                        <Link to='/financeiro' className={styles.btn_fatura}>Fazer upgrade</Link>
-                        <Link to='/planos' className={`${styles.btn_fatura} ${styles.btn_pagar_fatura}`}>Fazer upgrade</Link>
+{/* 
+                    <div className={styles.box_btn_fatura}>
+                        <Link to='/financeiro' className={styles.btn_upgrade}>Fazer upgrade</Link>
+                        <Link to='/planos' className={styles.btn_pagar_fatura}>Acessar Fatura</Link>
                     </div> */}
 
                 </div>
@@ -117,7 +117,7 @@ export const Dashboard = () => {
                         <p>Empresas</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiBuildingDuotone />
+                        <PiIcons.PiBuildingLight />
                     </div>
                     <span className={styles.background_card}></span>
                 </div>
@@ -128,7 +128,7 @@ export const Dashboard = () => {
                         <p>BI's</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiChartBarDuotone />
+                        <PiIcons.PiSpinnerGapLight />
                     </div>
                     <span className={styles.background_card}></span>
                 </div>
@@ -139,7 +139,7 @@ export const Dashboard = () => {
                         <p>BI's Concluídos</p>
                     </div>
                     <div className={styles.icone_card}>
-                        <PiIcons.PiCheckFatDuotone />
+                        <PiIcons.PiChecksLight />
                     </div>
                     <span className={styles.background_card}></span>
                 </div>

@@ -8,7 +8,7 @@ import { capitalizeFirstLetter } from '../../../utils/formatUtils'
 
 import { Layout } from '../../../layout/Layout'
 import { EditorObservacoes } from "../../../components/EditorObs/EditorObs";
-
+import { Input } from '../../../components/Input/Input';
 import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
 
@@ -24,7 +24,8 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 import * as PiIcons from 'react-icons/pi';
 
 import styles from './Bi.module.scss'
-import { Input } from '../../../components/Input/Input';
+
+import imgBling from '../../../assets/images/logo-bling.png';
 
 export const Bi = () => {
 
@@ -373,14 +374,13 @@ export const Bi = () => {
                                             title="Adicionar lançamento"
                                         ><PiIcons.PiPlusBold /> Add</Link>
                                         <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
-                                        {/* {bi?.empresa?.bling_integrations ? (
+                                        {bi.empresa?.blingIntegration?.isActive ? (
                                             <>
-                                                <PiIcons.PiPlugsConnectedLight />
-                                            </>) : (
-                                            <>
-                                                <Link className={`${styles.btn_link_principal} ${styles.integrar}`} onClick={() => setPopUpEditarBi(true)} title="Importar dados"><PiIcons.PiPlugsConnected /></Link>
+                                                <Link className={styles.btn_integrar} onClick={() => setPopUpEditarBi(true)} title="Importar dados do Bling!"><img src={imgBling} alt="" /></Link>
                                             </>
-                                        )} */}
+                                        ) : (
+                                            ''
+                                        )}
                                     </div>
                                 </div>
 

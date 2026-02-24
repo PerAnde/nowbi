@@ -183,20 +183,17 @@ a.btn_link_principal.btn_reabrir {
     color: var(--texto-primario);
 }
 
-a.btn_link_principal.integrar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--cor-principal);
-    background-color: var(--background-geral);
-    color: var(--texto-primario);
-    gap: .5rem;
-    cursor: pointer;
-    transition: .3s;
+a.btn_integrar {
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-button);
+    overflow: hidden;
 }
 
-a.btn_link_principal.integrar:hover {
-    background-color: var(--cor-principal);
+a.btn_integrar img {
+    max-height: 100%;
+    object-fit: cover;
 }
 
 .box_bis {
@@ -272,29 +269,34 @@ a.btn_link_principal.integrar:hover {
     a.filtro_despesas,
     a.filtro_obs {
         border-radius: var(--border-radius-componente);
-        padding: 1rem;
+        border: 1px solid var(--border);
+        padding: .8rem 1rem;
     }
 
     a.filtro_todos.ativo {
         font-weight: var(--medium);
+        border: 1px solid var(--cor-principal);
         color: var(--cor-principal);
         transition: .3s;
     }
 
     a.filtro_receitas.ativo {
         font-weight: var(--medium);
+        border: 1px solid var(--verde);
         color: var(--verde);
         transition: .3s;
     }
 
     a.filtro_despesas.ativo {
         font-weight: var(--medium);
+        border: 1px solid var(--vermelho);
         color: var(--vermelho);
         transition: .3s;
     }
 
     a.filtro_obs.ativo {
         font-weight: var(--medium);
+        border: 1px solid var(--laranja);
         color: var(--laranja);
         transition: .3s;
     }
@@ -440,7 +442,7 @@ a.btn_excluir_lancamentos:hover {
     font-size: 1.1rem;
 }
 
-.texto_preview{
+.texto_preview {
     text-align: center;
     font-size: 1.5rem;
     font-weight: var(--bold);
@@ -454,13 +456,14 @@ a.btn_excluir_lancamentos:hover {
     margin-bottom: 1rem;
 }
 
-.box_preview_relatorio section.box_periodo_mes{
+.box_preview_relatorio section.box_periodo_mes {
     text-align: center;
 }
 
 .box_preview_relatorio section.box_receitas ul,
 .box_preview_relatorio section.box_despesas ul {
-    margin: 1.5rem;;
+    margin: 1.5rem;
+    ;
 }
 
 .box_preview_relatorio section.box_receitas li::marker {
@@ -701,8 +704,8 @@ a.btn_excluir_lancamento:hover {
 
 @media screen and (max-width: 870px) {
     .container_box_relatorio {
-    display: flex;
-    flex-direction: column;
+        display: flex;
+        flex-direction: column;
     }
 }
 

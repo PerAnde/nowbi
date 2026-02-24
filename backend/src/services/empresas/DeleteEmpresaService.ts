@@ -52,9 +52,23 @@ class DeleteEmpresaService {
                 }
             });
 
+            await prismaClient.observacoesBi.deleteMany({
+                where: {
+                    businessIntelligence_id: {
+                        in: biIds,
+                    }
+                }
+            });
+
             await prismaClient.businessIntelligence.deleteMany({
                 where: {
                     empresa_id: id,
+                }
+            });
+
+            await prismaClient.blingIntegration.deleteMany({
+                where: {
+                    empresaId: id,
                 }
             });
         }
