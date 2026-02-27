@@ -76,6 +76,11 @@ class CreateEmpresaService {
                 usuario_id: usuario_id,
                 link_bi: link_bi,
                 pin_acesso,
+                mostrar_resumo: true,
+                mostrar_detalhes: true,
+                mostrar_dfc: true,
+                mostrar_dre: false,
+                mostrar_relatorio: false,
             },
             select: {
                 id: true,

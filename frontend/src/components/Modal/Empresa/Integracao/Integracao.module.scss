@@ -84,10 +84,6 @@
     margin-bottom: 2rem;
 }
 
-.box_observacoes_integracao h4{
-    font-size: 2rem;
-}
-
 .box_observacoes_integracao p {
     color: var(--texto-secundario);
 }
@@ -107,8 +103,9 @@ button.btn_link_principal {
     gap: .5rem;
     color: var(--texto-primario-button);
     padding: 1.2rem;
+    border: none;
     border-radius: var(--border-radius-button);
-    background-color: var(--button-cor-secundaria);
+    background-color: var(--cor-secundaria);
     transition: .3s;
     font-size: 1.4rem;
     cursor: pointer;
@@ -126,29 +123,77 @@ button.btn_link {
 }
 
 button.btn_link.btn_link_cor_primaria {
-    background-color: var(--button-cor-primaria);
+    border: 1px solid var(--cor-principal);
+    background-color: var(--cor-principal);
     color: var(--branco);
 }
 
 button.btn_link.btn_link_cor_primaria:hover {
-    background-color: var(--button-cor-primaria-hover);
+    background-color: var(--cor-principal-hover);
     transition: .3s;
 }
 
 button.btn_link_disabled {
+    display: flex;
+    justify-content: center;
     cursor: not-allowed;
     pointer-events: none;
     border: none;
 }
 
-button.btn_link.btn_link_cor_secundaria {
+button.btn_link_cor_secundaria {
+    padding: 1.2rem;
     color: var(--texto-secundario);
     border: 1px solid var(--border-input);
     background-color: var(--cor-componente);
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
 }
 
-button.btn_link.btn_link_cor_secundaria:hover {
+button.btn_link_cor_secundaria:hover {
     color: var(--texto-primario);
     border: 1px solid var(--border-input);
     background-color: var(--border-input);
+}
+
+button.btn_link_excluir {
+    padding: 1.2rem;
+    color: var(--texto-secundario);
+    border: 1px solid var(--border-input);
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    transition: .3s;
+}
+
+button.btn_link_excluir:hover {
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho-15);
+    transition: .3s;
+}
+
+.box_status_ativo {
+    display: flex;
+    flex-direction: column;
+}
+
+.header_status {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.icon_check {
+    font-size: 3rem;
+    color: var(--cor-principal);
+}
+
+.header_status p {
+    color: var(--texto-secundario);
+}
+
+.box_status_ativo span {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--texto-secundario);
+    margin-bottom: 1.5rem;
 }

@@ -33,12 +33,11 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
 
     if (!trigger) return null;
 
-    const handleDesfazerIntegracao = async () => {
+    const handleExcluirIntegracao = async () => {
         const sucess = await excluirIntegracao(empresa.id);
 
         if (sucess) {
             setTrigger(false);
-            empresaAtualizada();
         }
     };
 
@@ -57,11 +56,13 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                         <div className={styles.header_status}>
                             <PiIcons.PiSealCheckFill className={styles.icon_check} />
                             <h4>Integração Ativa</h4>
+                            <p>Esta empresa já está integrada com sucesso ao <strong>Bling</strong>.</p>
                         </div>
-                        <p>Esta empresa já está conectada com sucesso ao <strong>Bling</strong>.</p>
+                        <p>Deseja excluir essa integração?</p>
+                        <span>Obs: Os meses que já foram importados serão preservados.</span>
 
                         <div className={styles.box_botoes_centro}>
-                            <button onClick={() => handleDesfazerIntegracao()} className={styles.btn_link_cor_secundaria}>
+                            <button onClick={() => handleExcluirIntegracao()} className={styles.btn_link_excluir}>
                                 Excluir integração
                             </button>
                         </div>
@@ -89,8 +90,8 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                             <div className={styles.container_etapa_bling}>
                                 <div className={styles.box_observacoes_integracao}>
                                     <h4>Integrando com o Bling</h4>
-                                    <p>Atenção: antes de prosseguir, desconecte-se de qualquer conta do Bling para evitar a integração com a empresa errada.</p>
-                                    <p>Em seguida, retorne a esta página e clique em “Integrar”.</p>
+                                    <p><strong>Atenção:</strong> antes de prosseguir, certifique-se de que você está desconectado de qualquer conta do Bling, para evitar a integração com a empresa errada.</p>
+                                    <p>Em seguida, retorne a esta página e clique em <strong>“Integrar”</strong>.</p>
                                 </div>
 
                                 <div className={styles.box_botoes}>
