@@ -46,7 +46,7 @@ export const CriarSubCategoria = ({ trigger, setTrigger, categoria, empresaId, s
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
-                    <h3>Nova Subcategoria</h3>
+                    <h3>Nova subcategoria</h3>
                     <span onClick={() => {
                         setTrigger(false);
                         setName('');

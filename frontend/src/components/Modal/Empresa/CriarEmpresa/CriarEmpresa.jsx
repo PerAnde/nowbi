@@ -31,6 +31,8 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
     const [cnpjEmpresa, setCnpjEmpresa] = useState("");
     const [emailAutenticaBi, setEmailAutenticaBi] = useState("");
 
+    const [categoriasPadrao, setCategoriasPadrao] = useState(true);
+
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
@@ -42,13 +44,14 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
         const fileInput = document.getElementById('picture_input');
         const fotoEmpresa = fileInput?.files[0] || null;
 
-        const success = await criarEmpresa(name, cnpjEmpresa, emailAutenticaBi, fotoEmpresa)
+        const success = await criarEmpresa(name, cnpjEmpresa, emailAutenticaBi, fotoEmpresa, categoriasPadrao)
 
         if (success) {
             setName("");
             setCnpjEmpresa("");
             setEmailAutenticaBi("");
             setFotoEmpresa(null);
+            setCategoriasPadrao(true);
             setTrigger(false);
             empresaCriada();
         }
@@ -99,6 +102,25 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
                                 onChange={(e) => setCnpjEmpresa(formatarCnpj(e.target.value))}
                                 maxLength={18}
                             />
+
+                            {/* <div className={styles.container_checkbox}>
+                                <label className={styles.checkbox_confirmar}>
+                                    <Input
+                                        type="checkbox"
+                                        id="confirmarExclusao"
+                                        checked={categoriasPadrao}
+                                        onChange={(e) => setCategoriasPadrao(e.target.checked)}
+                                        className={styles.input_checkbox}
+                                    />
+                                    <span className={styles.custom_checkbox}>
+                                        <PiIcons.PiCheckFatFill className={styles.custom_icon} />
+                                    </span>
+                                    <div className={styles.texto_checkbox}>
+                                        <p>Criar com plano de categorias padrão</p>
+                                        <span>Gerar automaticamente categorias e subcategorias essenciais.</span>
+                                    </div>
+                                </label>
+                            </div> */}
                             {/* <Input
                                 type="email"
                                 placeholder="Email da empresa"

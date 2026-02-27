@@ -75,7 +75,7 @@ export const EditarEmpresa = ({ trigger, setTrigger, empresa, empresaEditada }) 
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
-                    <h3>Editar Empresa</h3>
+                    <h3>Editar empresa</h3>
                     <span onClick={() => { setTrigger(false); setFotoEmpresa(empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : null) }}>
                         <PiIcons.PiXBold
                             className={styles.close}

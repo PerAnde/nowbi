@@ -41,7 +41,7 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, empresaI
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
-                    <h3>Editar Subcategoria</h3>
+                    <h3>Editar subcategoria</h3>
                     <span>
                         <PiIcons.PiXBold
                             className={styles.close}

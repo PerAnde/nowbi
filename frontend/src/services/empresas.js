@@ -55,7 +55,7 @@ export const buscarEmpresa = async (id, setEmpresa, setLoading, navigate) => {
 }
 
 // Criar Empresa
-export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file) => {
+export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file, categoriasPadrao) => {
     if (!name) {
         toast.warning("Preencha o nome da empresa!");
         return false;
@@ -76,6 +76,7 @@ export const criarEmpresa = async (name, cnpjEmpresa, emailAutenticaBi, file) =>
         formData.append('name', name);
         formData.append('cnpj_empresa', cnpjEmpresa);
         formData.append('email_empresa', emailAutenticaBi);
+        formData.append('categorias_padrao', categoriasPadrao)
 
         if (file) {
             formData.append('file', file);

@@ -58,7 +58,7 @@ export const CriarLancamento = ({ trigger, setTrigger, empresaId, lancamentoCria
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
-                    <h3>Novo Lançamento</h3>
+                    <h3>Novo lançamento</h3>
                     <span onClick={() => { setTrigger(false), setValor(""), setTipo("RECEITA"), setCategoriaSelecionada(""), setSubcategoriaSelecionada("") }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>

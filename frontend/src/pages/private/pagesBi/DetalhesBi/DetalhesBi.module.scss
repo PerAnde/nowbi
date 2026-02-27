@@ -181,8 +181,6 @@
 }
 
 .card_metrica_mes {
-    display: flex;
-    justify-content: space-between;
     background-color: var(--branco);
     border-top: 2px solid var(--branco);
     border-radius: var(--border-radius-componente);
@@ -219,7 +217,7 @@
 }
 
 .box_btn_mais_infos:hover {
-    color: var(--cor-primaria);
+    color: var(--cor-principal);
     transition: .3s;
 }
 

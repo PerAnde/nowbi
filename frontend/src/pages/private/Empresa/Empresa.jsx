@@ -54,10 +54,10 @@ export const Empresa = () => {
         : [];
 
     useEffect(() => {
-        if (anosDisponiveis.length > 0) {
+        if (anosDisponiveis.length > 0 && filtroAno === '') {
             setFiltroAno(String(anosDisponiveis[0]));
         }
-    }, [anosDisponiveis]);
+    }, [anosDisponiveis, filtroAno]);
 
     const bisFiltrados = empresa?.bis
         ?.filter(bi => {
@@ -65,7 +65,7 @@ export const Empresa = () => {
                 (filtro === 'em_progresso' && !bi.status) ||
                 (filtro === 'concluido' && bi.status);
 
-            const matchAno = bi.ano.toString() === filtroAno.toString();
+            const matchAno = filtroAno === '' || bi.ano.toString() === filtroAno.toString();
 
             return matchStatus && matchAno;
         })
@@ -75,6 +75,10 @@ export const Empresa = () => {
                 maio: 5, junho: 6, julho: 7, agosto: 8,
                 setembro: 9, outubro: 10, novembro: 11, dezembro: 12
             };
+
+            if (b.ano !== a.ano) {
+                return b.ano - a.ano;
+            }
 
             return mesesMap[b.mes.toLowerCase()] - mesesMap[a.mes.toLowerCase()];
         });
@@ -130,6 +134,7 @@ export const Empresa = () => {
                             anoSelecionado={filtroAno}
                             setAnoSelecionado={setFiltroAno}
                             anosDisponiveis={anosDisponiveis}
+                            placeholder="Selecione o Ano"
                         />
                         <Link className={styles.btn_link_principal} onClick={() => setPopUpNovBi(true)}><PiIcons.PiPlusBold /> Novo Bi</Link>
                     </div>

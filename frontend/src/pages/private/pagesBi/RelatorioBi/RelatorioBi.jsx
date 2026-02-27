@@ -57,6 +57,12 @@ export const RelatorioBi = () => {
 
     const dadosRelatorio = biAtual?.observacoes?.[0];
 
+    const relatorioVazio = (html) => {
+        if (!html) return false;
+        const textoLimpo = html.replace(/<[^>]*>/g, '').trim();
+        return textoLimpo.length > 0;
+    };
+
     return (
         <div className={styles.box_dashboard_bi}>
 
@@ -82,13 +88,13 @@ export const RelatorioBi = () => {
             </div>
 
             <div className={styles.box_pagina_bi}>
-                {dadosRelatorio.periodo_mes &&
-                    dadosRelatorio.resumo_geral &&
-                    dadosRelatorio.analise_receita &&
-                    dadosRelatorio.analise_despesa &&
-                    dadosRelatorio.pontos_atencao &&
-                    dadosRelatorio.recomendacoes &&
-                    dadosRelatorio.conclusao ? (
+                {relatorioVazio(dadosRelatorio?.periodo_mes) &&
+                    relatorioVazio(dadosRelatorio?.resumo_geral) &&
+                    relatorioVazio(dadosRelatorio?.analise_receita) &&
+                    relatorioVazio(dadosRelatorio?.analise_despesa) &&
+                    relatorioVazio(dadosRelatorio?.pontos_atencao) &&
+                    relatorioVazio(dadosRelatorio?.recomendacoes) &&
+                    relatorioVazio(dadosRelatorio?.conclusao) ? (
                     <div className='box_gerar_relatorio'>
                         <div className={styles.box_relatorio}>
                             <div className="box_logo_empresa">

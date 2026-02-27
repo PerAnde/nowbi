@@ -24,14 +24,14 @@ export const EditorObservacoes = ({ value, onChange }) => {
             false,
     };
 
-    const formats = [
-        'font',
-        'size',
-        'align',
-        'bold',
-        'color',
-        'list',
-    ];
+    // const formats = [
+    //     'font',
+    //     'size',
+    //     'align',
+    //     'bold',
+    //     'color',
+    //     'list',
+    // ];
 
     return (
         <ReactQuill

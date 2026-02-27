@@ -47,7 +47,7 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
         <div className={styles.popup}>
             <div className={styles.popupInfos}>
                 <div className={styles.box_btn_fechar}>
-                    <h3>Editar Categoria</h3>
+                    <h3>Editar categoria</h3>
                     <span onClick={() => { setTrigger(false); }}>
                         <PiIcons.PiXBold
                             className={styles.close}

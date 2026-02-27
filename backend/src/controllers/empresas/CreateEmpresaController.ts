@@ -4,10 +4,12 @@ import { CreateEmpresaService } from "../../services/empresas/CreateEmpresaServi
 class CreateEmpresaController {
     async handle(req: Request, res: Response) {
 
-        const { name, cnpj_empresa, email_empresa } = req.body
+        const { name, cnpj_empresa, email_empresa, categorias_padrao } = req.body
         const usuario_id = req.usuario_id;
         // Caso esteja enviando imagem, lidando com ela
         const logo_empresa = req.file ? req.file.filename : null;
+
+        const categoriasPadrao = categorias_padrao === "true" || categorias_padrao === true;
 
         const createEmpresaService = new CreateEmpresaService();
 
@@ -18,7 +20,8 @@ class CreateEmpresaController {
             cnpj_empresa,
             logo_empresa,
             email_empresa,
-            usuario_id
+            usuario_id,
+            categorias_padrao: !!categoriasPadrao
         });
 
         return res.json(empresa);

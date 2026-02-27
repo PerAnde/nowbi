@@ -1,13 +1,17 @@
 // src/pages/public/DashboardBi/ResumoBi.jsx
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Tooltip, BarChart, Bar, XAxis, CartesianGrid, ResponsiveContainer } from 'recharts'
 
 import * as PiIcons from 'react-icons/pi'
+
+import { InfoResumoBi } from '../../../../components/Modal/InfosResumoBi/InfoResumoBi'
 
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
 import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
 import { SelectAnoBi } from '../../../../components/Selects/SelectAnoBi'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
+import { INFO_METRICAS } from '../../../../utils/infoMetricasResumo'
 
 import styles from './ResumoBi.module.scss'
 
@@ -29,6 +33,8 @@ export const ResumoBi = () => {
 
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
     const [mostrarMedia, setMostrarMedia] = useState(false);
+
+    const [popUpInfoResumoBi, setPopUpInfoResumoBi] = useState(null)
 
     useEffect(() => {
         const handleResize = () => setGraficoMobile(window.innerWidth < 800);
@@ -317,9 +323,12 @@ export const ResumoBi = () => {
                                 {(mostrarMedia ? mediaMargemValor : margemDeContribuicao).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({(mostrarMedia ? mediaMargemPercentual.toFixed(2) : margemDeContribuicaoPercentual)}%)</span>
                             </h3>
                         </div>
-                        {/* <div className={styles.box_btn_mais_infos}>
-                            <PiIcons.PiInfo /> Mais informações
-                        </div> */}
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.margem_contribuicao)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
+                        </div>
                     </div>
 
                     <div className={styles.card_metrica_mes}>
@@ -331,9 +340,12 @@ export const ResumoBi = () => {
                                 })}
                             </h3>
                         </div>
-                        {/* <div className={styles.box_btn_mais_infos}>
-                            <PiIcons.PiInfo /> Mais informações
-                        </div> */}
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.ponto_equilibrio_op)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
+                        </div>
                     </div>
 
                     <div className={styles.card_metrica_mes}>
@@ -345,9 +357,12 @@ export const ResumoBi = () => {
                                 })}
                             </h3>
                         </div>
-                        {/* <div className={styles.box_btn_mais_infos}>
-                            <PiIcons.PiInfo /> Mais informações
-                        </div> */}
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.ponto_equilibrio_fin)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
+                        </div>
                     </div>
 
                     <div className={styles.card_metrica_mes}>
@@ -355,9 +370,12 @@ export const ResumoBi = () => {
                             <p className={styles.titulo_card_mes}>Média de Faturamento</p>
                             <h3>{mediaFaturamento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                         </div>
-                        {/* <div className={styles.box_btn_mais_infos}>
-                            <PiIcons.PiInfo /> Mais informações
-                        </div> */}
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.media_faturamento)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
+                        </div>
                     </div>
 
                 </div>
@@ -402,6 +420,11 @@ export const ResumoBi = () => {
                     </ResponsiveContainer>
                 </div>
             </div>
+
+            <InfoResumoBi
+                trigger={popUpInfoResumoBi}
+                setTrigger={setPopUpInfoResumoBi}
+            />
 
         </div>
     )

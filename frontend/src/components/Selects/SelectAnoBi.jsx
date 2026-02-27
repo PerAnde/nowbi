@@ -14,14 +14,14 @@ export const SelectAnoBi = ({ anoSelecionado, setAnoSelecionado, anosDisponiveis
         label: String(ano)
     }));
 
-    const selectedOptionAno = anoOptions.find(e => e.value === anoSelecionado);
+    const selectedOptionAno = anoOptions.find(e => String(e.value) === String(anoSelecionado));
 
     return (
         <Select
             options={anoOptions}
             value={selectedOptionAno}
             onChange={handleAno}
-            placeholder="Ano"
+            placeholder="Selecione o Ano"
             unstyled
             styles={customSelectBiStyles}
             menuPortalTarget={document.body}

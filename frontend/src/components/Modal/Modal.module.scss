@@ -240,8 +240,19 @@ img.picture_image {
     display: flex;
 }
 
+.container_checkbox {
+    grid-column: 1/-1;
+    padding: 2rem;
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    border: 1px solid var(--border);
+    transition: .3s;
+}
+
 .checkbox_confirmar {
     display: flex;
+    align-items: center;
+    text-align: left;
     cursor: pointer;
     gap: 1rem;
 }
@@ -259,6 +270,7 @@ img.picture_image {
     position: relative;
     cursor: pointer;
     transition: .3s;
+    min-width: 20px;
 }
 
 .custom_icon {
@@ -284,6 +296,27 @@ img.picture_image {
     border: 1px solid var(--cor-primaria);
     border-radius: 50%;
     transition: .3s;
+}
+
+.container_checkbox:has(.input_checkbox:checked) {
+    background-color: var(--background-geral);
+    transition: .3s;
+}
+
+.texto_checkbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.texto_checkbox p {
+    font-size: 1.4rem;
+    font-weight: var(--font-semi-bold);
+    margin-bottom: 0;
+}
+
+.texto_checkbox span {
+    font-size: 1.2rem;
+    color: var(--texto-secundario);
 }
 
 .box_selects {
