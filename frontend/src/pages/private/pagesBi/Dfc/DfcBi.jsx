@@ -11,6 +11,9 @@ import { gruposDeDRE } from '../../../../utils/gruposDeDRE'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { salvarDFC } from '../../../../utils/salvarPDF'
 
+import { InfoResumoBi } from '../../../../components/Modal/InfosResumoBi/InfoResumoBi'
+import { INFO_METRICAS } from '../../../../utils/infoMetricasResumo'
+
 import { api } from '../../../../api/api'
 import empresaSemLogo from '../../../../assets/images/imgEmpresaSemLogo.jpg'
 
@@ -32,6 +35,8 @@ export const DfcBi = () => {
 
     const [mesTemp, setMesTemp] = useState(mesSelecionado);
     const [anoTemp, setAnoTemp] = useState(anoSelecionado);
+
+    const [popUpInfoResumoBi, setPopUpInfoResumoBi] = useState(null)
 
     const aplicarFiltro = () => {
         if (!empresa) return;
@@ -245,12 +250,24 @@ export const DfcBi = () => {
                             <p className={styles.titulo_card_mes}>Margem de contribuição</p>
                             <h3>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({margemDeContribuicaoPercentual}%)</span></h3>
                         </div>
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.margem_contribuicao)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
+                        </div>
                     </div>
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
                             <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional</p>
                             <h3>{pontoDeEquilibrioOperacional.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
+                        </div>
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.ponto_equilibrio_op)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
                         </div>
                     </div>
 
@@ -259,13 +276,19 @@ export const DfcBi = () => {
                             <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro</p>
                             <h3>{pontoDeEquilibrioFinanceiro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                         </div>
+                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.ponto_equilibrio_fin)}>
+                            <span>
+                                <PiIcons.PiInfo />
+                                <p>Mais informações</p>
+                            </span>
+                        </div>
                     </div>
 
                 </div>
 
                 <div className={styles.box_topo_dre}>
                     <div className={styles.box_btns_salvar}>
-                        <button onClick={salvarDFC}>Gerar DFC</button>
+                        <button onClick={salvarDFC}>Salvar DFC</button>
                     </div>
                 </div>
 
@@ -360,6 +383,11 @@ export const DfcBi = () => {
                 </div>
 
             </div>
+
+            <InfoResumoBi
+                trigger={popUpInfoResumoBi}
+                setTrigger={setPopUpInfoResumoBi}
+            />
 
         </div>
     )

@@ -64,7 +64,12 @@ import { ListLancamentoBIController } from '../controllers/lancamentosBi/ListLan
 import { UpdateLancamentoBiController } from '../controllers/lancamentosBi/UpdateLancamentoBiController';
 import { DeleteLancamentoBiController } from '../controllers/lancamentosBi/DeleteLancamentoBiController';
 import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/DeleteLancamentosBiController';
+
+// Controllers Importacao CSV
 import { ImportacaoBlingCsvController } from '../controllers/importacaoCsv/ImportacaoBlingCsvController';
+
+// Controllers Integrações
+import { DeleteIntegracaoController } from '../controllers/integracoes/DeleteIntegracaoController';
 
 // Controller DashboardBi
 import { ListEmpresaDashboardBIController } from '../controllers/empresas/ListEmpresaDashboardBIController';
@@ -152,6 +157,9 @@ router.delete('/lancamentos', isAuthenticated, verificaStatusConta, new DeleteLa
 
 // Importacao via arquivo CSV
 router.post('/importacao-csv', isAuthenticated, verificaStatusConta, uploadCsv.single('file'), new ImportacaoBlingCsvController().handle)
+
+// Integracoes
+router.delete('/integrations/:empresa_id', isAuthenticated, new DeleteIntegracaoController().handle);
 
 // Rotas Dashboard BI
 router.get('/dashboardbi/:link_bi', new ListEmpresaDashboardBIController().handle)

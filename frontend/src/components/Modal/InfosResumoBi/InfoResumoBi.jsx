@@ -16,10 +16,11 @@ export const InfoResumoBi = ({ trigger, setTrigger }) => {
                 </div>
 
                 <div className={styles.box_frase_popup}>
-                    <p>{trigger.explicacao}</p>
+                    <p>{trigger.descricaoDetalhada}</p>
                     <div className={styles.box_calculo}>
                         <p>{trigger.calculo}</p>
                     </div>
+                    <p>{trigger.resumo}</p>
                 </div>
             </div>
         </div>

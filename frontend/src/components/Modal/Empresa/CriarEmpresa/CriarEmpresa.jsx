@@ -103,7 +103,7 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
                                 maxLength={18}
                             />
 
-                            {/* <div className={styles.container_checkbox}>
+                            <div className={styles.container_checkbox}>
                                 <label className={styles.checkbox_confirmar}>
                                     <Input
                                         type="checkbox"
@@ -120,7 +120,7 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
                                         <span>Gerar automaticamente categorias e subcategorias essenciais.</span>
                                     </div>
                                 </label>
-                            </div> */}
+                            </div>
                             {/* <Input
                                 type="email"
                                 placeholder="Email da empresa"

@@ -60,19 +60,19 @@
 }
 
 .box_frase_popup {
+    display: flex;
+    flex-direction: column;
     color: var(--texto-secundario);
 }
 
-.box_frase_popup p {
+.box_frase_popup > p{
     margin-bottom: 2rem;
 }
 
 .box_calculo {
-    border-radius: var(--border-radius-componente);
     border-left: 2px solid var(--cor-principal); 
+    background-color: var(--background-geral);
+    color: var(--texto-principal);
     padding: 2rem;
-}
-
-.box_calculo p{
-    margin: 0;
+    margin-bottom: 2rem;
 }

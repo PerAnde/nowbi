@@ -80,8 +80,6 @@
 }
 
 .card_metrica_mes {
-    display: flex;
-    justify-content: space-between;
     background-color: var(--branco);
     border-top: 2px solid var(--branco);
     border-radius: var(--border-radius-componente);
@@ -99,6 +97,28 @@
     font-weight: var(--regular);
     color: var(--texto-secundario);
 }
+
+.box_btn_mais_infos {
+    display: flex;
+    align-items: flex-end;
+    font-size: 1.2rem;
+    color: var(--texto-secundario);
+    cursor: pointer;
+}
+
+.box_btn_mais_infos span {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: var(--texto-secundario);
+    transition: .3s;
+}
+
+.box_btn_mais_infos span:hover {
+    color: var(--cor-principal);
+    transition: .3s;
+}
+
 
 @media screen and (max-width: 1370px) {
     .box_resumo_mes {
