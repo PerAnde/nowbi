@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SyncCategoriasBlingService } from "../../../services/integracoes/syncCategoriasBlingService/SyncCategoriasBlingService";
+import { SyncCategoriasBlingService } from "../../../services/integracoes/syncCategoriasBling/SyncCategoriasBlingService";
 
 class SyncCategoriasController {
     async handle(req: Request, res: Response) {
