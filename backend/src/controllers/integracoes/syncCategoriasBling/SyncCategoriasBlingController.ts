@@ -5,7 +5,7 @@ class SyncCategoriasController {
     async handle(req: Request, res: Response) {
         try {
             const { empresa_id } = req.params;
-            const usuario_id = req.usuario_id; // Vem do seu middleware de autenticação
+            const usuario_id = req.usuario_id;
 
             if (!empresa_id) {
                 return res.status(400).json({ error: "ID da empresa é obrigatório." });

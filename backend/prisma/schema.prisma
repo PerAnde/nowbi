@@ -155,6 +155,8 @@ model SubCategoria {
     empresaId String?  @map("empresa_id")
     empresa   Empresa? @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 
+    origem String? @default("MANUAL")
+
     created_at   DateTime       @default(now())
     updated_at   DateTime       @updatedAt
     lancamentoBi LancamentoBi[]
