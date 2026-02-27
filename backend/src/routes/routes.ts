@@ -70,7 +70,7 @@ import { ImportacaoBlingCsvController } from '../controllers/importacaoCsv/Impor
 
 // Controllers Integrações
 import { DeleteIntegracaoController } from '../controllers/integracoes/DeleteIntegracaoController';
-import { SyncCategoriasController } from '../controllers/integracoes/sincronizarCategoriasBling/SyncCategoriasBlingController';
+import { SyncCategoriasController } from '../controllers/integracoes/syncCategoriasBling/SyncCategoriasBlingController';
 
 // Controller DashboardBi
 import { ListEmpresaDashboardBIController } from '../controllers/empresas/ListEmpresaDashboardBIController';
