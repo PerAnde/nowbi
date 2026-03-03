@@ -46,8 +46,6 @@ export const Bi = () => {
         conclusao: "",
     });
 
-    console.log(bi.empresa?.blingIntegration)
-
     const hasConteudoReal = (html) => {
         if (!html) return false;
 
@@ -308,7 +306,7 @@ export const Bi = () => {
                             {loading ? (
                                 <Skeleton width={100} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                             ) : (
-                                <Link to={`/empresas/${bi.empresa?.id}`} className={styles.link_menu_pagina}>{bi.empresa?.name?.length > 10 ? `${bi.empresa.name.slice(0, 10)}...` : bi.empresa?.name}</Link>
+                                <Link to={`/empresas/${bi.empresa?.id}`} className={styles.link_menu_pagina}>{capitalizeFirstLetter(bi.empresa?.name?.length > 10 ? `${bi.empresa.name.slice(0, 10)}...` : bi.empresa?.name)}</Link>
                             )}
                             <PiIcons.PiDotOutlineFill />
                             <p className={styles.link_menu_pagina_atual}>

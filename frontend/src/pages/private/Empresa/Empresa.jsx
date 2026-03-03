@@ -93,7 +93,7 @@ export const Empresa = () => {
                         {loading ? (
                             <Skeleton width={200} height={25} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                         ) : (
-                            <h2>{empresa?.name?.length > 50 ? `${empresa.name.slice(0, 50)}...` : empresa?.name}</h2>
+                            <h2>{capitalizeFirstLetter(empresa?.name?.length > 50 ? `${empresa.name.slice(0, 50)}...` : empresa?.name)}</h2>
                         )}
 
                         <div className={styles.box_menu_pagina}>
@@ -105,7 +105,7 @@ export const Empresa = () => {
                                 {loading ? (
                                     <Skeleton width={80} height={15} borderRadius={6} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' />
                                 ) : (
-                                    <span>{empresa?.name?.length > 10 ? `${empresa.name.slice(0, 10)}...` : empresa?.name}</span>
+                                    <span>{capitalizeFirstLetter(empresa?.name?.length > 10 ? `${empresa.name.slice(0, 10)}...` : empresa?.name)}</span>
                                 )}
                             </p>
                         </div>

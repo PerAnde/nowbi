@@ -70,7 +70,8 @@ import { ImportacaoBlingCsvController } from '../controllers/importacaoCsv/Impor
 
 // Controllers Integrações
 import { DeleteIntegracaoController } from '../controllers/integracoes/DeleteIntegracaoController';
-import { SyncCategoriasController } from '../controllers/integracoes/syncCategoriasBling/SyncCategoriasBlingController';
+import { SyncCategoriasController } from '../controllers/integracoes/bling/syncCategoriasBling/SyncCategoriasBlingController';
+import { ImportLancamentosBlingController } from '../controllers/integracoes/bling/importLancamentosBling/ImportLancamentosBlingController';
 
 // Controller DashboardBi
 import { ListEmpresaDashboardBIController } from '../controllers/empresas/ListEmpresaDashboardBIController';
@@ -164,7 +165,7 @@ router.delete('/integrations/:empresa_id', isAuthenticated, verificaStatusConta,
 // Sincronizar Categorias Bling
 router.get("/integrations/bling/sync-categories/:empresa_id", isAuthenticated, verificaStatusConta, new SyncCategoriasController().handle);
 // Importar Lançamentos Bling
-
+router.get("/integrations/bling/sync-caixa/:empresa_id/:bi_id", isAuthenticated, verificaStatusConta, new ImportLancamentosBlingController().handle);
 
 // Rotas Dashboard BI
 router.get('/dashboardbi/:link_bi', new ListEmpresaDashboardBIController().handle)

@@ -65,7 +65,7 @@ class UpdateEmpresaService {
         const updateEmpresa = await prismaClient.empresa.update({
             where: { id },
             data: {
-                name,
+                name: name.trim().toLowerCase(),
                 cnpj_empresa,
                 logo_empresa: logoAtualizada,
                 email_empresa: email_empresa,

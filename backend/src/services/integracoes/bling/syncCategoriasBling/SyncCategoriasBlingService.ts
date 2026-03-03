@@ -1,5 +1,7 @@
-import prismaClient from "../../../prisma";
+import prismaClient from "../../../../prisma";
 import axios from "axios";
+
+import { BlingTokenProvider } from "../../../../integrations/bling/BlingTokenProvider";
 
 class SyncCategoriasBlingService {
     async execute(empresa_id: string, usuario_id: string) {
@@ -36,7 +38,7 @@ class SyncCategoriasBlingService {
         // --- PROCESSAR CATEGORIAS PAI ---
         for (const cat of pais) {
             const idExterno = String(cat.id);
-            const nomeLimpo = cat.descricao.trim();
+            const nomeLimpo = cat.descricao.trim().toLowerCase();;
             // Mapeamento direto para o seu Enum TipoCategoria
             const tipoMapped = cat.tipo === 1 ? "DESPESA" : "RECEITA";
 
@@ -77,7 +79,7 @@ class SyncCategoriasBlingService {
 
         // --- PROCESSAR SUBCATEGORIAS ---
         for (const sub of filhos) {
-            const nomeSub = sub.descricao.trim();
+            const nomeSub = sub.descricao.trim().toLowerCase();
             const idPaiBling = String(sub.idCategoriaPai);
 
             const categoriaPai = await prismaClient.categoria.findFirst({
@@ -99,7 +101,8 @@ class SyncCategoriasBlingService {
                     data: {
                         name: nomeSub,
                         categoria_id: categoriaPai.id,
-                        empresaId: empresa_id
+                        empresaId: empresa_id,
+                        origem: 'BLING'
                     }
                 });
             }

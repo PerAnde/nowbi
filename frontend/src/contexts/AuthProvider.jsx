@@ -40,7 +40,6 @@ export const AuthProvider = ({ children }) => {
             dataFimPeriodoTeste: response.dataFimPeriodoTeste
         }
 
-        console.log(payload)
         // Por fim setUsuario recebe os dados armazenados no payload
         setUsuario(payload)
         // E a funcao setUsuarioLocalStorage armazena as informacoes no localStorage

@@ -29,7 +29,6 @@ export const CategoriasEmpresa = () => {
     const [empresa, setEmpresa] = useState({});
     // Armazena categorias
     const [categorias, setCategorias] = useState([]);
-    console.log(categorias)
     // Armazena filtro categorias
     const [filtro, setFiltro] = useState('RECEITA');
     // Loading categorias
@@ -273,8 +272,8 @@ export const CategoriasEmpresa = () => {
                                                     <div className={styles.dados_subcategoria} key={subcategoria.id}>
                                                         <p>{capitalizeFirstLetter(subcategoria.name)}</p>
                                                         <div className={styles.box_info_adicionado}>
-                                                            <span className={categoria.origem === "BLING" ? styles.bling : styles.manual}>
-                                                                {categoria.origem}
+                                                            <span className={subcategoria.origem === "BLING" ? styles.bling : styles.manual}>
+                                                                {subcategoria.origem}
                                                             </span>
                                                         </div>
                                                         <div className={styles.info_data}>{new Date(subcategoria.created_at).toLocaleDateString('pt-BR', {
