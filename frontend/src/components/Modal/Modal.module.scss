@@ -214,6 +214,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
 }
+
 // Class Modal Detalhes BI
 
 // Class Btn Modal
@@ -249,77 +250,8 @@ button:disabled {
     background-color: var(--background-geral);
     transition: .3s;
 }
+
 // Class Btn Modal
-
-// .box_categorias {
-//     display: flex;
-//     gap: 1.5rem;
-// }
-
-// .box_componente {
-//     width: 100%;
-//     display: flex;
-//     background-color: var(--cor-componente);
-//     border-radius: var(--border-radius-componente);
-//     text-align: center;
-// }
-
-
-// .box_select_dre {
-//     width: 100%;
-//     display: grid;
-//     grid-template-columns: 1fr 1fr;
-//     align-items: center;
-//     justify-content: center;
-
-//     p {
-//         text-align: left;
-//     }
-// }
-
-// .container_checkbox {
-//     grid-column: 1/-1;
-//     padding: 2rem;
-//     background-color: var(--cor-componente);
-//     border-radius: var(--border-radius-componente);
-//     border: 1px solid var(--border);
-//     transition: .3s;
-// }
-
-// .texto_checkbox {
-//     display: flex;
-//     flex-direction: column;
-// }
-
-// .texto_checkbox p {
-//     font-size: 1.4rem;
-//     font-weight: var(--font-semi-bold);
-//     margin-bottom: 0;
-// }
-
-// .texto_checkbox span {
-//     font-size: 1.2rem;
-//     color: var(--texto-secundario);
-// }
-
-// .box_link_alterar_categoria {
-//     display: flex;
-// }
-
-// .box_link_alterar_categoria a {
-//     width: 100%;
-//     padding: 1rem;
-//     text-align: center;
-//     border: 1px solid var(--border-input);
-//     border-radius: var(--border-radius-button);
-//     color: var(--texto-secundario);
-// }
-
-// .box_link_alterar_categoria a:hover {
-//     background-color: var(--placeholder);
-//     color: var(--texto-primario);
-//     transition: 0.3s;
-// }
 
 @media screen and (max-width: 500px) {
     .box_selects {

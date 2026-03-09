@@ -297,40 +297,6 @@ span {
     border: none;
 }
 
-/* Tradução do seletor de tamanho */
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
-//     content: 'Pequeno';
-// }
-
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
-//     content: 'Grande';
-// }
-
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-item:not([data-value])::before {
-//     content: 'Normal';
-// }
-
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
-//     content: 'Gigante';
-// }
-
-// /* Também traduz o item selecionado no botão */
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before {
-//     content: 'Pequeno';
-// }
-
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before {
-//     content: 'Grande';
-// }
-
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-label:not([data-value])::before {
-//     content: 'Normal';
-// }
-
-// .quill .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before {
-//     content: 'Gigante';
-// }
-
 @media screen and (max-width: 650px) {
     .box-header {
         width: 100%;
