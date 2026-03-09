@@ -17,6 +17,28 @@
     cursor: default;
 }
 
+.box_info_conta{
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.card_status{
+    width: 100%;
+    padding: 2rem;
+    border-radius: var(--border-radius-componente);
+    color: var(--texto-secundario);
+}
+
+.status_teste{
+    background-color: var(--cor-principal-05);
+    border: 1px solid var(--cor-principal);
+}
+
+.status_suspenso{
+    background-color: var(--laranja-05);
+    border: 1px solid var(--laranja);
+}
+
 .box_ajuda {
     display: grid;
     grid-template-columns: 1fr 1fr;

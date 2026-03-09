@@ -51,8 +51,8 @@ api.interceptors.response.use(
                 // Plano expirado ou acesso negado
                 // Você pode limpar o localStorage ou manter os dados, depende da sua lógica
                 // Exemplo simples de redirecionamento:
-                if (window.location.pathname !== '/planos') {
-                    window.location.href = '/planos';
+                if (window.location.pathname !== '/ajuda') {
+                    window.location.href = '/ajuda';
                 }
             }
         }

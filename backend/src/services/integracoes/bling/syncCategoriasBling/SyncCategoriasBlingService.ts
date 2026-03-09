@@ -5,11 +5,9 @@ import { BlingTokenProvider } from "../../../../integrations/bling/BlingTokenPro
 
 class SyncCategoriasBlingService {
     async execute(empresa_id: string, usuario_id: string) {
-        const integracao = await prismaClient.blingIntegration.findUnique({
-            where: { empresaId: empresa_id }
-        });
-
-        if (!integracao) throw new Error("Integração não encontrada.");
+        
+        const tokenProvider = new BlingTokenProvider();
+        const accessToken = await tokenProvider.getValidToken(empresa_id);
 
         const buscarCategorias = async (tipo: number) => {
             const response = await axios.get("https://www.bling.com.br/Api/v3/categorias/receitas-despesas", {
@@ -18,7 +16,7 @@ class SyncCategoriasBlingService {
                     situacao: 1,
                     tipo: tipo
                 },
-                headers: { Authorization: `Bearer ${integracao.accessToken}` }
+                headers: { Authorization: `Bearer ${accessToken}` }
             });
             return response.data.data || [];
         };

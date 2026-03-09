@@ -45,8 +45,8 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
 
     return trigger ? (
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Editar categoria</h3>
                     <span onClick={() => { setTrigger(false); }}>
                         <PiIcons.PiXBold
@@ -55,8 +55,8 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
+                    <div className={styles.box_infos}>
                         <Input
                             type="text"
                             placeholder="Nome da categoria"
@@ -94,7 +94,7 @@ export const EditarCategoria = ({ trigger, setTrigger, categoria, categoriaEdita
                         </div>
 
                         {tipo && (
-                            <div className={styles.box_select}>
+                            <div>
                                 <SelectGrupoDre tipo={tipo} grupoDre={grupoDre} setGrupoDre={setGrupoDre} />
                             </div>
                         )}

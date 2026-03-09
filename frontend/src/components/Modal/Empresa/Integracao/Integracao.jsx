@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as PiIcons from 'react-icons/pi';
-import styles from './Integracao.module.scss';
-import imgBling from '../../../../assets/images/logo-bling.png';
 import { excluirIntegracao } from '../../../../services/integracao';
+
+import styles from '../../Modal.module.scss';
+import stylesIntegracao from './Integracao.module.scss';
 
 export const Integracao = ({ trigger, setTrigger, empresa }) => {
     const [etapa, setEtapa] = useState('escolha');
@@ -43,8 +44,8 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
 
     return (
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Integrações</h3>
                     <span onClick={() => setTrigger(false)}>
                         <PiIcons.PiXBold className={styles.close} />
@@ -52,17 +53,17 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                 </div>
 
                 {jaIntegrado ? (
-                    <div className={styles.box_status_ativo}>
-                        <div className={styles.header_status}>
-                            <PiIcons.PiSealCheckFill className={styles.icon_check} />
+                    <div className={stylesIntegracao.box_status_ativo}>
+                        <div className={stylesIntegracao.header_status}>
+                            <PiIcons.PiSealCheckFill className={stylesIntegracao.icon_check} />
                             <h4>Integração Ativa</h4>
                             <p>Esta empresa já está integrada com sucesso ao <strong>Bling</strong>.</p>
                         </div>
                         <p>Deseja excluir essa integração?</p>
                         <span>Obs: Os meses que já foram importados serão preservados.</span>
 
-                        <div className={styles.box_botoes_centro}>
-                            <button onClick={() => handleExcluirIntegracao()} className={styles.btn_link_excluir}>
+                        <div className={stylesIntegracao.box_botoes_centro}>
+                            <button onClick={() => handleExcluirIntegracao()} className={stylesIntegracao.btn_link_excluir}>
                                 Excluir integração
                             </button>
                         </div>
@@ -75,32 +76,37 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                                     <p>Escolha uma plataforma para integrar</p>
                                 </div>
 
-                                <div className={styles.box_integracoes}>
+                                <div className={stylesIntegracao.box_integracoes}>
                                     <div
-                                        className={styles.card_integracao}
+                                        className={`${stylesIntegracao.card_integracao} ${stylesIntegracao.box_bling}`}
                                         onClick={() => setEtapa('bling')}
                                     >
-                                        <img src={imgBling} alt="Bling" />
+                                        <p>Bling</p>
+                                    </div>
+                                    <div
+                                        className={`${stylesIntegracao.card_integracao} ${stylesIntegracao.box_conta_azul}`}
+                                    >
+                                        <p>Conta Azul <span>(Em breve)</span></p>
                                     </div>
                                 </div>
                             </>
                         )}
 
                         {etapa === 'bling' && (
-                            <div className={styles.container_etapa_bling}>
-                                <div className={styles.box_observacoes_integracao}>
+                            <div className={stylesIntegracao.container_etapa_bling}>
+                                <div className={stylesIntegracao.box_observacoes_integracao}>
                                     <h4>Integrando com o Bling</h4>
                                     <p><strong>Atenção:</strong> antes de prosseguir, certifique-se de que você está desconectado de qualquer conta do Bling, para evitar a integração com a empresa errada.</p>
                                     <p>Em seguida, retorne a esta página e clique em <strong>“Integrar”</strong>.</p>
                                 </div>
 
-                                <div className={styles.box_botoes}>
-                                    <button onClick={handleVoltar} className={styles.btn_link_cor_secundaria}>
+                                <div className={stylesIntegracao.box_botoes}>
+                                    <button onClick={handleVoltar} className={stylesIntegracao.btn_link_cor_secundaria}>
                                         Voltar
                                     </button>
 
                                     {!podeIntegrar && (
-                                        <button onClick={handleDesconectarBling} className={styles.btn_link_principal}>
+                                        <button onClick={handleDesconectarBling} className={stylesIntegracao.btn_link_cor_primaria}>
                                             Desconectar do Bling
                                         </button>
                                     )}
@@ -108,7 +114,7 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
                                     <button
                                         onClick={handleIntegrarBling}
                                         disabled={!podeIntegrar}
-                                        className={`${styles.btn_link} ${podeIntegrar ? styles.btn_link_cor_primaria : styles.btn_link_disabled}`}
+                                        className={`${podeIntegrar ? stylesIntegracao.btn_link_cor_primaria : ''}`}
                                     >
                                         Integrar
                                     </button>

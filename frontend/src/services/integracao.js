@@ -1,3 +1,4 @@
+import { api } from '../api/api'
 import { toast } from 'sonner'
 
 export const excluirIntegracao = async (empresaId) => {

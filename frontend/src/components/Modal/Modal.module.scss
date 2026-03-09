@@ -13,7 +13,7 @@
     overflow: auto;
 }
 
-.popupInfos {
+.box_popup {
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -29,13 +29,11 @@
     padding: 2rem;
 }
 
-.box_btn_close {
-    display: flex;
-    justify-content: flex-end;
-    padding: 2rem;
+.box_popup_dashboard_bi {
+    max-width: 1000px;
 }
 
-.box_btn_fechar {
+.box_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,189 +62,25 @@
     color: var(--texto-secundario);
 }
 
-.form_cadastro_empresa {
+.box_form {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.box_componente {
-    width: 100%;
-    display: flex;
-    background-color: var(--cor-componente);
-    border-radius: var(--border-radius-componente);
-    text-align: center;
-}
-
-.box_categorias {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.box_img_cadastro {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-
-.picture {
-    width: 120px;
-    height: 120px;
-    border-radius: var(--border-radius-componente);
-    background: var(--border-input);
-    color: var(--texto-secundario);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px dashed var(--cor-componente);
-    cursor: pointer;
-    overflow: hidden;
-    transition: .5s;
-}
-
-.picture:hover {
-    background: var(--hover-input);
-    color: var(--texto-secundario);
-    transition: .5s;
-}
-
-.picture_image {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .5rem;
-    font-size: 1.4rem;
-}
-
-.picture_image .icone_foto {
-    font-size: 2.4rem;
-}
-
-.picture_image {
-    max-width: 100%;
-}
-
-img.picture_image {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-}
-
-.box_img_cadastro p {
-    font-size: 1.3rem;
-    color: var(--texto-secundario);
-}
-
-.box_infos_cadastro {
+.box_infos {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.box_dados_empresa {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-
-.box_select_dre {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    justify-content: center;
-
-    p {
-        text-align: left;
-    }
-}
-
-.box_btn_button {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.5rem;
-}
-
-.btn_cancelar {
-    padding: 1.6rem;
-    cursor: pointer;
-    border: none;
-    background-color: var(--cor-componente);
-    color: var(--texto-secundario);
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius-button);
-    transition: 0.5s;
-}
-
-.btn_cancelar:hover {
-    background-color: var(--background-geral);
-    transition: .3s;
-}
-
-.box_inputs {
-    display: flex;
-    gap: 1.6rem;
 }
 
 .box_selects {
     display: flex;
 }
 
-.box_input_radio {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-input);
-    border-radius: var(--border-radius-componente);
-    cursor: pointer;
-
-    label {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        cursor: pointer;
-
-        span {
-            display: flex;
-            font-size: 1.8rem;
-        }
-    }
-}
-
-.box_input_radio.input_receita {
-    color: var(--verde);
-    border: 1px solid var(--verde);
-    transition: .3s;
-}
-
-.box_input_radio.input_despesa {
-    color: var(--vermelho);
-    border: 1px solid var(--vermelho);
-    transition: .3s;
-}
-
-.box_input_radio:not(:has(:checked)) {
-    opacity: .6;
-    border: 1px solid var(--border-input);
-    color: var(--texto-secundario);
-}
-
+// Classes Modal Excluir
 .box_confirmacao {
     display: flex;
-}
-
-.container_checkbox {
-    grid-column: 1/-1;
-    padding: 2rem;
-    background-color: var(--cor-componente);
-    border-radius: var(--border-radius-componente);
-    border: 1px solid var(--border);
-    transition: .3s;
 }
 
 .checkbox_confirmar {
@@ -303,19 +137,53 @@ img.picture_image {
     transition: .3s;
 }
 
-.texto_checkbox {
+// Classes Modal Excluir
+
+// Class Modal Categorias e Lançamento
+.box_inputs {
     display: flex;
-    flex-direction: column;
+    gap: 1.6rem;
 }
 
-.texto_checkbox p {
-    font-size: 1.4rem;
-    font-weight: var(--font-semi-bold);
-    margin-bottom: 0;
+.box_input_radio {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-input);
+    border-radius: var(--border-radius-componente);
+    cursor: pointer;
+
+    label {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+
+        span {
+            display: flex;
+            font-size: 1.8rem;
+        }
+    }
 }
 
-.texto_checkbox span {
-    font-size: 1.2rem;
+.box_input_radio.input_receita {
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    transition: .3s;
+}
+
+.box_input_radio.input_despesa {
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
+    transition: .3s;
+}
+
+.box_input_radio:not(:has(:checked)) {
+    opacity: .6;
+    border: 1px solid var(--border-input);
     color: var(--texto-secundario);
 }
 
@@ -326,199 +194,135 @@ img.picture_image {
     gap: 1.5rem;
 }
 
-.box_link_alterar_categoria {
-    display: flex;
-}
+// Class Modal Categorias e Lancamentos
 
-.box_link_alterar_categoria a {
-    width: 100%;
-    padding: 1rem;
-    text-align: center;
-    border: 1px solid var(--border-input);
-    border-radius: var(--border-radius-button);
-    color: var(--texto-secundario);
-}
-
-.box_link_alterar_categoria a:hover {
-    background-color: var(--placeholder);
-    color: var(--texto-primario);
-    transition: 0.3s;
-}
-
-/*Popup CSV*/
-.containerResumo {
+// Class Modal Detalhes BI
+.box_frase_popup {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 10px;
-
-    .cardSucesso {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-
-        .aviso {
-            display: flex;
-            gap: .5rem;
-        }
-
-        p {
-            color: var(--verde);
-            font-size: 1.6rem;
-        }
-
-        p.infoDuplicados {
-            color: var(--laranja);
-        }
-    }
-
-    .boxNaoImportados {
-        .aviso {
-            display: flex;
-            gap: .5rem;
-            color: var(--vermelho);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .tabelaScroll {
-            max-height: 150px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-componente);
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 12px;
-
-                th {
-                    background: var(--background-geral);
-                    padding: 1rem;
-                    text-align: left;
-                    position: sticky;
-                    top: 0;
-                }
-
-                td {
-                    padding: 8px;
-                    border-top: 1px solid var(--border);
-                }
-            }
-        }
-
-        .dica {
-            font-size: 1.3rem;
-            color: var(--texto-secundario);
-            margin-top: 1rem;
-            font-style: italic;
-        }
-    }
-
-    .tudoCerto {
-        text-align: center;
-        color: #4a5568;
-        font-weight: 500;
-    }
+    color: var(--texto-secundario);
 }
 
-.containerProgresso {
-    padding: 2rem;
-    width: 100%;
-
-    .linhaProgresso {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .ponto {
-            width: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            opacity: 0.3;
-            transition: all 0.3s;
-
-            &.ativo {
-                opacity: 1;
-            }
-
-            .circulo {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: var(--border);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                font-size: 14px;
-            }
-
-            span {
-                font-size: 12px;
-                font-weight: 500;
-            }
-
-            &.ativo .circulo {
-                background: var(--cor-principal);
-                color: white;
-            }
-        }
-
-        .divisor {
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-            margin-bottom: 2.5rem; // Alinha com o centro do círculo
-        }
-    }
+.box_frase_popup>p {
+    margin-bottom: 2rem;
 }
 
-.dropArea {
-    border: 1px dashed var(--border);
-    border-radius: 10px;
-    padding: 30px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.2s;
-    margin-bottom: 20px;
-}
-
-.dropArea:hover {
+.box_calculo {
+    border-left: 2px solid var(--cor-principal);
     background-color: var(--background-geral);
+    color: var(--texto-principal);
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
+// Class Modal Detalhes BI
 
-.icone_csv {
-    font-size: 3rem;
-    color: var(--texto-secundario);
-}
-
-.dragActive {
-    border-color: #6366f1;
-    background: #f5f6ff;
-}
-
-.dropArea p {
-    margin: 0;
-    color: var(--texto-secundario);
-}
-
-.btn_importar {
+// Class Btn Modal
+.box_btn_button {
     display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
 }
+
+button:disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-button);
+    cursor: not-allowed;
+}
+
+.btn_cancelar {
+    padding: 1.6rem;
+    cursor: pointer;
+    border: none;
+    background-color: var(--cor-componente);
+    color: var(--texto-secundario);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-button);
+    transition: 0.5s;
+}
+
+.btn_cancelar:hover {
+    background-color: var(--background-geral);
+    transition: .3s;
+}
+// Class Btn Modal
+
+// .box_categorias {
+//     display: flex;
+//     gap: 1.5rem;
+// }
+
+// .box_componente {
+//     width: 100%;
+//     display: flex;
+//     background-color: var(--cor-componente);
+//     border-radius: var(--border-radius-componente);
+//     text-align: center;
+// }
+
+
+// .box_select_dre {
+//     width: 100%;
+//     display: grid;
+//     grid-template-columns: 1fr 1fr;
+//     align-items: center;
+//     justify-content: center;
+
+//     p {
+//         text-align: left;
+//     }
+// }
+
+// .container_checkbox {
+//     grid-column: 1/-1;
+//     padding: 2rem;
+//     background-color: var(--cor-componente);
+//     border-radius: var(--border-radius-componente);
+//     border: 1px solid var(--border);
+//     transition: .3s;
+// }
+
+// .texto_checkbox {
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// .texto_checkbox p {
+//     font-size: 1.4rem;
+//     font-weight: var(--font-semi-bold);
+//     margin-bottom: 0;
+// }
+
+// .texto_checkbox span {
+//     font-size: 1.2rem;
+//     color: var(--texto-secundario);
+// }
+
+// .box_link_alterar_categoria {
+//     display: flex;
+// }
+
+// .box_link_alterar_categoria a {
+//     width: 100%;
+//     padding: 1rem;
+//     text-align: center;
+//     border: 1px solid var(--border-input);
+//     border-radius: var(--border-radius-button);
+//     color: var(--texto-secundario);
+// }
+
+// .box_link_alterar_categoria a:hover {
+//     background-color: var(--placeholder);
+//     color: var(--texto-primario);
+//     transition: 0.3s;
+// }
 
 @media screen and (max-width: 500px) {
     .box_selects {
         grid-template-columns: 1fr;
-    }
-
-    .linhaProgresso {
-        flex-direction: column;
-    }
-
-    .ponto {
-        display: none;
     }
 }

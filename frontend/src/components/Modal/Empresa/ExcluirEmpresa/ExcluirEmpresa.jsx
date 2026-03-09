@@ -12,15 +12,15 @@ export const ExcluirEmpresa = ({ trigger, setTrigger, mensagem, onConfirm }) => 
 
     return (trigger) ? (
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Confirmar exclusão</h3>
                     <span onClick={() => { setTrigger(false); setConfirmarCheckbox(false) }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
-                <p className={styles.mensagem}>{mensagem}</p>
+                <p>{mensagem}</p>
 
                 <div className={styles.box_confirmacao}>
                     <label className={styles.checkbox_confirmar} htmlFor="confirmarExclusao">

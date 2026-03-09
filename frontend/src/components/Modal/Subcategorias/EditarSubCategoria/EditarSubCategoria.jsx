@@ -39,8 +39,8 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, empresaI
 
     return trigger ? (
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Editar subcategoria</h3>
                     <span>
                         <PiIcons.PiXBold
@@ -50,8 +50,8 @@ export const EditarSubCategoria = ({ trigger, setTrigger, subcategoria, empresaI
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
+                    <div className={styles.box_infos}>
                         <Input
                             type="text"
                             placeholder="Nome da subcategoria"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select'
+import { useAuth } from '../../contexts/useAuth'
 import { customSelectStyles } from './customSelectEmpresasStyles'
 
 import { api } from '../../api/api';
@@ -13,15 +14,18 @@ import imgEmpresaSemLogo from '../../assets/images/imgEmpresaSemLogo.jpg'
 
 export const SelectEmpresas = () => {
 
+    const { isPeriodoTesteAtivo, isPlanoAtivo } = useAuth();
     const navigate = useNavigate();
     const { id } = useParams();
 
     const [empresas, setEmpresas] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const planoExpirado = !isPeriodoTesteAtivo && !isPlanoAtivo;
+
     useEffect(() => {
-        buscarEmpresas(setEmpresas, setLoading)
-    }, [])
+        buscarEmpresas(setEmpresas, setLoading, planoExpirado)
+    }, [planoExpirado])
 
     const opcoesEmpresas = empresas.map(empresa => ({
         value: empresa.id,
@@ -45,7 +49,7 @@ export const SelectEmpresas = () => {
             value={empresaSelecionada}
             onChange={handleChangeEmpresa}
             placeholder={loading ? 'Carregando empresas...' : 'Selecione uma empresa'}
-            isDisabled={loading}
+            isDisabled={loading || planoExpirado}
             isSearchable={false}
             unstyled
             styles={customSelectStyles}

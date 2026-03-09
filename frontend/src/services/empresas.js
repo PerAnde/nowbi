@@ -4,7 +4,13 @@ import { format } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 
 // Buscar empresas
-export const buscarEmpresas = async (setEmpresas, setLoading) => {
+export const buscarEmpresas = async (setEmpresas, setLoading, planoExpirado = false) => {
+
+    if (planoExpirado) {
+        setLoading(false);
+        return;
+    }
+
     try {
 
         // await new Promise(resolve => setTimeout(resolve, 5000))
@@ -22,7 +28,9 @@ export const buscarEmpresas = async (setEmpresas, setLoading) => {
         setLoading(false);
 
     } catch (error) {
-        toast.error("Erro ao buscar empresas!");
+        if (error.response?.status !== 403) {
+            toast.error("Erro ao buscar empresas!");
+        }
         console.error("Erro ao buscar empresas:", error);
     } finally {
         setLoading(false);

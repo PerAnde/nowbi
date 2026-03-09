@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../../contexts/useAuth';
 import { getUsuarioLocalStorage } from '../../../contexts/util'
+import { calcularDiasRestantes } from '../../../utils/diasTeste'
 
 import styles from './MenuLateral.module.scss';
 import * as PiIcons from 'react-icons/pi';
@@ -13,14 +15,11 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
     const usuario = getUsuarioLocalStorage();
     const menuLateralRef = useRef(null);
 
-    let diasRestantes = null;
+    const planoExpirado = !usuario?.isPlanoAtivo && !usuario?.isPeriodoTesteAtivo;
 
-    if (usuario?.isPeriodoTesteAtivo && usuario.dataFimPeriodoTeste) {
-        const hoje = new Date();
-        const fimTeste = new Date(usuario.dataFimPeriodoTeste);
-        const diffEmMs = fimTeste - hoje;
-        diasRestantes = Math.max(Math.ceil(diffEmMs / (1000 * 60 * 60 * 24)), 0);
-    }
+    console.log(planoExpirado)
+
+    const diasRestantes = usuario?.dataFimPeriodoTeste ? calcularDiasRestantes(usuario.dataFimPeriodoTeste) : 0;
 
     // // Fechar o menu ao clicar fora dele
     useEffect(() => {
@@ -63,17 +62,34 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                 <div className={styles.menu_lateral}>
                     <div className={styles.links_menu}>
                         <p>Visão Geral</p>
-                        <Link to='/dashboard' className={`${styles.btn_menu} ${location.pathname === '/dashboard' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link
+                            to={planoExpirado ? "#" : "/dashboard"}
+                            className={`${styles.btn_menu} ${location.pathname === '/dashboard' ? styles.ativo : ''} ${planoExpirado ? styles.desabilitado : ''}`}
+                            onClick={planoExpirado ? (e) => e.preventDefault() : handleLinkClick}
+                        >
                             <PiIcons.PiChartBarLight className={styles.icon} /> Dashboard
                         </Link>
-                        <Link to='/empresas' className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link
+                            to={planoExpirado ? "#" : "/empresas"}
+                            className={`${styles.btn_menu} ${location.pathname === '/empresas' ? styles.ativo : ''} ${planoExpirado ? styles.desabilitado : ''}`}
+                            onClick={planoExpirado ? (e) => e.preventDefault() : handleLinkClick}
+                        >
                             <PiIcons.PiBuildingLight className={styles.icon} /> Empresas
                         </Link>
-                        <Link to='/categorias' className={`${styles.btn_menu} ${location.pathname === '/categorias' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link
+                            to={planoExpirado ? "#" : "/categorias"}
+                            className={`${styles.btn_menu} ${location.pathname === '/categorias' ? styles.ativo : ''} ${planoExpirado ? styles.desabilitado : ''}`}
+                            onClick={planoExpirado ? (e) => e.preventDefault() : handleLinkClick}
+                        >
                             <PiIcons.PiListChecksLight className={styles.icon} /> Categorias
                         </Link>
+
                         <p>Conta</p>
-                        <Link to='/user' className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link
+                            to={planoExpirado ? "#" : "/user"}
+                            className={`${styles.btn_menu} ${location.pathname === '/user' ? styles.ativo : ''} ${planoExpirado ? styles.desabilitado : ''}`}
+                            onClick={planoExpirado ? (e) => e.preventDefault() : handleLinkClick}
+                        >
                             <PiIcons.PiUserLight className={styles.icon} /> Minha conta
                         </Link>
                         {/* <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
@@ -92,12 +108,31 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         <div className={styles.box_mensagem_menu_lateral}>
                             <p>Período experimental</p>
                             <span>
-                                {diasRestantes > 0
-                                    ? `${diasRestantes} ${diasRestantes === 1 ? 'dia' : 'dias'} restantes`
-                                    : 'Período expirado'}
+                                {(() => {
+                                    const agora = new Date();
+                                    const dataVencimento = new Date(usuario?.dataFimPeriodoTeste);
+
+                                    // Se ainda faltam 1 ou mais dias inteiros
+                                    if (diasRestantes > 0) {
+                                        return `${diasRestantes} ${diasRestantes === 1 ? 'dia' : 'dias'}`;
+                                    }
+
+                                    // Se estamos no dia do vencimento (diasRestantes === 0)
+                                    if (diasRestantes === 0) {
+                                        // Se o horário de agora ainda não passou do horário de vencimento
+                                        if (agora < dataVencimento) {
+                                            return 'Expira hoje';
+                                        } else {
+                                            return 'Expirado';
+                                        }
+                                    }
+
+                                    // Se diasRestantes for menor que 0
+                                    return 'Expirado';
+                                })()}
                             </span>
                             <Link className={styles.btn_ativar_conta} to='https://api.whatsapp.com/send?phone=5547984178977' target='_blank'>
-                                {diasRestantes > 0 ? 'Ativar conta' : 'Escolher plano'}
+                                {diasRestantes > 0 ? 'Ativar conta' : 'Ativar conta'}
                             </Link>
                         </div>
                     )}

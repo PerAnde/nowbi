@@ -4,33 +4,63 @@ import { getUsuarioLocalStorage } from "../contexts/util";
 
 // Buscar Usuario
 export const buscarUsuario = async (setUsuario, setLoading) => {
-
     try {
+        const usuarioLocal = getUsuarioLocalStorage();
 
-        // await new Promise(resolve => setTimeout(resolve, 5000))
-
-        const token = getUsuarioLocalStorage();
-
-        if (!token) {
+        if (!usuarioLocal || !usuarioLocal.token) {
             toast.error("Usuário não autenticado!");
             return;
         }
 
         const response = await api.get("/user", {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${usuarioLocal.token}`
             }
         });
 
-        setUsuario(response.data)
-        setLoading(false);
-
+        setUsuario(response.data);
     } catch (error) {
+        if (error.response && error.response.status === 403) {
+            const dadosSalvos = getUsuarioLocalStorage();
+            if (dadosSalvos) {
+                setUsuario(dadosSalvos);
+            }
+        } else {
+            toast.error("Erro ao buscar dados do usuário!");
+        }
+    } finally {
         setLoading(false);
-        toast.error("Erro ao buscar dados do usuário!")
-        console.log(error)
     }
+}
 
+export const buscarUsuarioStatus = async (setUsuario, setLoading) => {
+    try {
+        const usuarioLocal = getUsuarioLocalStorage();
+
+        if (!usuarioLocal || !usuarioLocal.token) {
+            toast.error("Usuário não autenticado!");
+            return;
+        }
+
+        const response = await api.get("/user/status", {
+            headers: {
+                Authorization: `Bearer ${usuarioLocal.token}`
+            }
+        });
+
+        setUsuario(response.data);
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            const dadosSalvos = getUsuarioLocalStorage();
+            if (dadosSalvos) {
+                setUsuario(dadosSalvos);
+            }
+        } else {
+            toast.error("Erro ao buscar dados do usuário!");
+        }
+    } finally {
+        setLoading(false);
+    }
 }
 
 // Editar Usuario

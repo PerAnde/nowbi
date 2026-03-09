@@ -3,32 +3,33 @@ import { useEffect } from 'react';
 import { useAuth } from '../contexts/useAuth'
 
 export const PrivateRoutes = ({ children }) => {
+    const auth = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    // Chamando arquivo useAuth
-    const auth = useAuth()
-    const navigate = useNavigate()
-    const location = useLocation()
-
+    // Definição clara: expirou se não tem plano E não está em teste
     const planoExpirado = !auth.isPeriodoTesteAtivo && !auth.isPlanoAtivo;
 
     useEffect(() => {
-
-        // Verificando se não existe token dentro do Auth e redirecionando para /login
         if (!auth.token) {
-            // Se nao existir token dentro do Auth redireciona para /login
-            return navigate("/")
+            navigate("/");
+            return;
         }
 
-        // Se não tiver periodo de teste ou plano ativo redireciona para /planos
-        if (planoExpirado && location.pathname !== "/planos") {
-            navigate("/planos");
+        // Se expirou e NÃO está na ajuda, manda para ajuda
+        if (planoExpirado && location.pathname !== "/ajuda") {
+            navigate("/ajuda");
         }
+    }, [auth.token, planoExpirado, location.pathname, navigate]);
 
-    }, [auth.token, planoExpirado, location.pathname, navigate])
+    // PROTEÇÃO DE RENDERIZAÇÃO
+    if (!auth.token) return null;
 
-    if (!auth.token || (planoExpirado && location.pathname !== "/planos")) {
-        return null
+    // Se expirou e tentar acessar outra coisa, não renderiza nada (o useEffect redirecionará)
+    if (planoExpirado && location.pathname !== "/ajuda") {
+        return null;
     }
 
-    return children
+    // Se expirou MAS está na /ajuda, renderiza os children (página de ajuda)
+    return children;
 }

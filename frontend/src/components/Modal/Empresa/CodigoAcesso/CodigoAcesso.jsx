@@ -3,7 +3,9 @@ import { buscarPin, atualizarPin } from '../../../../services/loginBi';
 import { Button } from '../../../Button/Button';
 import * as PiIcons from 'react-icons/pi';
 import { toast } from 'sonner';
-import styles from './CodigoAcesso.module.scss';
+
+import styles from '../../Modal.module.scss';
+import stylesCodigoAcesso from './CodigoAcesso.module.scss';
 
 export const CodigoAcesso = ({ trigger, setTrigger, empresa }) => {
     const [pin, setPin] = useState(["", "", "", ""]);
@@ -104,8 +106,8 @@ export const CodigoAcesso = ({ trigger, setTrigger, empresa }) => {
 
     return trigger ? (
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Código de acesso</h3>
                     <span onClick={() => setTrigger(false)}>
                         <PiIcons.PiXBold className={styles.close} />
@@ -116,8 +118,8 @@ export const CodigoAcesso = ({ trigger, setTrigger, empresa }) => {
                     <p>Configure um PIN para proteger o acesso ao BI.</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <div className={styles.box_input_pin}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
+                    <div className={stylesCodigoAcesso.box_input_pin}>
                         {pin.map((value, index) => (
                             <input
                                 key={index}
@@ -128,11 +130,11 @@ export const CodigoAcesso = ({ trigger, setTrigger, empresa }) => {
                                 ref={(el) => (inputsRef.current[index] = el)}
                                 onChange={(e) => handleChange(e.target.value, index)}
                                 onKeyDown={(e) => handleKeyDown(e, index)}
-                                className={styles.input_pin}
+                                className={stylesCodigoAcesso.input_pin}
                                 disabled={loading}
                             />
                         ))}
-                        <div onClick={handlePinCopiado} className={styles.btn_copiar_pin}>
+                        <div onClick={handlePinCopiado} className={stylesCodigoAcesso.btn_copiar_pin}>
                             Copiar
                         </div>
                     </div>

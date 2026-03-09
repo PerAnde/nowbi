@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../../../Button/Button';
 import * as PiIcons from 'react-icons/pi';
-import styles from './ConfigEmpresa.module.scss';
 
 import { atualizarConfigDashboardBI } from '../../../../services/empresas';
+
+import styles from '../../Modal.module.scss';
+import stylesConfigEmpresa from './ConfigEmpresa.module.scss';
 
 export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
     const [loading, setLoading] = useState(false);
@@ -50,8 +52,8 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
 
     return trigger ? (
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Configurações</h3>
                     <span onClick={() => setTrigger(false)}>
                         <PiIcons.PiXBold className={styles.close} />
@@ -62,56 +64,58 @@ export const ConfigEmpresa = ({ trigger, setTrigger, empresa }) => {
                     <p>Escolha quais páginas do Dashboard BI serão exibidas.</p>
                 </div>
 
-                <label className={styles.switch}>
-                    <input
-                        type="checkbox"
-                        checked={config.mostrar_resumo}
-                        onChange={() => toggleConfig('mostrar_resumo')}
-                    />
-                    <span className={styles.slider}></span>
-                    <span className={styles.label}>Página Resumo</span>
-                </label>
+                <div>
+                    <label className={stylesConfigEmpresa.switch}>
+                        <input
+                            type="checkbox"
+                            checked={config.mostrar_resumo}
+                            onChange={() => toggleConfig('mostrar_resumo')}
+                        />
+                        <span className={stylesConfigEmpresa.slider}></span>
+                        <span className={stylesConfigEmpresa.label}>Página Resumo</span>
+                    </label>
 
-                <label className={styles.switch}>
-                    <input
-                        type="checkbox"
-                        checked={config.mostrar_detalhes}
-                        onChange={() => toggleConfig('mostrar_detalhes')}
-                    />
-                    <span className={styles.slider}></span>
-                    <span className={styles.label}>Página Detalhes</span>
-                </label>
+                    <label className={stylesConfigEmpresa.switch}>
+                        <input
+                            type="checkbox"
+                            checked={config.mostrar_detalhes}
+                            onChange={() => toggleConfig('mostrar_detalhes')}
+                        />
+                        <span className={stylesConfigEmpresa.slider}></span>
+                        <span className={stylesConfigEmpresa.label}>Página Detalhes</span>
+                    </label>
 
-                <label className={styles.switch}>
-                    <input
-                        type="checkbox"
-                        checked={config.mostrar_dfc}
-                        onChange={() => toggleConfig('mostrar_dfc')}
-                    />
-                    <span className={styles.slider}></span>
-                    <span className={styles.label}>Página DFC</span>
-                </label>
+                    <label className={stylesConfigEmpresa.switch}>
+                        <input
+                            type="checkbox"
+                            checked={config.mostrar_dfc}
+                            onChange={() => toggleConfig('mostrar_dfc')}
+                        />
+                        <span className={stylesConfigEmpresa.slider}></span>
+                        <span className={stylesConfigEmpresa.label}>Página DFC</span>
+                    </label>
 
-                {/* 
-                <label className={styles.switch}>
+                    {/* 
+                <label className={stylesConfigEmpresa.switch}>
                     <input
                         type="checkbox"
                         checked={config.mostrar_dre}
                         onChange={() => toggleConfig('mostrar_dre')}
                     />
-                    <span className={styles.slider}></span>
-                    <span className={styles.label}>Página DRE</span>
+                    <span className={stylesConfigEmpresa.slider}></span>
+                    <span className={stylesConfigEmpresa.label}>Página DRE</span>
                 </label> */}
 
-                <label className={styles.switch}>
-                    <input
-                        type="checkbox"
-                        checked={config.mostrar_relatorio}
-                        onChange={() => toggleConfig('mostrar_relatorio')}
-                    />
-                    <span className={styles.slider}></span>
-                    <span className={styles.label}>Página Relatório</span>
-                </label>
+                    <label className={stylesConfigEmpresa.switch}>
+                        <input
+                            type="checkbox"
+                            checked={config.mostrar_relatorio}
+                            onChange={() => toggleConfig('mostrar_relatorio')}
+                        />
+                        <span className={stylesConfigEmpresa.slider}></span>
+                        <span className={stylesConfigEmpresa.label}>Página Relatório</span>
+                    </label>
+                </div>
 
                 <div className={styles.box_btn_button}>
                     <Button onClick={salvarConfiguracoes} type="submit" loading={loading}>Salvar alterações</Button>

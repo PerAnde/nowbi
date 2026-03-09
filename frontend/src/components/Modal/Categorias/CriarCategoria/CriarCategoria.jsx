@@ -37,16 +37,16 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada, empresaId
     return trigger ? (
 
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Nova categoria</h3>
                     <span onClick={() => { setTrigger(false); setName(""); setTipo(""); setGrupoDre("NAO_EXIBIR_NO_DRE"); }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
+                    <div className={styles.box_infos}>
                         <Input type="text" placeholder="Nome da categoria" value={name} onChange={(e) => setName(e.target.value)} />
                         <div className={styles.box_inputs}>
                             <label htmlFor="receita" className={`${styles.box_input_radio} ${styles.input_receita}`} >
@@ -60,7 +60,7 @@ export const CriarCategoria = ({ trigger, setTrigger, categoriaCriada, empresaId
                         </div>
 
                         {tipo && (
-                            <div className={styles.box_select}>
+                            <div>
                                 <SelectGrupoDre tipo={tipo} grupoDre={grupoDre} setGrupoDre={setGrupoDre} />
                             </div>
                         )}

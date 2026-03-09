@@ -13,6 +13,7 @@
 
     // Cores principais
     --cor-principal: #76B2FE;
+    --cor-principal-05: rgba(118, 178, 254, .05);
     --cor-principal-hover: #5899E9;
 
     --cor-secundaria: #252049;
@@ -20,7 +21,7 @@
     --cor-secundaria-hover: #1C1838;
 
     --verde: #00b276;
-    --verde-15: rgba(0, 178, 118, .15);
+    --verde-05: rgba(0, 178, 118, .05);
 
     --cinza: rgb(226, 231, 241);
     --cinza-15: rgba(226, 231, 241, .15);
@@ -30,6 +31,8 @@
 
     // Bordas e linhas
     --border: #E2E7F1;
+
+    --btn-menu-lateral: #fff;
 
     // Cpr texto
     --texto-primario: #121217;
@@ -84,7 +87,7 @@
     --amarelo-15: rgba(255, 171, 0, .15);
     --amarelo-hover: #e49800;
     --laranja: #e4630e;
-    --laranja-15: rgba(228, 99, 14, .15);
+    --laranja-05: rgba(228, 99, 14, .05);
     --laranja-claro: #f39150;
     --roxo: #842bd8;
     --roxo-15: rgba(164, 80, 243, .15);
@@ -143,6 +146,13 @@
 
 [data-theme="dark"] {
     --background: #141a21;
+    --background-geral: #141a21;
+
+    --border: #27313d;
+
+    --btn-menu-lateral: #0f141a;
+
+    --cinza: #0f141a;
 
     --cor-componente: #1c252e;
     --cor-componente-secundario: #181f27;

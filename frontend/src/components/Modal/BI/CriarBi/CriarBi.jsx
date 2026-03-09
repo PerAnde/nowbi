@@ -40,16 +40,16 @@ export const CriarBi = ({ trigger, setTrigger, biCriado }) => {
     return trigger ? (
 
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Novo Bi</h3>
                     <span onClick={() => setTrigger(false)}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
+                    <div className={styles.box_infos}>
 
                         <div className={styles.box_selects}>
                             <SelectMes

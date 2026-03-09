@@ -8,6 +8,7 @@ import { Button } from '../../../Button/Button'
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss'
+import stylesCriarEditarEmpresa from './CriarEditarEmpresa.module.scss'
 
 export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
 
@@ -63,22 +64,22 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
     return trigger ? (
 
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Nova empresa</h3>
                     <span onClick={() => { setTrigger(false), setFotoEmpresa(null), setCnpjEmpresa(''), setName(''), setEmailAutenticaBi('') }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
-                    <div className={`${styles.box_componente} ${styles.box_img_cadastro}`}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
+                    <div className={stylesCriarEditarEmpresa.box_img_empresa}>
 
-                        <label className={styles.picture} htmlFor="picture_input">
+                        <label className={stylesCriarEditarEmpresa.picture} htmlFor="picture_input">
                             {fotoEmpresa ? (
-                                <img src={fotoEmpresa} alt='Foto Empresa' className={styles.picture_image} />
+                                <img src={fotoEmpresa} alt='Foto Empresa' className={stylesCriarEditarEmpresa.picture_image} />
                             ) : (
-                                <span className={styles.picture_image}><PiIcons.PiCameraDuotone className={styles.icone_foto} />Enviar foto</span>
+                                <span className={stylesCriarEditarEmpresa.picture_image}><PiIcons.PiCameraDuotone className={stylesCriarEditarEmpresa.icone_foto} />Enviar foto</span>
                             )}
                         </label>
 
@@ -87,8 +88,8 @@ export const CriarEmpresa = ({ trigger, setTrigger, empresaCriada }) => {
                         <p>Permitido *.jpeg, *.jpg, *.png<br></br>(máx 3 mb)</p>
                     </div>
 
-                    <div className={`${styles.box_componente} ${styles.box_infos_cadastro}`}>
-                        <div className={styles.box_dados_empresa}>
+                    <div className={styles.box_infos}>
+                        <div className={stylesCriarEditarEmpresa.box_dados_empresa}>
                             <Input
                                 type="text"
                                 placeholder="Nome da empresa"

@@ -35,7 +35,16 @@ class DetailUsuarioService {
             }
         })
 
-        return usuario
+        if (usuario && !usuario.isPlanoAtivo && usuario.isPeriodoTesteAtivo) {
+            const hoje = new Date();
+            const fimTeste = new Date(usuario.dataFimPeriodoTeste);
+            
+            if (hoje > fimTeste) {
+                usuario.isPeriodoTesteAtivo = false;
+            }
+        }
+
+        return usuario;
     }
 }
 

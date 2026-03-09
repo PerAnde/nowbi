@@ -124,18 +124,27 @@ a.btn_ativar_conta:hover {
 }
 
 .btn_menu:hover {
-    background-color: var(--branco);
+    background-color: var(--btn-menu-lateral);
     color: var(--texto-principal);
 }
 
 .btn_menu.ativo {
-    background-color: var(--branco);
+    background-color: var(--btn-menu-lateral);
     border-left: 2px solid var(--cor-principal);
     color: var(--texto-principal);
 }
 
 .btn_menu.ativo .icon{
     color: var(--cor-principal);
+}
+
+.btn_menu.desabilitado{
+    color: var(--texto-secundario);
+    opacity: .5;
+}
+
+.btn_menu.desabilitado:hover{
+    cursor: default;
 }
 
 .icon {

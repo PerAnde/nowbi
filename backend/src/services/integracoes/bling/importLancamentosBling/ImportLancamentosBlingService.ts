@@ -14,14 +14,14 @@ interface ImportRequest {
 class ImportLancamentosBlingService {
     async execute({ empresa_id, bi_id, dataInicial, dataFinal }: ImportRequest) {
 
-        const [integracao, bi] = await Promise.all([
-            prismaClient.blingIntegration.findUnique({ where: { empresaId: empresa_id } }),
-            prismaClient.businessIntelligence.findFirst({ where: { id: bi_id } })
-        ]);
+        const tokenProvider = new BlingTokenProvider();
+        const accessToken = await tokenProvider.getValidToken(empresa_id);
 
-        if (!integracao) throw new Error("Integração Bling não encontrada.");
-        if (!bi) throw new Error("Nenhum Business Intelligence encontrado.");
+        const bi = await prismaClient.businessIntelligence.findUnique({
+            where: { id: bi_id }
+        });
 
+        if (!bi) throw new Error("Nenhum BI encontrado.");
         if (bi.empresa_id !== empresa_id) {
             throw new Error("O BI selecionado não pertence a esta empresa.");
         }
@@ -34,7 +34,7 @@ class ImportLancamentosBlingService {
                 situacao: 'R',
                 situacaoConciliacao: 3
             },
-            headers: { Authorization: `Bearer ${integracao.accessToken}` }
+            headers: { Authorization: `Bearer ${accessToken}` }
         });
 
         console.log("Status Bling:", response.status);

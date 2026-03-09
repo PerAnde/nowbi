@@ -56,15 +56,15 @@ export const CriarLancamento = ({ trigger, setTrigger, empresaId, lancamentoCria
     return trigger ? (
 
         <div className={styles.popup}>
-            <div className={styles.popupInfos}>
-                <div className={styles.box_btn_fechar}>
+            <div className={styles.box_popup}>
+                <div className={styles.box_header}>
                     <h3>Novo lançamento</h3>
                     <span onClick={() => { setTrigger(false), setValor(""), setTipo("RECEITA"), setCategoriaSelecionada(""), setSubcategoriaSelecionada("") }}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.form_cadastro_empresa}>
+                <form onSubmit={handleSubmit} className={styles.box_form}>
 
                     <Input type="text" placeholder="R$ 0,00" value={valor} onChange={(e) => setValor(formatarValor(e.target.value))} />
 
@@ -81,7 +81,7 @@ export const CriarLancamento = ({ trigger, setTrigger, empresaId, lancamentoCria
                     </div>
 
                     <div className={styles.box_selects}>
-                        <div className={styles.box_select}>
+                        <div>
                             <SelectCategoria
                                 tipo={tipo}
                                 empresaId={empresaId}
@@ -90,7 +90,7 @@ export const CriarLancamento = ({ trigger, setTrigger, empresaId, lancamentoCria
                             />
                         </div>
 
-                        <div className={styles.box_select}>
+                        <div>
                             <SelectSubcategoria
                                 categoriaSelecionada={categoriaSelecionada}
                                 empresaId={empresaId}

@@ -70,14 +70,25 @@ export const Dashboard = () => {
 
                 <div className={styles.box_img_dashboard}>
 
-                    <div className={styles.degrade}></div>
+                    <div className={styles.waves}>
+                        <div className={`${styles.wave} ${styles.wave1}`}></div>
+                        <div className={`${styles.wave} ${styles.wave2}`}></div>
+                        <div className={`${styles.wave} ${styles.wave3}`}></div>
+                    </div>
 
                     <div className={styles.texto_bem_vindo}>
-                        <h1>Bem vindo de volta 👋 <br />
-                            {loading ? <Skeleton width={200} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} /> : capitalizeFirstLetter(usuario.name)}</h1>
+                        <h1>
+                            Bem vindo de volta 👋 <br />
+                            {loading
+                                ? <Skeleton width={200} height={27} baseColor='rgb(170, 170, 170, .1)' highlightColor='rgb(232, 235, 239, .2)' borderRadius={5} />
+                                : capitalizeFirstLetter(usuario.name)}
+                        </h1>
+
                         <p>Acompanhe e gerencie suas empresas agora mesmo!</p>
 
-                        <Link to="/empresas" className={styles.btn_cor_primaria}>Ver Empresas</Link>
+                        <Link to="/empresas" className={styles.btn_cor_primaria}>
+                            Ver Empresas
+                        </Link>
                     </div>
 
                 </div>
@@ -103,7 +114,7 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     )}
-{/* 
+                    {/* 
                     <div className={styles.box_btn_fatura}>
                         <Link to='/financeiro' className={styles.btn_upgrade}>Fazer upgrade</Link>
                         <Link to='/planos' className={styles.btn_pagar_fatura}>Acessar Fatura</Link>

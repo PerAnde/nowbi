@@ -26,7 +26,7 @@ export async function limitaRecursosDuranteTeste(req: Request, res: Response, ne
 
         if(empresas.length >= 1 && req.path.includes("/empresas")){
             return res.status(403).json({
-                message: "Durante o período de teste é permitido cadastrar apenas 1 empresa.",
+                message: "Durante o período de teste é permitido cadastrar apenas 1 CNPJ.",
             })
         }
 
