@@ -1,16 +1,19 @@
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-const transporter = nodemailer.createTransport({
+const mailConfig: SMTPTransport.Options = {
     host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_PORT),
+    port: Number(process.env.EMAIL_PORT) || 465,
     secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
-});
+};
 
-export const sendResetEmail = async (email, resetLink) => {
+const transporter = nodemailer.createTransport(mailConfig);
+
+export const sendResetEmail = async (email: string, resetLink: string) => {
     const mailOptions = {
         from: `"Equipe NowBi" <no-reply@nowbi.com.br>`,
         to: email,

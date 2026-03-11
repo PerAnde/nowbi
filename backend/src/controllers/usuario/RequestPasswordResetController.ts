@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
-import { sendResetEmail } from '../../services/usuario/emailService.js';
+import { sendResetEmail } from '../../services/usuario/emailService';
 
 const prisma = new PrismaClient();
 
@@ -28,7 +28,7 @@ class RequestPasswordResetController {
         })
       ]);
 
-      const resetLink = `https://app.nowbi.com.br/reset-password?token=${resetToken}&email=${email}`;
+      const resetLink = `http://localhost:5173/reset-password?token=${resetToken}&email=${email}`;
       
       await sendResetEmail(email, resetLink);
 
