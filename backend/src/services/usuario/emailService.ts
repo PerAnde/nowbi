@@ -22,9 +22,16 @@ export const sendResetEmail = async (email: string, resetLink: string) => {
       <div style="font-family: sans-serif; max-width: 600px; margin: auto; color: #4C556C; line-height: 1.5;">
         <div
             style="display: flex; align-items: center; background-color: #F6F8FA; padding: 1.5rem; border-radius: 8px 8px 0 0;">
-            <img src="https://app.nowbi.com.br/icone-logo.png"
-                width="42" height="42" alt="NowBi Logo">
-            <span style="font-size: 1.4rem; font-weight: bold; margin-left: 10px; color: #4C556C;">NowBi</span>
+            <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="vertical-align: middle;">
+        <img src="https://app.nowbi.com.br/logo.png" width="40" height="40" style="display: block;" alt="NowBi">
+      </td>
+      <td style="vertical-align: middle; padding-left: 12px;">
+        <span style="font-family: sans-serif; font-size: 22px; font-weight: bold; color: #4C556C; line-height: 1;">NowBi</span>
+      </td>
+    </tr>
+  </table>
         </div>
 
         <div style="padding: 20px;">
@@ -47,15 +54,25 @@ export const sendResetEmail = async (email: string, resetLink: string) => {
 
             <div
                 style="background-color: #EBF5FF; padding: 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png"
-                    width="35" height="35" alt="WhatsApp">
-                <div>
-                    <p style="margin: 0; font-weight: bold;">Estamos no WhatsApp!</p>
-                    <p style="margin: 5px 0 0 0;">Salve nosso número e chame sempre que precisar:
-                    </p>
-                    <a href="https://wa.me/5547984178977"
-                        style="color: #25D366; font-weight: bold; text-decoration: none;">(47) 98417-8977</a>
-                </div>
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td style="vertical-align: middle; width: 40px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png"
+                                width="35" height="35" style="display: block;" alt="WA">
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px;">
+                            <p
+                                style="margin: 0; font-family: sans-serif; font-size: 14px; font-weight: bold; color: #4C556C;">
+                                Estamos no WhatsApp!</p>
+                            <p style="margin: 4px 0 0 0; font-family: sans-serif; font-size: 14px; color: #4C556C;">
+                                Salve nosso número e chame sempre que precisar
+                            </p>
+                            <a href="https://wa.me/5547984178977"
+                                style="color: #25D366; font-weight: bold; text-decoration: none;">(47)
+                                98417-8977</a>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -66,7 +83,7 @@ export const sendResetEmail = async (email: string, resetLink: string) => {
                 Dashboard BI
             </p>
             <p style="font-size: 11px; color: #999; margin-top: 20px;">
-                Este é um e-mail automáticamente. Por favor, não responda a este e-mail.
+                Este é um e-mail automático. Por favor, não responda.
             </p>
         </div>
     </div>
@@ -85,9 +102,16 @@ export const sendPasswordChangedEmail = async (email: string) => {
       <div style="font-family: sans-serif; max-width: 600px; margin: auto; color: #4C556C; line-height: 1.5;">
         <div
             style="display: flex; align-items: center; background-color: #F6F8FA; padding: 1.5rem; border-radius: 8px 8px 0 0;">
-            <img src="https://app.nowbi.com.br/icone-logo.png"
-                width="42" height="42" alt="NowBi Logo">
-            <span style="font-size: 1.4rem; font-weight: bold; margin-left: 10px; color: #4C556C;">NowBi</span>
+            <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="vertical-align: middle;">
+        <img src="https://app.nowbi.com.br/logo.png" width="40" height="40" style="display: block;" alt="NowBi">
+      </td>
+      <td style="vertical-align: middle; padding-left: 12px;">
+        <span style="font-family: sans-serif; font-size: 22px; font-weight: bold; color: #4C556C; line-height: 1;">NowBi</span>
+      </td>
+    </tr>
+  </table>
         </div>
 
         <div style="padding: 20px;">
@@ -110,15 +134,25 @@ export const sendPasswordChangedEmail = async (email: string) => {
 
             <div
                 style="background-color: #EBF5FF; padding: 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png"
-                    width="35" height="35" alt="WhatsApp">
-                <div>
-                    <p style="margin: 0; font-weight: bold;">Estamos no WhatsApp!</p>
-                    <p style="margin: 5px 0 0 0;">Salve nosso número e chame sempre que precisar:
-                    </p>
-                    <a href="https://wa.me/5547984178977"
-                        style="color: #25D366; font-weight: bold; text-decoration: none;">(47) 98417-8977</a>
-                </div>
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td style="vertical-align: middle; width: 40px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png"
+                                width="35" height="35" style="display: block;" alt="WA">
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px;">
+                            <p
+                                style="margin: 0; font-family: sans-serif; font-size: 14px; font-weight: bold; color: #4C556C;">
+                                Estamos no WhatsApp!</p>
+                            <p style="margin: 4px 0 0 0; font-family: sans-serif; font-size: 14px; color: #4C556C;">
+                                Salve nosso número e chame sempre que precisar
+                            </p>
+                            <a href="https://wa.me/5547984178977"
+                                style="color: #25D366; font-weight: bold; text-decoration: none;">(47)
+                                98417-8977</a>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -129,7 +163,7 @@ export const sendPasswordChangedEmail = async (email: string) => {
                 Dashboard BI
             </p>
             <p style="font-size: 11px; color: #999; margin-top: 20px;">
-                Este é um e-mail automáticamente. Por favor, não responda a este e-mail.
+                Este é um e-mail automático. Por favor, não responda.
             </p>
         </div>
     </div>
