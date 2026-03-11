@@ -51,10 +51,11 @@ export function ResetPassword() {
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
+            } else {
+                setLoading(false);
             }
         } catch (error) {
             console.error(error);
-        } finally {
             setLoading(false);
         }
     }
@@ -104,7 +105,7 @@ export function ResetPassword() {
                             />
                         </label>
 
-                        <ButtonAuth type="submit" disabled={loading}>
+                        <ButtonAuth type="submit" loading={loading} disabled={loading}>
                             {loading ? "Alterando..." : "Redefinir Senha"}
                         </ButtonAuth>
 
