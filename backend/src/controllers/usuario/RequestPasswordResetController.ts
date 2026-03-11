@@ -28,7 +28,7 @@ class RequestPasswordResetController {
         })
       ]);
 
-      const resetLink = `http://localhost:5173/reset-password?token=${resetToken}&email=${email}`;
+      const resetLink = `https://app.nowbi.com.br/reset-password?token=${resetToken}&email=${email}`;
       
       await sendResetEmail(email, resetLink);
 
