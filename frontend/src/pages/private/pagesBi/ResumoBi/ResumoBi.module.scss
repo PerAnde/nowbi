@@ -10,41 +10,20 @@
     gap: 1rem;
 }
 
-.mes_ano {
-    display: grid;
-    grid-template-columns: 135px 90px;
-    gap: 1rem;
-}
-
-.box_btn_filtro {
-    display: flex;
-}
-
-.box_btn_filtro button {
-    border: none;
-    background-color: var(--button-cor-primaria);
-    color: var(--branco);
-    padding: 1.1rem;
-    border-radius: var(--border-radius-button);
-    cursor: pointer;
-}
-
-.box_btn_filtro button:hover {
-    background-color: var(--button-cor-primaria-hover);
-    transition: .3s;
-}
-
 .btn_media {
     display: flex;
     align-items: center;
+    gap: .5rem;
     padding: 1.1rem;
     border-radius: var(--border-radius-button);
+    border: 1px solid var(--border);
+    color: var(--texto-secundario);
     cursor: pointer;
     transition: .3s;
 }
 
 .btn_media.btn_media_ativo {
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-principal);
     color: var(--branco);
     transition: .3s;
 }
@@ -74,7 +53,7 @@
 }
 
 .card_resumo_mes.card_faturamento_bruto {
-    border-top: 2px solid var(--cor-primaria);
+    border-top: 2px solid var(--cor-principal);
 }
 
 .card_resumo_mes.card_resultado_liquido:hover {
@@ -174,7 +153,7 @@
 
 .icone_card_mes.icone_faturamento_bruto {
     background-color: var(--cor-primaria-15);
-    color: var(--cor-primaria);
+    color: var(--cor-principal);
 }
 
 .icone_card_mes.icone_resultado_liquido {
@@ -267,7 +246,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-principal);
 }
 
 @media screen and (max-width: 1370px) {

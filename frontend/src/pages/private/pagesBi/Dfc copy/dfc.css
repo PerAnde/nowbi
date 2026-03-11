@@ -1,0 +1,93 @@
+/* CSS Tabela DFC */
+.dreContainer {
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem 2rem;
+}
+
+.wrapper_dre {
+    overflow-x: auto;
+}
+
+.box_resultados_dre {
+    min-width: 700px;
+    overflow-x: auto;
+}
+
+.box_infos_empresa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.box_logo_empresa {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.box_logo_empresa img {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--border-radius-componente);
+}
+
+.box_header_dre {
+    display: flex;
+    background-color: var(--background);
+    border-radius: var(--border-radius-componente_dre);
+    margin-bottom: 1rem;
+}
+
+.resultado_dfc {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.header_resultado {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: var(--background-geral);
+    border-radius: var(--border-radius-componente_dre);
+    padding: 1rem;
+    gap: 2rem;
+}
+
+.resultado_total {
+    text-align: right;
+}
+
+.resultado_porcentagem {
+    text-align: right;
+}
+
+.box_categorias_dre,
+.box_subcategorias_dre {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0 1.5rem;
+    gap: 2rem;
+}
+
+.box_categorias_dre {
+    font-weight: var(--medium);
+}
+
+.box_subcategorias_dre {
+    color: var(--texto-secundario);
+}
+
+.nome_subcategoria {
+    display: flex;
+    gap: .5rem;
+}
+
+.icone_subcategoria_dre {
+    color: var(--texto-secundario);
+}

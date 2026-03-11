@@ -6,6 +6,7 @@ import { PrivateRoutes } from './private.routes'
 // Rotas Publicas
 import { Login } from '../pages/public/Login/Login';
 import { Cadastro } from '../pages/public/Cadastro/Cadastro';
+import { ResetPassword } from '../pages/public/ResetarSenha/ResetarSenha';
 // Rotas Privadas Usuario
 import { MinhaConta } from '../pages/private/MinhaConta/MinhaConta';
 import { Financeiro } from '../pages/private/Financeiro/Financeiro';
@@ -33,6 +34,7 @@ export const AppRoutes = () => {
                 {/* Rotas Publicas */}
                 <Route path='/' element={<Login />} />
                 <Route path='/cadastro' element={<Cadastro />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 {/* Rotas Privadas Usuario */}
                 <Route path='/user' element={<PrivateRoutes><MinhaConta /></PrivateRoutes>} />
                 {/* <Route path='/financeiro' element={<PrivateRoutes><Financeiro /></PrivateRoutes>} /> */}

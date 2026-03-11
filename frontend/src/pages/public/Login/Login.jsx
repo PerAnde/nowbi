@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../contexts/useAuth'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
+
+import { EsqueceuSenha } from '../../../components/Modal/EsqueceuSenha/EsqueceuSenha'
 
 import { Input } from '../../../components/Input/Input'
 import { ButtonAuth } from '../../../components/ButtonAuth/ButtonAuth'
@@ -21,11 +23,23 @@ export const Login = () => {
     const [campoEmailObrigatorio, setCampoEmailObrigatorio] = useState(false)
     const [campoPasswordObrigatorio, setCampoPasswordObrigatorio] = useState(false)
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [popUpEsqueceuSenha, setPopUpEsqueceuSenha] = useState(false);
+
     const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (popUpEsqueceuSenha) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [popUpEsqueceuSenha]);
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -56,6 +70,10 @@ export const Login = () => {
 
     }
 
+    const toggleVisualizarSenha = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
 
         <div className={styles.container_auth}>
@@ -78,14 +96,27 @@ export const Login = () => {
                                 ''
                             )}
                         </label>
-                        <label>
-                            <Input type="password" placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)} className={`${campoPasswordObrigatorio ? styles.input_erro : ''}`} />
+                        <label className={styles.input_container}>
+                            <Input type={showPassword ? "text" : "password"} placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)} className={`${campoPasswordObrigatorio ? styles.input_erro : ''}`} />
                             {campoPasswordObrigatorio ? (
                                 <span className={styles.preencher_campos}>*Campo obrigatório!</span>
                             ) : (
                                 ''
                             )}
+
+                            <button
+                                type="button"
+                                className={styles.icon_button}
+                                onClick={toggleVisualizarSenha}
+                            >
+                                {showPassword ? <PiIcons.PiEyeLight /> : <PiIcons.PiEyeClosedLight />}
+                            </button>
                         </label>
+
+
+                        <div className={styles.box_btn_reset_password}>
+                            <Link className={styles.btn_reset_password} onClick={() => setPopUpEsqueceuSenha(true)}>Esqueceu sua senha?</Link>
+                        </div>
 
                         <ButtonAuth type="submit" loading={loading}>Entrar</ButtonAuth>
 
@@ -118,6 +149,8 @@ export const Login = () => {
 
                 <img src={imgAuth} alt="" />
             </div>
+
+            <EsqueceuSenha trigger={popUpEsqueceuSenha} setTrigger={setPopUpEsqueceuSenha} />
 
         </div>
     )

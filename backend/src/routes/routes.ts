@@ -12,6 +12,9 @@ import { AuthUsuarioController } from '../controllers/usuario/AuthUsuarioControl
 import { DetailUsuarioController } from '../controllers/usuario/DetailUsuarioController';
 import { DetailUsuarioAjudaController } from '../controllers/usuario/DetailUsuarioAjudaController';
 import { UpdateUsuarioController } from '../controllers/usuario/UpdateUsuarioController';
+// Controllers Resetar Senha
+import { RequestPasswordResetController } from '../controllers/usuario/RequestPasswordResetController';
+import { ResetPasswordController } from '../controllers/usuario/ResetPasswordController';
 
 // Controllers Planos e Teste
 import { ListPlanosController } from '../controllers/planos/planosController';
@@ -57,6 +60,7 @@ import { ListObsBiController } from '../controllers/bis/ListObsBiController';
 import { UpdateObsBiController } from '../controllers/bis/UpdateObsBiController';
 import { DeleteBiController } from '../controllers/bis/DeleteBiController';
 
+// Controller Gerar Relatorio BI
 import { GenerateReportBiController } from '../controllers/bis/GenerateReportBiController';
 
 // Controllers Lancamento BI
@@ -107,6 +111,9 @@ router.get('/user', isAuthenticated, verificaStatusConta, new DetailUsuarioContr
 router.get('/user/status', isAuthenticated, verificaStatusConta, new DetailUsuarioAjudaController().handle)
 router.put('/user/:id', isAuthenticated, verificaStatusConta, uploadImagem.single('file'), new UpdateUsuarioController().handle)
 // router.get('/planos', isAuthenticated, verificaStatusConta, new ListPlanosController().handle)
+// Rotas Resetar Senha
+router.post('/password/recovery', new RequestPasswordResetController().handle)
+router.post('/password/reset', new ResetPasswordController().handle)
 
 // Rotas Grupo Empresas
 router.post('/empresas/grupo', isAuthenticated, verificaStatusConta, new CreateGrupoController().handle)

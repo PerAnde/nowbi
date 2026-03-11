@@ -17,8 +17,6 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
 
     const planoExpirado = !usuario?.isPlanoAtivo && !usuario?.isPeriodoTesteAtivo;
 
-    console.log(planoExpirado)
-
     const diasRestantes = usuario?.dataFimPeriodoTeste ? calcularDiasRestantes(usuario.dataFimPeriodoTeste) : 0;
 
     // // Fechar o menu ao clicar fora dele

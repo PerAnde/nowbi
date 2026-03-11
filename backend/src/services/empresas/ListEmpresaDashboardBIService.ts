@@ -23,6 +23,7 @@ class ListEmpresaDashboardBIService {
                 mostrar_dre: true,
                 mostrar_relatorio: true,
                 bis: {
+                    where: { status: true },
                     select: {
                         id: true,
                         mes: true,

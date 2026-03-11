@@ -1,0 +1,28 @@
+.box_filtros_mes_ano {
+    display: flex;
+    gap: 1rem;
+}
+
+.mes_ano {
+    display: grid;
+    grid-template-columns: 85px 133px;
+    gap: 1rem;
+}
+
+.box_btn_filtro {
+    display: flex;
+}
+
+.box_btn_filtro button {
+    border: none;
+    background-color: var(--cor-principal);
+    color: var(--branco);
+    padding: 1.1rem;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+}
+
+.box_btn_filtro button:hover {
+    background-color: var(--cor-principal-hover);
+    transition: .3s;
+}

@@ -1,26 +1,16 @@
-// Importando api do backend
 import { api } from "../api/api"
 import { toast } from "sonner"
 
-// Funcao para salvar dados do usuario no localStorage
 export function setUsuarioLocalStorage(user) {
-    //  Armazenando dados do usuario no localStorage
     localStorage.setItem('user', JSON.stringify(user))
 }
 
-// Pegando informacoes
 export function getUsuarioLocalStorage() {
     const json = localStorage.getItem('user')
-
-    // Se nao existir um json retorna null
     if (!json) {
         return null
     }
-
-    // Se existir retorna uma const usuario a const json
     const usuario = JSON.parse(json)
-
-    // Retornando usuario
     return usuario ?? null
 }
 
@@ -30,17 +20,11 @@ export function logout() {
     window.location.replace('/');
 }
 
-// Criando e exportando funcao para fazer o login   
 export async function LoginRequest(email, password) {
     try {
-        // Fazendo requisicao na api do backend passando email e password
         const request = await api.post('login', { email, password })
-
-        // Se der certo retorna os dados
         return request.data
-
     } catch (error) {
-        // Se der erro retorna null
         toast.error(error.response.data.error)
         return null
     }
@@ -49,7 +33,6 @@ export async function LoginRequest(email, password) {
 export async function SignUpRequest(name, email, cpf_cnpj, password) {
 
     try {
-
         const request = await api.post('register', { name, email, cpf_cnpj, password })
         toast.success("Conta criada com sucesso, seja bem vindo!")
         return request.data
@@ -59,4 +42,30 @@ export async function SignUpRequest(name, email, cpf_cnpj, password) {
         throw new Error(error.response.data.error)
     }
 
+}
+
+export async function RequestPasswordRecovery(email) {
+    try {
+        const request = await api.post('password/recovery', { email });
+        toast.success("Se o e-mail estiver cadastrado, um link foi enviado!");
+        return request.data;
+    } catch (error) {
+        toast.error(error.response?.data?.error || "Erro ao solicitar recuperação");
+        return null;
+    }
+}
+
+export async function ResetPasswordRequest(email, token, newPassword) {
+    try {
+        const request = await api.post('password/reset', {
+            email,
+            token,
+            newPassword
+        });
+        toast.success("Senha alterada com sucesso!");
+        return request.data;
+    } catch (error) {
+        toast.error(error.response?.data?.error || "Erro ao redefinir senha");
+        throw new Error(error.response?.data?.error);
+    }
 }

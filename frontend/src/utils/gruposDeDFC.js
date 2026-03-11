@@ -1,5 +1,5 @@
 // Filtro grupos de DRE
-export const gruposDeDRE = [
+export const gruposDeDFC = [
     { titulo: 'Receita Operacional Bruta (+)', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
     { titulo: 'Deduções e Impostos (-)', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
     { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },

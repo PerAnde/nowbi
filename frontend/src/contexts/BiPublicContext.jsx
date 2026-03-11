@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { buscarDashboardBi } from '../services/dashboardBi'
 import { processaDadosBi } from '../utils/processaDadosBi'
+import { montarEstruturaDfc } from '../utils/dadosDfc'
 
 const BiPublicContext = createContext()
 
@@ -55,6 +56,7 @@ export const BiPublicProvider = ({ children }) => {
 
         const biAtual = bisOrdenados.find(bi => bi.mes.toLowerCase() === mesSelecionado && bi.ano === anoSelecionado)
         const biAnterior = bisOrdenados[bisOrdenados.indexOf(biAtual) - 1]
+        const indexAtual = bisOrdenados.indexOf(biAtual);
 
         const dadosAtuais = processaDadosBi(empresa, `${biAtual.mes.toUpperCase()} / ${biAtual.ano}`)
         const dadosAnteriores = biAnterior ? processaDadosBi(empresa, `${biAnterior.mes.toUpperCase()} / ${biAnterior.ano}`) : null
@@ -65,10 +67,14 @@ export const BiPublicProvider = ({ children }) => {
         const despesaAtual = dadosAtuais.summary.despesas
         const despesaAnterior = dadosAnteriores?.summary.despesas || 0
 
+        const ultimos12 = bisOrdenados.slice(Math.max(0, indexAtual - 11), indexAtual + 1);
+        const dfcFull = montarEstruturaDfc(ultimos12);
+
         setDashboardData({
             ...dadosAtuais,
             diferencaPercentualReceita: receitaAnterior ? ((receitaAtual - receitaAnterior) / receitaAnterior) * 100 : 0,
-            diferencaPercentualDespesa: despesaAnterior ? ((despesaAtual - despesaAnterior) / despesaAnterior) * 100 : 0
+            diferencaPercentualDespesa: despesaAnterior ? ((despesaAtual - despesaAnterior) / despesaAnterior) * 100 : 0,
+            dfc12Meses: dfcFull
         })
 
         setLoading(false)

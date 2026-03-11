@@ -1,21 +1,23 @@
 // src/pages/public/DashboardBi/ResumoBi.jsx
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+
 import { Tooltip, BarChart, Bar, XAxis, CartesianGrid, ResponsiveContainer } from 'recharts'
 
-import * as PiIcons from 'react-icons/pi'
+import { useBiPublic } from '../../../../contexts/BiPublicContext'
 
+import { FiltroDashboardBi } from '../../../../components/Selects/FiltroDashboardBi'
 import { InfoResumoBi } from '../../../../components/Modal/InfosResumoBi/InfoResumoBi'
 
-import { useBiPublic } from '../../../../contexts/BiPublicContext'
-import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
-import { SelectAnoBi } from '../../../../components/Selects/SelectAnoBi'
+import { agruparPorGrupo } from '../../../../utils/agruparPorGrupo'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { INFO_METRICAS } from '../../../../utils/infoMetricasResumo'
+import { organizaMeses } from '../../../../utils/organizaMeses'
 
 import styles from './ResumoBi.module.scss'
+import * as PiIcons from 'react-icons/pi'
 
 export const ResumoBi = () => {
+
     const {
         empresa,
         dashboardData,
@@ -23,13 +25,9 @@ export const ResumoBi = () => {
         anoSelecionado,
         setMesSelecionado,
         setAnoSelecionado,
-        mesesDisponiveis,
         anosDisponiveis,
         loading
     } = useBiPublic()
-
-    const [mesTemp, setMesTemp] = useState(mesSelecionado);
-    const [anoTemp, setAnoTemp] = useState(anoSelecionado);
 
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
     const [mostrarMedia, setMostrarMedia] = useState(false);
@@ -42,70 +40,14 @@ export const ResumoBi = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const monthOrder = {
-        "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
-        "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
-        "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
-        "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
+    const aplicarFiltro = (novoMes, novoAno) => {
+        setMesSelecionado(novoMes);
+        setAnoSelecionado(novoAno);
     };
-
-    const aplicarFiltro = () => {
-        if (!empresa) return;
-
-        const biExiste = empresa.bis.some(bi =>
-            bi.status &&
-            bi.mes.toLowerCase() === mesTemp.toLowerCase() &&
-            Number(bi.ano) === Number(anoTemp)
-        );
-
-        if (!biExiste) {
-            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesTemp)}/${anoTemp}.`);
-            return;
-        }
-
-        setMesSelecionado(mesTemp);
-        setAnoSelecionado(anoTemp);
-    };
-
-    useEffect(() => {
-        if (!empresa || !mesSelecionado || !anoSelecionado) return;
-
-        setMesTemp(mesSelecionado);
-        setAnoTemp(anoSelecionado);
-
-    }, [empresa, mesSelecionado, anoSelecionado]);
 
     if (loading || !dashboardData) return <p>Carregando...</p>
 
     const { diferencaPercentualReceita } = dashboardData
-
-    // Função para filtrar e organizar os dados
-    const agruparPorGrupo = (dados) => {
-        return dados.reduce((acc, item) => {
-            if (!acc[item.grupoDre]) {
-                acc[item.grupoDre] = { total: 0, categorias: {} };
-            }
-
-            acc[item.grupoDre].total += item.valor;
-
-            if (item.categoria) {
-                if (!acc[item.grupoDre].categorias[item.categoria]) {
-                    acc[item.grupoDre].categorias[item.categoria] = { total: 0, subcategorias: {} };
-                }
-
-                acc[item.grupoDre].categorias[item.categoria].total += item.valor;
-
-                if (item.subcategoria) {
-                    if (!acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria]) {
-                        acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] = 0;
-                    }
-                    acc[item.grupoDre].categorias[item.categoria].subcategorias[item.subcategoria] += item.valor;
-                }
-            }
-
-            return acc;
-        }, {});
-    };
 
     // Dados para gerar calculos
     const dadosAgrupados = agruparPorGrupo(dashboardData.summary.detalhes);
@@ -210,7 +152,7 @@ export const ResumoBi = () => {
         .filter(bi => bi.status)
         .sort((a, b) =>
             a.ano - b.ano ||
-            monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num
+            organizaMeses[a.mes.toLowerCase()].num - organizaMeses[b.mes.toLowerCase()].num
         )
         .slice(-12) // Últimos 12 meses
         .map(({ mes, ano, lancamentoBi }) => {
@@ -219,12 +161,11 @@ export const ResumoBi = () => {
                 if (tipo === 'RECEITA') faturamento += parseFloat(valor);
             });
             return {
-                mes: `${monthOrder[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
+                mes: `${organizaMeses[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
                 faturamento
             };
         });
 
-    // Total faturamento dos últimos 12 meses
     const totalFaturamento12Meses = barData.reduce((acc, item) => acc + item.faturamento, 0);
 
     return (
@@ -233,15 +174,15 @@ export const ResumoBi = () => {
             <div className={styles.header_pagina_dashboardBi}>
                 <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <div className={styles.box_filtro_mes_ano}>
+                <div>
                     <div className={styles.filtros_mes_ano}>
-                        <div className={styles.mes_ano}>
-                            <SelectMesBi mesSelecionado={mesTemp} setMesSelecionado={setMesTemp} mesesDisponiveis={mesesDisponiveis} />
-                            <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
-                        </div>
-                        <div className={styles.box_btn_filtro}>
-                            <button onClick={aplicarFiltro}>Filtrar</button>
-                        </div>
+                        <FiltroDashboardBi
+                            empresa={empresa}
+                            mesAtivo={mesSelecionado}
+                            anoAtivo={anoSelecionado}
+                            anosDisponiveis={anosDisponiveis}
+                            onAplicar={aplicarFiltro}
+                        />
                         {mostrarMedia ?
                             <div className={`${styles.btn_media} ${styles.btn_media_ativo}`} onClick={() => setMostrarMedia(prev => !prev)}>
                                 <PiIcons.PiFadersHorizontal />
@@ -415,7 +356,7 @@ export const ResumoBi = () => {
                             <Tooltip
                                 formatter={(value) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                                 contentStyle={{ background: "var(--branco)", color: "var(--texto-primario)", borderRadius: "var(--border-radius-componente)", border: '1px solid var(--texto-secundario)' }} />
-                            <Bar dataKey="faturamento" fill="#008aee" name="Faturamento" radius={[10, 10, 10, 10]} />
+                            <Bar dataKey="faturamento" fill="var(--cor-principal)" name="Faturamento" radius={[10, 10, 10, 10]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

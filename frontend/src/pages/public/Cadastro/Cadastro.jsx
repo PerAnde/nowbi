@@ -27,6 +27,8 @@ export const Cadastro = () => {
     const [password, setPassword] = useState('')
     const [passwordMatch, setPasswordMatch] = useState('')
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
@@ -63,6 +65,10 @@ export const Cadastro = () => {
 
     }
 
+    const toggleVisualizarSenha = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
 
         <div className={styles.container_auth}>
@@ -88,12 +94,20 @@ export const Cadastro = () => {
                             </label>
                         </div>
                         <div className={styles.box_dados_cadastro}>
-                            <label>
-                                <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <label className={styles.input_container}>
+                                <Input type={showPassword ? "text" : "password"} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+                                <button
+                                    type="button"
+                                    className={styles.icon_button}
+                                    onClick={toggleVisualizarSenha}
+                                >
+                                    {showPassword ? <PiIcons.PiEyeLight /> : <PiIcons.PiEyeClosedLight />}
+                                </button>
                             </label>
 
                             <label>
-                                <Input type="password" placeholder="Senha" value={passwordMatch} onChange={(e) => setPasswordMatch(e.target.value)} />
+                                <Input type={showPassword ? "text" : "password"} placeholder="Confirmar Senha" value={passwordMatch} onChange={(e) => setPasswordMatch(e.target.value)} />
                             </label>
                         </div>
 

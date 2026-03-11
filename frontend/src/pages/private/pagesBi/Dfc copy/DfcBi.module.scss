@@ -1,0 +1,157 @@
+.header_pagina_dashboardBi {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.box_filtro_mes_ano {
+    display: flex;
+    gap: 1rem;
+}
+
+.filtros_mes_ano {
+    display: flex;
+    gap: 1rem;
+}
+
+.mes_ano {
+    display: grid;
+    grid-template-columns: 135px 90px;
+    gap: 1rem;
+}
+
+.box_btn_filtro {
+    display: flex;
+}
+
+.box_btn_filtro button {
+    border: none;
+    background-color: var(--button-cor-primaria);
+    color: var(--branco);
+    padding: 1.1rem;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+}
+
+.box_btn_filtro button:hover {
+    background-color: var(--button-cor-primaria-hover);
+    transition: .3s;
+}
+
+.box_topo_dre {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--texto-secundario);
+    padding: .5rem 0;
+    font-size: 1.6rem;
+}
+
+.box_btns_salvar {
+    display: flex;
+    gap: 1rem;
+}
+
+.box_btns_salvar button {
+    border: none;
+    background-color: transparent;
+    color: var(--texto-secundario);
+    cursor: pointer;
+    padding: .5rem 1.5rem;
+}
+
+.box_btns_salvar button:hover {
+    color: var(--cor-primaria);
+    transition: .3s;
+}
+
+.box_pagina_bi {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.box_metricas_mes {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.card_metrica_mes {
+    background-color: var(--branco);
+    border-top: 2px solid var(--branco);
+    border-radius: var(--border-radius-componente);
+    padding: 2rem;
+    transition: .3s;
+}
+
+.infos_metricas_mes h3 {
+    font-size: 2.5rem;
+    font-weight: var(--bold);
+}
+
+.infos_metricas_mes h3 span {
+    font-size: 1.5rem;
+    font-weight: var(--regular);
+    color: var(--texto-secundario);
+}
+
+.box_btn_mais_infos {
+    display: flex;
+    align-items: flex-end;
+    font-size: 1.2rem;
+    color: var(--texto-secundario);
+    cursor: pointer;
+}
+
+.box_btn_mais_infos span {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: var(--texto-secundario);
+    transition: .3s;
+}
+
+.box_btn_mais_infos span:hover {
+    color: var(--cor-principal);
+    transition: .3s;
+}
+
+
+@media screen and (max-width: 1370px) {
+    .box_resumo_mes {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 830px) {
+    .box_metricas_mes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 740px) {
+    .box_resumo_mes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .header_pagina_dashboardBi {
+        flex-direction: column-reverse;
+        gap: 2rem;
+    }
+
+    .box_metricas_mes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    .header_pagina_dashboardBi {
+        flex-direction: column-reverse;
+        gap: 2rem;
+    }
+}

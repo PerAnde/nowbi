@@ -8,6 +8,10 @@
     gap: 4rem;
 }
 
+.container_auth.reset_password {
+    grid-template-columns: 1fr;
+}
+
 .box_form {
     display: flex;
     flex-direction: column;
@@ -34,6 +38,10 @@
 .box_header_form h2 span {
     font-size: var(--h2);
     color: var(--cor-principal);
+}
+
+.box_header_form h3 {
+    font-size: 2.5rem;
 }
 
 .logo_texto_animado {
@@ -86,6 +94,13 @@ form {
     border: 1px solid var(--vermelho);
 }
 
+.input_container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 form label p {
     color: #121926;
     margin-bottom: .5rem;
@@ -95,6 +110,29 @@ form label input {
     border: 1px solid #e8ebef;
     background-color: #ffffff;
     color: #121926;
+}
+
+.icon_button {
+    position: absolute;
+    top: .5rem;
+    right: .7rem;
+    background: none;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--texto-secundario);
+    border-radius: 50%;
+    outline: none;
+    font-size: 1.8rem;
+    transition: .3s;
+}
+
+.icon_button:hover {
+    background-color: var(--border);
+    transition: .3s;
 }
 
 span.preencher_campos {
@@ -107,6 +145,22 @@ span.usuario_senha_invalido {
     align-items: center;
     justify-content: center;
     color: var(--vermelho);
+}
+
+.box_btn_reset_password {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1.3rem;
+}
+
+.btn_reset_password {
+    color: var(--texto-secundario);
+}
+
+.btn_reset_password:hover {
+    color: var(--cor-principal);
+    transition: .3s;
 }
 
 // Form Cadastro
@@ -189,6 +243,31 @@ span.usuario_senha_invalido {
     object-fit: cover;
     object-position: center;
     display: block;
+}
+
+.box_voltar_login {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--texto-secundario);
+    font-size: 1.3rem;
+    transition: .3s;
+}
+
+.box_voltar_login a {
+    color: var(--texto-secundario);
+    transition: .3s;
+}
+
+.box_voltar_login:hover a {
+    margin-left: .3rem;
+    transition: .3s;
+}
+
+.box_voltar_login:hover,
+.box_voltar_login:hover a {
+    color: var(--cor-principal);
+    transition: .3s;
 }
 
 // Media Queries

@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom'
 import { AreaChart, BarChart, Bar, CartesianGrid, XAxis, Tooltip, Area, Cell, Sector, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
-import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
-import { SelectAnoBi } from '../../../../components/Selects/SelectAnoBi'
+
+import { FiltroDashboardBi } from '../../../../components/Selects/FiltroDashboardBi'
+import { InfosDetalhesBi } from '../../../../components/Modal/InfosDetalhesBi/InfosDetalhesBi'
+
 import { agruparPorGrupo } from '../../../../utils/agruparPorGrupo'
-import { gruposDeDRE } from '../../../../utils/gruposDeDRE'
-import { frasesPorGrupo } from '../../../../utils/frasesPorGrupo'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { CoresGraficos } from '../../../../utils/coresGraficos';
-
-import { InfosDetalhesBi } from '../../../../components/Modal/InfosDetalhesBi/InfosDetalhesBi'
+import { frasesPorGrupo } from '../../../../utils/frasesPorGrupo'
+import { gruposDeDFC } from '../../../../utils/gruposDeDFC'
+import { organizaMeses } from '../../../../utils/organizaMeses'
 
 import styles from './DetalhesBi.module.scss'
 import * as PiIcons from 'react-icons/pi'
@@ -26,33 +27,22 @@ export const DetalhesBi = () => {
         anoSelecionado,
         setMesSelecionado,
         setAnoSelecionado,
-        mesesDisponiveis,
         anosDisponiveis,
         loading
     } = useBiPublic()
-
-    const [mesTemp, setMesTemp] = useState(mesSelecionado);
-    const [anoTemp, setAnoTemp] = useState(anoSelecionado);
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [ordemDecrescenteReceitas, setOrdemDecrescenteReceitas] = useState(true);
     const [ordemDecrescenteDespesas, setOrdemDecrescenteDespesas] = useState(true);
     const [graficoMobile, setGraficoMobile] = useState(window.innerWidth < 800);
 
-    const [popUpInfosDetalhesBi, setPopUpInfosDetalhesBi] = useState(false)
     const [dadosParaPopup, setDadosParaPopup] = useState(null);
     const [fraseCardSelecionado, setFraseCardSelecionado] = useState('');
-
+    
     const [categoriaReceitaSelecionada, setCategoriaReceitaSelecionada] = useState(null);
     const [categoriaDespesaSelecionada, setCategoriaDespesaSelecionada] = useState(null);
-
-    useEffect(() => {
-        if (!empresa || !mesSelecionado || !anoSelecionado) return;
-
-        setMesTemp(mesSelecionado);
-        setAnoTemp(anoSelecionado);
-
-    }, [empresa, mesSelecionado, anoSelecionado]);
+    
+    const [popUpInfosDetalhesBi, setPopUpInfosDetalhesBi] = useState(false)
 
     useEffect(() => {
         const handleResize = () => setGraficoMobile(window.innerWidth < 800);
@@ -62,12 +52,6 @@ export const DetalhesBi = () => {
 
     const receitasSubcategorias = {};
     const despesasSubcategorias = {};
-    const monthOrder = {
-        "janeiro": { num: 1, abbr: "Jan" }, "fevereiro": { num: 2, abbr: "Fev" }, "março": { num: 3, abbr: "Mar" },
-        "abril": { num: 4, abbr: "Abr" }, "maio": { num: 5, abbr: "Mai" }, "junho": { num: 6, abbr: "Jun" },
-        "julho": { num: 7, abbr: "Jul" }, "agosto": { num: 8, abbr: "Ago" }, "setembro": { num: 9, abbr: "Set" },
-        "outubro": { num: 10, abbr: "Out" }, "novembro": { num: 11, abbr: "Nov" }, "dezembro": { num: 12, abbr: "Dez" }
-    };
 
     if (dashboardData?.summary?.detalhes) {
         dashboardData.summary.detalhes.forEach(({ tipo, subcategoria, valor }) => {
@@ -114,7 +98,7 @@ export const DetalhesBi = () => {
         if (!categoriaSelecionada || !empresa?.bis) return [];
         return empresa.bis
             .filter(bi => bi.status)
-            .sort((a, b) => a.ano - b.ano || monthOrder[a.mes.toLowerCase()].num - monthOrder[b.mes.toLowerCase()].num)
+            .sort((a, b) => a.ano - b.ano || organizaMeses[a.mes.toLowerCase()].num - organizaMeses[b.mes.toLowerCase()].num)
             .slice(-12)
             .map(({ mes, ano, lancamentoBi }) => {
                 let total = 0;
@@ -125,7 +109,7 @@ export const DetalhesBi = () => {
                     }
                 });
                 return {
-                    mes: `${monthOrder[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
+                    mes: `${organizaMeses[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
                     valor: total
                 };
             });
@@ -137,22 +121,9 @@ export const DetalhesBi = () => {
     const corEvolucaoReceita = pieDataReceitas.find(item => item.name === categoriaReceitaSelecionada)?.color || 'var(--cor-primaria)';
     const corEvolucaoDespesa = pieDataDespesas.find(item => item.name === categoriaDespesaSelecionada)?.color || 'var(--cor-primaria)';
 
-    const aplicarFiltro = () => {
-        if (!empresa) return;
-
-        const biExiste = empresa.bis.some(bi =>
-            bi.status &&
-            bi.mes.toLowerCase() === mesTemp.toLowerCase() &&
-            Number(bi.ano) === Number(anoTemp)
-        );
-
-        if (!biExiste) {
-            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesTemp)}/${anoTemp}.`);
-            return;
-        }
-
-        setMesSelecionado(mesTemp);
-        setAnoSelecionado(anoTemp);
+    const aplicarFiltro = (novoMes, novoAno) => {
+        setMesSelecionado(novoMes);
+        setAnoSelecionado(novoAno);
     };
 
     const { summary, diferencaPercentualReceita, diferencaPercentualDespesa } = dashboardData
@@ -212,7 +183,7 @@ export const DetalhesBi = () => {
         const dadosAgrupados = agruparPorGrupo(dados);
         const resultado = [];
 
-        gruposDeDRE.forEach((grupo, index) => {
+        gruposDeDFC.forEach((grupo, index) => {
             const grupoDados = dadosAgrupados[grupo.grupo];
             if (grupoDados) {
                 resultado.push({
@@ -326,8 +297,8 @@ export const DetalhesBi = () => {
         .filter(bi => bi.status)
         .sort((a, b) =>
             a.ano - b.ano ||
-            monthOrder[a.mes.toLowerCase()].num -
-            monthOrder[b.mes.toLowerCase()].num
+            organizaMeses[a.mes.toLowerCase()].num -
+            organizaMeses[b.mes.toLowerCase()].num
         )
         .slice(-12)
         .map(({ mes, ano, lancamentoBi }) => {
@@ -341,7 +312,7 @@ export const DetalhesBi = () => {
             });
 
             return {
-                mes: `${monthOrder[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
+                mes: `${organizaMeses[mes.toLowerCase()].abbr}/${ano.toString().slice(-2)}`,
                 receitas,
                 despesas
             };
@@ -364,7 +335,7 @@ export const DetalhesBi = () => {
                         <p
                             key={i}
                             style={{
-                                color: entry.name === 'Despesas' ? 'var(--texto-secundario)' : 'var(--cor-primaria)',
+                                color: entry.name === 'Despesas' ? 'var(--texto-secundario)' : 'var(--cor-principal)',
                                 margin: 0,
                             }}
                         >
@@ -395,15 +366,13 @@ export const DetalhesBi = () => {
             <div className={styles.header_pagina_dashboardBi}>
                 <h3>Detalhes {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <div className={styles.filtros_mes_ano}>
-                    <div className={styles.mes_ano}>
-                        <SelectMesBi mesSelecionado={mesTemp} setMesSelecionado={setMesTemp} mesesDisponiveis={mesesDisponiveis} />
-                        <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
-                    </div>
-                    <div className={styles.box_btn_filtro}>
-                        <button onClick={aplicarFiltro}>Filtrar</button>
-                    </div>
-                </div>
+                <FiltroDashboardBi
+                    empresa={empresa}
+                    mesAtivo={mesSelecionado}
+                    anoAtivo={anoSelecionado}
+                    anosDisponiveis={anosDisponiveis}
+                    onAplicar={aplicarFiltro}
+                />
             </div>
 
             <div className={styles.box_pagina_bi}>
@@ -693,7 +662,7 @@ export const DetalhesBi = () => {
                                         {dataPizza.map((entry, index) => (
                                             <Cell
                                                 key={`cell-${index}`}
-                                                fill={entry.name === 'Receitas' ? 'var(--cor-primaria)' : 'var(--cor-grafico)'}
+                                                fill={entry.name === 'Receitas' ? 'var(--cor-principal)' : 'var(--cor-grafico)'}
                                             />
                                         ))}
                                     </Pie>
@@ -725,9 +694,9 @@ export const DetalhesBi = () => {
                             data={dataAnual}
                             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
                         >
-                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border-input)" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                             <XAxis dataKey="mes"
-                                stroke="var(--border-input)"
+                                stroke="var(--border)"
                                 tick={{
                                     fill: 'var(--texto-secundario)',
                                     fontSize: 14,
@@ -744,8 +713,8 @@ export const DetalhesBi = () => {
                                 type="monotone"
                                 dataKey="receitas"
                                 name="Receitas"
-                                stroke="var(--cor-primaria)"
-                                fill="var(--cor-primaria)"
+                                stroke="var(--cor-principal)"
+                                fill="var(--cor-principal)"
                             />
                             <Area
                                 type="monotone"

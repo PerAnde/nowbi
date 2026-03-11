@@ -1,8 +1,7 @@
 import prismaClient from "../../prisma";
-import { addDays, addMinutes } from "date-fns"; // Depois alterar para addDays
+import { addDays, addMinutes } from "date-fns";
 
 import { hash } from "bcryptjs";
-// import { CreateCategoriasNovoUsuarioService } from "../categorias/CreateCategoriasNovoUsuarioService";
 
 interface UsuarioRequest {
     name: string;
@@ -173,11 +172,6 @@ class CreateUsuarioService {
                 email: true,
             }
         })
-
-        // const createCategoriasService = new CreateCategoriasNovoUsuarioService();
-        // await createCategoriasService.execute({
-        //     usuario_id: usuario.id
-        // })
 
         return usuario
     }
