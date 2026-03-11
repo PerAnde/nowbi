@@ -60,11 +60,9 @@ export function ResetPassword() {
         }
     }
 
-
     const toggleVisualizarSenha = () => {
         setShowPassword(!showPassword);
     };
-
 
     return (
         <div className={`${styles.container_auth} ${styles.reset_password}`}>

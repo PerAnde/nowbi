@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
 import { hash } from 'bcryptjs';
 
+import { sendPasswordChangedEmail } from '../../services/usuario/emailService';
+
 const prisma = new PrismaClient();
 
 class ResetPasswordController {
@@ -38,6 +40,8 @@ class ResetPasswordController {
                 }),
                 prisma.resetarSenha.delete({ where: { tokenHash } })
             ]);
+
+            sendPasswordChangedEmail(email).catch(err => console.error("Erro ao enviar e-mail de aviso:", err));
 
             return res.status(200).json({ message: "Senha alterada com sucesso!" });
         } catch (err) {
