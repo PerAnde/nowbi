@@ -245,8 +245,7 @@ export const Empresas = () => {
                                                 <div className={styles.box_integrado}>
                                                     {empresa?.blingIntegration?.isActive ? (
                                                         <div className={styles.box_integracoes}>
-                                                            <img src={imgBling} alt="" />
-                                                            <span>Bling</span>
+                                                            <p>Integrado com: <span>Bling</span></p>
                                                         </div>
                                                     ) :
                                                         null
@@ -351,7 +350,8 @@ export const Empresas = () => {
             <Integracao
                 trigger={popupIntegracao}
                 setTrigger={setPopUpIntegracao}
-                empresa={empresaSelecionada} />
+                empresa={empresaSelecionada}
+                empresaEditada={atualizarEmpresas} />
             <ConfigEmpresa
                 trigger={popUpConfigEmpresa}
                 setTrigger={setPopUpConfigEmpresa}

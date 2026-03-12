@@ -272,6 +272,10 @@ a.btn_link_principal:hover {
         font-size: 1.3rem;
     }
 
+    p.info_empresa:nth-child(2) {
+        margin-bottom: 1.5rem;
+    }
+
 }
 
 .nome_empresa_lista {
@@ -316,18 +320,21 @@ a.btn_link_principal:hover {
     display: flex;
     gap: .5rem;
     font-size: 1.3rem;
-    margin: .5rem 0;
+    margin-bottom: 1.5rem;
 }
 
-.box_integracoes{
+.box_integracoes {
     display: flex;
     align-items: center;
     gap: .5rem;
 }
 
-.box_integracoes img {
-    width: 22px;
-    border-radius: .5rem;
+.box_integracoes p{
+    color: var(--texto-secundario);
+}
+
+.box_integracoes p span {
+    color: var(--verde);
 }
 
 .box_btns_empresa {

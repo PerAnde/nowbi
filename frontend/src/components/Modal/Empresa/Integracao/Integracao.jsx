@@ -5,7 +5,7 @@ import { excluirIntegracao } from '../../../../services/integracao';
 import styles from '../../Modal.module.scss';
 import stylesIntegracao from './Integracao.module.scss';
 
-export const Integracao = ({ trigger, setTrigger, empresa }) => {
+export const Integracao = ({ trigger, setTrigger, empresa, empresaEditada }) => {
     const [etapa, setEtapa] = useState('escolha');
     const [podeIntegrar, setPodeIntegrar] = useState(false);
 
@@ -39,6 +39,7 @@ export const Integracao = ({ trigger, setTrigger, empresa }) => {
 
         if (sucess) {
             setTrigger(false);
+            empresaEditada();
         }
     };
 

@@ -1,6 +1,5 @@
 import prismaClient from "../../../../prisma";
 import axios from "axios";
-
 import { BlingTokenProvider } from "../../../../integrations/bling/BlingTokenProvider";
 
 interface ImportRequest {
@@ -13,7 +12,6 @@ interface ImportRequest {
 
 class ImportLancamentosBlingService {
     async execute({ empresa_id, bi_id, dataInicial, dataFinal }: ImportRequest) {
-
         const tokenProvider = new BlingTokenProvider();
         const accessToken = await tokenProvider.getValidToken(empresa_id);
 
@@ -26,91 +24,116 @@ class ImportLancamentosBlingService {
             throw new Error("O BI selecionado não pertence a esta empresa.");
         }
 
-        const response = await axios.get("https://www.bling.com.br/Api/v3/caixas", {
-            params: {
-                dataInicial,
-                dataFinal,
-                limite: 100,
-                situacao: 'R',
-                situacaoConciliacao: 3
-            },
-            headers: { Authorization: `Bearer ${accessToken}` }
-        });
+        // Variáveis de controle de paginação e logs
+        let pagina = 1;
+        let continuarBuscando = true;
+        const logsImportados = [];
+        const logsIgnorados = [];
 
-        console.log("Status Bling:", response.status);
-        console.log("Dados Brutos do Bling:", JSON.stringify(response.data, null, 2));
+        while (continuarBuscando) {
+            console.log(`Buscando página ${pagina} no Bling...`);
 
-        const lancamentosBling = response.data.data || [];
-        let importados = 0;
-        let ignorados = 0;
-
-        for (const lanc of lancamentosBling) {
-            const idExternoBling = String(lanc.id);
-            // No seu exemplo, "Fretes de vendas" vem aqui:
-            const nomeCategoriaBling = lanc.descricao?.trim().toLowerCase();
-
-            const existe = await prismaClient.lancamentoBi.findUnique({
-                where: { id_externo_lancamento: idExternoBling }
+            const response = await axios.get("https://www.bling.com.br/Api/v3/caixas", {
+                params: {
+                    pagina: pagina,
+                    limite: 100, // Registros por página
+                    dataInicial,
+                    dataFinal,
+                    situacao: 'R',
+                    situacaoConciliacao: 1
+                },
+                headers: { Authorization: `Bearer ${accessToken}` }
             });
 
-            if (existe) {
-                ignorados++;
-                continue;
+            const lancamentosBling = response.data.data || [];
+
+            // Se a página vier vazia, interrompe o loop
+            if (lancamentosBling.length === 0) {
+                continuarBuscando = false;
+                break;
             }
 
-            let categoria_id: string | null = null;
-            let subcategoria_id: string | null = null;
+            for (const lanc of lancamentosBling) {
+                const idExternoBling = String(lanc.id);
+                const nomeCategoriaBling = lanc.descricao?.trim().toLowerCase();
+                const valorLancamento = Math.abs(Number(lanc.valor));
 
-            // 1. Tenta buscar como Subcategoria (Match pelo Nome)
-            const subNoBanco = await prismaClient.subCategoria.findFirst({
-                where: {
-                    empresaId: empresa_id,
-                    name: nomeCategoriaBling
+                const infoItem = {
+                    id: idExternoBling,
+                    descricao: lanc.descricao,
+                    valor: valorLancamento,
+                    data: lanc.data
+                };
+
+                const existe = await prismaClient.lancamentoBi.findUnique({
+                    where: { id_externo_lancamento: idExternoBling }
+                });
+
+                if (existe) {
+                    logsIgnorados.push({ ...infoItem, motivo: "Já existe no banco" });
+                    continue;
                 }
-            });
 
-            if (subNoBanco) {
-                subcategoria_id = subNoBanco.id;
-                categoria_id = subNoBanco.categoria_id;
-            } else {
-                // 2. Se não achou sub, tenta buscar como Categoria Pai
-                const catNoBanco = await prismaClient.categoria.findFirst({
-                    where: {
-                        empresaId: empresa_id,
-                        name: { equals: nomeCategoriaBling }
+                let categoria_id: string | null = null;
+                let subcategoria_id: string | null = null;
+
+                // Busca Categoria/Subcategoria
+                const subNoBanco = await prismaClient.subCategoria.findFirst({
+                    where: { empresaId: empresa_id, name: nomeCategoriaBling }
+                });
+
+                if (subNoBanco) {
+                    subcategoria_id = subNoBanco.id;
+                    categoria_id = subNoBanco.categoria_id;
+                } else {
+                    const catNoBanco = await prismaClient.categoria.findFirst({
+                        where: { empresaId: empresa_id, name: { equals: nomeCategoriaBling } }
+                    });
+                    if (catNoBanco) {
+                        categoria_id = catNoBanco.id;
+                    }
+                }
+
+                if (!categoria_id) {
+                    logsIgnorados.push({ ...infoItem, motivo: `Categoria "${lanc.descricao}" não mapeada` });
+                    continue;
+                }
+
+                await prismaClient.lancamentoBi.create({
+                    data: {
+                        valor: valorLancamento,
+                        tipo: lanc.debCred === 'C' ? 'RECEITA' : 'DESPESA',
+                        categoria_id,
+                        subcategoria_id,
+                        businessIntelligence_id: bi.id,
+                        id_externo_lancamento: idExternoBling,
                     }
                 });
-                if (catNoBanco) {
-                    categoria_id = catNoBanco.id;
-                }
+
+                logsImportados.push(infoItem);
             }
 
-            if (!categoria_id) {
-                console.warn(`Lançamento ${idExternoBling} ignorado: Categoria "${nomeCategoriaBling}" não encontrada.`);
-                ignorados++;
-                continue;
+            // Se a quantidade de registros for menor que o limite, significa que é a última página
+            if (lancamentosBling.length < 100) {
+                continuarBuscando = false;
+            } else {
+                pagina++;
+                // Pequena pausa para evitar bloqueio por excesso de requisições (Rate Limit)
+                await new Promise(resolve => setTimeout(resolve, 300));
             }
-
-            // 3. Criar o Lançamento
-            await prismaClient.lancamentoBi.create({
-                data: {
-                    // Usamos Math.abs pois o Bling manda negativo para saídas (-17.22)
-                    // e seu sistema provavelmente separa por Tipo (RECEITA/DESPESA)
-                    valor: Math.abs(Number(lanc.valor)),
-                    tipo: lanc.debCred === 'C' ? 'RECEITA' : 'DESPESA',
-                    categoria_id: categoria_id,
-                    subcategoria_id: subcategoria_id,
-                    businessIntelligence_id: bi.id,
-                    id_externo_lancamento: idExternoBling,
-                }
-            });
-
-            importados++;
         }
 
         return {
-            message: "Importação concluída!",
-            stats: { total: lancamentosBling.length, importados, ignorados }
+            message: "Importação completa!",
+            stats: {
+                paginas_percorridas: pagina,
+                total_importados: logsImportados.length,
+                total_ignorados: logsIgnorados.length
+            },
+            detalhes: {
+                importados: logsImportados,
+                ignorados: logsIgnorados
+            }
         };
     }
 }

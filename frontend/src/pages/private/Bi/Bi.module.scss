@@ -184,16 +184,20 @@ a.btn_link_principal.btn_reabrir {
 }
 
 a.btn_integrar {
-    width: 46px;
-    height: 46px;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
     border: 1px solid var(--border);
+    color: var(--texto-secundario);
     border-radius: var(--border-radius-button);
-    overflow: hidden;
+    font-size: 1.3rem;
+        transition: .3s;
 }
 
-a.btn_integrar img {
-    max-height: 100%;
-    object-fit: cover;
+a.btn_integrar:hover{
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    transition: .3s;
 }
 
 .box_bis {

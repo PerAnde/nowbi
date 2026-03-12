@@ -13,10 +13,12 @@ import { EditarBi } from '../../../components/Modal/BI/EditarBi/EditarBi';
 import { ExcluirBi } from '../../../components/Modal/BI/ExcluirBi/ExcluirBi';
 
 import { CriarLancamento } from '../../../components/Modal/LancamentoBi/CriarLancamento/CriarLancamento';
-import { ImportarCSV } from '../../../components/Modal/LancamentoBi/ImportarCSV/ImportarCSV'
 import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarLancamento/EditarLancamento';
 import { ExcluirLancamento } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
 import { ExcluirLancamentos } from '../../../components/Modal/LancamentoBi/ExcluirLancamentos/ExcluirLancamentos'
+
+import { ImportarCSV } from '../../../components/Modal/LancamentoBi/ImportarCSV/ImportarCSV'
+import { ImportacaoBling } from '../../../components/Modal/LancamentoBi/ImportacaoBling/ImportacaoBling'
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
@@ -24,8 +26,6 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
 import * as PiIcons from 'react-icons/pi';
 
 import styles from './Bi.module.scss'
-
-import imgBling from '../../../assets/images/logo-bling.png';
 
 export const Bi = () => {
 
@@ -71,6 +71,7 @@ export const Bi = () => {
     const [popUpExclusaoLancamentos, setPopUpExclusaoLancamentos] = useState(false);
 
     const [popUpImportarCSV, setPopUpImportarCSV] = useState(false);
+    const [popUpImportacaoBling, setPopUpImportacaoBling] = useState(false);
 
     const navigate = useNavigate();
 
@@ -376,7 +377,7 @@ export const Bi = () => {
                                         <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
                                         {bi.empresa?.blingIntegration?.isActive ? (
                                             <>
-                                                <Link className={styles.btn_integrar} onClick={() => setPopUpEditarBi(true)} title="Importar dados do Bling!"><img src={imgBling} alt="" /></Link>
+                                                <Link className={styles.btn_integrar} onClick={() => setPopUpImportacaoBling(true)} title="Importar dados do Bling!">Bling</Link>
                                             </>
                                         ) : (
                                             ''
@@ -667,6 +668,12 @@ export const Bi = () => {
             <ImportarCSV
                 trigger={popUpImportarCSV}
                 setTrigger={setPopUpImportarCSV}
+                lancamentoCriado={atualizarBi}
+            />
+            <ImportacaoBling
+                trigger={popUpImportacaoBling}
+                setTrigger={setPopUpImportacaoBling}
+                empresaId={idEmpresa}
                 lancamentoCriado={atualizarBi}
             />
             <EditarLancamento
