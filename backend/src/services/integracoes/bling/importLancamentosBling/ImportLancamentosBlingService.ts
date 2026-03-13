@@ -112,6 +112,7 @@ class ImportLancamentosBlingService {
                             subcategoria_id,
                             businessIntelligence_id: bi.id,
                             id_externo_lancamento: idExternoBling,
+                            origem_lancamento: 'IMPORTACAO_BLING'
                         }
                     });
 
