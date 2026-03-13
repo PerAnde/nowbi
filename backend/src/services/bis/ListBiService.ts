@@ -43,7 +43,8 @@ class ListBiService {
                             select: {
                                 name: true,
                             }
-                        }
+                        },
+                        origem_lancamento: true,
                     }
                 },
             }
