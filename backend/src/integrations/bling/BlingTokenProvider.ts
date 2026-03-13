@@ -9,64 +9,59 @@ class BlingTokenProvider {
 
         if (!integracao) throw new Error("Integração não encontrada.");
 
-        try {
-            // Teste: ver se o token atual funciona
-            await axios.get("https://www.bling.com.br/Api/v3/categorias/receitas-despesas?limite=1", {
-                headers: { Authorization: `Bearer ${integracao.accessToken}` }
-            });
+        // Verificamos se o token expira nos próximos 5 minutos (margem de segurança)
+        const agora = new Date();
+        const cincoMinutosDepois = new Date(agora.getTime() + 5 * 60 * 1000);
+
+        if (integracao.expiresAt > cincoMinutosDepois) {
+            // Token ainda é válido e está longe de expirar. Retornamos sem chamar a API do Bling.
             return integracao.accessToken;
-        } catch (error: any) {
-
-            const status = error.response?.status;
-
-            // SE o erro for 401 (expirado), chama o método de renovação
-            if (status === 401) {
-                console.log("Token expirado (401), tentando renovar...");
-                return await this.refreshToken(empresa_id, integracao.refreshToken);
-            }
-
-            if (status === 403) {
-                console.warn("Aviso: Token válido, mas acesso negado (403). Verifique escopos e permissões no Bling.");
-                return integracao.accessToken; 
-            }
-
-            // Se for outro erro (ex: Bling fora do ar), aí sim joga o erro
-            console.error("Erro inesperado na validação do token:", error.response?.data || error.message);
-            throw new Error("Erro de comunicação com o Bling.");
         }
+
+        // Se chegou aqui, o token expirou ou está prestes a expirar
+        console.log(`[Bling] Token expirado ou próximo do fim. Renovando para empresa ${empresa_id}...`);
+        return await this.refreshToken(empresa_id, integracao.refreshToken);
     }
 
     private async refreshToken(empresa_id: string, refreshToken: string): Promise<string> {
-        // Substitua pelas suas credenciais do Bling
         const clientId = process.env.BLING_CLIENT_ID;
         const clientSecret = process.env.BLING_CLIENT_SECRET;
-        
         const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-        const response = await axios.post('https://www.bling.com.br/Api/v3/oauth/token',
-            new URLSearchParams({
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken
-            }),
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Basic ${credentials}`
+        try {
+            const response = await axios.post('https://www.bling.com.br/Api/v3/oauth/token',
+                new URLSearchParams({
+                    grant_type: 'refresh_token',
+                    refresh_token: refreshToken
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': `Basic ${credentials}`
+                    }
                 }
-            }
-        );
+            );
 
-        const { access_token, refresh_token } = response.data;
+            const { access_token, refresh_token, expires_in } = response.data;
 
-        await prismaClient.blingIntegration.update({
-            where: { empresaId: empresa_id },
-            data: {
-                accessToken: access_token,
-                refreshToken: refresh_token // O Bling também rotaciona o refresh_token!
-            }
-        });
+            // Calculamos a nova data de expiração
+            const expiresAt = new Date(new Date().getTime() + (expires_in * 1000));
 
-        return access_token;
+            await prismaClient.blingIntegration.update({
+                where: { empresaId: empresa_id },
+                data: {
+                    accessToken: access_token,
+                    refreshToken: refresh_token,
+                    expiresAt: expiresAt // Salvamos para a próxima verificação
+                }
+            });
+
+            return access_token;
+
+        } catch (error: any) {
+            console.error("Erro ao renovar token Bling:", error.response?.data || error.message);
+            throw new Error("Falha na renovação da integração com Bling. Refaça a conexão.");
+        }
     }
 }
 

@@ -1,31 +1,39 @@
 import prismaClient from "../../../../prisma";
 import axios from "axios";
-
 import { BlingTokenProvider } from "../../../../integrations/bling/BlingTokenProvider";
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 class SyncCategoriasBlingService {
     async execute(empresa_id: string, usuario_id: string) {
-        
         const tokenProvider = new BlingTokenProvider();
         const accessToken = await tokenProvider.getValidToken(empresa_id);
 
         const buscarCategorias = async (tipo: number) => {
-            const response = await axios.get("https://www.bling.com.br/Api/v3/categorias/receitas-despesas", {
-                params: {
-                    limite: 100,
-                    situacao: 1,
-                    tipo: tipo
-                },
-                headers: { Authorization: `Bearer ${accessToken}` }
-            });
-            return response.data.data || [];
+            try {
+                const response = await axios.get("https://www.bling.com.br/Api/v3/categorias/receitas-despesas", {
+                    params: {
+                        limite: 100,
+                        situacao: 1,
+                        tipo: tipo
+                    },
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
+                return response.data.data || [];
+            } catch (error) {
+                if (error.response?.status === 429) {
+                    console.warn(`[Sync Categorias] Rate limit atingido para tipo ${tipo}. Aguardando...`);
+                    await sleep(2000);
+                    return buscarCategorias(tipo); // Tenta novamente
+                }
+                throw error;
+            }
         };
 
-        // 1. Busca os dois tipos simultaneamente
-        const [despesasBling, receitasBling] = await Promise.all([
-            buscarCategorias(1),
-            buscarCategorias(2)
-        ]);
+        // 1. Busca sequencialmente para evitar estourar o limite de 3 req/s
+        const despesasBling = await buscarCategorias(1);
+        await sleep(500); // Descanso entre as chamadas de API
+        const receitasBling = await buscarCategorias(2);
 
         const todasCategorias = [...despesasBling, ...receitasBling];
 
@@ -34,10 +42,10 @@ class SyncCategoriasBlingService {
         const filhos = todasCategorias.filter(c => c.idCategoriaPai !== 0);
 
         // --- PROCESSAR CATEGORIAS PAI ---
+        // Aqui o Prisma é rápido, mas como são muitas queries, o "for...of" é bom para estabilidade
         for (const cat of pais) {
             const idExterno = String(cat.id);
-            const nomeLimpo = cat.descricao.trim().toLowerCase();;
-            // Mapeamento direto para o seu Enum TipoCategoria
+            const nomeLimpo = cat.descricao.trim().toLowerCase();
             const tipoMapped = cat.tipo === 1 ? "DESPESA" : "RECEITA";
 
             let categoria = await prismaClient.categoria.findFirst({
@@ -86,7 +94,6 @@ class SyncCategoriasBlingService {
 
             if (!categoriaPai) continue;
 
-            // Match de subcategoria pelo nome vinculado ao Pai encontrado
             const subExistente = await prismaClient.subCategoria.findFirst({
                 where: {
                     categoria_id: categoriaPai.id,

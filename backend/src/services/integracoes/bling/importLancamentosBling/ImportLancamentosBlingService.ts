@@ -26,13 +26,12 @@ class ImportLancamentosBlingService {
             throw new Error("O BI selecionado não pertence a esta empresa.");
         }
 
-        // Variáveis de controle de paginação e logs
         let pagina = 1;
-        let continuarBuscando = true;
+        // let continuarBuscando = true;
         const logsImportados = [];
         const logsIgnorados = [];
 
-        while (continuarBuscando) {
+        while (true) {
 
             try {
                 console.log(`Buscando página ${pagina} no Bling...`);
@@ -40,7 +39,7 @@ class ImportLancamentosBlingService {
                 const response = await axios.get("https://www.bling.com.br/Api/v3/caixas", {
                     params: {
                         pagina: pagina,
-                        limite: 100, // Registros por página
+                        limite: 100,
                         dataInicial,
                         dataFinal,
                         situacao: 'R',
@@ -53,9 +52,11 @@ class ImportLancamentosBlingService {
 
                 // Se a página vier vazia, interrompe o loop
                 if (lancamentosBling.length === 0) {
-                    continuarBuscando = false;
+                    console.log(`[Bling] Fim dos dados: Página ${pagina} retornou vazia.`);
                     break;
                 }
+
+                console.log(`[Bling] Processando ${lancamentosBling.length} registros da página ${pagina}...`);
 
                 for (const lanc of lancamentosBling) {
                     const idExternoBling = String(lanc.id);
@@ -118,11 +119,13 @@ class ImportLancamentosBlingService {
                 }
 
                 if (lancamentosBling.length < 100) {
-                    continuarBuscando = false;
-                } else {
-                    pagina++;
-                    await sleep(500);
+                    console.log(`[Bling] Página ${pagina} era a última (menos de 100 registros).`);
+                    break;
                 }
+
+                pagina++;
+                await sleep(2000);
+
             } catch (error) {
                 if (error.response?.status === 429) {
                     console.warn("Rate limit atingido! Aguardando 2 segundos para tentar novamente...");
