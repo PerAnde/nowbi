@@ -38,17 +38,20 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                     const formatar = (d) => {
                         const dia = String(d.getDate()).padStart(2, '0');
                         const m = String(d.getMonth() + 1).padStart(2, '0');
-                        return `${dia}-${m}-${d.getFullYear()}`;
+                        return `${dia}/${m}/${d.getFullYear()}`;
                     };
 
-                    setDatasAutomáticas({
+                    // Criando a variável antes de usar nos logs e no state
+                    const resultadoDatas = {
                         inicio: formatar(dataInicio),
                         fim: formatar(dataFim)
-                    });
+                    };
 
+                    setDatasAutomáticas(resultadoDatas);
                     setPeriodoTexto(`${mes.charAt(0).toUpperCase() + mes.slice(1).toLowerCase()} de ${ano}`);
 
                 } catch (error) {
+                    console.error("Erro no processamento das datas:", error);
                     toast.error("Erro ao carregar período do BI.");
                 }
             };
@@ -108,7 +111,7 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                 {etapa === 0 && (
                     <div className={stylesImportacaoBling.containerConfirmacao}>
                         <div className={styles.box_observacoes}>
-                            <p>O sistema irá importar os lançamentos do Bling referentes a:</p>
+                            <p>O sistema vai importar os lançamentos do Bling referentes a</p>
                             <h4 className={stylesImportacaoBling.destaquePeriodo}>{periodoTexto}</h4>
                         </div>
 

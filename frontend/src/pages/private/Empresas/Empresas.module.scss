@@ -272,10 +272,6 @@ a.btn_link_principal:hover {
         font-size: 1.3rem;
     }
 
-    p.info_empresa:nth-child(2) {
-        margin-bottom: 1.5rem;
-    }
-
 }
 
 .nome_empresa_lista {
@@ -320,7 +316,7 @@ a.btn_link_principal:hover {
     display: flex;
     gap: .5rem;
     font-size: 1.3rem;
-    margin-bottom: 1.5rem;
+    margin: 1.5rem 0 0 0;
 }
 
 .box_integracoes {
