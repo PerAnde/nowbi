@@ -376,7 +376,7 @@ a.btn_excluir_lancamentos:hover {
 .categoria_header {
     grid-column: 1/5;
     display: grid;
-    grid-template-columns: 30px 150px 70px 1fr 1fr 200px;
+    grid-template-columns: 30px 127px 70px 1fr 1fr 1fr 200px;
     align-items: center;
     padding: 2rem 2rem 0;
     gap: 0 3rem;
@@ -516,7 +516,7 @@ a.btn_excluir_lancamentos:hover {
 .box_categoria {
     position: relative;
     display: grid;
-    grid-template-columns: 30px 150px 70px 1fr 1fr 200px;
+    grid-template-columns: 30px 127px 70px 1fr 1fr 1fr 200px;
     align-items: center;
     border: 1px solid var(--border-input);
     border-radius: var(--border-radius-componente);

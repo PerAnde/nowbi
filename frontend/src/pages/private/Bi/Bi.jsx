@@ -427,6 +427,7 @@ export const Bi = () => {
                             <span>Tipo</span>
                             <span>Categoria</span>
                             <span>Subategoria</span>
+                            <span>Inserido</span>
                             <span>Opções</span>
                         </div>
                     ) : (
