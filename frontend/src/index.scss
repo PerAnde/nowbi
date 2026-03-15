@@ -224,11 +224,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--cinza);
+    background: var(--background-geral);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--scroll-menu-lateral);
+    background: var(--cor-principal);
     border-radius: .5rem;
 }
 

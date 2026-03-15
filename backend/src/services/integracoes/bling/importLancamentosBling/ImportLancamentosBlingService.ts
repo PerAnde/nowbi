@@ -75,7 +75,7 @@ class ImportLancamentosBlingService {
                             contaNome: nomeContaBling
                         };
 
-                        console.log(`[Bling] Importando: ${lanc.descricao} | Valor: ${valorLancamento} | Origem: ${nomeContaBling}`);
+                        console.log(`[Bling] Importando: ${lanc.descricao} | Valor: ${valorLancamento}`);
 
                         // Evita duplicados (id_externo_lancamento é @unique no Prisma)
                         const existe = await prismaClient.lancamentoBi.findUnique({

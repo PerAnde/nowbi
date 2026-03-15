@@ -164,12 +164,12 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                     <div className={stylesImportarCSV.containerProgresso}>
                         <div className={stylesImportarCSV.linhaProgresso}>
                             <div className={`${stylesImportarCSV.ponto} ${etapa >= 1 ? stylesImportarCSV.ativo : ""}`}>
-                                <div className={stylesImportarCSV.circulo}>{etapa > 1 ? <PiIcons.PiCheckBold /> : "1"}</div>
+                                <div className={stylesImportarCSV.circulo}>{etapa > 1 ? <PiIcons.PiCheckBold /> : (etapa === 1 ? <PiIcons.PiCircleNotchBold className={stylesImportarCSV.spinner} /> : "1")}</div>
                                 <span>Analisando</span>
                             </div>
                             <div className={stylesImportarCSV.divisor}></div>
                             <div className={`${stylesImportarCSV.ponto} ${etapa >= 2 ? stylesImportarCSV.ativo : ""}`}>
-                                <div className={stylesImportarCSV.circulo}>{etapa > 2 ? <PiIcons.PiCheckBold /> : "2"}</div>
+                                <div className={stylesImportarCSV.circulo}>{etapa > 2 ? <PiIcons.PiCheckBold /> : (etapa === 2 ? <PiIcons.PiCircleNotchBold className={stylesImportarCSV.spinner} /> : "2")}</div>
                                 <span>Importando dados</span>
                             </div>
                             <div className={stylesImportarCSV.divisor}></div>
@@ -206,7 +206,7 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <button onClick={handleImportar} disabled={!arquivo}>Importar CSV</button>
+                            <Button onClick={handleImportar} disabled={!arquivo}>Importar CSV</Button>
                         </div>
                     </>
                 )}

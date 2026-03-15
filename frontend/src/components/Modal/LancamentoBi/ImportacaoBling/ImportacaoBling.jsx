@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../../../../api/api';
-import { importacaoBling } from '../../../../services/importacaoBling';
+import { importacaoBling, sincronizarCategoriasBling } from '../../../../services/importacaoBling';
 import { Button } from '../../../Button/Button';
 import { toast } from 'sonner';
 import * as PiIcons from 'react-icons/pi';
+
+import { Input } from '../../../Input/Input';
 
 import styles from '../../Modal.module.scss'
 import stylesImportacaoBling from './ImportacaoBling.module.scss'
@@ -29,7 +31,7 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
     const [contasSelecionadas, setContasSelecionadas] = useState([])
     const [buscandoContas, setBuscandoContas] = useState(false)
 
-    console.log(contasSelecionadas)
+    // console.log(contasSelecionadas)
 
     useEffect(() => {
         if (trigger && id) {
@@ -85,8 +87,16 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
 
     async function handleIniciarSincronizacao() {
         setLoading(true);
+        setResultado(null)
+
         try {
+
             setEtapa(1);
+            await sincronizarCategoriasBling(empresaId)
+
+            await new Promise(res => setTimeout(res, 500));
+
+            setEtapa(2);
             const data = await importacaoBling(
                 empresaId,
                 id,
@@ -95,10 +105,7 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                 contasSelecionadas
             );
 
-            console.log(data.stats.detalhes_importacao);
-
-            setEtapa(2);
-            await new Promise(res => setTimeout(res, 800));
+            await new Promise(res => setTimeout(res, 500));
 
             setResultado(data);
             setEtapa(3);
@@ -134,28 +141,31 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                 </div>
 
                 {etapa === 0 && (
-                    <div className={stylesImportacaoBling.containerConfirmacao}>
+                    <>
                         <div className={styles.box_observacoes}>
                             <p>Importação para <strong>{periodoTexto}</strong></p>
+                            <p>Selecione as contas financeiras que deseja importar:</p>
                         </div>
 
                         <div className={stylesImportacaoBling.secaoContas}>
-                            <p style={{ fontSize: '0.9rem', marginBottom: '10px', fontWeight: 'bold' }}>
-                                Selecione as contas financeiras:
-                            </p>
                             {buscandoContas ? (
                                 <div className={stylesImportacaoBling.loaderPequeno}>Carregando contas...</div>
                             ) : (
                                 <div className={stylesImportacaoBling.listaContas}>
                                     {contasBling.length > 0 ? (
                                         contasBling.map(conta => (
-                                            <label key={conta.id} className={stylesImportacaoBling.itemConta}>
-                                                <input
+                                            <label key={conta.id} className={styles.checkbox_confirmar}>
+                                                <Input
                                                     type="checkbox"
                                                     checked={contasSelecionadas.includes(conta.id)}
                                                     onChange={() => toggleConta(conta.id)}
+                                                    className={styles.input_checkbox}
+                                                    style={{ display: 'none' }}
                                                 />
-                                                <span>{conta.descricao}</span>
+                                                <span className={styles.custom_checkbox}>
+                                                    <PiIcons.PiCheckFatFill className={styles.custom_icon} />
+                                                </span>
+                                                <p>{conta.descricao}</p>
                                             </label>
                                         ))
                                     ) : (
@@ -168,42 +178,64 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                         <div className={styles.box_btn_button}>
                             <Button
                                 onClick={handleIniciarSincronizacao}
-                                loading={loading}
                                 disabled={contasSelecionadas.length === 0 || buscandoContas}
                             >
-                                <PiIcons.PiCloudArrowDown /> Importar Agora
+                                Importar Agora
                             </Button>
                         </div>
-                    </div>
+                    </>
                 )}
 
                 {loading && (
                     <div className={stylesImportacaoBling.containerProgresso}>
-                        <div className={stylesImportacaoBling.loader}></div>
-                        <p>{etapa === 1 ? "Sincronizando Categorias..." : "Importando Lançamentos..."}</p>
-                        <small>Isto pode demorar alguns segundos conforme o volume de dados.</small>
+                        <div className={stylesImportacaoBling.linhaProgresso}>
+                            <div className={`${stylesImportacaoBling.ponto} ${etapa >= 1 ? stylesImportacaoBling.ativo : ""}`}>
+                                <div className={stylesImportacaoBling.circulo}>
+                                    {etapa > 1 ? <PiIcons.PiCheckBold /> : (etapa === 1 ? <PiIcons.PiCircleNotchBold className={stylesImportacaoBling.spinner} /> : "1")}
+                                </div>
+                                <span>Sincronizando Categorias</span>
+                            </div>
+
+                            <div className={stylesImportacaoBling.divisor}></div>
+
+                            <div className={`${stylesImportacaoBling.ponto} ${etapa >= 2 ? stylesImportacaoBling.ativo : ""}`}>
+                                <div className={stylesImportacaoBling.circulo}>
+                                    {etapa > 2 ? <PiIcons.PiCheckBold /> : (etapa === 2 ? <PiIcons.PiCircleNotchBold className={stylesImportacaoBling.spinner} /> : "2")}
+                                </div>
+                                <span>Importando Lançamentos</span>
+                            </div>
+
+                            <div className={stylesImportacaoBling.divisor}></div>
+
+                            <div className={`${stylesImportacaoBling.ponto} ${etapa >= 3 ? stylesImportacaoBling.ativo : ""}`}>
+                                <div className={stylesImportacaoBling.circulo}>
+                                    {etapa === 3 ? <PiIcons.PiCheckBold /> : "3"}
+                                </div>
+                                <span>Concluído</span>
+                                <span></span>
+                            </div>
+                        </div>
                     </div>
                 )}
 
+                {/* ETAPA 3: RESUMO FINAL (IGUAL AO CSV) */}
                 {etapa === 3 && resultado && (
                     <div className={stylesImportacaoBling.containerResumo}>
                         <div className={stylesImportacaoBling.cardSucesso}>
-                            <PiIcons.PiCheckCircleFill size={40} color="var(--verde)" />
-                            <h3>Sincronização Concluída!</h3>
-                            <div className={stylesImportacaoBling.gridStats}>
-                                <div>
-                                    <strong>{resultado.stats?.total_importados || 0}</strong>
-                                    <span>Importados</span>
-                                </div>
-                                <div>
-                                    <strong>{resultado.stats?.total_ignorados || 0}</strong>
-                                    <span>Ignorados</span>
-                                </div>
+                            <div className={stylesImportacaoBling.aviso}>
+                                <PiIcons.PiCheckCircle size={20} color="var(--verde)" />
+                                <p>{resultado.stats?.total_importados || 0} Lançamentos importados com sucesso!</p>
                             </div>
+                            {(resultado.stats?.total_ignorados > 0) && (
+                                <div className={stylesImportacaoBling.aviso}>
+                                    <PiIcons.PiInfo size={20} color='var(--laranja)' />
+                                    <p className={stylesImportacaoBling.aviso_ignorados}>{resultado.stats?.total_ignorados} Lançamentos ignorados.</p>
+                                </div>
+                            )}
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button onClick={handleFecharModal}>Voltar para o BI</Button>
+                            <Button onClick={handleFecharModal}>Concluir e Fechar</Button>
                         </div>
                     </div>
                 )}
