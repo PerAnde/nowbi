@@ -29,7 +29,7 @@ class ImportLancamentosBlingService {
 
         const logsImportados = [];
         const logsIgnorados = [];
-        
+
         // Se não vierem IDs, definimos como [null] para fazer uma busca geral
         const listaContasParaProcessar = contasIds && contasIds.length > 0 ? contasIds : [null];
 
@@ -49,8 +49,8 @@ class ImportLancamentosBlingService {
                             dataInicial,
                             dataFinal,
                             situacao: 'R',
-                            situacaoConciliacao: 1,
-                            idContaFinanceira: idConta || undefined 
+                            // situacaoConciliacao: 1,
+                            idContaFinanceira: idConta || undefined
                         },
                         headers: { Authorization: `Bearer ${accessToken}` }
                     });
@@ -58,6 +58,8 @@ class ImportLancamentosBlingService {
                     const lancamentosBling = response.data.data || [];
 
                     if (lancamentosBling.length === 0) break;
+
+                    const nomeContaBling = lancamentosBling.conta?.descricao || 'Conta não identificada';
 
                     for (const lanc of lancamentosBling) {
                         const idExternoBling = String(lanc.id);
@@ -69,8 +71,11 @@ class ImportLancamentosBlingService {
                             descricao: lanc.descricao,
                             valor: valorLancamento,
                             data: lanc.data,
-                            conta: idConta || 'Geral'
+                            conta: idConta || 'Geral',
+                            contaNome: nomeContaBling
                         };
+
+                        console.log(`[Bling] Importando: ${lanc.descricao} | Valor: ${valorLancamento} | Origem: ${nomeContaBling}`);
 
                         // Evita duplicados (id_externo_lancamento é @unique no Prisma)
                         const existe = await prismaClient.lancamentoBi.findUnique({
@@ -137,7 +142,7 @@ class ImportLancamentosBlingService {
                     break; // Sai do loop desta conta mas continua para a próxima
                 }
             }
-            
+
             // Pequeno delay entre a troca de uma conta para outra para evitar Rate Limit
             await sleep(1000);
         }

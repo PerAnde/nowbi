@@ -9,6 +9,13 @@ import * as PiIcons from 'react-icons/pi';
 import styles from '../../Modal.module.scss'
 import stylesImportacaoBling from './ImportacaoBling.module.scss'
 
+// 1. Defina a função de formatar fora do componente para garantir o escopo
+const formatarData = (d) => {
+    const dia = String(d.getDate()).padStart(2, '0');
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${dia}/${m}/${d.getFullYear()}`;
+};
+
 export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCriado }) => {
     const { id } = useParams()
 
@@ -18,12 +25,20 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
     const [periodoTexto, setPeriodoTexto] = useState("")
     const [datasAutomáticas, setDatasAutomáticas] = useState({ inicio: "", fim: "" })
 
+    const [contasBling, setContasBling] = useState([])
+    const [contasSelecionadas, setContasSelecionadas] = useState([])
+    const [buscandoContas, setBuscandoContas] = useState(false)
+
+    console.log(contasSelecionadas)
+
     useEffect(() => {
         if (trigger && id) {
-            const carregarDadosBI = async () => {
+            const carregarDadosIniciais = async () => {
+                setBuscandoContas(true);
                 try {
-                    const response = await api.get(`/bi/${id}`);
-                    const { mes, ano } = response.data;
+                    // 1. Carrega dados do BI
+                    const resBI = await api.get(`/bi/${id}`);
+                    const { mes, ano } = resBI.data;
 
                     const mesesMap = {
                         'JANEIRO': 0, 'FEVEREIRO': 1, 'MARÇO': 2, 'ABRIL': 3,
@@ -35,42 +50,52 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                     const dataInicio = new Date(ano, mesIndex, 1);
                     const dataFim = new Date(ano, mesIndex + 1, 0);
 
-                    const formatar = (d) => {
-                        const dia = String(d.getDate()).padStart(2, '0');
-                        const m = String(d.getMonth() + 1).padStart(2, '0');
-                        return `${dia}/${m}/${d.getFullYear()}`;
+                    const resDatas = {
+                        inicio: formatarData(dataInicio),
+                        fim: formatarData(dataFim)
                     };
 
-                    // Criando a variável antes de usar nos logs e no state
-                    const resultadoDatas = {
-                        inicio: formatar(dataInicio),
-                        fim: formatar(dataFim)
-                    };
-
-                    setDatasAutomáticas(resultadoDatas);
+                    setDatasAutomáticas(resDatas);
                     setPeriodoTexto(`${mes.charAt(0).toUpperCase() + mes.slice(1).toLowerCase()} de ${ano}`);
 
+                    // 2. Busca as contas do Bling
+                    const resContas = await api.get(`/integrations/bling/contas/${empresaId}`);
+
+                    if (resContas.data) {
+                        setContasBling(resContas.data);
+                        setContasSelecionadas(resContas.data.map(c => c.id));
+                    }
+
                 } catch (error) {
-                    console.error("Erro no processamento das datas:", error);
-                    toast.error("Erro ao carregar período do BI.");
+                    console.error("ERRO DETALHADO:", error);
+                    toast.error("Erro ao carregar dados iniciais.");
+                } finally {
+                    setBuscandoContas(false);
                 }
             };
-            carregarDadosBI();
+            carregarDadosIniciais();
         }
-    }, [trigger, id]);
+    }, [trigger, id, empresaId]);
+
+    const toggleConta = (contaId) => {
+        setContasSelecionadas(prev =>
+            prev.includes(contaId) ? prev.filter(id => id !== contaId) : [...prev, contaId]
+        );
+    };
 
     async function handleIniciarSincronizacao() {
         setLoading(true);
         try {
             setEtapa(1);
-
-            // 2. PASSANDO OS PARÂMETROS NA ORDEM CORRETA PARA O SERVIÇO
             const data = await importacaoBling(
                 empresaId,
                 id,
                 datasAutomáticas.inicio,
-                datasAutomáticas.fim
+                datasAutomáticas.fim,
+                contasSelecionadas
             );
+
+            console.log(data.stats.detalhes_importacao);
 
             setEtapa(2);
             await new Promise(res => setTimeout(res, 800));
@@ -111,12 +136,41 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                 {etapa === 0 && (
                     <div className={stylesImportacaoBling.containerConfirmacao}>
                         <div className={styles.box_observacoes}>
-                            <p>O sistema vai importar os lançamentos do Bling referentes a</p>
-                            <h4 className={stylesImportacaoBling.destaquePeriodo}>{periodoTexto}</h4>
+                            <p>Importação para <strong>{periodoTexto}</strong></p>
+                        </div>
+
+                        <div className={stylesImportacaoBling.secaoContas}>
+                            <p style={{ fontSize: '0.9rem', marginBottom: '10px', fontWeight: 'bold' }}>
+                                Selecione as contas financeiras:
+                            </p>
+                            {buscandoContas ? (
+                                <div className={stylesImportacaoBling.loaderPequeno}>Carregando contas...</div>
+                            ) : (
+                                <div className={stylesImportacaoBling.listaContas}>
+                                    {contasBling.length > 0 ? (
+                                        contasBling.map(conta => (
+                                            <label key={conta.id} className={stylesImportacaoBling.itemConta}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={contasSelecionadas.includes(conta.id)}
+                                                    onChange={() => toggleConta(conta.id)}
+                                                />
+                                                <span>{conta.descricao}</span>
+                                            </label>
+                                        ))
+                                    ) : (
+                                        <small>Nenhuma conta encontrada no Bling.</small>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button onClick={handleIniciarSincronizacao} loading={loading}>
+                            <Button
+                                onClick={handleIniciarSincronizacao}
+                                loading={loading}
+                                disabled={contasSelecionadas.length === 0 || buscandoContas}
+                            >
                                 <PiIcons.PiCloudArrowDown /> Importar Agora
                             </Button>
                         </div>
@@ -138,11 +192,11 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                             <h3>Sincronização Concluída!</h3>
                             <div className={stylesImportacaoBling.gridStats}>
                                 <div>
-                                    <strong>{resultado.stats.total_importados}</strong>
+                                    <strong>{resultado.stats?.total_importados || 0}</strong>
                                     <span>Importados</span>
                                 </div>
                                 <div>
-                                    <strong>{resultado.stats.total_ignorados}</strong>
+                                    <strong>{resultado.stats?.total_ignorados || 0}</strong>
                                     <span>Ignorados</span>
                                 </div>
                             </div>
