@@ -150,7 +150,7 @@
 }
 
 .secaoContas {
-    margin: 2rem 0;
+    margin-bottom: 2rem;
 }
 
 .listaContas {
@@ -159,6 +159,12 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    padding: .5rem 1.5rem 0 0;
+}
+
+.conta {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
 }
 
 .containerProgresso {

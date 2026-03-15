@@ -154,19 +154,21 @@ export const ImportacaoBling = ({ trigger, setTrigger, empresaId, lancamentoCria
                                 <div className={stylesImportacaoBling.listaContas}>
                                     {contasBling.length > 0 ? (
                                         contasBling.map(conta => (
-                                            <label key={conta.id} className={styles.checkbox_confirmar}>
-                                                <Input
-                                                    type="checkbox"
-                                                    checked={contasSelecionadas.includes(conta.id)}
-                                                    onChange={() => toggleConta(conta.id)}
-                                                    className={styles.input_checkbox}
-                                                    style={{ display: 'none' }}
-                                                />
-                                                <span className={styles.custom_checkbox}>
-                                                    <PiIcons.PiCheckFatFill className={styles.custom_icon} />
-                                                </span>
-                                                <p>{conta.descricao}</p>
-                                            </label>
+                                            <div className={stylesImportacaoBling.conta}>
+                                                <label key={conta.id} className={styles.checkbox_confirmar}>
+                                                    <Input
+                                                        type="checkbox"
+                                                        checked={contasSelecionadas.includes(conta.id)}
+                                                        onChange={() => toggleConta(conta.id)}
+                                                        className={styles.input_checkbox}
+                                                        style={{ display: 'none' }}
+                                                    />
+                                                    <span className={styles.custom_checkbox}>
+                                                        <PiIcons.PiCheckFatFill className={styles.custom_icon} />
+                                                    </span>
+                                                    <p>{conta.descricao}</p>
+                                                </label>
+                                            </div>
                                         ))
                                     ) : (
                                         <small>Nenhuma conta encontrada no Bling.</small>
