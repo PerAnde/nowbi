@@ -191,10 +191,10 @@ a.btn_integrar {
     color: var(--texto-secundario);
     border-radius: var(--border-radius-button);
     font-size: 1.3rem;
-        transition: .3s;
+    transition: .3s;
 }
 
-a.btn_integrar:hover{
+a.btn_integrar:hover {
     color: var(--verde);
     border: 1px solid var(--verde);
     transition: .3s;
@@ -376,7 +376,7 @@ a.btn_excluir_lancamentos:hover {
 .categoria_header {
     grid-column: 1/5;
     display: grid;
-    grid-template-columns: 30px 127px 70px 1fr 1fr 1fr 200px;
+    grid-template-columns: 30px 127px 70px 1fr 1fr 90px 200px;
     align-items: center;
     padding: 2rem 2rem 0;
     gap: 0 3rem;
@@ -384,7 +384,7 @@ a.btn_excluir_lancamentos:hover {
     transition: all .3s;
 }
 
-.categoria_header span:nth-child(6) {
+.categoria_header span:nth-child(7) {
     text-align: center;
 }
 
@@ -516,7 +516,7 @@ a.btn_excluir_lancamentos:hover {
 .box_categoria {
     position: relative;
     display: grid;
-    grid-template-columns: 30px 127px 70px 1fr 1fr 1fr 200px;
+    grid-template-columns: 30px 127px 70px 1fr 1fr 90px 200px;
     align-items: center;
     border: 1px solid var(--border-input);
     border-radius: var(--border-radius-componente);
@@ -538,6 +538,7 @@ a.btn_excluir_lancamentos:hover {
 }
 
 .box_categoria p.tipo {
+    max-width: 100px;
     font-size: 1.2rem;
     padding: .7rem;
     border-radius: var(--border-radius-button);
@@ -547,12 +548,38 @@ a.btn_excluir_lancamentos:hover {
 
 .box_categoria p.tipo_receita {
     color: var(--verde);
-    background-color: var(--verde-15);
+    border: 1px solid var(--verde-15);
+    background-color: var(--verde-05);
 }
 
 .box_categoria p.tipo_despesa {
     color: var(--vermelho);
-    background-color: var(--vermelho-15);
+    border: 1px solid var(--vermelho-15);
+    background-color: var(--vermelho-05);
+}
+
+.box_categoria p.origem_lancamento_manual {
+    color: var(--texto-secundario);
+    border: 1px solid var(--border);
+    background-color: var(--background-geral);
+}
+
+.box_categoria p.origem_lancamento_arquivo {
+    color: var(--amarelo);
+    border: 1px solid var(--amarelo-15);
+    background-color: var(--amarelo-05);
+}
+
+.box_categoria p.origem_lancamento_bling {
+    color: var(--verde);
+    border: 1px solid var(--verde-15);
+    background-color: var(--verde-05);
+}
+
+.box_categoria p.origem_lancamento_conta_azul {
+    color: var(--cor-principal);
+    border: 1px solid var(--azul-15);
+    background-color: var(--azul-05);
 }
 
 .box_categoria p span {

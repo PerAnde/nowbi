@@ -6,6 +6,7 @@ class ImportLancamentosBlingController {
         try {
             const { empresa_id, bi_id } = req.params;
             const { dataInicial, dataFinal } = req.query;
+            const { contasIds } = req.body;
             const usuario_id = req.usuario_id;
 
             const importarService = new ImportLancamentosBlingService();
@@ -15,7 +16,8 @@ class ImportLancamentosBlingController {
                 bi_id,
                 usuario_id,
                 dataInicial: dataInicial as string,
-                dataFinal: dataFinal as string
+                dataFinal: dataFinal as string,
+                contasIds
             });
 
             return res.status(200).json(resultado);

@@ -199,7 +199,12 @@ export const Bi = () => {
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         : [];
 
-        console.log(lancamentosFiltrados.origem_lancamento)
+    const configOrigem = {
+        MANUAL: { label: "MANUAL", class: styles.origem_lancamento_manual },
+        IMPORTACAO_ARQUIVO: { label: "CSV/XLS", class: styles.origem_lancamento_arquivo },
+        IMPORTACAO_BLING: { label: "BLING", class: styles.origem_lancamento_bling },
+        IMPORTACAO_CONTA_AZUL: { label: "CONTA AZUL", class: styles.origem_lancamento_conta_azul },
+    };
 
     const totalReceitas = bi.lancamentoBi
         ?.filter(lancamento => lancamento.tipo === "RECEITA")
@@ -429,7 +434,7 @@ export const Bi = () => {
                             <span>Tipo</span>
                             <span>Categoria</span>
                             <span>Subategoria</span>
-                            <span>Inserido</span>
+                            <span>Importação</span>
                             <span>Opções</span>
                         </div>
                     ) : (
@@ -477,8 +482,14 @@ export const Bi = () => {
                                 <p className={`${styles.tipo} ${lancamento.tipo === "RECEITA" ? styles.tipo_receita : styles.tipo_despesa}`}>{capitalizeFirstLetter(lancamento.tipo)}</p>
                                 <p>{capitalizeFirstLetter(lancamento.categoria.name)}</p>
                                 <p>{lancamento.subcategoria ? capitalizeFirstLetter(lancamento.subcategoria.name) : <span>Sem subcategoria</span>}</p>
-                                {lancamentosFiltrados.origem_lancamento === 'MANUAL' ? 
-                                (<p>MANUAL</p>) : ('')}
+                                {(() => {
+                                    const origem = configOrigem[lancamento.origem_lancamento] || configOrigem.DEFAULT;
+                                    return (
+                                        <p className={`${styles.tipo} ${origem.class}`}>
+                                            {origem.label}
+                                        </p>
+                                    );
+                                })()}
                                 <div className={styles.box_btns_opcoes_lancamento}>
                                     <Link className={styles.btn_editar_lancamento} onClick={() => {
                                         setLancamentoSelecionado(lancamento.id)
