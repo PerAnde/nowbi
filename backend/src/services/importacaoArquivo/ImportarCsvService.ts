@@ -79,11 +79,28 @@ export class ImportarCsvService {
 
     private converterData(dataString: string): Date {
         if (!dataString) return new Date();
-        const partes = dataString.split('/');
+
+        // Remove aspas caso o CSV as tenha enviado (ex: "08/01/2026")
+        const dataLimpa = dataString.replace(/"/g, '').trim();
+
+        // Formato esperado: DD/MM/YYYY
+        const partes = dataLimpa.split('/');
+
         if (partes.length === 3) {
-            const [dia, mes, ano] = partes.map(Number);
-            return new Date(ano, mes - 1, dia);
+            const dia = parseInt(partes[0], 10);
+            const mes = parseInt(partes[1], 10) - 1; // Meses no JS começam em 0
+            const ano = parseInt(partes[2], 10);
+
+            const data = new Date(ano, mes, dia);
+
+            // Verifica se a data é válida
+            if (!isNaN(data.getTime())) {
+                return data;
+            }
         }
-        return new Date(dataString);
+
+        // Fallback para o construtor padrão
+        const dataFallback = new Date(dataLimpa);
+        return isNaN(dataFallback.getTime()) ? new Date() : dataFallback;
     }
 }

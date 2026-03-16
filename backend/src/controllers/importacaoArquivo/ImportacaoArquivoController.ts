@@ -42,7 +42,8 @@ class ImportacaoArquivoController {
             const resultado = await importarLancamentosService.execute(
                 lancamentos,
                 businessIntelligenceId,
-                usuario_id
+                usuario_id,
+                'IMPORTACAO_ARQUIVO'
             )
 
             return res.json(resultado)

@@ -19,7 +19,12 @@ export class ImportarLancamentosService {
             .toUpperCase()
     }
 
-    async execute(lancamentos: LancamentoImportado[], businessIntelligenceId: string, usuario_id: string): Promise<ResultadoImportacao> {
+    async execute(
+        lancamentos: LancamentoImportado[],
+        businessIntelligenceId: string,
+        usuario_id: string,
+        origem: OrigemLancamento
+    ): Promise<ResultadoImportacao> {
 
         const bi = await prisma.businessIntelligence.findFirst({
             where: {
@@ -75,7 +80,7 @@ export class ImportarLancamentosService {
                 subcategoria_id: subcategoria.id,
                 businessIntelligence_id: businessIntelligenceId,
                 id_externo_lancamento: idLimpo,
-                origem_lancamento: 'IMPORTACAO_ARQUIVO',
+                origem_lancamento: origem,
                 data_lancamento: lanc.data
             });
             setIdsNoBanco.add(idLimpo);
