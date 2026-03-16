@@ -51,3 +51,8 @@ export const formatarCnpj = (valor) => {
         .replace(/\.(\d{3})(\d)/, ".$1/$2")
         .replace(/(\d{4})(\d)/, "$1-$2");
 };
+
+export const diminuiTexto = (text, limit = 15) => {
+    if (!text) return "";
+    return text.length > limit ? `${text.substring(0, limit)}...` : text;
+};

@@ -6,9 +6,10 @@ export interface LancamentoImportado {
     tipo: 'RECEITA' | 'DESPESA'
     subcategoriaNome: string
     external_id: string
+    data: Date
 }
 
-export class ImportarBlingCsvService {
+export class ImportarCsvService {
 
     private palavrasIgnoradas = [
         'TRANSFER'
@@ -48,11 +49,14 @@ export class ImportarBlingCsvService {
             const valorConvertido = this.converterValor(linha.Valor)
             const tipoConvertido = linha.Tipo === 'C' ? 'RECEITA' : 'DESPESA'
 
+            const dataConvertida = this.converterData(linha.Data);
+
             resultados.push({
                 valor: valorConvertido,
                 tipo: tipoConvertido,
                 subcategoriaNome: subcategoriaNormalizada,
-                external_id: linha.Id
+                external_id: linha.Id,
+                data: dataConvertida
             })
         }
 
@@ -60,14 +64,26 @@ export class ImportarBlingCsvService {
     }
 
     private converterValor(valor: string): number {
-        return Number(
+        if (!valor) return 0;
+        const numero = Number(
             valor.replace(/\./g, '').replace(',', '.')
-        )
+        );
+        return Math.abs(numero);
     }
 
     private normalizarTexto(texto: string): string {
         return texto
             .trim()
             .toUpperCase()
+    }
+
+    private converterData(dataString: string): Date {
+        if (!dataString) return new Date();
+        const partes = dataString.split('/');
+        if (partes.length === 3) {
+            const [dia, mes, ano] = partes.map(Number);
+            return new Date(ano, mes - 1, dia);
+        }
+        return new Date(dataString);
     }
 }

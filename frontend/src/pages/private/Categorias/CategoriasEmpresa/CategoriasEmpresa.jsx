@@ -199,7 +199,7 @@ export const CategoriasEmpresa = () => {
 
                 <div className={styles.categoria_header}>
                     <span>Nome</span>
-                    <span title='Adicionado'>Inserção</span>
+                    <span title='Adicionado'>Importação</span>
                     <span>Criação</span>
                     <span title='Subcategorias'>Sub...</span>
                     <span>Opções</span>

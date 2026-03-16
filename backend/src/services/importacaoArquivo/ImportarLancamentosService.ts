@@ -1,5 +1,5 @@
 import { OrigemLancamento, PrismaClient } from '@prisma/client'
-import { LancamentoImportado } from './ImportarBlingCsvService'
+import { LancamentoImportado } from './ImportarCsvService'
 
 const prisma = new PrismaClient()
 
@@ -75,7 +75,8 @@ export class ImportarLancamentosService {
                 subcategoria_id: subcategoria.id,
                 businessIntelligence_id: businessIntelligenceId,
                 id_externo_lancamento: idLimpo,
-                origem_lancamento: 'IMPORTACAO_ARQUIVO'
+                origem_lancamento: 'IMPORTACAO_ARQUIVO',
+                data_lancamento: lanc.data
             });
             setIdsNoBanco.add(idLimpo);
         }

@@ -1,14 +1,14 @@
 import { api } from '../api/api'
 import { toast } from 'sonner'
 
-export const importarCsv = async (arquivo, businessIntelligenceId) => {
+export const importarArquivo = async (arquivo, businessIntelligenceId) => {
     try {
         const formData = new FormData();
 
         formData.append('file', arquivo);
         formData.append('businessIntelligenceId', businessIntelligenceId);
 
-        const response = await api.post('/importacao-csv', formData, {
+        const response = await api.post('/importacao-arquivo', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

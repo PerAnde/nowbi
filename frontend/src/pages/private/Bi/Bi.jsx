@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { buscarBi, atualizarStatus, gerarRelatorioAI, buscarObservacoes, salvarObservacoes, excluirBi } from '../../../services/bis';
 import { excluirLancamento, excluirLancamentos } from '../../../services/lancamentos';
 import { toast } from 'sonner';
-import { capitalizeFirstLetter } from '../../../utils/formatUtils'
+import { capitalizeFirstLetter, diminuiTexto } from '../../../utils/formatUtils'
 
 import { Layout } from '../../../layout/Layout'
 import { EditorObservacoes } from "../../../components/EditorObs/EditorObs";
@@ -17,7 +17,7 @@ import { EditarLancamento } from '../../../components/Modal/LancamentoBi/EditarL
 import { ExcluirLancamento } from '../../../components/Modal/LancamentoBi/ExcluirLancamento/ExcluirLancamento';
 import { ExcluirLancamentos } from '../../../components/Modal/LancamentoBi/ExcluirLancamentos/ExcluirLancamentos'
 
-import { ImportarCSV } from '../../../components/Modal/LancamentoBi/ImportarCSV/ImportarCSV'
+import { ImportarArquivo } from '../../../components/Modal/LancamentoBi/ImportarArquivo/ImportarArquivo'
 import { ImportacaoBling } from '../../../components/Modal/LancamentoBi/ImportacaoBling/ImportacaoBling'
 
 import Skeleton from 'react-loading-skeleton';
@@ -70,7 +70,7 @@ export const Bi = () => {
     const [popUpExclusaoLancamento, setPopUpExclusaoLancamento] = useState(false);
     const [popUpExclusaoLancamentos, setPopUpExclusaoLancamentos] = useState(false);
 
-    const [popUpImportarCSV, setPopUpImportarCSV] = useState(false);
+    const [popUpImportarArquivo, setPopUpImportarArquivo] = useState(false);
     const [popUpImportacaoBling, setPopUpImportacaoBling] = useState(false);
 
     const navigate = useNavigate();
@@ -86,12 +86,12 @@ export const Bi = () => {
 
     // Desativa ou ativa scroll
     useEffect(() => {
-        if (popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarCSV || popUpExclusaoLancamento || popUpExclusaoLancamentos) {
+        if (popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarArquivo || popUpExclusaoLancamento || popUpExclusaoLancamentos) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
-    }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarCSV || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
+    }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarArquivo || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
 
     useEffect(() => {
         const carregarDadosIniciais = async () => {
@@ -381,7 +381,7 @@ export const Bi = () => {
                                             onClick={(e) => setPopUpNovoLancamento(true)}
                                             title="Adicionar lançamento"
                                         ><PiIcons.PiPlusBold /> Add</Link>
-                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarCSV(true)} title="Importar via CSV"><PiIcons.PiFileCsvBold /></Link>
+                                        <Link className={`${styles.btn_link_principal} ${styles.btn_editar}`} onClick={() => setPopUpImportarArquivo(true)} title="Importar Arquivo CSV/XLS"><PiIcons.PiFileCsvBold /></Link>
                                         {bi.empresa?.blingIntegration?.isActive ? (
                                             <>
                                                 <Link className={styles.btn_integrar} onClick={() => setPopUpImportacaoBling(true)} title="Importar dados do Bling!">Bling</Link>
@@ -432,9 +432,9 @@ export const Bi = () => {
                             <span></span>
                             <span>Valor</span>
                             <span>Tipo</span>
+                            <span>Importação</span>
                             <span>Categoria</span>
                             <span>Subategoria</span>
-                            <span>Importação</span>
                             <span>Opções</span>
                         </div>
                     ) : (
@@ -480,8 +480,6 @@ export const Bi = () => {
                                 </label>
                                 <p>R$ {parseFloat(lancamento.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                 <p className={`${styles.tipo} ${lancamento.tipo === "RECEITA" ? styles.tipo_receita : styles.tipo_despesa}`}>{capitalizeFirstLetter(lancamento.tipo)}</p>
-                                <p>{capitalizeFirstLetter(lancamento.categoria.name)}</p>
-                                <p>{lancamento.subcategoria ? capitalizeFirstLetter(lancamento.subcategoria.name) : <span>Sem subcategoria</span>}</p>
                                 {(() => {
                                     const origem = configOrigem[lancamento.origem_lancamento] || configOrigem.DEFAULT;
                                     return (
@@ -490,6 +488,8 @@ export const Bi = () => {
                                         </p>
                                     );
                                 })()}
+                                <p title={lancamento.categoria.name}>{capitalizeFirstLetter(lancamento.categoria.name)}</p>
+                                <p title={lancamento.subcategoria.name}>{lancamento.subcategoria ? (capitalizeFirstLetter(lancamento.subcategoria.name)) : <span>Sem subcategoria</span>}</p>
                                 <div className={styles.box_btns_opcoes_lancamento}>
                                     <Link className={styles.btn_editar_lancamento} onClick={() => {
                                         setLancamentoSelecionado(lancamento.id)
@@ -681,9 +681,9 @@ export const Bi = () => {
                 setTrigger={setPopUpNovoLancamento}
                 empresaId={idEmpresa}
                 lancamentoCriado={atualizarBi} />
-            <ImportarCSV
-                trigger={popUpImportarCSV}
-                setTrigger={setPopUpImportarCSV}
+            <ImportarArquivo
+                trigger={popUpImportarArquivo}
+                setTrigger={setPopUpImportarArquivo}
                 lancamentoCriado={atualizarBi}
             />
             <ImportacaoBling

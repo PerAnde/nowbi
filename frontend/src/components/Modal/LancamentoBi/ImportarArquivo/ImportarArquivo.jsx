@@ -1,15 +1,15 @@
 import React, { useState, useRef } from 'react'
 import { useParams } from 'react-router-dom';
-import { importarCsv } from '../../../../services/importacaoCsv';
+import { importarArquivo } from '../../../../services/importacaoArquivo';
 import { Button } from '../../../Button/Button'
 import { toast } from 'sonner'
 
 import * as PiIcons from 'react-icons/pi';
 
 import styles from '../../Modal.module.scss'
-import stylesImportarCSV from './ImportarCSV.module.scss'
+import stylesImportarArquivo from './ImportarArquivo.module.scss'
 
-export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
+export const ImportarArquivo = ({ trigger, setTrigger, lancamentoCriado }) => {
 
     // ID do BI
     const { id } = useParams();
@@ -23,11 +23,19 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
 
     function handleArquivo(file) {
         if (!file) return;
-        const tiposPermitidos = ['text/csv', 'application/vnd.ms-excel'];
-        const extensaoValida = file.name.toLowerCase().endsWith(".csv");
+        const tiposPermitidos = [
+            'text/csv',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+
+        const nomeArquivo = file.name.toLowerCase();
+        const extensaoValida = nomeArquivo.endsWith(".csv") ||
+            nomeArquivo.endsWith(".xls") ||
+            nomeArquivo.endsWith(".xlsx");
 
         if (!extensaoValida && !tiposPermitidos.includes(file.type)) {
-            toast.error("Por favor, selecione um arquivo CSV válido.");
+            toast.error("Por favor, selecione um arquivo válido (.csv, .xls ou .xlsx).");
             return;
         }
 
@@ -50,7 +58,7 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
             await new Promise(res => setTimeout(res, 1000));
 
             setEtapa(2);
-            const data = await importarCsv(arquivo, id);
+            const data = await importarArquivo(arquivo, id);
             await new Promise(res => setTimeout(res, 1000));
 
             setEtapa(3);
@@ -91,7 +99,7 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
         <div className={styles.popup}>
             <div className={styles.box_popup}>
                 <div className={styles.box_header}>
-                    <h3>Importar CSV</h3>
+                    <h3>Importar Arquivo</h3>
                     <span onClick={handleFecharModal}>
                         <PiIcons.PiXBold className={styles.close} />
                     </span>
@@ -99,26 +107,26 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
 
                 {etapa === 0 && (
                     <div className={styles.box_observacoes}>
-                        <p>Envie o CSV de conciliação financeira.</p>
+                        <p>Envie o CSV ou XLS de conciliação financeira.</p>
                     </div>
                 )}
 
                 {etapa === 4 && resultado ? (
-                    <div className={stylesImportarCSV.containerResumo}>
-                        <div className={stylesImportarCSV.cardSucesso}>
+                    <div className={stylesImportarArquivo.containerResumo}>
+                        <div className={stylesImportarArquivo.cardSucesso}>
                             {resultado.duplicados > 0 ? (
                                 <>
-                                    <div className={stylesImportarCSV.aviso}>
+                                    <div className={stylesImportarArquivo.aviso}>
                                         <PiIcons.PiCheckCircle size={20} color="var(--verde)" />
                                         <p>{resultado.importados} Novos lançamentos importados!</p>
                                     </div>
-                                    <div className={stylesImportarCSV.aviso}>
+                                    <div className={stylesImportarArquivo.aviso}>
                                         <PiIcons.PiInfo size={20} color='var(--laranja)' />
-                                        <p className={stylesImportarCSV.infoDuplicados}>{resultado.duplicados} Lançamentos ignorados (já existentes).</p>
+                                        <p className={stylesImportarArquivo.infoDuplicados}>{resultado.duplicados} Lançamentos ignorados (já existentes).</p>
                                     </div>
                                 </>
                             ) : (
-                                <div className={stylesImportarCSV.aviso}>
+                                <div className={stylesImportarArquivo.aviso}>
                                     <PiIcons.PiCheckCircle size={20} color="var(--verde)" />
                                     <p>{resultado.importados} Lançamentos importados!</p>
                                 </div>
@@ -126,12 +134,12 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                         </div>
 
                         {resultado.naoImportados.length > 0 && (
-                            <div className={stylesImportarCSV.boxNaoImportados}>
-                                <div className={stylesImportarCSV.aviso}>
+                            <div className={stylesImportarArquivo.boxNaoImportados}>
+                                <div className={stylesImportarArquivo.aviso}>
                                     <PiIcons.PiWarning size={20} />
                                     <p>{resultado.naoImportados.length} Lançamentos não importados:</p>
                                 </div>
-                                <div className={stylesImportarCSV.tabelaScroll}>
+                                <div className={stylesImportarArquivo.tabelaScroll}>
                                     <table>
                                         <thead>
                                             <tr>
@@ -149,11 +157,11 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                                         </tbody>
                                     </table>
                                 </div>
-                                <p className={stylesImportarCSV.dica}>Dica: Cadastre essas subcategorias na empresa e tente importar o arquivo novamente.</p>
+                                <p className={stylesImportarArquivo.dica}>Dica: Cadastre essas subcategorias na empresa e tente importar o arquivo novamente.</p>
                             </div>
                         )}
 
-                        <div className={stylesImportarCSV.box_btn_button}>
+                        <div className={stylesImportarArquivo.box_btn_button}>
                             <Button onClick={() => { setTrigger(false); setEtapa(0); setArquivo(null); }}>
                                 Concluir e Fechar
                             </Button>
@@ -161,20 +169,20 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                     </div>
 
                 ) : loading ? (
-                    <div className={stylesImportarCSV.containerProgresso}>
-                        <div className={stylesImportarCSV.linhaProgresso}>
-                            <div className={`${stylesImportarCSV.ponto} ${etapa >= 1 ? stylesImportarCSV.ativo : ""}`}>
-                                <div className={stylesImportarCSV.circulo}>{etapa > 1 ? <PiIcons.PiCheckBold /> : (etapa === 1 ? <PiIcons.PiCircleNotchBold className={stylesImportarCSV.spinner} /> : "1")}</div>
+                    <div className={stylesImportarArquivo.containerProgresso}>
+                        <div className={stylesImportarArquivo.linhaProgresso}>
+                            <div className={`${stylesImportarArquivo.ponto} ${etapa >= 1 ? stylesImportarArquivo.ativo : ""}`}>
+                                <div className={stylesImportarArquivo.circulo}>{etapa > 1 ? <PiIcons.PiCheckBold /> : (etapa === 1 ? <PiIcons.PiCircleNotchBold className={stylesImportarArquivo.spinner} /> : "1")}</div>
                                 <span>Analisando</span>
                             </div>
-                            <div className={stylesImportarCSV.divisor}></div>
-                            <div className={`${stylesImportarCSV.ponto} ${etapa >= 2 ? stylesImportarCSV.ativo : ""}`}>
-                                <div className={stylesImportarCSV.circulo}>{etapa > 2 ? <PiIcons.PiCheckBold /> : (etapa === 2 ? <PiIcons.PiCircleNotchBold className={stylesImportarCSV.spinner} /> : "2")}</div>
+                            <div className={stylesImportarArquivo.divisor}></div>
+                            <div className={`${stylesImportarArquivo.ponto} ${etapa >= 2 ? stylesImportarArquivo.ativo : ""}`}>
+                                <div className={stylesImportarArquivo.circulo}>{etapa > 2 ? <PiIcons.PiCheckBold /> : (etapa === 2 ? <PiIcons.PiCircleNotchBold className={stylesImportarArquivo.spinner} /> : "2")}</div>
                                 <span>Importando dados</span>
                             </div>
-                            <div className={stylesImportarCSV.divisor}></div>
-                            <div className={`${stylesImportarCSV.ponto} ${etapa >= 3 ? stylesImportarCSV.ativo : ""}`}>
-                                <div className={stylesImportarCSV.circulo}>{etapa === 3 ? <PiIcons.PiCheckBold /> : "3"}</div>
+                            <div className={stylesImportarArquivo.divisor}></div>
+                            <div className={`${stylesImportarArquivo.ponto} ${etapa >= 3 ? stylesImportarArquivo.ativo : ""}`}>
+                                <div className={stylesImportarArquivo.circulo}>{etapa === 3 ? <PiIcons.PiCheckBold /> : "3"}</div>
                                 <span>Concluído</span>
                             </div>
                         </div>
@@ -183,7 +191,7 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                 ) : (
                     <>
                         <div
-                            className={`${stylesImportarCSV.dropArea} ${dragActive ? stylesImportarCSV.dragActive : ""} ${arquivo ? stylesImportarCSV.hasFile : ""}`}
+                            className={`${stylesImportarArquivo.dropArea} ${dragActive ? stylesImportarArquivo.dragActive : ""} ${arquivo ? stylesImportarArquivo.hasFile : ""}`}
                             onDragEnter={(e) => { e.preventDefault(); setDragActive(true); }}
                             onDragLeave={(e) => { e.preventDefault(); setDragActive(false); }}
                             onDragOver={(e) => e.preventDefault()}
@@ -191,22 +199,22 @@ export const ImportarCSV = ({ trigger, setTrigger, lancamentoCriado }) => {
                             onClick={() => inputRef.current.click()}
                         >
                             {arquivo ? (
-                                <div className={stylesImportarCSV.fileInfo}>
+                                <div className={stylesImportarArquivo.fileInfo}>
                                     <PiIcons.PiFileCsvLight size={30} color="var(--cor-principal)" />
                                     <p>Arquivo selecionado:</p>
                                     <strong>{arquivo.name}</strong>
                                 </div>
                             ) : (
                                 <>
-                                    <PiIcons.PiFileCsvLight className={stylesImportarCSV.icone_csv} />
-                                    <p>Clique ou arraste para enviar o arquivo .csv</p>
+                                    <PiIcons.PiFileCsvLight className={stylesImportarArquivo.icone_csv} />
+                                    <p>Clique ou arraste para enviar o arquivo .csv .xls ou .xlsx</p>
                                 </>
                             )}
-                            <input ref={inputRef} type="file" accept=".csv" hidden onChange={(e) => handleArquivo(e.target.files[0])} />
+                            <input ref={inputRef} type="file" accept=".csv, .xls, .xlsx" hidden onChange={(e) => handleArquivo(e.target.files[0])} />
                         </div>
 
                         <div className={styles.box_btn_button}>
-                            <Button onClick={handleImportar} disabled={!arquivo}>Importar CSV</Button>
+                            <Button onClick={handleImportar} disabled={!arquivo}>Importar Arquivo</Button>
                         </div>
                     </>
                 )}

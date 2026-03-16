@@ -71,7 +71,7 @@ import { DeleteLancamentoBiController } from '../controllers/lancamentosBi/Delet
 import { DeleteLancamentosBiController } from '../controllers/lancamentosBi/DeleteLancamentosBiController';
 
 // Controllers Importacao CSV
-import { ImportacaoBlingCsvController } from '../controllers/importacaoCsv/ImportacaoBlingCsvController';
+import { ImportacaoArquivoController } from '../controllers/importacaoArquivo/ImportacaoArquivoController';
 
 // Controllers Integrações
 import { DeleteIntegracaoController } from '../controllers/integracoes/DeleteIntegracaoController';
@@ -97,11 +97,15 @@ const uploadImagem = multer(
 );
 
 // Upload para CSV
-const uploadCsv = multer(
+const uploadArquivo = multer(
   uploadConfig.upload(
     './tmp',
-    ['text/csv', 'application/vnd.ms-excel'],
-    ['.csv']
+    [
+      'text/csv',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ],
+    ['.csv', '.xls', '.xlsx']
   )
 );
 
@@ -168,7 +172,7 @@ router.delete('/lancamentos/:id', isAuthenticated, verificaStatusConta, new Dele
 router.delete('/lancamentos', isAuthenticated, verificaStatusConta, new DeleteLancamentosBiController().handle)
 
 // Importacao via arquivo CSV
-router.post('/importacao-csv', isAuthenticated, verificaStatusConta, uploadCsv.single('file'), new ImportacaoBlingCsvController().handle)
+router.post('/importacao-arquivo', isAuthenticated, verificaStatusConta, uploadArquivo.single('file'), new ImportacaoArquivoController().handle)
 
 // Integracoes
 router.delete('/integrations/:empresa_id', isAuthenticated, verificaStatusConta, new DeleteIntegracaoController().handle);
