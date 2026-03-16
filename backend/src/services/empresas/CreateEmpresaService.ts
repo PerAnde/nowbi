@@ -94,18 +94,18 @@ class CreateEmpresaService {
             }
         })
 
-        if (categorias_padrao) {
-            const createCategoriasService = new CreateCategoriasNovaEmpresaService();
+        // if (categorias_padrao) {
+        //     const createCategoriasService = new CreateCategoriasNovaEmpresaService();
 
-            try {
-                await createCategoriasService.execute({
-                    usuario_id: usuario.id,
-                    empresa_id: empresa.id
-                })
-            } catch (error) {
-                console.error("Erro ao criar categorias iniciais:", error);
-            }
-        }
+        //     try {
+        //         await createCategoriasService.execute({
+        //             usuario_id: usuario.id,
+        //             empresa_id: empresa.id
+        //         })
+        //     } catch (error) {
+        //         console.error("Erro ao criar categorias iniciais:", error);
+        //     }
+        // }
 
         return empresa
 
