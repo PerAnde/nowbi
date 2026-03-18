@@ -70,6 +70,18 @@
     gap: 2rem;
 }
 
+.box_logo_empresa {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.box_logo_empresa img {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--border-radius-componente);
+}
+
 .texto_preview {
     text-align: center;
     font-size: 1.5rem;

@@ -94,7 +94,7 @@ export const RelatorioBi = () => {
                     relatorioVazio(dadosRelatorio?.conclusao) ? (
                     <div className='box_gerar_relatorio'>
                         <div className={styles.box_relatorio}>
-                            <div className="box_logo_empresa">
+                            <div className={styles.box_logo_empresa}>
                                 <img
                                     src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : empresaSemLogo}
                                     alt="Logo Empresa"
