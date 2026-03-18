@@ -1,11 +1,10 @@
 export const salvarDFC = () => {
-    const dreContainer = document.querySelector(".box_resultados_dre");
+    const wrapperDFC = document.querySelector(".wrapper_dfc");
 
-    if (!dreContainer) return;
+    if (!wrapperDFC) return;
 
     const novaAba = window.open("", "_blank");
 
-    // Pega todas as folhas de estilo da página atual
     const styles = Array.from(document.styleSheets)
         .map((sheet) => {
             try {
@@ -25,7 +24,7 @@ export const salvarDFC = () => {
                     <style>${styles}</style>
                 </head>
                 <body>
-                    ${dreContainer.outerHTML}
+                    ${wrapperDFC.outerHTML}
                 </body>
             </html>
         `);
@@ -45,7 +44,6 @@ export const salvarRelatorio = () => {
 
     const novaAba = window.open("", "_blank");
 
-    // Pega todas as folhas de estilo da página atual
     const styles = Array.from(document.styleSheets)
         .map((sheet) => {
             try {

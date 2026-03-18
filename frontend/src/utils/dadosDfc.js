@@ -1,45 +1,53 @@
-// src/utils/processaDfc.js
-
 export const montarEstruturaDfc = (bisParaProcessar) => {
-    // 1. Mapeia cada mês individualmente
     const mesesProcessados = bisParaProcessar.map(bi => ({
         mesAno: `${bi.mes.toUpperCase()} / ${bi.ano}`,
-        // Agrupa os lançamentos desse mês específico
-        dadosAgrupados: bi.lancamentoBi.reduce((acc, lanc) => {
-            const chave = `${lanc.tipo}|${lanc.categoria}|${lanc.subcategoria}`;
-            acc[chave] = (acc[chave] || 0) + lanc.valor;
+        lancamentos: bi.lancamentoBi.reduce((acc, lanc) => {
+            const catNome = lanc.categoria?.name || "Sem Categoria";
+            const subNome = lanc.subcategoria?.name || "Sem Subcategoria";
+            
+            const chave = `${catNome}|${subNome}`;
+
+            acc[chave] = (acc[chave] || 0) + (Number(lanc.valor) || 0);
             return acc;
         }, {})
     }));
 
-    // 2. Cria uma lista ÚNICA de todas as categorias/subcategorias que aparecem no período
-    // Isso evita que a tabela "pule" colunas se um mês não teve certo gasto
-    const todasAsLinhas = new Set();
+    const mapaDeEstrutura = new Map();
+
     bisParaProcessar.forEach(bi => {
         bi.lancamentoBi.forEach(l => {
-            todasAsLinhas.add(`${l.tipo}|${l.categoria}|${l.subcategoria}`);
+            const catNome = l.categoria?.name || "Sem Categoria";
+            const subNome = l.subcategoria?.name || "Sem Subcategoria";
+            const chave = `${catNome}|${subNome}`;
+            
+            const grupoDfc = l.categoria?.grupoDre || l.categoria?.grupo_dfc || l.tipo;
+
+            if (!mapaDeEstrutura.has(chave)) {
+                mapaDeEstrutura.set(chave, {
+                    categoria: catNome,
+                    subcategoria: subNome,
+                    tipo: grupoDfc 
+                });
+            }
         });
     });
 
-    // 3. Monta a "Matrix" Final
-    const linhasFormatadas = Array.from(todasAsLinhas).map(chave => {
-        const [tipo, categoria, subcategoria] = chave.split('|');
+    const linhasFormatadas = Array.from(mapaDeEstrutura.values()).map(item => {
+        const chaveBusca = `${item.categoria}|${item.subcategoria}`;
 
-        // Para cada linha, gera o valor em cada um dos meses
         const valoresPorMes = mesesProcessados.map(mes => ({
             mesAno: mes.mesAno,
-            valor: mes.dadosAgrupados[chave] || 0
+            valor: Number((mes.lancamentos[chaveBusca] || 0).toFixed(2))
         }));
 
-        // Calcula o total acumulado daquela linha específica
         const totalAcumulado = valoresPorMes.reduce((acc, curr) => acc + curr.valor, 0);
 
         return {
-            tipo,
-            categoria,
-            subcategoria,
+            tipo: item.tipo,
+            categoria: item.categoria,
+            subcategoria: item.subcategoria,
             valoresPorMes,
-            totalAcumulado
+            totalAcumulado: Number(totalAcumulado.toFixed(2))
         };
     });
 

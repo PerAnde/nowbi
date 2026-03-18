@@ -64,11 +64,6 @@ export class ImportarExcelService {
         return 'DESPESA';
     }
 
-    private checarSinalNegativo(valor: any): boolean {
-        if (typeof valor === 'number') return valor < 0;
-        return String(valor).includes('-');
-    }
-
     private limparValor(valor: any): number {
         if (typeof valor === 'number') {
             return Math.abs(valor);

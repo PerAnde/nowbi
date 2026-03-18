@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
-import { SelectMesBi } from '../../../../components/Selects/SelectMesBi'
-import { SelectAnoBi } from '../../../../components/Selects/SelectAnoBi'
+import { FiltroDashboardBi } from '../../../../components/Selects/FiltroDashboardBi'
+
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { api } from '../../../../api/api'
 import { salvarRelatorio } from '../../../../utils/salvarPDF'
@@ -17,7 +17,6 @@ export const RelatorioBi = () => {
         anoSelecionado,
         setMesSelecionado,
         setAnoSelecionado,
-        mesesDisponiveis,
         anosDisponiveis,
     } = useBiPublic()
 
@@ -69,15 +68,13 @@ export const RelatorioBi = () => {
             <div className={styles.header_pagina_dashboardBi}>
                 <h3>Detalhes {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <div className={styles.filtros_mes_ano}>
-                    <div className={styles.mes_ano}>
-                        <SelectMesBi mesSelecionado={mesTemp} setMesSelecionado={setMesTemp} mesesDisponiveis={mesesDisponiveis} />
-                        <SelectAnoBi anoSelecionado={anoTemp} setAnoSelecionado={setAnoTemp} anosDisponiveis={anosDisponiveis} />
-                    </div>
-                    <div className={styles.box_btn_filtro}>
-                        <button onClick={aplicarFiltro}>Filtrar</button>
-                    </div>
-                </div>
+                <FiltroDashboardBi
+                    empresa={empresa}
+                    mesAtivo={mesSelecionado}
+                    anoAtivo={anoSelecionado}
+                    anosDisponiveis={anosDisponiveis}
+                    onAplicar={aplicarFiltro}
+                />
             </div>
 
 

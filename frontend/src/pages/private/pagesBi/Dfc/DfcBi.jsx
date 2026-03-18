@@ -1,27 +1,28 @@
 // src/pages/public/DashboardBi/ResumoBi.jsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 
 import { useBiPublic } from '../../../../contexts/BiPublicContext'
-
 import { api } from '../../../../api/api'
 
 import { InfoResumoBi } from '../../../../components/Modal/InfosResumoBi/InfoResumoBi'
 import { FiltroDashboardBi } from '../../../../components/Selects/FiltroDashboardBi'
 
-import { agruparPorGrupo } from '../../../../utils/agruparPorGrupo'
+import { DfcMensal } from './DfcMensal'
+import { DfcPeriodo } from './DfcPeriodo'
+
+import { agruparDadosDfcHorizontal } from '../../../../utils/agruparDadosDFCHorizontal'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { agruparDadosDfc } from '../../../../utils/agruparDadosDFC'
-import { INFO_METRICAS } from '../../../../utils/infoMetricasResumo'
 import { salvarDFC } from '../../../../utils/salvarPDF'
 
 import empresaSemLogo from '../../../../assets/images/imgEmpresaSemLogo.jpg'
 
 import styles from './DfcBi.module.scss'
-import './dfc.css'
 import * as PiIcons from 'react-icons/pi'
+import { SelectPeriodoDfc } from '../../../../components/Selects/SelectPeriodoDfc'
 
 export const DfcBi = () => {
-    
+
     const {
         empresa,
         mesSelecionado,
@@ -34,47 +35,62 @@ export const DfcBi = () => {
     } = useBiPublic()
 
     const [popUpInfoResumoBi, setPopUpInfoResumoBi] = useState(null)
+    const [periodo, setPeriodo] = useState('atual');
+    const [abertos, setAbertos] = useState({});
+
+    const dadosHorizontais = useMemo(() => {
+        if (periodo !== 'atual' && dashboardData?.dfc12Meses) {
+            const limite = periodo === 'atual' ? 1 : parseInt(periodo);
+            return agruparDadosDfcHorizontal(dashboardData.dfc12Meses, limite);
+        }
+        return null;
+    }, [periodo, dashboardData]);
 
     if (loading || !dashboardData) return <p>Carregando...</p>
 
     const aplicarFiltro = (novoMes, novoAno) => {
         setMesSelecionado(novoMes);
         setAnoSelecionado(novoAno);
+        setPeriodo('atual');
+    };
+
+    const temAlgoAberto = Object.keys(abertos).length > 0;
+    const handleToggleTodos = () => {
+        if (temAlgoAberto) {
+            setAbertos({});
+        } else {
+            const novoEstado = {};
+            if (periodo !== 'atual') {
+                dadosHorizontais.dados.forEach((linha, idx) => {
+                    dadosHorizontais.dados.forEach((linha, idx) => {
+                        novoEstado[`grupo-${idx}`] = true;
+                        Object.keys(linha.categorias || {}).forEach(cat => {
+                            novoEstado[`cat-${idx}-${cat}`] = true;
+                        });
+                    });
+                });
+            } else {
+                dadosFiltrados.forEach((grupo, idx) => {
+                    novoEstado[`grupo-${idx}`] = true;
+                    Object.keys(grupo.dados.categorias || {}).forEach(cat => {
+                        novoEstado[`cat-${idx}-${cat}`] = true;
+                    });
+                });
+            }
+            setAbertos(novoEstado);
+        }
+    };
+
+    const toggleLinha = (id) => {
+        setAbertos(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
     const { summary } = dashboardData
 
-    // Dados para gerar calculos
-    const dadosAgrupados = agruparPorGrupo(dashboardData.summary.detalhes);
-    const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
-
-    const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
-    const deducoesImpostos = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
-    const custoVariavel = getTotal('CUSTO_VARIAVEL');
-    const despesasVariaveis = getTotal('DESPESAS_VARIAVEIS');
-    const despesasOperacionais = getTotal('DESPESAS_OPERACIONAIS');
-    const despesasFinanceiras = getTotal('DESPESAS_FINANCEIRAS');
-
-    // Calculo margem de contribuicao
-    const resultadoBruto = receitaBruta - deducoesImpostos - custoVariavel
-    const margemDeContribuicao = resultadoBruto - despesasVariaveis;
-    const margemDeContribuicaoDecimal = receitaBruta > 0 ? (margemDeContribuicao / receitaBruta) : 0;
-    const margemDeContribuicaoPercentual = (margemDeContribuicaoDecimal * 100).toFixed(2);
-    const margemDeContribuicaoArredondadaDecimal = Number(margemDeContribuicaoPercentual) / 100;
-
-    // Calculo ponto de equilibrio operacional
-    const pontoDeEquilibrioOperacional = margemDeContribuicaoDecimal > 0
-        ? (despesasOperacionais / margemDeContribuicaoArredondadaDecimal)
-        : 0;
-
-    // Calceulo ponto de equilibrio financeiro
-    const somaDepesasOperacionaisEFinanceiras = despesasOperacionais + despesasFinanceiras;
-    const pontoDeEquilibrioFinanceiro = somaDepesasOperacionaisEFinanceiras / margemDeContribuicaoArredondadaDecimal;
-
     const dadosFiltrados = agruparDadosDfc(dashboardData.summary.detalhes);
 
     return (
-        <div className={styles.box_dashboard_bi}>
+        <div>
 
             <div className={styles.header_pagina_dashboardBi}>
                 <h3>DFC {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
@@ -90,144 +106,71 @@ export const DfcBi = () => {
                 </div>
             </div>
 
-            <div className={styles.box_pagina_bi}>
+            <div className={styles.dfcContainer}>
 
-                <div className={styles.box_metricas_mes}>
-
-                    <div className={styles.card_metrica_mes}>
-                        <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Margem de contribuição</p>
-                            <h3>{margemDeContribuicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({margemDeContribuicaoPercentual}%)</span></h3>
-                        </div>
-                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.margem_contribuicao)}>
-                            <span>
-                                <PiIcons.PiInfo />
-                                <p>Mais informações</p>
-                            </span>
-                        </div>
+                <div className={styles.controles_tabela}>
+                    <div className={styles.box_btns_dfc}>
+                        <button onClick={handleToggleTodos} className={styles.btn_expandir_recolher}>
+                            {temAlgoAberto ? (
+                                <>
+                                    <PiIcons.PiMinus /> <span>Recolher Tudo</span>
+                                </>
+                            ) : (
+                                <>
+                                    <PiIcons.PiPlus /> <span>Expandir Tudo</span>
+                                </>
+                            )}
+                        </button>
                     </div>
 
-                    <div className={styles.card_metrica_mes}>
-                        <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional</p>
-                            <h3>{pontoDeEquilibrioOperacional.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
-                        </div>
-                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.ponto_equilibrio_op)}>
-                            <span>
-                                <PiIcons.PiInfo />
-                                <p>Mais informações</p>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className={styles.card_metrica_mes}>
-                        <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro</p>
-                            <h3>{pontoDeEquilibrioFinanceiro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
-                        </div>
-                        <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.ponto_equilibrio_fin)}>
-                            <span>
-                                <PiIcons.PiInfo />
-                                <p>Mais informações</p>
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div className={styles.box_topo_dre}>
-                    <div className={styles.box_btns_salvar}>
-                        <button onClick={salvarDFC}>Salvar DFC</button>
+                    <div className={styles.box_btns_dfc}>
+                        <SelectPeriodoDfc
+                            value={periodo}
+                            onChange={setPeriodo}
+                        />
+                        <button onClick={salvarDFC} className={styles.btn_salvar_dfc}>Salvar DFC</button>
                     </div>
                 </div>
 
-                <div className="dreContainer">
+                <div className="wrapper_dfc">
 
-                    <div className="wrapper_dre">
-
-                        <div className="box_resultados_dre">
-
-                            <div className="box_infos_empresa">
-                                <div className="box_logo_empresa">
-                                    <img
-                                        src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : empresaSemLogo}
-                                        alt="Logo Empresa"
-                                    />
-                                    <p>Demonstrativo de <br></br>Fluxo de Caixa</p>
-                                </div>
-
-                                <div className="box_infos">
-                                    <p>{capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</p>
-                                </div>
-                            </div>
-
-                            <div className="box_header_dre">
-                                <div className="header_resultado">
-                                    <div className="resultado_titulo">
-                                        <p><strong>Descrição</strong></p>
-                                    </div>
-                                    <div className="resultado_total">
-                                        <p><strong>Total (R$)</strong></p>
-                                    </div>
-                                    <div className="resultado_porcentagem">
-                                        <p><strong>A.V.</strong></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {dadosFiltrados.map((grupo, idx) => (
-
-                                <div key={idx} className="resultado_dfc">
-                                    <div className="header_resultado">
-                                        <div className="resultado_titulo">
-                                            <p><strong>{grupo.titulo}</strong></p>
-                                        </div>
-                                        <div className="resultado_total">
-                                            <p><strong>{grupo.dados.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></p>
-                                        </div>
-                                        <div className="resultado_porcentagem">
-                                            <p><strong>{((grupo.dados.total / summary.receitas) * 100).toFixed(2)}%</strong></p>
-                                        </div>
-                                    </div>
-
-                                    {/* Categorias */}
-                                    {Object.entries(grupo.dados.categorias)
-                                        .sort(([a], [b]) => a.localeCompare(b))
-                                        .map(([categoria, dados]) => (
-                                            <React.Fragment key={categoria}>
-                                                <div key={categoria} className="box_categorias_dre">
-                                                    <div className="resultado_titulo">
-                                                        <p>{capitalizeFirstLetter(categoria)}</p>
-                                                    </div>
-                                                    <div className="resultado_total">
-                                                        <p>{dados.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                                                    </div>
-                                                    <div className="resultado_porcentagem">
-                                                        <p>{((dados.total / summary.receitas) * 100).toFixed(2)}%</p>
-                                                    </div>
-                                                </div>
-                                                {/* Subcategorias */}
-                                                {Object.entries(dados.subcategorias)
-                                                    .sort(([a], [b]) => a.localeCompare(b))
-                                                    .map(([sub, valor]) => (
-                                                        <div key={sub} className="box_subcategorias_dre">
-                                                            <div className="resultado_titulo">
-                                                                <p><PiIcons.PiArrowElbowDownRight className="icone_subcategoria_dre" /> {capitalizeFirstLetter(sub)}</p>
-                                                            </div>
-                                                            <div className="resultado_total">
-                                                                <p>{valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-
-                                            </React.Fragment>
-                                        ))}
-                                </div>
-                            ))}
-
+                    <div className={styles.box_infos_empresa}>
+                        <div className={styles.box_logo_empresa}>
+                            <img
+                                src={empresa.logo_empresa ? `${api.defaults.baseURL}/files/${empresa.logo_empresa}` : empresaSemLogo}
+                                alt="Logo Empresa"
+                            />
+                            <p>Demonstrativo de <br></br>Fluxo de Caixa</p>
                         </div>
 
+                        <div className={styles.box_info_periodo_dfc}>
+                            <p>
+                                {periodo === 'atual' ? (
+                                    <span>{capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</span>
+                                ) : (
+                                    <span>Período</span>
+                                )}
+                            </p>
+                        </div>
                     </div>
+
+                    {periodo === 'atual' ? (
+                        <DfcMensal
+                            dadosFiltrados={dadosFiltrados}
+                            summary={summary}
+                            abertos={abertos}
+                            toggleLinha={toggleLinha}
+                        />
+                    ) : (
+                        dadosHorizontais && (
+                            <DfcPeriodo
+                                cabecalho={dadosHorizontais.cabecalho}
+                                linhas={dadosHorizontais.dados}
+                                abertos={abertos}
+                                toggleLinha={toggleLinha}
+                            />
+                        )
+                    )}
 
                 </div>
 

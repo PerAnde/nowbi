@@ -16,7 +16,6 @@ export const agruparDadosDfc = (dados) => {
             });
         }
 
-        // Depois de DEDUCOES_DA_RECEITA_BRUTA, inserir Receita Operacional Líquida
         if (grupo.grupo === 'DEDUCOES_DA_RECEITA_BRUTA') {
             const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
             const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
@@ -32,7 +31,6 @@ export const agruparDadosDfc = (dados) => {
             });
         }
 
-        // Depois de CUSTO_VARIAVEL, inserir Receita Bruto
         if (grupo.grupo === 'CUSTO_VARIAVEL') {
             const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
             const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
@@ -50,7 +48,6 @@ export const agruparDadosDfc = (dados) => {
             });
         }
 
-        // Após OUTRAS_DESPESAS, inserir LUCRO/PREJUIZO OPERACIONAL
         if (grupo.grupo === 'OUTRAS_DESPESAS') {
             const receitaBruta = getTotal('RECEITA_OPERACIONAL_BRUTA');
             const deducoes = getTotal('DEDUCOES_DA_RECEITA_BRUTA');
@@ -64,7 +61,6 @@ export const agruparDadosDfc = (dados) => {
             const irCsll = dadosAgrupados['IR_CSLL'];
             const totalIrCsll = getTotal('IR_CSLL');
 
-            // Cálculo do lucro operacional
             const receitaLiquida = receitaBruta - deducoes;
             const lucroBruto = receitaLiquida - custoVariavel;
             const totalLucroPrejuizoOperacional = lucroBruto - despesasOperacionais - despesasVariaveis - despesasFinanceiras - outrasDespesas;
@@ -87,7 +83,6 @@ export const agruparDadosDfc = (dados) => {
                 });
             }
 
-            // Lucro Líquido Antes do IR = Operacional + Outras Receitas
             const lucroAntesIR = totalLucroPrejuizoOperacional + totalOutrasReceitas;
 
             if (irCsll) {
@@ -99,7 +94,6 @@ export const agruparDadosDfc = (dados) => {
                 });
             }
 
-            // Lucro/Prejuízo Acumulado = Lucro Antes IR - IR e CSLL
             resultado.push({
                 titulo: 'Saldo de Caixa (+/-)',
                 grupo: 'SALDO_DE_CAIXA',

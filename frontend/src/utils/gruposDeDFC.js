@@ -2,7 +2,7 @@
 export const gruposDeDFC = [
     { titulo: 'Receita Operacional Bruta (+)', grupo: 'RECEITA_OPERACIONAL_BRUTA' },
     { titulo: 'Deduções e Impostos (-)', grupo: 'DEDUCOES_DA_RECEITA_BRUTA' },
-    { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
+    // { titulo: 'Receita Financeira', grupo: 'RECEITA_FINANCEIRA' },
     { titulo: 'Custo Variável (CPV ou CMV)', grupo: 'CUSTO_VARIAVEL' },
     { titulo: 'Despesas Operacionais', grupo: 'DESPESAS_OPERACIONAIS' },
     { titulo: 'Despesas Variáveis', grupo: 'DESPESAS_VARIAVEIS' },

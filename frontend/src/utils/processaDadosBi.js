@@ -3,7 +3,6 @@ export const processaDadosBi = (empresa, selectedMonth) => {
     const result = {};
     let totalReceitas = 0;
     let totalDespesas = 0;
-    // const categorias = {};
     const categoriasPorGrupo = {};
     const subcategorias = {};
     const detalhes = [];
@@ -11,7 +10,6 @@ export const processaDadosBi = (empresa, selectedMonth) => {
     mesesAtivos.forEach(({ mes, ano, lancamentoBi }) => {
         const mesAnoAtual = `${mes.toUpperCase()} / ${ano}`;
 
-        // Comparação do mês selecionado, ambos em maiúsculas
         if (selectedMonth && mesAnoAtual !== selectedMonth.toUpperCase()) return;
 
         if (!result[mesAnoAtual]) {
@@ -38,7 +36,6 @@ export const processaDadosBi = (empresa, selectedMonth) => {
             }
 
             if (categoria) {
-                // Adiciona a categoria ao grupo correspondente no agrupamento
                 if (!categoriasPorGrupo[categoria.grupoDre]) {
                     categoriasPorGrupo[categoria.grupoDre] = [];
                 }

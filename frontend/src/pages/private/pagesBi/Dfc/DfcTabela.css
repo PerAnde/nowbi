@@ -1,0 +1,52 @@
+.box_dfc {
+    background-color: var(--cor-componente);
+    border-radius: var(--border-radius-componente);
+}
+
+table.tabela_dfc {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 .5rem;
+}
+
+table.tabela_dfc thead tr th {
+    background-color: var(--background-geral);
+    padding: 1rem;
+    text-align: right;
+}
+
+table.tabela_dfc thead tr th:first-child {
+    border-top-left-radius: var(--border-radius-componente);
+    border-bottom-left-radius: var(--border-radius-componente);
+    text-align: left;
+}
+
+table.tabela_dfc thead tr th:last-child {
+    border-top-right-radius: var(--border-radius-componente);
+    border-bottom-right-radius: var(--border-radius-componente);
+}
+
+table.tabela_dfc tbody tr td {
+    padding: 1rem;
+}
+
+table.tabela_dfc tbody tr td:first-child {
+    border-top-left-radius: var(--border-radius-componente);
+    border-bottom-left-radius: var(--border-radius-componente);
+    text-align: left;
+}
+
+table.tabela_dfc tbody tr td:last-child {
+    border-top-right-radius: var(--border-radius-componente);
+    border-bottom-right-radius: var(--border-radius-componente);
+}
+
+table.tabela_dfc tbody tr td.linha_total_grupo {
+    font-weight: var(--font-semi-bold);
+    background-color: var(--background-geral);
+}
+
+table.tabela_dfc tbody tr.linha_subcategoria {
+    text-align: var(--texto-secundario);
+    text-align: right;
+}
