@@ -80,7 +80,7 @@ class CreateEmpresaService {
                 mostrar_detalhes: true,
                 mostrar_dfc: true,
                 mostrar_dre: false,
-                mostrar_relatorio: false,
+                mostrar_relatorio: true,
             },
             select: {
                 id: true,

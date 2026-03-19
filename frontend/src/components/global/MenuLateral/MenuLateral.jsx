@@ -19,12 +19,10 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
 
     const diasRestantes = usuario?.dataFimPeriodoTeste ? calcularDiasRestantes(usuario.dataFimPeriodoTeste) : 0;
 
-    // // Fechar o menu ao clicar fora dele
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Verifica se o clique foi fora do menu e também se não foi no próprio botão de abrir/fechar
             if (menuLateralRef.current && !menuLateralRef.current.contains(event.target) && event.target.closest('.btn_menu_lateral') === null) {
-                setMenuLateralAberto(false);  // Fecha o menu se clicar fora, mas não se for no botão
+                setMenuLateralAberto(false);
             }
         };
 
@@ -34,9 +32,8 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
         };
     }, [setMenuLateralAberto]);
 
-    // Fechar o menu ao clicar em um link
     const handleLinkClick = () => {
-        setMenuLateralAberto(false);  // Fecha o menu ao clicar no link
+        setMenuLateralAberto(false);
     };
 
     return (
@@ -90,9 +87,9 @@ export const MenuLateral = ({ menuLateralAberto, setMenuLateralAberto }) => {
                         >
                             <PiIcons.PiUserLight className={styles.icon} /> Minha conta
                         </Link>
-                        {/* <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
+                        <Link to='/planos' className={`${styles.btn_menu} ${location.pathname === '/planos' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiSketchLogoLight className={styles.icon} /> Planos
-                        </Link> */}
+                        </Link>
                         <p>Suporte</p>
                         {/* <Link to='/tutoriais' className={`${styles.btn_menu} ${location.pathname === '/tutoriais' ? styles.ativo : ''}`} onClick={handleLinkClick} >
                             <PiIcons.PiGraduationCap className={styles.icon} /> Tutoriais

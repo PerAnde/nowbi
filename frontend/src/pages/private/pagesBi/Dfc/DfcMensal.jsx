@@ -21,11 +21,13 @@ export const DfcMensal = ({ dadosFiltrados, summary, abertos, toggleLinha }) => 
                         const idGrupo = `grupo-${idx}`;
                         const estaAberto = abertos[idGrupo];
 
+                        const temCategorias = grupo.dados.categorias && Object.keys(grupo.dados.categorias).length > 0;
+
                         return (
                             <React.Fragment key={idx}>
                                 <tr
                                     className="linha_grupo"
-                                    onClick={() => toggleLinha(idGrupo)}
+                                    onClick={() => temCategorias && toggleLinha(idGrupo)}
                                     style={{
                                         cursor: 'pointer',
                                         backgroundColor: 'var(--background-geral)',
@@ -33,7 +35,11 @@ export const DfcMensal = ({ dadosFiltrados, summary, abertos, toggleLinha }) => 
                                     }}
                                 >
                                     <td className="linha_grupo_dfc" style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
-                                        {estaAberto ? <PiIcons.PiCaretDown /> : <PiIcons.PiCaretRight />}
+                                        {temCategorias ? (
+                                            estaAberto ? <PiIcons.PiCaretDown /> : <PiIcons.PiCaretRight />
+                                        ) : (
+                                           ''
+                                        )}
                                         <strong> {grupo.titulo}</strong>
                                     </td>
                                     <td className='linha_total_grupo' style={{ textAlign: 'right', fontWeight: 'var(--font-bold)' }}>
@@ -65,7 +71,7 @@ export const DfcMensal = ({ dadosFiltrados, summary, abertos, toggleLinha }) => 
                                                     .sort(([a], [b]) => a.localeCompare(b))
                                                     .map(([sub, valor]) => (
                                                         <tr className="linha_subcategoria">
-                                                            <td className="linha_nome_subcategoria" style={{ color: 'var(--texto-secundario)', paddingLeft: '3rem' }}><PiIcons.PiArrowElbowDownRight /> {capitalizeFirstLetter(sub)}</td>
+                                                            <td className="linha_nome_subcategoria" style={{ color: 'var(--texto-secundario)', paddingLeft: '3rem' }}><PiIcons.PiArrowElbowDownRightLight /> {capitalizeFirstLetter(sub)}</td>
                                                             <td style={{ textAlign: 'right', color: 'var(--texto-secundario)' }}>{valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                             <td style={{ textAlign: 'right', color: 'var(--texto-secundario)' }}>{((valor / summary.receitas) * 100).toFixed(2)}%</td>
                                                         </tr>

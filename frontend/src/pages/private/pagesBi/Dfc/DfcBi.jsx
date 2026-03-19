@@ -9,6 +9,7 @@ import { FiltroDashboardBi } from '../../../../components/Selects/FiltroDashboar
 
 import { DfcMensal } from './DfcMensal'
 import { DfcPeriodo } from './DfcPeriodo'
+import { SelectPeriodoDfc } from '../../../../components/Selects/SelectPeriodoDfc'
 
 import { agruparDadosDfcHorizontal } from '../../../../utils/agruparDadosDFCHorizontal'
 import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
@@ -17,9 +18,9 @@ import { salvarDFC } from '../../../../utils/salvarPDF'
 
 import empresaSemLogo from '../../../../assets/images/imgEmpresaSemLogo.jpg'
 
+import stylesMainBi from '../mainBi.module.scss'
 import styles from './DfcBi.module.scss'
 import * as PiIcons from 'react-icons/pi'
-import { SelectPeriodoDfc } from '../../../../components/Selects/SelectPeriodoDfc'
 
 export const DfcBi = () => {
 
@@ -92,17 +93,19 @@ export const DfcBi = () => {
     return (
         <div>
 
-            <div className={styles.header_pagina_dashboardBi}>
+            <div className={stylesMainBi.header_pagina_dashboardBi}>
                 <h3>DFC {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <div className={styles.filtros_mes_ano}>
-                    <FiltroDashboardBi
-                        empresa={empresa}
-                        mesAtivo={mesSelecionado}
-                        anoAtivo={anoSelecionado}
-                        anosDisponiveis={anosDisponiveis}
-                        onAplicar={aplicarFiltro}
-                    />
+                <div>
+                    <div className={stylesMainBi.filtros_mes_ano}>
+                        <FiltroDashboardBi
+                            empresa={empresa}
+                            mesAtivo={mesSelecionado}
+                            anoAtivo={anoSelecionado}
+                            anosDisponiveis={anosDisponiveis}
+                            onAplicar={aplicarFiltro}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -148,7 +151,7 @@ export const DfcBi = () => {
                                 {periodo === 'atual' ? (
                                     <span>{capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</span>
                                 ) : (
-                                    <span>Período</span>
+                                    ''
                                 )}
                             </p>
                         </div>

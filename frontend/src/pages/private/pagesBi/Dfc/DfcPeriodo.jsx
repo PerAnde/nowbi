@@ -89,7 +89,7 @@ export const DfcPeriodo = ({ cabecalho, linhas, abertos, toggleLinha }) => {
                                                 return (
                                                     <tr key={subIdx} className="linha_subcategoria">
                                                         <td className="linha_nome_subcategoria" style={{ color: 'var(--texto-secundario)', paddingLeft: '3rem' }}>
-                                                            <PiIcons.PiArrowElbowDownRight /> {capitalizeFirstLetter(sub.nome)}
+                                                            <PiIcons.PiArrowElbowDownRightLight /> {capitalizeFirstLetter(sub.nome)}
                                                         </td>
                                                         {sub.valores.map((v, i) => (
                                                             <td className='valor_subcategoria' style={{ color: 'var(--texto-secundario)', textAlign: 'right' }} key={i}>

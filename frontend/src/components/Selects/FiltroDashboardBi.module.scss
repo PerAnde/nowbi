@@ -14,15 +14,20 @@
 }
 
 .box_btn_filtro button {
-    border: none;
-    background-color: var(--cor-principal);
-    color: var(--branco);
-    padding: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 0 1.1rem;
     border-radius: var(--border-radius-button);
+    background-color: var(--cor-componente);
+    border: 1px solid var(--border);
+    color: var(--texto-secundario);
     cursor: pointer;
+    transition: .3s;
 }
 
 .box_btn_filtro button:hover {
-    background-color: var(--cor-principal-hover);
+    background-color: var(--cor-principal-10);
+    border: 1px solid var(--cor-principal);
     transition: .3s;
 }

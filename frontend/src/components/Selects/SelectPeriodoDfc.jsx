@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { customSelectStyles } from './customSelectPeriodoDfc'
 
 const options = [
-    { value: 'atual', label: 'Mês Atual' },
+    { value: 'atual', label: 'Este mês' },
     { value: '3', label: 'Últimos 3 meses' },
     { value: '6', label: 'Últimos 6 meses' },
     { value: '12', label: 'Últimos 12 meses' },

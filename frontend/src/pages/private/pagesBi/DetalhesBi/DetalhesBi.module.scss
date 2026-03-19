@@ -1,10 +1,3 @@
-.header_pagina_dashboardBi {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-}
-
 .box_pagina_bi {
     display: flex;
     flex-direction: column;
@@ -31,12 +24,11 @@
 
 
 .card_resumo_detalhes_mes.card_receitas {
-    border-top: 2px solid var(--verde);
+    border-top: 2px solid var(--cor-principal);
 }
 
 .card_resumo_detalhes_mes.card_despesas {
     border-top: 2px solid var(--vermelho);
-    transition: .3s;
 }
 
 .box_infos_detalhes_mes {
@@ -49,6 +41,7 @@
 
 .titulo_card_mes {
     font-size: 1.3rem;
+    color: var(--texto-secundario);
 }
 
 .box_infos_detalhes_mes span {
@@ -123,8 +116,8 @@
 }
 
 .icone_card_mes.icone_receitas {
-    background-color: var(--verde-15);
-    color: var(--verde);
+    background-color: var(--cor-principal-15);
+    color: var(--cor-principal);
 }
 
 .icone_card_mes.icone_despesas {
@@ -304,7 +297,7 @@
 .box_legendas {
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: 160px;
     overflow-y: auto;
     gap: .5rem;
     margin-bottom: 1.5rem;
@@ -313,8 +306,13 @@
 .legendas {
     display: grid;
     grid-template-columns: 1fr 150px 60px;
+    border-radius: var(--border-radius-componente);
     padding: 1.5rem;
     cursor: pointer;
+}
+
+.legendas:hover {
+    background-color: var(--background-geral);
 }
 
 .box_nome_subcategoria {
@@ -322,7 +320,6 @@
     align-items: center;
     gap: 1rem;
 }
-
 
 .box_nome_subcategoria div.bolinha {
     width: 13px;
@@ -333,6 +330,25 @@
 .item_valor,
 .item_percentual {
     color: var(--texto-secundario);
+}
+
+.aviso_scroll_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--texto-secundario);
+    font-weight: var(--font-light);
+
+    p {
+        font-size: 1.3rem;
+        margin-bottom: .5rem;
+        color: var(--texto-secundario);
+    }
+}
+
+.icone_historico_categorias{
+    color: var(--cor-principal);
 }
 
 .card_evolucao_categoria {

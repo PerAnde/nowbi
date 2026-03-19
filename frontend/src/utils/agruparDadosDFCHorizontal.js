@@ -1,16 +1,12 @@
 import { gruposDeDFC } from "./gruposDeDFC";
 
-// Adicionamos o parâmetro 'limite' (ex: 3, 6, 12)
 export const agruparDadosDfcHorizontal = (dfc12Meses, limite = 12) => {
-    // 1. Filtramos o cabeçalho e descobrimos os índices que vamos manter
     const totalDisponivel = dfc12Meses.colunasCabecalho.length;
     const colunasCabecalho = dfc12Meses.colunasCabecalho.slice(-limite);
     const numMeses = colunasCabecalho.length;
 
-    // 2. Ajustamos as linhas para conter apenas os valores dos últimos X meses
     const linhas = dfc12Meses.linhas.map(linha => ({
         ...linha,
-        // Filtra os valoresPorMes para bater com o novo cabeçalho
         valoresPorMes: linha.valoresPorMes.slice(-limite)
     }));
 
@@ -29,18 +25,14 @@ export const agruparDadosDfcHorizontal = (dfc12Meses, limite = 12) => {
         return totais;
     };
 
-    const resultado = [];
-
-    gruposDeDFC.forEach((grupo) => {
-        const totaisGrupo = getTotaisPorTipo(grupo.grupo);
+    const getCategoriasPorTipo = (tipoBuscado) => {
         const categoriasMap = {};
 
-        linhas.filter(l => l.tipo === grupo.grupo).forEach(l => {
+        linhas.filter(l => l.tipo === tipoBuscado).forEach(l => {
             const catNome = l.categoria;
             const subNome = l.subcategoria;
             const valoresLinha = l.valoresPorMes.map(v => v.valor);
 
-            // Verifica se tem valor em algum dos meses filtrados
             if (valoresLinha.some(v => v !== 0)) {
                 if (!categoriasMap[catNome]) {
                     categoriasMap[catNome] = {
@@ -56,12 +48,27 @@ export const agruparDadosDfcHorizontal = (dfc12Meses, limite = 12) => {
             }
         });
 
-        const categoriasFiltradas = {};
-        Object.entries(categoriasMap).forEach(([nome, dados]) => {
-            if (dados.total.some(v => v !== 0)) {
-                categoriasFiltradas[nome] = dados;
-            }
+        Object.values(categoriasMap).forEach(cat => {
+            cat.subcategorias.sort((a, b) => a.nome.localeCompare(b.nome));
         });
+
+        const categoriasOrdenadas = {};
+        Object.keys(categoriasMap)
+            .sort((a, b) => a.localeCompare(b))
+            .forEach(key => {
+                categoriasOrdenadas[key] = categoriasMap[key];
+            });
+
+        return categoriasOrdenadas;
+
+    };
+
+    const resultado = [];
+
+    gruposDeDFC.forEach((grupo) => {
+        const totaisGrupo = getTotaisPorTipo(grupo.grupo);
+
+        const categoriasFiltradas = getCategoriasPorTipo(grupo.grupo);
 
         if (grupo.grupo !== 'SALDO_DE_CAIXA') {
             resultado.push({
@@ -73,7 +80,6 @@ export const agruparDadosDfcHorizontal = (dfc12Meses, limite = 12) => {
             });
         }
 
-        // --- CÁLCULOS DE RESULTADO (A lógica permanece a mesma, pois numMeses agora é dinâmico) ---
         if (grupo.grupo === 'DEDUCOES_DA_RECEITA_BRUTA') {
             const rb = getTotaisPorTipo('RECEITA_OPERACIONAL_BRUTA');
             const ded = getTotaisPorTipo('DEDUCOES_DA_RECEITA_BRUTA');
@@ -121,7 +127,7 @@ export const agruparDadosDfcHorizontal = (dfc12Meses, limite = 12) => {
                     tipo: 'OUTRAS_RECEITAS',
                     valores: outRecTotais,
                     isResultado: false,
-                    categorias: {}
+                    categorias: getCategoriasPorTipo('OUTRAS_RECEITAS')
                 });
             }
 
@@ -132,7 +138,7 @@ export const agruparDadosDfcHorizontal = (dfc12Meses, limite = 12) => {
                     tipo: 'IR_CSLL',
                     valores: irTotais,
                     isResultado: false,
-                    categorias: {}
+                    categorias: getCategoriasPorTipo('IR_CSLL')
                 });
             }
 

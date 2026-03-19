@@ -1,20 +1,9 @@
-.header_pagina_dashboardBi {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-}
-
-.filtros_mes_ano {
-    display: flex;
-    gap: 1rem;
-}
-
 .btn_media {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: .5rem;
-    padding: 1.1rem;
+    padding: .8rem 1rem;
     border-radius: var(--border-radius-button);
     border: 1px solid var(--border);
     color: var(--texto-secundario);
@@ -23,8 +12,8 @@
 }
 
 .btn_media.btn_media_ativo {
-    background-color: var(--cor-principal);
-    color: var(--branco);
+    background-color: var(--cor-principal-10);
+    border: 1px solid var(--cor-principal);
     transition: .3s;
 }
 
@@ -268,19 +257,7 @@
 }
 
 @media screen and (max-width: 650px) {
-    .header_pagina_dashboardBi {
-        flex-direction: column-reverse;
-        gap: 2rem;
-    }
-
     .box_metricas_mes {
         grid-template-columns: 1fr;
-    }
-}
-
-@media screen and (max-width: 430px) {
-    .filtros_mes_ano {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
     }
 }

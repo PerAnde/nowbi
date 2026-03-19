@@ -55,9 +55,9 @@ export const formatarMesAno = (texto) => {
     const [mes, ano] = texto.split(" / ");
 
     const mesCurto = mes.substring(0, 3).toLowerCase();
-    const anoCurto = ano.slice(-2);
+    const anoCurto = ano.slice(-4);
 
-    return `${mesCurto.charAt(0).toUpperCase() + mesCurto.slice(1)}/${anoCurto}`;
+    return `${mesCurto.charAt(0).toUpperCase() + mesCurto.slice(1)} ${anoCurto}`;
 };
 
 export const somarArrays = (arr1, arr2) => arr1.map((num, idx) => num + (arr2[idx] || 0));

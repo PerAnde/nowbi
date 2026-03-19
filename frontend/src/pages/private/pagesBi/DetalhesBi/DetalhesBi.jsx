@@ -15,6 +15,7 @@ import { frasesPorGrupo } from '../../../../utils/frasesPorGrupo'
 import { gruposDeDFC } from '../../../../utils/gruposDeDFC'
 import { organizaMeses } from '../../../../utils/organizaMeses'
 
+import stylesMainBi from '../mainBi.module.scss'
 import styles from './DetalhesBi.module.scss'
 import * as PiIcons from 'react-icons/pi'
 
@@ -38,10 +39,10 @@ export const DetalhesBi = () => {
 
     const [dadosParaPopup, setDadosParaPopup] = useState(null);
     const [fraseCardSelecionado, setFraseCardSelecionado] = useState('');
-    
+
     const [categoriaReceitaSelecionada, setCategoriaReceitaSelecionada] = useState(null);
     const [categoriaDespesaSelecionada, setCategoriaDespesaSelecionada] = useState(null);
-    
+
     const [popUpInfosDetalhesBi, setPopUpInfosDetalhesBi] = useState(false)
 
     useEffect(() => {
@@ -138,8 +139,6 @@ export const DetalhesBi = () => {
 
             receitasSubcategorias[nome] =
                 (receitasSubcategorias[nome] || 0) + valor;
-
-            // receitasSubcategorias[subcategoria] = (receitasSubcategorias[subcategoria] || 0) + valor;
         }
 
         if (tipo === 'DESPESA') {
@@ -149,12 +148,9 @@ export const DetalhesBi = () => {
 
             despesasSubcategorias[nome] =
                 (despesasSubcategorias[nome] || 0) + valor;
-
-            // despesasSubcategorias[subcategoria] = (despesasSubcategorias[subcategoria] || 0) + valor;
         }
     });
 
-    // Dados para gerar calculos
     const dadosAgrupados = agruparPorGrupo(dashboardData.summary.detalhes);
     const getTotal = (grupo) => dadosAgrupados[grupo]?.total || 0;
 
@@ -172,13 +168,11 @@ export const DetalhesBi = () => {
     const saldoDeCaixaOperacional = lucroBruto - despesasOperacionais - despesasVariaveis - despesasFinanceiras - outrasDespesas;
     const saldoDeCaixa = saldoDeCaixaOperacional + outrasReceitas
 
-    // Data grafico pizza receitas e despesas
     const dataPizza = [
         { name: 'Receitas', value: summary.receitas },
         { name: 'Despesas', value: summary.despesas },
     ];
 
-    // Filtra e organiza os dados
     const agruparDados = (dados) => {
         const dadosAgrupados = agruparPorGrupo(dados);
         const resultado = [];
@@ -224,7 +218,6 @@ export const DetalhesBi = () => {
         const ey = my;
         const textAnchor = cos >= 0 ? 'start' : 'end';
 
-        // QUEBRANDO EM DUAS LINHAS SE NECESSÁRIO
         const words = capitalizeFirstLetter(payload.name).split(' ');
 
         const firstLine = words.slice(0, 2).join(' ');
@@ -283,7 +276,7 @@ export const DetalhesBi = () => {
                 />
                 <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
                 <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-                <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">
+                <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="var(--texto-secundario)">
                     {`R$ ${value?.toLocaleString('pt-BR')}`}
                 </text>
                 <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
@@ -324,18 +317,18 @@ export const DetalhesBi = () => {
                 <div
                     style={{
                         background: 'var(--branco)',
-                        border: '1px solid var(--texto-secundario)',
+                        border: '1px solid var(--border)',
                         borderRadius: 'var(--border-radius-componente)',
                         padding: '10px',
                     }}
                 >
-                    <p style={{ color: 'var(--texto-primario)', marginBottom: '6px' }}>{label}</p>
+                    <p style={{ color: 'var(--texto-secundario)', marginBottom: '6px' }}>{label}</p>
 
                     {payload.map((entry, i) => (
                         <p
                             key={i}
                             style={{
-                                color: entry.name === 'Despesas' ? 'var(--texto-secundario)' : 'var(--cor-principal)',
+                                color: entry.name === 'Despesas' ? 'var(--vermelho)' : 'var(--cor-principal)',
                                 margin: 0,
                             }}
                         >
@@ -352,7 +345,6 @@ export const DetalhesBi = () => {
         return null;
     };
 
-    // Funcao muda ordem dos dados, maior para menor e vice-versa
     const toggleOrdemReceitas = () => {
         setOrdemDecrescenteReceitas((prev) => !prev);
     };
@@ -363,16 +355,20 @@ export const DetalhesBi = () => {
     return (
         <div className={styles.box_dashboard_bi}>
 
-            <div className={styles.header_pagina_dashboardBi}>
+            <div className={stylesMainBi.header_pagina_dashboardBi}>
                 <h3>Detalhes {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
-                <FiltroDashboardBi
-                    empresa={empresa}
-                    mesAtivo={mesSelecionado}
-                    anoAtivo={anoSelecionado}
-                    anosDisponiveis={anosDisponiveis}
-                    onAplicar={aplicarFiltro}
-                />
+                <div>
+                    <div className={stylesMainBi.filtros_mes_ano}>
+                        <FiltroDashboardBi
+                            empresa={empresa}
+                            mesAtivo={mesSelecionado}
+                            anoAtivo={anoSelecionado}
+                            anosDisponiveis={anosDisponiveis}
+                            onAplicar={aplicarFiltro}
+                        />
+                    </div>
+                </div>
             </div>
 
             <div className={styles.box_pagina_bi}>
@@ -387,12 +383,12 @@ export const DetalhesBi = () => {
                                 {diferencaPercentualReceita >= 0 ?
                                     <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
                                         <i><PiIcons.PiCaretDoubleUpDuotone /></i>
-                                        <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                        <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> vs. mês anterior</p>
                                     </div>
                                     :
                                     <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
                                         <i><PiIcons.PiCaretDoubleDownDuotone /></i>
-                                        <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                        <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> vs. mês anterior</p>
                                     </div>
                                 }
                             </div>
@@ -420,13 +416,13 @@ export const DetalhesBi = () => {
                                         type="monotone"
                                         dataKey="receitas"
                                         name="Receitas"
-                                        stroke="var(--verde)"
-                                        fill="var(--verde-15)"
+                                        stroke="var(--cor-principal)"
+                                        fill="var(--cor-principal-15)"
                                         strokeWidth={1}
                                         dot={{
                                             r: 5,
                                             fill: "#fff",
-                                            stroke: "var(--verde)",
+                                            stroke: "var(--cor-principal)",
                                             strokeWidth: 1
                                         }}
                                         activeDot={{
@@ -446,12 +442,12 @@ export const DetalhesBi = () => {
                                 {diferencaPercentualDespesa >= 0 ?
                                     <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
                                         <i><PiIcons.PiCaretDoubleUpDuotone /></i>
-                                        <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                        <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> vs. mês anterior</p>
                                     </div>
                                     :
                                     <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
                                         <i><PiIcons.PiCaretDoubleDownDuotone /></i>
-                                        <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                        <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualDespesa).toFixed(2)}%</span> vs. mês anterior</p>
                                     </div>
                                 }
                             </div>
@@ -652,8 +648,8 @@ export const DetalhesBi = () => {
                                         data={dataPizza}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={70}
-                                        outerRadius={95}
+                                        innerRadius={80}
+                                        outerRadius={105}
                                         startAngle={90}
                                         endAngle={-270}
                                         dataKey="value"
@@ -714,14 +710,14 @@ export const DetalhesBi = () => {
                                 dataKey="receitas"
                                 name="Receitas"
                                 stroke="var(--cor-principal)"
-                                fill="var(--cor-principal)"
+                                fill="var(--cor-principal-10)"
                             />
                             <Area
                                 type="monotone"
                                 dataKey="despesas"
                                 name="Despesas"
-                                stroke="var(--cor-grafico)"
-                                fill="var(--cor-grafico-anual)"
+                                stroke="var(--vermelho)"
+                                fill="var(--vermelho-15)"
                             />
                         </AreaChart>
                     </ResponsiveContainer>
@@ -751,8 +747,8 @@ export const DetalhesBi = () => {
                                             nameKey="name"
                                             cx="50%"
                                             cy="50%"
-                                            innerRadius={70}
-                                            outerRadius={95}
+                                            innerRadius={80}
+                                            outerRadius={105}
                                             startAngle={90}
                                             endAngle={-270}
                                             onMouseEnter={onPieEnter}
@@ -791,6 +787,9 @@ export const DetalhesBi = () => {
                                 ))}
                             </div>
 
+                            <div className={styles.aviso_scroll_container}>
+                                <PiIcons.PiCaretDoubleDown className={styles.icone_historico_categorias} /> <span>Histórico</span> <PiIcons.PiCaretDoubleDown className={styles.icone_historico_categorias} />
+                            </div>
                         </div>
 
                         {categoriaReceitaSelecionada && (
@@ -857,8 +856,8 @@ export const DetalhesBi = () => {
                                             nameKey="name"
                                             cx="50%"
                                             cy="50%"
-                                            innerRadius={70}
-                                            outerRadius={95}
+                                            innerRadius={80}
+                                            outerRadius={105}
                                             startAngle={90}
                                             endAngle={-270}
                                             onMouseEnter={onPieEnter}
@@ -896,6 +895,9 @@ export const DetalhesBi = () => {
                                 </div>
                             </div>
 
+                            <div className={styles.aviso_scroll_container}>
+                                <PiIcons.PiCaretDoubleDown className={styles.icone_historico_categorias} /> <span>Histórico</span> <PiIcons.PiCaretDoubleDown className={styles.icone_historico_categorias} />
+                            </div>
                         </div>
 
                         {categoriaDespesaSelecionada && (

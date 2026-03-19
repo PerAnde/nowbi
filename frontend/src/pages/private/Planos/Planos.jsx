@@ -28,60 +28,63 @@ export const Planos = () => {
                 <div className={styles.box_conteudo_planos}>
                     <div className={styles.box_cards_planos}>
 
-                        <div className={`${styles.card_plano} ${styles.plano_essencial}`}>
-                            <div className={styles.box_info_oferta}>
-                                <img src={imgFoguinho} />
-                                <p>Por tempo limitado</p>
+                        <div class={`${styles.card_plano} ${styles.plano_essencial}`}>
+                            <div class={styles.descricao_plano}>
+                                <h3>Solo</h3>
+                                <p>Ideal para o dono de empresa</p>
+                                <h4>R$ 69,90<span>/mês</span></h4>
+                                <p>.</p>
                             </div>
-                            <div className={styles.descricao_plano}>
-                                <h3>Essencial</h3>
-                                <p>Perfeito para quem está começando</p>
-                                <h4>R$ 19,90<span>/mês</span></h4>
-                            </div>
-                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
-                            <div className={styles.detalhes_plano}>
-                                <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>1 empresa</strong></p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Lançamentos ilimitados</p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Suporte via WhatsApp</p>
-                            </div>
-                        </div>
-
-                        <div className={`${styles.card_plano} ${styles.plano_premium}`}>
-                            <div className={styles.box_info_oferta}>
-                                <img src={imgFoguinho} />
-                                <p>Por tempo limitado</p>
-                            </div>
-                            <div className={styles.descricao_plano}>
-                                <h3>Premium</h3>
-                                <p>Mais gestão e escalabilidade</p>
-                                <h4>R$ 184,90<span>/mês</span></h4>
-                            </div>
-                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_full}`}>Começar agora</Link>
-                            <div className={styles.detalhes_plano}>
-                                <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>10 empresas</strong></p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Lançamentos ilimitados</p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Suporte via WhatsApp</p>
+                            <a href="https://api.whatsapp.com/send?phone=5547984178977" target="_blank"
+                                class={styles.btn_plano}>Assinar Solo</a>
+                            <div class={styles.detalhes_plano}>
+                                <p><i class="ph-light ph-building"></i> <strong>1 CNPJ</strong></p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Dashboard Interativo</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Lançamentos Ilimitados</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Importação via CSV / XLS</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Relatório com I.A</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Suporte via WhatsApp</p>
+                                <p>R$ 50,00 CNPJ por adicional</p>
                             </div>
                         </div>
 
-                        <div className={`${styles.card_plano} ${styles.plano_pro}`}>
-                            <div className={styles.box_info_oferta}>
-                                <img src={imgFoguinho} />
-                                <p>Por tempo limitado</p>
+                        <div class={`${styles.card_plano} ${styles.plano_premium}`}>
+                            <div class={styles.descricao_plano}>
+                                <h3>Starter</h3>
+                                <p>Para mais empresas</p>
+                                <h4>R$ 244,90<span>/mês</span></h4>
+                                <p>R$ 48,98 por CNPJ</p>
                             </div>
-                            <div className={styles.descricao_plano}>
+                            <a href="https://api.whatsapp.com/send?phone=5547984178977" target="_blank"
+                                class={styles.btn_plano}>Assinar Starter</a>
+                            <div class={styles.detalhes_plano}>
+                                <p><i class="ph-light ph-building"></i><strong>5 CNPJs</strong></p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Dashboard Interativo</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Lançamentos Ilimitados</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Importação via CSV / XLS</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Relatório com I.A</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Suporte via WhatsApp</p>
+                                <p>R$ 45,00 CNPJ por adicional</p>
+                            </div>
+                        </div>
+
+                        <div class={`${styles.card_plano} ${styles.plano_pro}`}>
+                            <div class={styles.descricao_plano}>
                                 <h3>Pro</h3>
-                                <p>Mais espaço para organizar e crescer</p>
-                                <h4>R$ 95,90<span>/mês</span></h4>
+                                <p>Escalabilidade para grandes operações</p>
+                                <h4>R$ 439,90<span>/mês</span></h4>
+                                <p>R$ 43,99 por CNPJ</p>
                             </div>
-                            <Link to="https://api.whatsapp.com/send?phone=5547984178977" target='_blank' className={`${styles.btn} ${styles.btn_border_dark}`}>Começar agora</Link>
-                            <div className={styles.detalhes_plano}>
-                                <p><PiIcons.PiLightningFill className={styles.icon_detalhes_plano} /> Até <strong>5 empresas</strong></p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> BI's ilimitados</p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Lançamentos ilimitados</p>
-                                <p><PiIcons.PiCheckBold className={styles.icon_detalhes_plano} /> Suporte via WhatsApp</p>
+                            <a href="https://api.whatsapp.com/send?phone=5547984178977" target="_blank"
+                                class={styles.btn_plano}>Assinar Pro</a>
+                            <div class={styles.detalhes_plano}>
+                                <p><i class="ph-light ph-building"></i><strong>10 CNPJs</strong></p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Dashboard Interativo</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Lançamentos Ilimitados</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Importação via CSV / XLS</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Relatório com I.A</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Suporte via WhatsApp</p>
+                                <p>R$ 40,00 CNPJ por adicional</p>
                             </div>
                         </div>
 

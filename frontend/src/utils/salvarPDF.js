@@ -38,9 +38,9 @@ export const salvarDFC = () => {
 };
 
 export const salvarRelatorio = () => {
-    const dreContainer = document.querySelector(".box_gerar_relatorio");
+    const relatorioContainer = document.querySelector(".box_gerar_relatorio");
 
-    if (!dreContainer) return;
+    if (!relatorioContainer) return;
 
     const novaAba = window.open("", "_blank");
 
@@ -63,7 +63,7 @@ export const salvarRelatorio = () => {
                     <style>${styles}</style>
                 </head>
                 <body>
-                    ${dreContainer.outerHTML}
+                    ${relatorioContainer.outerHTML}
                 </body>
             </html>
         `);

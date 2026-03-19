@@ -1,21 +1,3 @@
-.header_pagina_dashboardBi {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-}
-
-.filtros_mes_ano {
-    display: flex;
-    gap: 1rem;
-}
-
-.mes_ano {
-    display: grid;
-    grid-template-columns: 135px 90px;
-    gap: 1rem;
-}
-
 .box_btn_filtro {
     display: flex;
 }
@@ -33,32 +15,35 @@
     display: flex;
 }
 
-.box_topo_dre {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    color: var(--texto-secundario);
-    padding: .5rem 0;
-    font-size: 1.6rem;
+.box_conteudo_relatorio{
+    background-color: var(--cor-componente);
 }
 
-.box_btns_salvar {
-    display: flex;
-    gap: 1rem;
+.box_btns_relatorio{
+    margin: 3rem 2rem 0 0;
 }
 
-.box_btns_salvar button {
-    border: none;
-    background-color: transparent;
-    color: var(--texto-secundario);
+.box_btns_relatorio button {
+    padding: 1rem;
     cursor: pointer;
-    padding: .5rem 1.5rem;
+    border: none;
+    transition: .3s;
+    border-radius: var(--border-radius-button);
 }
 
-.box_btns_salvar button:hover {
-    color: var(--cor-primaria);
+.box_btns_relatorio button.btn_salvar_relatorio {
+    background-color: var(--branco);
+    border: 1px solid var(--border);
+    color: var(--texto-secundario);
+}
+
+.box_btns_relatorio button.btn_salvar_relatorio:hover {
+    background-color: var(--cor-principal);
+    border: 1px solid var(--cor-principal);
+    color: var(--branco);
     transition: .3s;
 }
+
 
 .box_relatorio {
     display: flex;
@@ -68,6 +53,11 @@
     color: var(--texto-secundario);
     padding: 3rem;
     gap: 2rem;
+}
+
+.box_btns_relatorio{
+    display: flex;
+    justify-content: flex-end;
 }
 
 .box_logo_empresa {

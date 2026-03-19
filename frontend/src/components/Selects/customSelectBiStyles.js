@@ -2,11 +2,11 @@ export const customSelectBiStyles = {
     control: (provided, state) => ({
         ...provided,
         width: '100%',
-        backgroundColor: state.isDisabled ? 'var(--background-menu-bi)' : 'var(--background-menu-bi)',
+        backgroundColor: state.isDisabled ? 'var(--cor-componente)' : 'var(--cor-componente)',
         color: state.isDisabled ? 'var(--texto-secundario)' : 'var(--texto-primario)',
         borderRadius: 'var(--border-radius-button)',
         border: '1px solid var(--border-input)',
-        padding: '1.1rem 1.2rem',
+        padding: '.8rem 1rem',
         boxShadow: 'none',
         cursor: state.isDisabled ? 'not-allowed' : 'pointer',
         '&:hover': {

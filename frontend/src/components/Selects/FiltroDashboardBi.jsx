@@ -15,11 +15,9 @@ export const FiltroDashboardBi = ({
     anosDisponiveis,
     onAplicar
 }) => {
-    // Estados locais (Temporários)
     const [anoTemp, setAnoTemp] = useState(anoAtivo);
     const [mesTemp, setMesTemp] = useState(mesAtivo);
 
-    // 1. Lógica de Meses: Sempre "olha" para o anoTemp
     const mesesParaExibir = useMemo(() => {
         if (!empresa?.bis) return [];
 
@@ -29,7 +27,6 @@ export const FiltroDashboardBi = ({
             .sort((a, b) => (monthOrder[a] || 0) - (monthOrder[b] || 0));
     }, [empresa, anoTemp]);
 
-    // 2. Auto-ajuste: Se o ano mudar e o mês atual não existir, pega o primeiro do novo ano
     useEffect(() => {
         if (mesesParaExibir.length > 0) {
             const aindaValido = mesesParaExibir.includes(mesTemp.toLowerCase());
@@ -39,7 +36,6 @@ export const FiltroDashboardBi = ({
         }
     }, [anoTemp, mesesParaExibir]);
 
-    // 3. Sincronização: Se o dashboard mudar externamente (ex: carregamento inicial)
     useEffect(() => {
         setAnoTemp(anoAtivo);
         setMesTemp(mesAtivo);

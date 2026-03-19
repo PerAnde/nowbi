@@ -40,40 +40,29 @@
 }
 
 .card_plano.plano_pro {
-    border: 1px dashed var(--border-input);
+    border: 1px dashed var(--border);
 }
 
 .card_plano.plano_premium {
     border: 1px dashed var(--cor-primaria);
 }
 
-.box_info_oferta {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    position: absolute;
-    top: -1.5rem;
-    padding: .5rem 1rem;
-    font-size: 1.2rem;
-    background-color: var(--background);
-    border-radius: 1rem;
-}
-
-.box_info_oferta img {
-    width: 15px;
-}
-
 .descricao_plano {
     margin-bottom: 2rem;
 }
 
-.descricao-plano h3 {
+.descricao_plano h3 {
     font-size: 2.2rem;
 }
 
 .descricao_plano p {
     color: var(--texto-secundario);
     margin-bottom: 2rem;
+}
+
+.descricao_plano p:last-child{
+    font-size: 1.3rem;
+    color: var(--texto-secundario);
 }
 
 .descricao_plano h4 {
@@ -85,9 +74,22 @@
     font-weight: var(--font-medium);
 }
 
+.descricao_plano p:nth_child(4) {
+    font-size: 1.3rem;
+    font-weight: var(--font-medium);
+    margin-bottom: 0;
+}
+
 .card_plano a {
     text-align: center;
     margin-bottom: 2rem;
+}
+
+.btn_plano {
+    padding: 1.5rem;
+    background-color: var(--cor-principal);
+    border-radius: var(--border-radius-button);
+    color: var(--branco);
 }
 
 .detalhes_plano {
@@ -97,51 +99,19 @@
 }
 
 .detalhes_plano p strong {
-    font-weight: var(--bold);
+    font-weight: var(--font-semi-bold);
 }
 
-.detalhes_plano .icon_detalhes_plano {
+.detalhes_plano .icone_plano {
     color: var(--cor-primaria);
 }
 
-a.btn {
-    padding: 1.2rem 1.8rem;
-    border: 1px solid var(--cor-primaria);
-    border-radius: .5rem;
+.detalhes_plano p:nth-child(6) {
+    margin-bottom: 1.5rem;
 }
 
-a.btn:hover {
-    background-color: var(--cor-primaria-hover);
-    color: var(--branco);
-    transition: .3s;
-}
-
-a.btn.btn_border_dark {
-    border: 1px dashed var(--texto-primario);
-}
-
-a.btn.btn_border_dark:hover {
-    background-color: var(--texto-primario);
-}
-
-a.btn_full {
-    background-color: var(--cor-primaria);
-    color: var(--branco);
-}
-
-a.btn_full:hover {
-    background-color: var(--cor-primaria);
-    box-shadow: 0 0 50px var(--cor-primaria-claro);
-}
-
-a.btn.btn_border_light {
-    border: 1px dashed var(--branco);
-    color: var(--branco);
-}
-
-a.btn.btn_border_light:hover {
-    background-color: var(--branco);
-    color: var(--texto-primario);
+.detalhes_plano p:nth-child(7){
+    color: var(--texto-secundario);
 }
 
 // Box plano personalizado

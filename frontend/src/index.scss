@@ -14,6 +14,8 @@
     // Cores principais
     --cor-principal: #76B2FE;
     --cor-principal-05: rgba(118, 178, 254, .05);
+    --cor-principal-10: rgba(118, 178, 254, .1);
+    --cor-principal-15: rgba(118, 178, 254, .15);
     --cor-principal-hover: #5899E9;
 
     --cor-secundaria: #252049;
@@ -21,11 +23,13 @@
     --cor-secundaria-hover: #1C1838;
 
     --verde: #00b276;
+    --verde-05: rgba(0, 178, 118, .05);
     --verde-15: rgba(0, 178, 118, .15);
+    --verde-30: rgba(0, 178, 118, .3);
     --azul-15: rgba(0, 138, 238, .15);
 
-    --verde-05: rgba(0, 178, 118, .05);
     --vermelho-05: rgba(255, 48, 48, .05);
+    --vermelho-30: rgba(255, 48, 48, .3);
     --amarelo-05: rgba(255, 171, 0, .05);
     --azul-05: rgba(0, 138, 238, .05);
 

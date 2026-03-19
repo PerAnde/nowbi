@@ -13,7 +13,9 @@ import { capitalizeFirstLetter } from '../../../../utils/formatUtils'
 import { INFO_METRICAS } from '../../../../utils/infoMetricasResumo'
 import { organizaMeses } from '../../../../utils/organizaMeses'
 
+import stylesMainBi from '../mainBi.module.scss'
 import styles from './ResumoBi.module.scss'
+
 import * as PiIcons from 'react-icons/pi'
 
 export const ResumoBi = () => {
@@ -171,11 +173,11 @@ export const ResumoBi = () => {
     return (
         <div className={styles.box_dashboard_bi}>
 
-            <div className={styles.header_pagina_dashboardBi}>
+            <div className={stylesMainBi.header_pagina_dashboardBi}>
                 <h3>Resumo {capitalizeFirstLetter(mesSelecionado)}/{anoSelecionado}</h3>
 
                 <div>
-                    <div className={styles.filtros_mes_ano}>
+                    <div className={stylesMainBi.filtros_mes_ano}>
                         <FiltroDashboardBi
                             empresa={empresa}
                             mesAtivo={mesSelecionado}
@@ -203,17 +205,17 @@ export const ResumoBi = () => {
 
                     <div className={`${styles.card_resumo_mes} ${styles.card_faturamento_bruto}`}>
                         <div className={styles.infos_resumo_mes}>
-                            <p className={styles.titulo_card_mes}>Faturamento Bruto</p>
+                            <p className={styles.titulo_card_mes}>Receita Operacional Bruta</p>
                             <span>{receitaBruta.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             {diferencaPercentualReceita >= 0 ?
                                 <div className={`${styles.infos_mes_anterior} ${styles.positivo}`}>
                                     <i><PiIcons.PiCaretDoubleUpDuotone /></i>
-                                    <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                    <p className={styles.info_positivo}><span>+{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> vs. mês anterior</p>
                                 </div>
                                 :
                                 <div className={`${styles.infos_mes_anterior} ${styles.negativo}`}>
                                     <i><PiIcons.PiCaretDoubleDownDuotone /></i>
-                                    <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> em relação ao mês anterior</p>
+                                    <p className={styles.info_positivo}><span>-{Math.abs(diferencaPercentualReceita).toFixed(2)}%</span> vs. mês anterior</p>
                                 </div>
                             }
                         </div>
@@ -259,7 +261,7 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Margem de contribuição <span>{mostrarMedia ? '(Média)' : ''}</span></p>
+                            <p className={styles.titulo_card_mes}>Margem de contribuição <span>{mostrarMedia ? '(Média últimos 12 meses)' : ''}</span></p>
                             <h3>
                                 {(mostrarMedia ? mediaMargemValor : margemDeContribuicao).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span>({(mostrarMedia ? mediaMargemPercentual.toFixed(2) : margemDeContribuicaoPercentual)}%)</span>
                             </h3>
@@ -274,7 +276,7 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional <span>{mostrarMedia ? '(Média)' : ''}</span></p>
+                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Operacional <span>{mostrarMedia ? '(Média últimos 12 meses)' : ''}</span></p>
                             <h3>
                                 {(mostrarMedia ? mediaPontoEquilibrioOp : pontoDeEquilibrioOperacional).toLocaleString('pt-BR', {
                                     style: 'currency', currency: 'BRL'
@@ -291,7 +293,7 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro <span>{mostrarMedia ? '(Média)' : ''}</span></p>
+                            <p className={styles.titulo_card_mes}>Ponto de Equilíbrio Financeiro <span>{mostrarMedia ? '(Média últimos 12 meses)' : ''}</span></p>
                             <h3>
                                 {(mostrarMedia ? mediaPontoEquilibrioFin : pontoDeEquilibrioFinanceiro).toLocaleString('pt-BR', {
                                     style: 'currency', currency: 'BRL'
@@ -308,7 +310,7 @@ export const ResumoBi = () => {
 
                     <div className={styles.card_metrica_mes}>
                         <div className={styles.infos_metricas_mes}>
-                            <p className={styles.titulo_card_mes}>Média de Faturamento</p>
+                            <p className={styles.titulo_card_mes}>Média de Faturamento <span>(Últimos 12 meses)</span></p>
                             <h3>{mediaFaturamento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h3>
                         </div>
                         <div className={styles.box_btn_mais_infos} onClick={() => setPopUpInfoResumoBi(INFO_METRICAS.media_faturamento)}>
