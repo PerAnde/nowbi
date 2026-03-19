@@ -41,6 +41,7 @@ export const Planos = () => {
                                 <p><i class="ph-light ph-building"></i> <strong>1 CNPJ</strong></p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Dashboard Interativo</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Lançamentos Ilimitados</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Integração com Bling</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Importação via CSV / XLS</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Relatório com I.A</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Suporte via WhatsApp</p>
@@ -61,6 +62,7 @@ export const Planos = () => {
                                 <p><i class="ph-light ph-building"></i><strong>5 CNPJs</strong></p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Dashboard Interativo</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Lançamentos Ilimitados</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Integração com Bling</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Importação via CSV / XLS</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Relatório com I.A</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Suporte via WhatsApp</p>
@@ -81,6 +83,7 @@ export const Planos = () => {
                                 <p><i class="ph-light ph-building"></i><strong>10 CNPJs</strong></p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Dashboard Interativo</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Lançamentos Ilimitados</p>
+                                <p><PiIcons.PiCheck className={styles.icone_plano} /> Integração com Bling</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Importação via CSV / XLS</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Relatório com I.A</p>
                                 <p><PiIcons.PiCheck className={styles.icone_plano} /> Suporte via WhatsApp</p>
