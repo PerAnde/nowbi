@@ -21,7 +21,7 @@ import { ImportarArquivo } from '../../../components/Modal/LancamentoBi/Importar
 import { ImportacaoBling } from '../../../components/Modal/LancamentoBi/ImportacaoBling/ImportacaoBling'
 
 import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'; // Estilos do Skeleton
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import * as PiIcons from 'react-icons/pi';
 
@@ -29,12 +29,12 @@ import styles from './Bi.module.scss'
 
 export const Bi = () => {
 
-    // Estados BI e Empresa
     const { id } = useParams();
     const [bi, setBi] = useState({ lancamentoBi: [] });
     const [loading, setLoading] = useState(true);
     const [filtro, setFiltro] = useState("TODOS");
-    // Busca
+
+    const [paginaAtual, setPaginaAtual] = useState(1);
     const [busca, setBusca] = useState('');
     const [observacoes, setObservacoes] = useState({
         periodo_mes: "",
@@ -45,6 +45,15 @@ export const Bi = () => {
         recomendacoes: "",
         conclusao: "",
     });
+
+    const resumoFinanceiro = bi?.financeiro?.resumo || [];
+    const totalReceitasGeral = resumoFinanceiro.find(r => r.tipo === "RECEITA")?._sum?.valor || 0;
+    const totalDespesasGeral = resumoFinanceiro.find(r => r.tipo === "DESPESA")?._sum?.valor || 0;
+    const totalExibicaoRodape = filtro === "RECEITA"
+        ? totalReceitasGeral
+        : filtro === "DESPESA"
+            ? totalDespesasGeral
+            : (Number(totalReceitasGeral) + Number(totalDespesasGeral));
 
     const hasConteudoReal = (html) => {
         if (!html) return false;
@@ -94,46 +103,9 @@ export const Bi = () => {
     }, [popUpEditarBi || popUpExcluirBi || popUpEditarLancamento || popUpNovoLancamento || popUpImportarArquivo || popUpExclusaoLancamento || popUpExclusaoLancamentos]);
 
     useEffect(() => {
-        const carregarDadosIniciais = async () => {
-            setLoading(true);
+        const carregarObservacoes = async () => {
             try {
-                buscarBi(id, async (data) => {
-                    setBi(data);
-
-                    const obsData = await buscarObservacoes(id);
-
-                    if (obsData) {
-                        setObservacoes({
-                            periodo_mes: obsData.periodo_mes || '',
-                            resumo_geral: obsData.resumo_geral || '',
-                            analise_receita: obsData.analise_receita || '',
-                            analise_despesa: obsData.analise_despesa || '',
-                            pontos_atencao: obsData.pontos_atencao || '',
-                            recomendacoes: obsData.recomendacoes || '',
-                            conclusao: obsData.conclusao || ''
-                        });
-                    }
-                    setLoading(false);
-                }, navigate);
-            } catch (error) {
-                setLoading(false);
-            }
-        };
-
-        carregarDadosIniciais();
-    }, [id]);
-
-    // Pegando id da empresa
-    const idEmpresa = bi?.empresa?.id;
-
-    // Atualizar BI
-    const atualizarBi = () => {
-        try {
-            buscarBi(id, async (data) => {
-                setBi(data);
-
                 const obsData = await buscarObservacoes(id);
-
                 if (obsData) {
                     setObservacoes({
                         periodo_mes: obsData.periodo_mes || '',
@@ -145,8 +117,55 @@ export const Bi = () => {
                         conclusao: obsData.conclusao || ''
                     });
                 }
-                setLoading(false);
-            }, navigate);
+            } catch (error) {
+                console.error("Erro ao carregar observações:", error);
+            }
+        };
+
+        if (id) carregarObservacoes();
+    }, [id]);
+
+    // Paginacao
+    useEffect(() => {
+        if (id) {
+            buscarBi(id, paginaAtual, setBi, setLoading, navigate);
+        }
+    }, [id, paginaAtual]);
+
+    const proximaPagina = () => {
+        if (paginaAtual < bi?.paginacao?.totalPaginas) {
+            setPaginaAtual(prev => prev + 1);
+        }
+    };
+
+    const paginaAnterior = () => {
+        if (paginaAtual > 1) {
+            setPaginaAtual(prev => prev - 1);
+        }
+    };
+
+    // Pegando id da empresa
+    const idEmpresa = bi?.empresa?.id;
+
+    // Atualizar BI
+    const atualizarBi = async () => {
+        try {
+            await buscarBi(id, paginaAtual, setBi, setLoading, navigate);
+
+            const obsData = await buscarObservacoes(id);
+
+            if (obsData) {
+                setObservacoes({
+                    periodo_mes: obsData.periodo_mes || '',
+                    resumo_geral: obsData.resumo_geral || '',
+                    analise_receita: obsData.analise_receita || '',
+                    analise_despesa: obsData.analise_despesa || '',
+                    pontos_atencao: obsData.pontos_atencao || '',
+                    recomendacoes: obsData.recomendacoes || '',
+                    conclusao: obsData.conclusao || ''
+                });
+            }
+
         } catch (error) {
             console.error("Erro ao atualizar dados:", error);
         }
@@ -655,10 +674,41 @@ export const Bi = () => {
                             ) : (
                                 <p>Total de despesas</p>
                             )}
-                            <p><strong>{totalFiltrado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
+                            <p>
+                                <strong>
+                                    {Number(totalExibicaoRodape).toLocaleString('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    })}
+                                </strong>
+                            </p>
                         </div>
                     ) : (
                         ''
+                    )}
+
+                    {bi?.paginacao && bi.paginacao.totalPaginas > 1 && (
+                        <div className={styles.paginacao_wrapper}>
+                            <button
+                                className={styles.btn_page}
+                                onClick={paginaAnterior}
+                                disabled={paginaAtual === 1 || loading}
+                            >
+                                Anterior
+                            </button>
+
+                            <span className={styles.info_page}>
+                                Página <strong>{paginaAtual}</strong> de {bi.paginacao.totalPaginas}
+                            </span>
+
+                            <button
+                                className={styles.btn_page}
+                                onClick={proximaPagina}
+                                disabled={paginaAtual === bi.paginacao.totalPaginas || loading}
+                            >
+                                Próxima
+                            </button>
+                        </div>
                     )}
 
                 </div>

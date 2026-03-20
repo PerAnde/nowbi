@@ -694,6 +694,7 @@ a.btn_excluir_lancamento:hover {
     border-radius: var(--border-radius-componente);
     box-shadow: var(--box-shadow-menu);
     padding: 2rem;
+    margin-bottom: 2rem;
 }
 
 .box_sem_bi {
@@ -711,6 +712,41 @@ a.btn_excluir_lancamento:hover {
         margin-bottom: 2.5rem;
         text-align: center;
     }
+}
+
+.paginacao_wrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.paginacao_wrapper button{
+    padding: 1.5rem;
+    background-color: var(--background-geral);
+    border: 1px solid var(--cor-principal);
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.paginacao_wrapper button:hover{
+    background-color: var(--cor-principal);
+    transition: .3s;
+}
+
+.paginacao_wrapper button:disabled{
+    border: 1px solid var(--border);
+    cursor: not-allowed;
+}
+
+.paginacao_wrapper button:disabled:hover{
+    background-color: var(--background-geral);
+}
+
+.paginacao_wrapper .info_page{
+    color: var(--texto-secundario);
 }
 
 @media screen and (max-width: 960px) {

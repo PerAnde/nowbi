@@ -7,9 +7,11 @@ class ListBiController {
 
         const { id } = req.params;
 
+        const pagina = req.query.pagina ? Number(req.query.pagina) : 1;
+
         const listarBiService = new ListBiService();
 
-        const bi = await listarBiService.execute(id);
+        const bi = await listarBiService.execute(id, pagina);
 
         return res.json(bi);
 

@@ -2,28 +2,27 @@ import { api } from '../api/api'
 import { toast } from 'sonner'
 
 // Buscar BI
-export const buscarBi = async (id, setBi, setLoading, navigate) => {
+export const buscarBi = async (id, pagina, setBi, setLoading, navigate) => {
+    if (typeof setLoading === 'function') setLoading(true);
+
+
 
     try {
-
-        // await new Promise(resolve => setTimeout(resolve, 10000))
-
-        const response = await api.get(`/bi/${id}`);
+        const response = await api.get(`/bi/${id}`, {
+            params: { pagina: pagina }
+        });
 
         if (response.data) {
             setBi(response.data);
-            setLoading(false)
-
         } else {
-            setBi(null)
-            navigate("/notfound");
+            setBi(null);
+            if (typeof navigate === 'function') navigate("/notfound");
         }
 
     } catch (error) {
-        console.log(error);
-    }
-    finally {
-        setLoading(false);
+        console.error("Erro ao buscar BI:", error);
+    } finally {
+        if (typeof setLoading === 'function') setLoading(false);
     }
 }
 
@@ -109,7 +108,7 @@ export const atualizarStatus = async (id, status) => {
 
 export const gerarRelatorioAI = async (bi_id) => {
     const response = await api.post(`/bi/${bi_id}/gerar-relatorio`);
-    return response.data; // { conteudo: "<p>...</p>" }
+    return response.data;
 };
 
 export const buscarObservacoes = async (id) => {
