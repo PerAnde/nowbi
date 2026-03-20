@@ -24,6 +24,7 @@ export const Cadastro = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [cpf_cnpj, setCpf_cnpj] = useState('')
+    const [telefone, setTelefone] = useState('')
     const [password, setPassword] = useState('')
     const [passwordMatch, setPasswordMatch] = useState('')
 
@@ -33,10 +34,30 @@ export const Cadastro = () => {
 
     const navigate = useNavigate()
 
+    const handleWhatsappChange = (e) => {
+        let value = e.target.value;
+
+        value = value.replace(/\D/g, "");
+
+        if (value.length > 11) value = value.slice(0, 11);
+
+        if (value.length > 10) {
+            value = value.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+        } else if (value.length > 5) {
+            value = value.replace(/^(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+        } else if (value.length > 2) {
+            value = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+        } else if (value.length > 0) {
+            value = value.replace(/^(\d{0,2})/, "($1");
+        }
+
+        setTelefone(value);
+    };
+
     async function handleSubmit(e) {
         e.preventDefault()
 
-        if (!name || !email || !cpf_cnpj || !password) {
+        if (!name || !email || !cpf_cnpj || !password || !telefone) {
             toast.warning("Por favor, preencha todos os campos!")
             return;
         }
@@ -46,11 +67,13 @@ export const Cadastro = () => {
             return
         }
 
+        const telefoneLimpo = telefone.replace(/\D/g, "");
+
         setLoading(true)
 
         try {
 
-            const success = await auth.signUp(name, email, cpf_cnpj, password)
+            const success = await auth.signUp(name, email, cpf_cnpj, password, telefoneLimpo)
 
             if (success) {
                 navigate("/dashboard");
@@ -85,31 +108,30 @@ export const Cadastro = () => {
                         <label>
                             <Input type="text" placeholder="Nome ou Razão Social" value={name} onChange={(e) => setName(e.target.value)} />
                         </label>
-                        <div className={styles.box_dados_cadastro}>
-                            <label>
-                                <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            </label>
-                            <label>
-                                <Input type="text" placeholder="CPF ou CNPJ" value={cpf_cnpj} onChange={(e) => setCpf_cnpj(e.target.value)} />
-                            </label>
-                        </div>
-                        <div className={styles.box_dados_cadastro}>
-                            <label className={styles.input_container}>
-                                <Input type={showPassword ? "text" : "password"} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <label>
+                            <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </label>
+                        <label>
+                            <Input type="text" placeholder="CPF ou CNPJ" value={cpf_cnpj} onChange={(e) => setCpf_cnpj(e.target.value)} />
+                        </label>
+                        <label>
+                            <Input type="text" placeholder="WhatsApp" value={telefone} onChange={handleWhatsappChange} />
+                        </label>
+                        <label className={styles.input_container}>
+                            <Input type={showPassword ? "text" : "password"} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                                <button
-                                    type="button"
-                                    className={styles.icon_button}
-                                    onClick={toggleVisualizarSenha}
-                                >
-                                    {showPassword ? <PiIcons.PiEyeLight /> : <PiIcons.PiEyeClosedLight />}
-                                </button>
-                            </label>
+                            <button
+                                type="button"
+                                className={styles.icon_button}
+                                onClick={toggleVisualizarSenha}
+                            >
+                                {showPassword ? <PiIcons.PiEyeLight /> : <PiIcons.PiEyeClosedLight />}
+                            </button>
+                        </label>
 
-                            <label>
-                                <Input type={showPassword ? "text" : "password"} placeholder="Confirmar Senha" value={passwordMatch} onChange={(e) => setPasswordMatch(e.target.value)} />
-                            </label>
-                        </div>
+                        <label>
+                            <Input type={showPassword ? "text" : "password"} placeholder="Confirmar Senha" value={passwordMatch} onChange={(e) => setPasswordMatch(e.target.value)} />
+                        </label>
 
                         <ButtonAuth type="submit" loading={loading}>Cadastrar</ButtonAuth>
                     </form>

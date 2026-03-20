@@ -508,7 +508,7 @@ export const Bi = () => {
                                     );
                                 })()}
                                 <p title={lancamento.categoria.name}>{capitalizeFirstLetter(lancamento.categoria.name)}</p>
-                                <p title={lancamento.subcategoria.name}>{lancamento.subcategoria ? (capitalizeFirstLetter(lancamento.subcategoria.name)) : <span>Sem subcategoria</span>}</p>
+                                <p title={lancamento.subcategoria?.name}>{lancamento.subcategoria ? (capitalizeFirstLetter(lancamento.subcategoria.name)) : <span>Sem subcategoria</span>}</p>
                                 <div className={styles.box_btns_opcoes_lancamento}>
                                     <Link className={styles.btn_editar_lancamento} onClick={() => {
                                         setLancamentoSelecionado(lancamento.id)

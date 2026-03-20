@@ -56,10 +56,10 @@ export const AuthProvider = ({ children }) => {
     }
 
     // Funcao para criar usuarios
-    async function signUp(name, email, cpf_cnpj, password) {
+    async function signUp(name, email, cpf_cnpj, password, telefone) {
 
         try {
-            const usuario = await SignUpRequest(name, email, cpf_cnpj, password);
+            const usuario = await SignUpRequest(name, email, cpf_cnpj, password, telefone);
             if (usuario) {
 
                 await autenticacao(email, password)

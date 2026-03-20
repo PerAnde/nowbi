@@ -6,7 +6,7 @@ import { CreateUsuarioService } from "../../services/usuario/CreateUsuarioServic
 class CreateUsuarioController {
     async handle(req: Request, res: Response) {
 
-        const { name, email, cpf_cnpj, password } = req.body
+        const { name, email, cpf_cnpj, password, telefone } = req.body
 
         const createUserService = new CreateUsuarioService();
 
@@ -14,7 +14,8 @@ class CreateUsuarioController {
             name,
             email,
             cpf_cnpj,
-            password
+            password,
+            telefone
         });
 
         return res.json(usuario)

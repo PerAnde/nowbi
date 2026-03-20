@@ -30,10 +30,10 @@ export async function LoginRequest(email, password) {
     }
 }
 
-export async function SignUpRequest(name, email, cpf_cnpj, password) {
+export async function SignUpRequest(name, email, cpf_cnpj, password, telefone) {
 
     try {
-        const request = await api.post('register', { name, email, cpf_cnpj, password })
+        const request = await api.post('register', { name, email, cpf_cnpj, password, telefone })
         toast.success("Conta criada com sucesso, seja bem vindo!")
         return request.data
 

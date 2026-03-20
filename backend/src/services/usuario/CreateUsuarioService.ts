@@ -8,10 +8,13 @@ interface UsuarioRequest {
     email: string;
     cpf_cnpj: string;
     password: string;
+    telefone: string;
 }
 
 class CreateUsuarioService {
-    async execute({ name, email, cpf_cnpj, password }: UsuarioRequest) {
+    async execute({ name, email, cpf_cnpj, password, telefone }: UsuarioRequest) {
+
+        const telefoneNumerico = telefone.replace(/\D/g, '');
 
         if (!name) {
             throw new Error("Inserir o nome ou razão social!")
@@ -20,6 +23,10 @@ class CreateUsuarioService {
         // Verificar se enviou um email
         if (!email) {
             throw new Error("Email inválido!")
+        }
+
+        if (telefoneNumerico.length < 10 || telefoneNumerico.length > 11) {
+            throw new Error("WhatsApp inválido! Certifique-se de incluir o DDD.");
         }
 
         // Verificar se o email ja esta cadastrado
@@ -160,6 +167,7 @@ class CreateUsuarioService {
                 name: name,
                 email: email,
                 cpf_cnpj: cpfCnpjNumerico,
+                telefone: telefoneNumerico,
                 password: senhaCriptografada,
                 dataFimPeriodoTeste: addDays(new Date(), 7),
                 isPeriodoTesteAtivo: true,
