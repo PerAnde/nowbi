@@ -2,23 +2,90 @@ import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 const mailConfig: SMTPTransport.Options = {
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT) || 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
+    host: process.env.EMAIL_HOST,
+    port: Number(process.env.EMAIL_PORT) || 465,
+    secure: true,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 };
 
 const transporter = nodemailer.createTransport(mailConfig);
 
+export const sendNewCount = async (name: string, email: string, cpf_cnpj: string, telefone: string) => {
+    const mailOptions = {
+        from: `"Sistema NowBi" <${process.env.EMAIL_USER}>`,
+        to: ["contato3dap@gmail.com", "naiaratiesen@gmail.com"],
+        subject: "🔔 Alerta: Novo Usuário Cadastrado",
+        html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: auto; color: #4C556C; line-height: 1.5;">
+        <div style="background-color: #F6F8FA; padding: 1.5rem; border-radius: 8px 8px 0 0;">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="vertical-align: middle;">
+                        <img src="https://app.nowbi.com.br/logo.png" width="40" height="40" style="display: block;" alt="NowBi">
+                    </td>
+                    <td style="vertical-align: middle; padding-left: 12px;">
+                        <span style="font-size: 22px; font-weight: bold; color: #4C556C;">NowBi</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding: 20px;">
+            <h2 style="color: #2D3748;">Novo cadastro realizado!</h2>
+            <p>Um novo usuário acabou de se registrar na plataforma. Confira os detalhes abaixo:</p>
+
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin: 20px 0;">
+                <p style="margin: 5px 0;"><strong>Nome:</strong> ${name}</p>
+                <p style="margin: 5px 0;"><strong>E-mail:</strong> ${email}</p>
+                <p style="margin: 5px 0;"><strong>CPF/CNPJ:</strong> ${cpf_cnpj}</p>
+                <p style="margin: 5px 0;"><strong>Telefone:</strong> ${telefone}</p>
+            </div>
+
+            <div style="margin-top: 30px; background-color: #EBF5FF; padding: 1.5rem; border-radius: 8px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td style="vertical-align: middle; width: 40px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png" 
+                                 width="30" height="30" style="display: block;" alt="WA">
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px;">
+                            <p style="margin: 0; font-size: 14px; font-weight: bold;">Contato rápido via WhatsApp:</p>
+                            <a href="https://wa.me/55${telefone.replace(/\D/g, '')}" 
+                               style="color: #25D366; font-weight: bold; text-decoration: none;">
+                                Chamar novo usuário
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 20px; border-top: 1px solid #eee; margin-top: 20px;">
+            <p style="font-size: 14px; margin-bottom: 5px;"><strong>NowBi</strong></p>
+            <p style="font-size: 12px; margin: 0;">
+                <a href="https://app.nowbi.com.br" style="color: #76B2FE; text-decoration: none;">app.nowbi.com.br</a> |
+                Dashboard BI
+            </p>
+            <p style="font-size: 11px; color: #999; margin-top: 20px;">
+                Este é um e-mail automático. Por favor, não responda.
+            </p>
+        </div>
+      </div>
+    `,
+    };
+
+    return transporter.sendMail(mailOptions);
+};
+
 export const sendResetEmail = async (email: string, resetLink: string) => {
-  const mailOptions = {
-    from: `"NowBi" <no-reply@nowbi.com.br>`,
-    to: email,
-    subject: "Redefinir Senha - NowBi",
-    html: `
+    const mailOptions = {
+        from: `"NowBi" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: "Redefinir Senha - NowBi",
+        html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: auto; color: #4C556C; line-height: 1.5;">
         <div
             style="display: flex; align-items: center; background-color: #F6F8FA; padding: 1.5rem; border-radius: 8px 8px 0 0;">
@@ -88,17 +155,17 @@ export const sendResetEmail = async (email: string, resetLink: string) => {
         </div>
     </div>
     `,
-  };
+    };
 
-  return transporter.sendMail(mailOptions);
+    return transporter.sendMail(mailOptions);
 };
 
 export const sendPasswordChangedEmail = async (email: string) => {
-  const mailOptions = {
-    from: `"NowBi" <no-reply@nowbi.com.br>`,
-    to: email,
-    subject: "Sua senha foi alterada - NowBi",
-    html: `
+    const mailOptions = {
+        from: `"NowBi" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: "Sua senha foi alterada - NowBi",
+        html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: auto; color: #4C556C; line-height: 1.5;">
         <div
             style="display: flex; align-items: center; background-color: #F6F8FA; padding: 1.5rem; border-radius: 8px 8px 0 0;">
@@ -168,7 +235,7 @@ export const sendPasswordChangedEmail = async (email: string) => {
         </div>
     </div>
     `,
-  };
+    };
 
-  return transporter.sendMail(mailOptions);
+    return transporter.sendMail(mailOptions);
 };
