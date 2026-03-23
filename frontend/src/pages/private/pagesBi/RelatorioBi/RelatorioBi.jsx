@@ -14,40 +14,18 @@ export const RelatorioBi = () => {
 
     const {
         empresa,
+        dashboardData,
         mesSelecionado,
         anoSelecionado,
         setMesSelecionado,
         setAnoSelecionado,
         anosDisponiveis,
+        loading
     } = useBiPublic()
 
-    const [mesTemp, setMesTemp] = useState(mesSelecionado);
-    const [anoTemp, setAnoTemp] = useState(anoSelecionado);
-
-    useEffect(() => {
-        if (!empresa || !mesSelecionado || !anoSelecionado) return;
-
-        setMesTemp(mesSelecionado);
-        setAnoTemp(anoSelecionado);
-
-    }, [empresa, mesSelecionado, anoSelecionado]);
-
-    const aplicarFiltro = () => {
-        if (!empresa) return;
-
-        const biExiste = empresa.bis.some(bi =>
-            bi.status &&
-            bi.mes.toLowerCase() === mesTemp.toLowerCase() &&
-            Number(bi.ano) === Number(anoTemp)
-        );
-
-        if (!biExiste) {
-            alert(`Não há BI lançado para ${capitalizeFirstLetter(mesTemp)}/${anoTemp}.`);
-            return;
-        }
-
-        setMesSelecionado(mesTemp);
-        setAnoSelecionado(anoTemp);
+    const aplicarFiltro = (novoMes, novoAno) => {
+        setMesSelecionado(novoMes);
+        setAnoSelecionado(novoAno);
     };
 
     const biAtual = empresa?.bis?.find(bi =>
