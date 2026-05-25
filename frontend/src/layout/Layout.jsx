@@ -11,9 +11,9 @@ export const Layout = ({ children }) => {
 
     useEffect(() => {
         if (menuLateralAberto) {
-            document.body.style.overflow = 'hidden'; // Desativa o scroll
+            document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'auto'; // Restaura o scroll
+            document.body.style.overflow = 'auto';
         }
     }, [menuLateralAberto]);
 

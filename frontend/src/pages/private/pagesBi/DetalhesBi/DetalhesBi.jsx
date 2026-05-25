@@ -328,7 +328,7 @@ export const DetalhesBi = () => {
                         <p
                             key={i}
                             style={{
-                                color: entry.name === 'Despesas' ? 'var(--vermelho)' : 'var(--cor-principal)',
+                                color: entry.name === 'Despesas' ? 'var(--vermelho)' : 'var(--verde)',
                                 margin: 0,
                             }}
                         >
@@ -401,6 +401,14 @@ export const DetalhesBi = () => {
                                     data={dataAnual}
                                     margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
                                 >
+
+                                    <defs>
+                                        <linearGradient id="gradienteReceitas" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stopColor="var(--verde)" stopOpacity={0.35} />
+                                            <stop offset="100%" stopColor="var(--verde)" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+
                                     <XAxis dataKey="mes" hide />
 
                                     <Tooltip
@@ -416,13 +424,13 @@ export const DetalhesBi = () => {
                                         type="monotone"
                                         dataKey="receitas"
                                         name="Receitas"
-                                        stroke="var(--cor-principal)"
-                                        fill="var(--cor-principal-15)"
+                                        stroke="var(--verde)"
+                                        fill="url(#gradienteReceitas)"
                                         strokeWidth={1}
                                         dot={{
                                             r: 5,
                                             fill: "#fff",
-                                            stroke: "var(--cor-principal)",
+                                            stroke: "var(--verde)",
                                             strokeWidth: 1
                                         }}
                                         activeDot={{
@@ -460,6 +468,14 @@ export const DetalhesBi = () => {
                                     data={dataAnual}
                                     margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
                                 >
+
+                                    <defs>
+                                        <linearGradient id="gradienteDespesas" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stopColor="var(--vermelho)" stopOpacity={0.35} />
+                                            <stop offset="100%" stopColor="var(--vermelho)" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+
                                     <XAxis dataKey="mes" hide />
 
                                     <Tooltip
@@ -476,7 +492,7 @@ export const DetalhesBi = () => {
                                         dataKey="despesas"
                                         name="Despesas"
                                         stroke="var(--vermelho)"
-                                        fill="var(--vermelho-15)"
+                                        fill="url(#gradienteDespesas)"
                                         strokeWidth={1}
                                         dot={{
                                             r: 5,
@@ -690,7 +706,22 @@ export const DetalhesBi = () => {
                             data={dataAnual}
                             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
                         >
-                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+
+                            <defs>
+                                <linearGradient id="gradienteReceitas" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="var(--verde)" stopOpacity={0.5} />
+                                    <stop offset="100%" stopColor="var(--verde)" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+
+                            <defs>
+                                <linearGradient id="gradienteDespesas" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="var(--vermelho)" stopOpacity={0.5} />
+                                    <stop offset="100%" stopColor="var(--vermelho)" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+
+                            <CartesianGrid strokeDasharray="3 15" stroke="#eee" />
                             <XAxis dataKey="mes"
                                 stroke="var(--border)"
                                 tick={{
@@ -709,15 +740,15 @@ export const DetalhesBi = () => {
                                 type="monotone"
                                 dataKey="receitas"
                                 name="Receitas"
-                                stroke="var(--cor-principal)"
-                                fill="var(--cor-principal-10)"
+                                stroke="var(--verde)"
+                                fill="url(#gradienteReceitas)"
                             />
                             <Area
                                 type="monotone"
                                 dataKey="despesas"
                                 name="Despesas"
                                 stroke="var(--vermelho)"
-                                fill="var(--vermelho-15)"
+                                fill="url(#gradienteDespesas)"
                             />
                         </AreaChart>
                     </ResponsiveContainer>
