@@ -96,7 +96,7 @@ class ImportLancamentosBlingService {
                         const subNoBanco = await prismaClient.subCategoria.findFirst({
                             where: {
                                 empresaId: empresa_id,
-                                name: { equals: nomeCategoriaBling, mode: 'insensitive' }, // Garante case-insensitive no banco
+                                name: { equals: nomeCategoriaBling}, // Garante case-insensitive no banco
                                 categoria: {
                                     tipo: tipoLancamento // Valida se a Categoria Pai é RECEITA ou DESPESA
                                 }
@@ -111,7 +111,7 @@ class ImportLancamentosBlingService {
                             const catNoBanco = await prismaClient.categoria.findFirst({
                                 where: {
                                     empresaId: empresa_id,
-                                    name: { equals: nomeCategoriaBling, mode: 'insensitive' },
+                                    name: { equals: nomeCategoriaBling},
                                     tipo: tipoLancamento // Filtra pelo Enum (RECEITA / DESPESA)
                                 }
                             });
