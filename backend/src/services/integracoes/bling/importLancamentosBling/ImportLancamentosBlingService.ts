@@ -66,6 +66,8 @@ class ImportLancamentosBlingService {
                         const nomeCategoriaBling = lanc.descricao?.trim().toLowerCase();
                         const valorLancamento = Math.abs(Number(lanc.valor));
 
+                        const tipoLancamento = lanc.debCred === 'C' ? 'RECEITA' : 'DESPESA'; // NOVO
+
                         const infoItem = {
                             id: idExternoBling,
                             descricao: lanc.descricao,
@@ -92,7 +94,13 @@ class ImportLancamentosBlingService {
 
                         // Mapeamento de Categoria/Subcategoria
                         const subNoBanco = await prismaClient.subCategoria.findFirst({
-                            where: { empresaId: empresa_id, name: nomeCategoriaBling }
+                            where: {
+                                empresaId: empresa_id,
+                                name: nomeCategoriaBling,
+                                categoria: { // NOVO
+                                    tipo: tipoLancamento // NOVO
+                                }
+                            }
                         });
 
                         if (subNoBanco) {
@@ -100,7 +108,11 @@ class ImportLancamentosBlingService {
                             categoria_id = subNoBanco.categoria_id;
                         } else {
                             const catNoBanco = await prismaClient.categoria.findFirst({
-                                where: { empresaId: empresa_id, name: { equals: nomeCategoriaBling } }
+                                where: {
+                                    empresaId: empresa_id,
+                                    name: { equals: nomeCategoriaBling },  // NOVO
+                                    tipo: tipoLancamento // NOVO
+                                }
                             });
                             if (catNoBanco) {
                                 categoria_id = catNoBanco.id;
@@ -115,7 +127,8 @@ class ImportLancamentosBlingService {
                         await prismaClient.lancamentoBi.create({
                             data: {
                                 valor: valorLancamento,
-                                tipo: lanc.debCred === 'C' ? 'RECEITA' : 'DESPESA',
+                                // tipo: lanc.debCred === 'C' ? 'RECEITA' : 'DESPESA',
+                                tipo: tipoLancamento,
                                 categoria_id,
                                 subcategoria_id,
                                 businessIntelligence_id: bi.id,
