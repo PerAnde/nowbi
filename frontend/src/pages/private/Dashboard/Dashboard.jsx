@@ -70,7 +70,6 @@ export const Dashboard = () => {
 
                 <div className={styles.box_img_dashboard}>
 
-
                     <div className={styles.banner_novidade}>
                         <div className={styles.banner_novidade_conteudo}>
                             <div className={styles.banner_novidade_topo}>
