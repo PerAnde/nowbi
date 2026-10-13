@@ -70,6 +70,52 @@ export const Dashboard = () => {
 
                 <div className={styles.box_img_dashboard}>
 
+
+                    <div className={styles.banner_novidade}>
+                        <div className={styles.banner_novidade_conteudo}>
+                            <div className={styles.banner_novidade_topo}>
+                                <span className={styles.banner_novidade_tag}>
+                                    <PiIcons.PiSparkleFill />
+                                    UMA NOVA ERA ESTÁ CHEGANDO
+                                </span>
+
+                                <span className={styles.banner_novidade_data}>
+                                    25 OUT 2026
+                                </span>
+                            </div>
+
+                            <h2>
+                                O NowBI está evoluindo.
+                                <span> E você vai sentir a diferença.</span>
+                            </h2>
+
+                            <p>
+                                Estamos preparando uma nova versão, muito mais
+                                completa, moderna e poderosa para transformar
+                                a maneira como você acompanha e gerencia
+                                seus negócios.
+                            </p>
+
+                            <div className={styles.banner_novidade_lancamento}>
+                                <PiIcons.PiCalendarBlankLight />
+                                <strong>
+                                    A novidade chega em 25 de outubro.
+                                </strong>
+                            </div>
+
+                            <div className={styles.banner_novidade_rodape}>
+                                <PiIcons.PiRocketLaunchLight />
+                                <span>
+                                    Mais recursos. Mais possibilidades.
+                                    Uma nova experiência.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className={styles.banner_novidade_glow}></div>
+                    </div>
+
+
                     <div className={styles.waves}>
                         <div className={`${styles.wave} ${styles.wave1}`}></div>
                         <div className={`${styles.wave} ${styles.wave2}`}></div>

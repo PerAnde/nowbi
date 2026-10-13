@@ -30,18 +30,18 @@ export async function LoginRequest(email, password) {
     }
 }
 
-export async function SignUpRequest(name, email, cpf_cnpj, password, telefone) {
-
+export async function SignUpRequest(name, email, cpfCnpj, phone, password) {
     try {
-        const request = await api.post('register', { name, email, cpf_cnpj, password, telefone })
-        toast.success("Conta criada com sucesso, seja bem vindo!")
-        return request.data
+        const response = await api.post('register', { name, email, cpfCnpj, phone, password });
+        toast.success("Conta criada com sucesso, seja bem-vindo!");
+        return response.data;
 
     } catch (error) {
-        toast.error(error.response.data.error)
-        throw new Error(error.response.data.error)
-    }
+        const errorMessage = error.response?.data?.error || "Erro ao criar conta!";
+        toast.error(errorMessage);
 
+        throw new Error(errorMessage);
+    }
 }
 
 export async function RequestPasswordRecovery(email) {
