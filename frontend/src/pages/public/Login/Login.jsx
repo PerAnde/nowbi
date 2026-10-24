@@ -134,6 +134,18 @@ export const Login = () => {
 
                         <PiIcons.PiCaretRight className={styles.icon} />
                     </Link>
+
+                    <div>
+                    Uma nova versão está disponível{' '}
+                    <a
+                        href="https://app.nowbi.com.br/"
+                        className='text-blue-400 hover:underline'
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Acesse aqui
+                    </a>
+                </div>
                 </div>
             </div>
 
